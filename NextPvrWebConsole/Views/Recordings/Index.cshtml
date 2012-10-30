@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<ul data-bind="foreach: recordings, visible: recordings().length > 0">
+    <li>
+        <input data-bind="value: title" />
+        <a href="#" data-bind="click: $parent.deleteRecording">Delete</a>
+    </li> 
+</ul>
+
+<script>
+    $(function () {
+        function Recording(data) {
+            this.title = ko.observable(data.Name);
+        }
+
+        function RecordingsViewModel() {
+            // Data
+            var self = this;
+            self.recordings = ko.observableArray([]);
+
+            // Operations
+            self.deleteRecording = function (recording) { self.recordings.remove(recording) };
+
+            // Load initial state from server, convert it to Task instances, then populate self.tasks
+            $.getJSON("/api/recordings", function (allData) {
+                var mapped = $.map(allData, function (item) { return new Recording(item) });
+                self.recordings(mapped);
+            });
+        }
+
+        ko.applyBindings(new RecordingsViewModel());
+    });
+</script>
