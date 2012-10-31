@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Optimization;
 
 namespace NextPvrWebConsole
@@ -41,25 +42,18 @@ namespace NextPvrWebConsole
                         "~/Content/themes/base/jquery.ui.theme.css"));
 
             PageGuide(bundles);
+
+            // this allows bundling when in debug mode
+            //BundleTable.EnableOptimizations = true;   
         }
 
         private static void PageGuide(BundleCollection bundles)
         {
-            //bundles.Add(new StyleBundle("~/Content/guide").IncludeDirectory("~/Content/guide", "*.css"));
-
-            var lessBundle = new Bundle("~/Content/guide").IncludeDirectory("~/Content/guide", "*.less").IncludeDirectory("~/Content/guide", "*.css");
+            var lessBundle = new Bundle("~/Content/guide/css").IncludeDirectory("~/Content/guide", "*.less").IncludeDirectory("~/Content/guide", "*.css");
             lessBundle.Transforms.Add(new LessTransform());
             lessBundle.Transforms.Add(new CssMinify());
+            lessBundle.Orderer = new BundleTransformer.Core.Orderers.NullOrderer();
             bundles.Add(lessBundle);
-        }
-    }
-
-    public class LessTransform : IBundleTransform
-    {
-        public void Process(BundleContext context, BundleResponse response)
-        {
-            response.Content = dotless.Core.Less.Parse(response.Content);
-            response.ContentType = "text/css";
         }
     }
 }

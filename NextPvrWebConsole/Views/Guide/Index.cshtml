@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/guide")
+@Styles.Render("~/Content/guide/css")
 
 <h2>Index</h2>
 
@@ -40,11 +40,13 @@
         <div class="epg-listings">
             <div class="epg-listings-channel" data-bind="foreach: channels, visible: channels().length > 0">
                 <ul class="listings" data-bind="foreach:listings, attr: { 'data-channeloid': oid } ">
-                    <li class="listing" data-bind="attr: { style: $root.listingCss($data), 'data-start': startTime, 'data-oid': oid } ">
-                        <span class="title" data-bind="text: title"></span>
-                        <span class="start" data-bind="text: $root.formattedDate(startTime)"></span>
-                        <span class="subtitle" data-bind="text: subtitle"></span>
-                        <span class="description" data-bind="text: description"></span>
+                    <li data-bind="attr: { style: $root.listingCss($data), class: $root.listingClass($data, 'listing'), 'data-start': startTime, 'data-oid': oid } ">
+                        <div>
+                            <span class="title" data-bind="text: title"></span>
+                            <span class="start" data-bind="text: $root.formattedDate(startTime)"></span>
+                            <span class="subtitle" data-bind="text: subtitle"></span>
+                            <span class="description" data-bind="text: description"></span>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -151,7 +153,7 @@
         }
 
         function getMinutesFromStartOfGuide(time) {
-            var diff = Math.abs(time - guideStart);        
+            var diff = time - guideStart;
             var minutes = Math.floor((diff / 1000) / 60);
             return minutes;
         }
@@ -186,10 +188,38 @@
                     var css = '';
                     var dStart = Date.parse(listing.startTime);
                     var dEnd = Date.parse(listing.endTime);
+
+                    var guideEnd = new Date(guideStart.getTime());
+                    guideEnd.setDate(guideEnd.getDate() + 1);
+
+                    if (dEnd > guideEnd) {
+                        // ends before end of day
+                        dEnd = guideEnd;
+                    }
+
                     var start = getMinutesFromStartOfGuide(dStart);
                     var end = getMinutesFromStartOfGuide(dEnd);
-                    css += 'left: ' + (minuteWidth * start) + 'px;width:' + (minuteWidth * (end - start)) + 'px';
+
+                    if (start < 0) {
+                        // starts the day before
+                        start = 0;
+                    }
+
+                    css += 'left: ' + ((minuteWidth * start)) + 'px;width:' + ((minuteWidth * (end - start)) - 1) + 'px';
                     return css;
+                }
+                self.listingClass = function (listing, _class) {
+                    if (_class)
+                        _class += ' ';
+                    else
+                        _class = '';
+                    var end = new Date(guideStart.getTime());
+                    end.setDate(end.getDate() + 1);
+                    if (Date.parse(listing.startTime) < guideStart)
+                        _class += 'pre-guide-start ';
+                    if (Date.parse(listing.endTime) > end)
+                        _class += 'post-guide-end ';
+                    return _class;
                 }
                 self.formattedDate = function (date) {
                     date = new Date(date);
@@ -241,8 +271,8 @@
                     $('#show-info').dialog({
                         modal: true,
                         title: showInfo.title(),
-                        minWidth:600,
-                        beforeClose: function( event, ui ) {
+                        minWidth: 600,
+                        beforeClose: function (event, ui) {
                             self.selectedshow(null);
                         },
                         buttons: {
@@ -292,7 +322,7 @@
                 var show = $.Enumerable.From(channel.Listings)
                                        .Where(function (x) { return x.oid == programOid; })
                                        .FirstOrDefault();
-                if(!show)
+                if (!show)
                     return null;
 
                 return new showInfo(channel, show);

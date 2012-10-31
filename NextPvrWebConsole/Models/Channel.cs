@@ -36,7 +36,8 @@ namespace NextPvrWebConsole.Models
 
         public static List<Channel> LoadForTimePeriod(DateTime Start, DateTime End)
         {
-            var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start, End);
+            // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
+            var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End);
             List<Channel> results = new List<Channel>();
             foreach (var key in data.Keys)
             {
@@ -50,7 +51,7 @@ namespace NextPvrWebConsole.Models
                     Groups = key.Groups,
                     Icon = key.Icon != null ? key.Icon.ToBase64String() : null,
 
-                    Listings = data[key] 
+                    Listings = data[key].Where(x => x.EndTime > Start).ToList()
                 });
             }
             return results;

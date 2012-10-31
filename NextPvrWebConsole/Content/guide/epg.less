@@ -1,33 +1,12 @@
-﻿/************************************************************
+﻿/**********************************************************************************
  *	 EPG grid styling
- ************************************************************/
+ **********************************************************************************/
+
+@import "~/Content/mixins.less";
 
 @channel_height: 40px;
 @hour_width: 300px;
 @channel_info_width:120px;
-
-.rounded-corners (@radius: 5px) {
-  -webkit-border-radius: @radius;
-  -moz-border-radius: @radius;
-  -ms-border-radius: @radius;
-  -o-border-radius: @radius;
-  border-radius: @radius;
-}
-
-.gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
-  background: @color;
-  background: -webkit-gradient(linear,
-                               left bottom,
-                               left top,
-                               color-stop(0, @start),
-                               color-stop(1, @stop));
-  background: -ms-linear-gradient(bottom,
-                                  @start,
-                                  @stop);
-  background: -moz-linear-gradient(center bottom,
-                                   @start 0%,
-                                   @stop 100%);
-}
 
 .epg-container
 {
@@ -45,7 +24,7 @@
     top:0;
     bottom:0;
     left:0;
-    width:7325px;
+    width:@hour_width * 24 + @channel_info_width;
 }
 .epg-channels
 {
@@ -126,7 +105,6 @@
 }
 .listing
 {
-    border-left:2px solid transparent;
     margin:0;       
     padding:0;
     text-overflow: ellipsis-word;       
@@ -140,8 +118,26 @@
     display:inline-block;
     position:absolute;
 
-    .rounded-corners;
+    .rounded;
     .gradient(#444, #333, #777);
+
+	div
+	{
+		overflow:hidden;
+		position:absolute;
+		top:6px;
+		left:6px;
+		right:6px;
+		bottom:6px;
+	}
+}
+.listing.pre-guide-start
+{
+	.border-radius-left(0px)
+}
+.listing.post-guide-end
+{
+	.border-radius-right(0px)
 }
 .epg-listings-channel ul:nth-child(odd) .listing{
     .gradient(#555, #555, #999);
@@ -152,12 +148,8 @@
 
 .listing 
 {
-    span {
-        padding:0 5px;
-    }
     .title
     {
-        padding:5px;
         display:block;
     }
     .description
