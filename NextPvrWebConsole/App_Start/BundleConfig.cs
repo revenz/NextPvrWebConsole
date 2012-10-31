@@ -8,24 +8,21 @@ namespace NextPvrWebConsole
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/linqjs").Include(
-                        "~/Scripts/linq.js",
-                        "~/Scripts/jquery.linq.js*"));
-
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jscore").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/jquery.unobtrusive*",
+                        "~/Scripts/jquery.validate*",
+                        "~/Scripts/linq.js",
+                        "~/Scripts/jquery.linq.js*",
+                        "~/Scripts/jquery.dateFormat-1.0.js",
+                        "~/Scripts/knockout-{version}.js",
+                        "~/Scripts/apihelper.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css", "~/Content/custom.css"));
 
@@ -43,46 +40,26 @@ namespace NextPvrWebConsole
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
 
-
-
-            bundles.Add(new ScriptBundle("~/bundles/ko").Include(
-                        "~/Scripts/knockout-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/Scripts/apihelper.js",
-                "~/Scripts/jquery.dateFormat-1.0.js"
-                ));
-
             PageGuide(bundles);
         }
 
         private static void PageGuide(BundleCollection bundles)
         {
-            bundles.Add(new LessStyleBundle("~/Content/guide").Include("~/Content/globals.less", "~/Content/guide/*.less"));
+            //bundles.Add(new StyleBundle("~/Content/guide").IncludeDirectory("~/Content/guide", "*.css"));
+
+            var lessBundle = new Bundle("~/Content/guide").IncludeDirectory("~/Content/guide", "*.less").IncludeDirectory("~/Content/guide", "*.css");
+            lessBundle.Transforms.Add(new LessTransform());
+            lessBundle.Transforms.Add(new CssMinify());
+            bundles.Add(lessBundle);
         }
     }
-    public class LessMinify : CssMinify
-    {
-        public LessMinify()
-        {
-        }
 
-        public override void Process(BundleContext context, BundleResponse response)
+    public class LessTransform : IBundleTransform
+    {
+        public void Process(BundleContext context, BundleResponse response)
         {
             response.Content = dotless.Core.Less.Parse(response.Content);
-            base.Process(context, response);
-        }
-    }
-    public class LessStyleBundle : Bundle
-    {
-        public LessStyleBundle(string virtualPath)
-            : base(virtualPath, new LessMinify())
-        {
-        }
-
-        public LessStyleBundle(string virtualPath, string cdnPath)
-            : base(virtualPath, cdnPath, new LessMinify())
-        {
+            response.ContentType = "text/css";
         }
     }
 }

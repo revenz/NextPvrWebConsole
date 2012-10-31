@@ -16,6 +16,10 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -181,10 +185,10 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ScheduledRecordingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="Content\globals.less" />
+    <Content Include="Content\elements.less" />
     <None Include="Content\guide\epg.less" />
-    <None Include="Content\guide\page.less" />
-    <None Include="Content\guide\show-info-dialog.less" />
+    <Content Include="Content\guide\page.css" />
+    <Content Include="Content\guide\show-info-dialog.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />

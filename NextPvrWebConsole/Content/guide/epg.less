@@ -2,6 +2,33 @@
  *	 EPG grid styling
  ************************************************************/
 
+@channel_height: 40px;
+@hour_width: 300px;
+@channel_info_width:120px;
+
+.rounded-corners (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
+  background: @color;
+  background: -webkit-gradient(linear,
+                               left bottom,
+                               left top,
+                               color-stop(0, @start),
+                               color-stop(1, @stop));
+  background: -ms-linear-gradient(bottom,
+                                  @start,
+                                  @stop);
+  background: -moz-linear-gradient(center bottom,
+                                   @start 0%,
+                                   @stop 100%);
+}
+
 .epg-container
 {
     position:absolute;
@@ -11,12 +38,6 @@
     bottom:30px;
     overflow:scroll;
     border:solid 1px black;
-}
-.epg li
-{
-    list-style:none;
-    margin:0;
-    padding:0;
 }
 .epg
 {
@@ -29,31 +50,30 @@
 .epg-channels
 {
     left:0px;
-    width:120px;
+    width:@channel_info_width;
     top:26px;
     position:absolute;
     z-index:3;
     overflow:hidden;
     background:#333;
-}
-.epg-channels ul
-{
-    margin:0;
-    padding:0;
-}
-.epg-channels .epg-channel
-{
-    height: 65px;
-    width: 121px;
-    font-size: 11px;
-    color: white;
-    margin:0;
-    padding:0;
-    /*position: absolute;*/
-    overflow: hidden;
-    text-align: center;
-    list-style-type: none;
-    border-bottom:solid 1px white;
+     ul
+    {
+        margin:0;
+        padding:0;
+    }
+    .epg-channel
+    {
+        height: @channel_height - 1; /* -1 for bottom border */
+        width: @channel_info_width;
+        font-size: 11px;
+        color: white;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+        text-align: center;
+        list-style-type: none;
+        border-bottom:solid 1px white;
+    }
 }
 .epg-time
 {
@@ -65,28 +85,28 @@
     position: absolute;
     overflow: hidden;
     z-index: 6;
-}
-.epg-time ul
-{
-    position: relative;
-    margin:0;
-    padding:0 0 0 122px;
-    background-color: #A8C8EF;
-    display: inline-block;
-}
-.epg-time li
-{
-    width:289px; /* 300 - 10px padding - 1px border */
-    line-height:26px;
-    padding-left:10px;
-    float:left;
-    list-style-type:none;
-    position:relative;
-    border-left:1px solid black;
+    ul
+    {
+        position: relative;
+        margin:0;
+        padding:0 0 0 122px;
+        background-color: #A8C8EF;
+        display: inline-block;
+    }
+    li
+    {
+        width:@hour_width - 11; /*  - 10px padding - 1px border */
+        line-height:26px;
+        padding-left:10px;
+        float:left;
+        list-style-type:none;
+        position:relative;
+        border-left:1px solid black;
+    }
 }
 .epg-listings
 {
-    left:121px;
+    left:@channel_info_width + 1;
     top:25px;
     position:absolute;
     padding:0;
@@ -96,10 +116,8 @@
 }
 .epg-listings-channel .listings
 {        
-    height:65px;
+    height:@channel_height;
     display:block;
-    border:solid 1px black;
-    border-bottom:none;
     color:White;
     position:relative;
     margin:0;
@@ -108,31 +126,46 @@
 }
 .listing
 {
-    background:#999;        
-    border-left:solid 1px white;
-    margin:0;
+    border-left:2px solid transparent;
+    margin:0;       
     padding:0;
     text-overflow: ellipsis-word;       
         
     height:100%;        
     top:0;
     bottom:0;
+
+    font-size:0.8em;
         
     display:inline-block;
     position:absolute;
 
-	.rounded;
+    .rounded-corners;
+    .gradient(#444, #333, #777);
 }
-.listing .title
-{
-    padding:5px;
-    display:block;
+.epg-listings-channel ul:nth-child(odd) .listing{
+    .gradient(#555, #555, #999);
 }
-.listing .description
-{
-    display:none;
+.listing.recording {
+    .gradient(#444, #330000, #770000); /* a nice read gradient */
 }
-.listing .subtitle
+
+.listing 
 {
-    display:none;
+    span {
+        padding:0 5px;
+    }
+    .title
+    {
+        padding:5px;
+        display:block;
+    }
+    .description
+    {
+        display:none;
+    }
+    .subtitle
+    {
+        display:none;
+    }
 }
