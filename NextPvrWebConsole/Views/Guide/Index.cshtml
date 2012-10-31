@@ -3,183 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>    
-    /* EPG grid styling */
-    .epg-container
-    {
-        position:absolute;
-        top:170px;
-        left:30px;
-        right:30px;
-        bottom:30px;
-        overflow:scroll;
-        border:solid 1px black;
-    }
-    .epg li
-    {
-        list-style:none;
-        margin:0;
-        padding:0;
-    }
-    .epg
-    {
-        position:absolute;        
-        top:0;
-        bottom:0;
-        left:0;
-        width:7325px;
-    }
-    .epg-channels
-    {
-        left:0px;
-        width:120px;
-        top:26px;
-        position:absolute;
-        z-index:3;
-        overflow:hidden;
-        background:#333;
-    }
-    .epg-channels ul
-    {
-        margin:0;
-        padding:0;
-    }
-    .epg-channels .epg-channel
-    {
-        height: 65px;
-        width: 121px;
-        font-size: 11px;
-        color: white;
-        margin:0;
-        padding:0;
-        /*position: absolute;*/
-        overflow: hidden;
-        text-align: center;
-        list-style-type: none;
-        border-bottom:solid 1px white;
-    }
-    .epg-time
-    {
-        top:0;
-        left:0;
-        height:26px;
-        border-top:1px slid #204482;
-        font-weight: bold;
-        position: absolute;
-        overflow: hidden;
-        z-index: 6;
-    }
-    .epg-time ul
-    {
-        position: relative;
-        margin:0;
-        padding:0 0 0 122px;
-        background-color: #A8C8EF;
-        display: inline-block;
-    }
-    .epg-time li
-    {
-        width:289px; /* 300 - 10px padding - 1px border */
-        line-height:26px;
-        padding-left:10px;
-        float:left;
-        list-style-type:none;
-        position:relative;
-        border-left:1px solid black;
-    }
-    .epg-listings
-    {
-        left:121px;
-        top:26px;
-        position:absolute;
-        /*overflow:hidden;*/
-        padding:0;
-        margin:0;
-        bottom:0;
-        right:0;
-    }
-    .epg-listings-channel .listings
-    {        
-        height:65px;
-        display:block;
-        border:solid 1px black;
-        border-bottom:none;
-        color:White;
-        position:relative;
-        margin:0;
-        padding:0;
-        overflow:hidden;
-    }
-    .listing
-    {
-        background:#999;        
-        border-left:solid 1px white;
-        margin:0;
-        padding:0;
-        text-overflow: ellipsis-word;       
-        
-        height:100%;        
-        top:1px;
-        bottom:1px;
-        
-        display:inline-block;
-        position:absolute;
-    }
-    .listing .title
-    {
-        padding:5px;
-        display:block;
-    }
-    .listing .description
-    {
-        display:none;
-    }
-    .listing .subtitle
-    {
-        display:none;
-    }
-</style>
-
-<style>
-    /* other page styling */
-    .epg-days
-    {
-        margin:0;
-        padding:0;
-        position:absolute;
-        top:140px;
-        left:30px;
-        right:30px;
-    }
-    .epg-days ul
-    {
-        margin:0;
-        padding:0;
-        display: table;
-        width: 100%;
-    }
-    .epg-days li
-    {
-        list-style:none;
-        margin:0;
-        padding:0;
-        display: table-cell;
-        text-align: center;
-        background:yellow;
-        line-height:30px;
-        border:solid 1px black;
-        border-right:none;
-    }
-    .epg-days li:last-child
-    {
-        border-right:solid 1px black;
-    }
-    .epg-days li a
-    {
-        display: block;
-        text-align: center;
-    }
-</style>
+@Styles.Render("~/Content/guide")
 
 <h2>Index</h2>
 
@@ -204,16 +28,19 @@
             </ul>
         </div>
         <div class="epg-time">
-            <ul class="timeline" data-bind="foreach: timeline, visible: timeline().length > 0">
+            <ul class="timeline">
+                @for (int i = 0; i < 24; i++)
+                {
                 <li class="time">
-                    <span data-bind="text: $data"></span>
+                    <span>@(i == 0 ? "12am" : (i == 12 ? "12pm" : (i > 12 ? (i - 12) + "pm" : i + "am")))</span>
                 </li> 
+                }
             </ul>
         </div>
         <div class="epg-listings">
             <div class="epg-listings-channel" data-bind="foreach: channels, visible: channels().length > 0">
-                <ul class="listings" data-bind="foreach:listings">
-                    <li class="listing" data-bind="attr: { style: $root.listingCss($data), dataStart: startTime } ">
+                <ul class="listings" data-bind="foreach:listings, attr: { 'data-channeloid': oid } ">
+                    <li class="listing" data-bind="attr: { style: $root.listingCss($data), 'data-start': startTime, 'data-oid': oid } ">
                         <span class="title" data-bind="text: title"></span>
                         <span class="start" data-bind="text: $root.formattedDate(startTime)"></span>
                         <span class="subtitle" data-bind="text: subtitle"></span>
@@ -225,10 +52,103 @@
     </div>
 </div>
 
+<div id="show-info" style="display:none" data-bind="with: selectedshow">    
+    <img class="channellogo" data-bind="visible: channelLogoVisible, attr: { src: channelLogoData } " />
+    <span class="channelnumber" data-bind="text:channelNumber"></span>
+    <span class="channelname" data-bind="text:channelName"></span>
+    <span class="time">
+        <text data-bind="text:startTimeLong()"></text> - <text data-bind="text:endTimeShort()"></text> (<text data-bind="text:duration()"></text>)
+    </span>
+    <span class="genres" data-bind="text:genresString()"></span>  
+    <span class="subtitle" data-bind="stext: subtitle"></span>
+    <span class="description" data-bind="text: description"></span>  
+</div>
+
+<div id="recording-options" style="display:none">
+    <table>
+        <tr>
+            <td>Recording Type</td>
+            <td>
+                <select id="recording-type">
+                    <option value="0">Record Once
+                    <option value="1">Record Season (NEW episodes on this channel)
+                    <option value="2">Record Season (All episodes on this channel)
+                    <option value="3">Record Season (Daily, this timeslot)
+                    <option value="4">Record Season (Weekly, this timeslot)
+                    <option value="5">Record Season (Monday - Friday, this timeslot)
+                    <option value="6">Record All Episodes, All Channels
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Pre-Padding</td>
+            <td><input type="number" min="0" max="89" id="recording-prepadding" /> (Minutes)</td>
+        </tr>
+
+        <tr>
+            <td>Post-Padding</td>
+            <td><input type="number" min="0" max="89" id="recording-postpadding" /> (Minutes)</td>
+        </tr>
+
+        <tr>
+            <td>Directory</td>
+            <td>
+                <select id="recording-directory">
+                    <option value="0">Default
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Keep</td>
+            <td>
+                <select id="recoding-keep">
+                    <option value="0">All Recordings
+                    @for (int i = 1; i < 29; i++)
+                    {
+                        <option value="@i">@i @(i == 1 ? "Recording" : "Recordings")</option>
+                    }
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+
 @section Scripts{
     <script type="text/javascript">
         var guideStart;
         var minuteWidth = 5;
+        var guideData = null;
+
+        function showInfo(apiChannel, apiShow) {
+            var self = this;
+            self.apiChannel = apiChannel;
+            self.apiShow = apiShow;
+            self.title = ko.observable(apiShow.title);
+            self.subtitle = ko.observable(apiShow.subtitle);
+            self.description = ko.observable(apiShow.description);
+            self.channelName = ko.observable(apiChannel.Name);
+            self.channelNumber = ko.observable(apiChannel.Number);
+            self.startTimeLong = ko.computed(function () { return $.format.date(Date.parse(apiShow.startTime), 'd MMMM h:mm a'); });
+            self.endTimeShort = ko.computed(function () { return $.format.date(Date.parse(apiShow.endTime), 'h:mm a') });
+            self.duration = ko.computed(function () { return Math.floor((Math.abs(Date.parse(apiShow.endTime) - Date.parse(apiShow.startTime)) / 1000) / 60) + ' minutes' });
+            self.genresString = ko.computed(function () {
+                if (apiShow.genres)
+                    return $.Enumerable.From(apiShow.genres).Select(function (x) {
+                        x = x.replace('/', ', ');
+                        x = x.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1); });
+                        return x.replace(' , ', ', ');
+                    }).ToString(', ');
+                return '';
+            });
+            self.channelLogoVisible = ko.computed(function () { return apiChannel.Icon && apiChannel.Icon.length > 0; });
+            self.channelLogoData = ko.computed(function () {
+                if (apiChannel.Icon && apiChannel.Icon.length > 0)
+                    return 'data:image/png;base64,' + apiChannel.Icon;
+                return '';
+            });
+        }
 
         function getMinutesFromStartOfGuide(time) {
             var diff = Math.abs(time - guideStart);        
@@ -248,7 +168,11 @@
             function Channel(data) {
                 this.name = ko.observable(data.Name);
                 this.number = ko.observable(data.Number);
-                this.icon = ko.observable((data.Icon && data.Icon.length > 0) ? "data:image/png;base64," + data.Icon : "");
+                this.icon = ko.computed(function () {
+                    if (data.Icon && data.Icon.length > 0)
+                        return 'data:image/png;base64,' + data.Icon;
+                    return '';
+                });
                 this.iconVisible = (data.Icon && data.Icon.length > 0);
                 this.oid = ko.observable(data.OID);
                 this.listings = ko.observable(data.Listings);
@@ -257,7 +181,6 @@
             function GuideViewModel() {
                 // Data
                 var self = this;
-                self.channels = ko.observableArray([]);
 
                 self.listingCss = function (listing) {
                     var css = '';
@@ -274,19 +197,8 @@
                         return date.getHours() + ':0' + date.getMinutes() + ' (' + date.getDate() + '/' + (date.getMonth() + 1) + ')';
                     return date.getHours() + ':' + date.getMinutes() + ' (' + date.getDate() + '/' + (date.getMonth() + 1) + ')';
                 }
-                var times = new Array();
-                for (var i = 0; i < 24; i++) {
-                    if (i == 0)
-                        times.push('12am');
-                    else if (i < 12)
-                        times.push(i + 'am');
-                    else if (i == 12)
-                        times.push('12pm');
-                    else
-                        times.push((i - 12) + 'pm');
-                }
-                self.timeline = ko.observableArray(times);
 
+                // might shift this into server side code...
                 var days = new Array();
                 var daysOfWeekString = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 var currentDayOfWeek = new Date().getDay();
@@ -297,37 +209,94 @@
                     days.push({ name: daysOfWeekString[currentDayOfWeek], link: '#' + currentDayOfWeek, date: tDate, displayText: daysOfWeekString[currentDayOfWeek] + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')' });
                     if (++currentDayOfWeek >= 7)
                         currentDayOfWeek = 0;
-
                 }
                 self.epgdays = ko.observableArray(days);
 
+                self.channels = ko.observableArray([]);
                 var loadEpgData = function (date) {
-                    console.log('loading epg date for: ' + date);
                     guideStart = date;
                     self.channels.removeAll();
                     api.getJSON('guide?date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), function (allData) {
                         var mapped = $.map(allData, function (item) { return new Channel(item) });
                         self.channels(mapped);
+                        guideData = allData;
                     });
-                    /*
-                    $.getJSON("/api/guide?date=" + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), function (allData) {
-                        var mapped = $.map(allData, function (item) { return new Channel(item) });
-                        self.channels(mapped);
-                    });
-                    */
                 }
 
                 // Operations
-                //self.deleteRecording = function (recording) { self.recordings.remove(recording) };
-                self.changeEpgDay = function (day) {
-                    loadEpgData(day.date);
-                }
+                self.changeEpgDay = function (day) { loadEpgData(day.date); }
 
                 // Load initial state from server, convert it to Task instances, then populate self.tasks
                 loadEpgData(new Date(new Date().setHours(0, 0, 0, 0)));
+
+                self.selectedshow = ko.observable();
+
+                $('.epg-listings').on('click.epg', '.listing', function () {
+                    // get listing info, helper for this.
+                    var showInfo = getShowInfo($(this));
+                    console.log('showInfo...');
+                    console.log(showInfo);
+
+                    self.selectedshow(showInfo);
+                    $('#show-info').dialog({
+                        modal: true,
+                        title: showInfo.title(),
+                        minWidth:600,
+                        beforeClose: function( event, ui ) {
+                            self.selectedshow(null);
+                        },
+                        buttons: {
+                            'Quick Record': function () {
+                                $(this).dialog('close');
+                            },
+                            'Record': function () {
+                                $(this).dialog('close');
+                            },
+                            'Find All': function () {
+                                $(this).dialog('close');
+                            },
+                            'Close': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                    return;
+
+                    // show show info window, but for now show recordings
+                    $('#recording-options').dialog({
+                        modal: true,
+                        title: 'Record Show',
+                        width: 600,
+                        height: 300,
+                        buttons: {
+                            'OK': function () { $('#recording-options').dialog('close'); },
+                            'Cancel': function () { $('#recording-options').dialog('close'); }
+                        }
+                    });
+                });
+
             }
 
             ko.applyBindings(new GuideViewModel());
+
+            function getShowInfo(liElement) {
+                var channelOid = parseInt(liElement.closest('ul').attr('data-channeloid'), 10);
+                var programOid = parseInt(liElement.attr('data-oid'), 10);
+
+                var channel = $.Enumerable.From(guideData)
+                                          .Where(function (x) { return x.OID == channelOid; })
+                                          .FirstOrDefault();
+                if (!channel)
+                    return null;
+
+                var show = $.Enumerable.From(channel.Listings)
+                                       .Where(function (x) { return x.oid == programOid; })
+                                       .FirstOrDefault();
+                if(!show)
+                    return null;
+
+                return new showInfo(channel, show);
+            }
         });
     </script>
 }

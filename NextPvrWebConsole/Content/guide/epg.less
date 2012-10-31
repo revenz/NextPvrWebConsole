@@ -1,0 +1,138 @@
+﻿/************************************************************
+ *	 EPG grid styling
+ ************************************************************/
+
+.epg-container
+{
+    position:absolute;
+    top:170px;
+    left:30px;
+    right:30px;
+    bottom:30px;
+    overflow:scroll;
+    border:solid 1px black;
+}
+.epg li
+{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.epg
+{
+    position:absolute;        
+    top:0;
+    bottom:0;
+    left:0;
+    width:7325px;
+}
+.epg-channels
+{
+    left:0px;
+    width:120px;
+    top:26px;
+    position:absolute;
+    z-index:3;
+    overflow:hidden;
+    background:#333;
+}
+.epg-channels ul
+{
+    margin:0;
+    padding:0;
+}
+.epg-channels .epg-channel
+{
+    height: 65px;
+    width: 121px;
+    font-size: 11px;
+    color: white;
+    margin:0;
+    padding:0;
+    /*position: absolute;*/
+    overflow: hidden;
+    text-align: center;
+    list-style-type: none;
+    border-bottom:solid 1px white;
+}
+.epg-time
+{
+    top:0;
+    left:0;
+    height:26px;
+    border-top:1px slid #204482;
+    font-weight: bold;
+    position: absolute;
+    overflow: hidden;
+    z-index: 6;
+}
+.epg-time ul
+{
+    position: relative;
+    margin:0;
+    padding:0 0 0 122px;
+    background-color: #A8C8EF;
+    display: inline-block;
+}
+.epg-time li
+{
+    width:289px; /* 300 - 10px padding - 1px border */
+    line-height:26px;
+    padding-left:10px;
+    float:left;
+    list-style-type:none;
+    position:relative;
+    border-left:1px solid black;
+}
+.epg-listings
+{
+    left:121px;
+    top:25px;
+    position:absolute;
+    padding:0;
+    margin:0;
+    bottom:0;
+    right:0;
+}
+.epg-listings-channel .listings
+{        
+    height:65px;
+    display:block;
+    border:solid 1px black;
+    border-bottom:none;
+    color:White;
+    position:relative;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+.listing
+{
+    background:#999;        
+    border-left:solid 1px white;
+    margin:0;
+    padding:0;
+    text-overflow: ellipsis-word;       
+        
+    height:100%;        
+    top:0;
+    bottom:0;
+        
+    display:inline-block;
+    position:absolute;
+
+	.rounded;
+}
+.listing .title
+{
+    padding:5px;
+    display:block;
+}
+.listing .description
+{
+    display:none;
+}
+.listing .subtitle
+{
+    display:none;
+}

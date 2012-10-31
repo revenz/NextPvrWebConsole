@@ -18,6 +18,10 @@ namespace NextPvrWebConsole
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/linqjs").Include(
+                        "~/Scripts/linq.js",
+                        "~/Scripts/jquery.linq.js*"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -45,8 +49,40 @@ namespace NextPvrWebConsole
                         "~/Scripts/knockout-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/Scripts/apihelper.js"
+                "~/Scripts/apihelper.js",
+                "~/Scripts/jquery.dateFormat-1.0.js"
                 ));
+
+            PageGuide(bundles);
+        }
+
+        private static void PageGuide(BundleCollection bundles)
+        {
+            bundles.Add(new LessStyleBundle("~/Content/guide").Include("~/Content/globals.less", "~/Content/guide/*.less"));
+        }
+    }
+    public class LessMinify : CssMinify
+    {
+        public LessMinify()
+        {
+        }
+
+        public override void Process(BundleContext context, BundleResponse response)
+        {
+            response.Content = dotless.Core.Less.Parse(response.Content);
+            base.Process(context, response);
+        }
+    }
+    public class LessStyleBundle : Bundle
+    {
+        public LessStyleBundle(string virtualPath)
+            : base(virtualPath, new LessMinify())
+        {
+        }
+
+        public LessStyleBundle(string virtualPath, string cdnPath)
+            : base(virtualPath, cdnPath, new LessMinify())
+        {
         }
     }
 }
