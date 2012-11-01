@@ -1,4 +1,6 @@
-﻿html {
+﻿@import "~/Content/mixins.less";
+
+html {
     background-color: #e2e2e2;
     margin: 0;
     padding: 0;
@@ -30,3 +32,18 @@ a {
     a:hover {
         background-color: #c7d1d6;
     }
+#working
+{
+    display:none;
+    background:red;
+    position:fixed;
+    bottom:10px;
+    right:10px;
+    width:100px;
+    line-height:30px;
+    font-weight:bold;
+    color:White;
+    text-align:center;
+    .gradient(#444, #333, #666);
+    .rounded;
+}

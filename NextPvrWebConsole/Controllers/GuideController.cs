@@ -14,6 +14,9 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.RecordingDirectories = Models.NextPvrConfigHelper.RecordingDirectories;
+            ViewBag.PrePadding = Models.NextPvrConfigHelper.PrePadding;
+            ViewBag.PostPadding = Models.NextPvrConfigHelper.PostPadding;
             return View();
         }
 

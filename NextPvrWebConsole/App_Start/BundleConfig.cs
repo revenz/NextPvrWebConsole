@@ -19,13 +19,22 @@ namespace NextPvrWebConsole
                         "~/Scripts/jquery-ui-{version}.js",
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*",
+                        "~/Scripts/jquery.signalR-{version}.js",
                         "~/Scripts/linq.js",
                         "~/Scripts/jquery.linq.js*",
                         "~/Scripts/jquery.dateFormat-1.0.js",
                         "~/Scripts/knockout-{version}.js",
+                        "~/Scripts/addons/toastr.js",
+                        "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css", "~/Content/custom.css"));
+            var cssBundle = new Bundle("~/Content/css").Include(
+                                                        "~/Content/site.less", 
+                                                        "~/Content/custom.css",
+                                                        "~/Content/addons/toastr.css");
+            cssBundle.Transforms.Add(new LessTransform());
+            cssBundle.Transforms.Add(new CssMinify());
+            bundles.Add(cssBundle);
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
