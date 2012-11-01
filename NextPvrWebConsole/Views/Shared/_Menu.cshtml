@@ -1,10 +1,11 @@
 ﻿@{
     Layout = null;
-}
 
+    string selected = ViewContext.Controller.GetType().Name.Replace("Controller", "");
+}
 <nav class="mainmenu">
     <ul>
-        <li>@Html.ActionLink("Guide", "Index", "Guide")</li>
-        <li>@Html.ActionLink("Recordings", "Index", "Recordings")</li>
+        <li class="@(selected == "Guide" ? "selected" :"")">@Html.ActionLink("Guide", "Index", "Guide")</li>
+        <li class="@(selected == "Recordings" ? "selected" :"")">@Html.ActionLink("Recordings", "Index", "Recordings")</li>
     </ul>
 </nav>

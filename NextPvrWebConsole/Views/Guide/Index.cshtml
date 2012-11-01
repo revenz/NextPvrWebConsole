@@ -1,11 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Guide";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Styles.Render("~/Content/guide/css")
-
-<h2>Index</h2>
 
 <div class="epg-days">
     <ul data-bind="foreach:epgdays">
@@ -19,11 +17,10 @@
     <div class="epg">
         <div class="epg-channels">
             <ul data-bind="foreach: channels, visible: channels().length > 0">
-                <li class="epg-channel">
-                    <img class="logo" data-bind="visible: iconVisible, attr: { src: icon } "  />
+                <li data-bind="attr: { class: $root.channelClass($data, 'epg-channel') }">
+                    <div class="logo"><img class="logo" data-bind="visible: iconVisible, attr: { src: icon } "  /></div>
                     <span class="name" data-bind="text: name"></span>
                     <span class="number" data-bind="text: number"></span>      
-                    <span class="oid" data-bind="text: oid"></span>
                 </li>
             </ul>
         </div>
@@ -49,6 +46,11 @@
                         </div>
                     </li>
                 </ul>
+            </div>
+            <div id="epg-time-indicator" class="epg-time-indicator">
+                <div class="top"></div>
+                <div class="middle"></div>
+                <div class="bottom"></div>
             </div>
         </div>
     </div>

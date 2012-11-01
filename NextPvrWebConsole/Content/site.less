@@ -1,19 +1,22 @@
 ﻿@import "~/Content/mixins.less";
 
+@header-height:140px;
+
 html {
-    background-color: #e2e2e2;
     margin: 0;
     padding: 0;
+	min-height:100%;
 }
 
 body {
-    background-color: #fff;
+	.gradient(#F0F0F0, #dcdcdc, #fff);
     border:0;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
+	margin-top:@header-height + 20px;
 }
 
 a {
@@ -30,8 +33,84 @@ a {
     }
 
     a:hover {
-        background-color: #c7d1d6;
     }
+
+.siteheader
+{
+    position:fixed;
+    left:-20px;
+    right:-20px;
+    top:0;
+    z-index:100;
+    height:@header-height;
+    display:block;
+    color:White;    
+	background:url('images/header.jpg');
+	.drop-shadow(0, 10px, 15px, 0.5);
+	.logo
+	{
+		position:absolute;
+		left:90px;
+		top:10px;
+		background:transparent url('images/logo.png') 0 0 no-repeat;
+		width:250px;
+		height:70px;
+	}
+	#login
+	{
+		position:absolute;
+		right:90px;
+		bottom:50px;
+		width:250px;
+		text-align:right;
+		form
+		{
+			display:inline;
+		}
+		a
+		{
+			color:white;
+			font-weight:bold;
+			text-decoration:none;
+			font-size:1.2em;
+		}
+	}
+}
+.mainmenu {
+	position:absolute;
+	left:0;
+	right:0;
+	bottom:0;
+	border-bottom:2px solid #444;
+	background:rgba(255, 255, 255, 0.15);
+	padding-left:40px;
+	height:40px;
+	ul
+	{
+		margin:8px 0 0 0;
+		padding:0;
+	}
+	li
+	{
+		float:left;
+		list-style:none;
+		margin:0 20px;
+		padding:0;
+		height:32px;
+	}
+	a
+	{
+		display:block;
+		width:148px;
+		text-align:center;
+		color:white;
+		text-decoration:none;
+		font-size:1.3em;
+	}
+	.selected {
+		background:transparent url('images/menu_button_selected.png') 0 0 no-repeat;
+	}
+}
 #working
 {
     display:none;

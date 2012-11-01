@@ -203,6 +203,9 @@
     <Compile Include="Models\ScheduledRecordingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\addons\toastr.css" />
+    <Content Include="Content\images\header.jpg" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\menu_button_selected.png" />
     <Content Include="Content\mixins.less" />
     <None Include="Content\guide\epg.less" />
     <Content Include="Content\guide\index.css" />

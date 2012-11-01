@@ -6,7 +6,6 @@
 /// <reference path="../knockout-2.2.0.js" />
 /// <reference path="../modernizr-2.6.2.js" />
 
-
 var guideStart;
 var minuteWidth = 5;
 var guideData = null;
@@ -46,7 +45,20 @@ function getMinutesFromStartOfGuide(time) {
     var minutes = Math.floor((diff / 1000) / 60);
     return minutes;
 }
+
+function updateTimeIndicator() {
+    var date = new Date();
+    var mins = (date.getHours() * 60) + date.getMinutes();
+    var guideMins = (guideStart.getHours() * 60) + guideStart.getMinutes();
+    mins = mins - guideMins;
+    var sameday = guideStart.getDate() == date.getDate() && guideStart.getMonth() == date.getMonth();
+    $('#epg-time-indicator').css({ left: mins * minuteWidth + 'px', height: $('.epg-listings-channel').height(), display: sameday ? '' : 'none' });
+}
+
 $(function () {
+    guideStart = new Date(new Date().setHours(0, 0, 0, 0));
+    setInterval(updateTimeIndicator, 15 * 1000);
+
     var epgtime = $('.epg-time');
     var epgchannels = $('.epg-channels');
     $('.epg-container').scroll(function () {
@@ -55,6 +67,9 @@ $(function () {
         var left = $(this).scrollLeft();
         epgchannels.css('left', left);
     });
+
+    // set scroll pos.
+    $('.epg-container').scrollLeft(getMinutesFromStartOfGuide(new Date()) * minuteWidth);
 
     function Channel(data) {
         this.name = ko.observable(data.Name);
@@ -81,33 +96,33 @@ $(function () {
             var guideEnd = new Date(guideStart.getTime());
             guideEnd.setDate(guideEnd.getDate() + 1);
 
-            if (dEnd > guideEnd) {
-                // ends before end of day
-                dEnd = guideEnd;
-            }
+            if (dEnd > guideEnd) dEnd = guideEnd; // ends before end of day
 
             var start = getMinutesFromStartOfGuide(dStart);
             var end = getMinutesFromStartOfGuide(dEnd);
 
-            if (start < 0) {
-                // starts the day before
-                start = 0;
-            }
+            if (start < 0) start = 0; // starts the day before
 
             css += 'left: ' + ((minuteWidth * start)) + 'px;width:' + ((minuteWidth * (end - start)) - 1) + 'px';
             return css;
         }
         self.listingClass = function (listing, _class) {
-            if (_class)
-                _class += ' ';
-            else
-                _class = '';
+            if (_class) _class += ' ';
+            else _class = '';
+
             var end = new Date(guideStart.getTime());
             end.setDate(end.getDate() + 1);
             if (Date.parse(listing.startTime) < guideStart)
                 _class += 'pre-guide-start ';
             if (Date.parse(listing.endTime) > end)
                 _class += 'post-guide-end ';
+            return _class;
+        }
+        self.channelClass = function (channel, _class) {
+            if (_class) _class += ' ';
+            else _class = '';
+            if (channel.iconVisible)
+                _class += 'logo-available ';
             return _class;
         }
         self.formattedDate = function (date) {
@@ -135,10 +150,12 @@ $(function () {
         var loadEpgData = function (date) {
             guideStart = date;
             self.channels.removeAll();
+            $('#epg-time-indicator').css({ display: 'none' });
             api.getJSON('guide?date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), function (allData) {
                 var mapped = $.map(allData, function (item) { return new Channel(item) });
                 self.channels(mapped);
                 guideData = allData;
+                updateTimeIndicator();
             });
         }
 
@@ -146,7 +163,7 @@ $(function () {
         self.changeEpgDay = function (day) { loadEpgData(day.date); }
 
         // Load initial state from server, convert it to Task instances, then populate self.tasks
-        loadEpgData(new Date(new Date().setHours(0, 0, 0, 0)));
+        loadEpgData(guideStart);
 
         self.selectedshow = ko.observable();
 
@@ -186,7 +203,6 @@ $(function () {
                 }
             });
         });
-
     }
 
     ko.applyBindings(new GuideViewModel());
