@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    @Styles.Render("~/Content/dashboard/css")
+}
+
+<h2>Dashboard</h2>
+
+<div class="tuners">
+    <ul data-bind="foreach: tuners, visible: tuners().length > 0">
+        <li data-bind="attr: { 'data-oid': oid }" >
+            <span class="name" data-bind="text: name"></span>
+            <span class="priority" data-bind="text: priority"></span>
+            <span class="sourceType" data-bind="text: sourceType"></span>
+        </li>
+    </ul>
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/dashboard/index.js")
+}

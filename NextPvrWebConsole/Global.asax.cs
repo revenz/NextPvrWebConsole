@@ -26,6 +26,12 @@ namespace NextPvrWebConsole
 
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("json", "true", "application/json"));
 
+            System.Timers.Timer t = new System.Timers.Timer(10 * 1000);
+            t.AutoReset = true;
+            t.Elapsed += delegate { Hubs.NextPvrEventHub.Clients_ShowErrorMessage("Testing: " + DateTime.Now.ToLongTimeString()); };
+            t.Start();
+
+            var npvrEventListener = new NextPvrWebConsole.Hubs.NextPvrEventListener();
         }
     }
 }

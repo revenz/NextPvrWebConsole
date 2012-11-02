@@ -50,15 +50,22 @@ namespace NextPvrWebConsole
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
 
-            PageGuide(bundles);
+            bundles.Add(new StyleBundle("~/Content/jquery.mobile/css").Include(
+                        "~/Content/jquery.mobile-{version}.css",
+                        "~/Content/jquery.mobile-structure-{version}.css",
+                        "~/Content/jquery.mobile-theme-{version}.css"));
+
+            PageBundle(bundles, "Dashboard");
+            PageBundle(bundles, "Guide");
+            PageBundle(bundles, "Recordings");
 
             // this allows bundling when in debug mode
             //BundleTable.EnableOptimizations = true;   
         }
 
-        private static void PageGuide(BundleCollection bundles)
+        private static void PageBundle(BundleCollection bundles, string Name)
         {
-            var lessBundle = new Bundle("~/Content/guide/css").IncludeDirectory("~/Content/guide", "*.less").IncludeDirectory("~/Content/guide", "*.css");
+            var lessBundle = new Bundle("~/Content/{0}/css".FormatStr(Name)).IncludeDirectory("~/Content/{0}".FormatStr(Name), "*.less").IncludeDirectory("~/Content/{0}".FormatStr(Name), "*.css");
             lessBundle.Transforms.Add(new LessTransform());
             lessBundle.Transforms.Add(new CssMinify());
             lessBundle.Orderer = new BundleTransformer.Core.Orderers.NullOrderer();

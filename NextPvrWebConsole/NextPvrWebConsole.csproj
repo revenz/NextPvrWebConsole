@@ -79,6 +79,9 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NShared">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\NPVR\NShared.dll</HintPath>
+    </Reference>
     <Reference Include="NUtility">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\NPVR\NUtility.dll</HintPath>
     </Reference>
@@ -186,8 +189,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\GuideController.cs" />
+    <Compile Include="Controllers\Api\TunersController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\Api\RecordingsController.cs" />
     <Compile Include="Controllers\RecordingsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -196,17 +200,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\NextPvrConfigHelper.cs" />
     <Compile Include="Models\RecordingDirectory.cs" />
+    <Compile Include="Models\RecordingGroup.cs" />
     <Compile Include="Models\RecordingSchedule.cs" />
     <Compile Include="Models\ScheduledRecordingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\addons\toastr.css" />
+    <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\header.jpg" />
+    <Content Include="Content\images\icons-18-black.png" />
+    <Content Include="Content\images\icons-18-white.png" />
+    <Content Include="Content\images\icons-36-black.png" />
+    <Content Include="Content\images\icons-36-white.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\menu_button_selected.png" />
+    <Content Include="Content\jquery.mobile-1.2.0.css" />
+    <Content Include="Content\jquery.mobile-1.2.0.min.css" />
+    <Content Include="Content\jquery.mobile.structure-1.2.0.css" />
+    <Content Include="Content\jquery.mobile.structure-1.2.0.min.css" />
+    <Content Include="Content\jquery.mobile.theme-1.2.0.css" />
+    <Content Include="Content\jquery.mobile.theme-1.2.0.min.css" />
     <Content Include="Content\mixins.less" />
+    <None Include="Content\dashboard\index.less" />
     <None Include="Content\guide\epg.less" />
     <Content Include="Content\guide\index.css" />
     <Content Include="Content\guide\show-info-dialog.css" />
@@ -272,6 +290,10 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Scripts\addons\toastr.js" />
     <Content Include="Scripts\apihelper.js" />
+    <Content Include="Scripts\dashboard\index.js" />
+    <Content Include="Scripts\jquery.mobile-1.2.0.js" />
+    <Content Include="Scripts\jquery.mobile-1.2.0.min.js" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />
@@ -304,6 +326,7 @@
     <Content Include="Scripts\linq.js" />
     <Content Include="Scripts\linq.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\recordings\index.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -311,6 +334,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <None Include="Content\recordings\index.less" />
     <None Include="Content\site.less" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
@@ -328,7 +352,6 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>

@@ -4,8 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    
     @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/themes/base/css")         
+    @RenderSection("styles", required: false)
+
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -27,7 +30,9 @@
         Working...
     </div>
     
+    
     @Scripts.Render("~/bundles/jscore")
+    @Scripts.Render("~/signalr/hubs")
 
     @RenderSection("scripts", required: false)
 </body>

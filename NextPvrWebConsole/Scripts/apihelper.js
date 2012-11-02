@@ -1,5 +1,6 @@
 ﻿/// <reference path="jquery-1.8.2.js" />
 /// <reference path="functions.js" />
+/// <reference path="jquery.signalR-0.5.3.js" />
 
 var api = new function()
 {
@@ -44,3 +45,15 @@ var api = new function()
         _json('POST', url, data, callback);
     }
 }
+
+var npvrevent;
+$(function(){
+    npvrevent = $.connection.nextPvrEvent;
+    npvrevent.showInfoMessage = function(message, title) { gui.showInfo(message, title); };
+    npvrevent.showErrorMessage = function(message, title) { gui.showError(message, title); };
+    npvrevent.showSuccessMessage = function(message, title) { gui.showSuccess(message, title); };
+    npvrevent.showWarningMessage = function(message, title) { gui.showWarning(message, title); };
+    
+    // Start the connection
+    $.connection.hub.start();
+});

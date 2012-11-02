@@ -1,38 +1,27 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Recordings";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@section Styles{
+    @Styles.Render("~/Content/recordings/css")
+}
 
-<ul data-bind="foreach: recordings, visible: recordings().length > 0">
-    <li>
-        <input data-bind="value: title" />
-        <a href="#" data-bind="click: $parent.deleteRecording">Delete</a>
+<h2>Recordings</h2>
+
+<ul class="recording-groups" data-bind="foreach: recordingGroups, visible: recordingGroups().length > 0">
+    <li class="recording-group" data-bind="visible:recordings().length > 0">
+        <span class="name" data-bind="text: name"></span>
+        <span class="number-of-recordings" data-bind="text: numberOfRecordings"></span>
+        <ul class="recording-group-recordings" data-bind="foreach: recordings">
+            <li data-bind="attr: { class: cssClass }">
+                <span class="recording-filename" data-bind="text: filename"></span>
+                <span class="recording-name" data-bind="text: displayName"></span>
+            </li>
+        </ul>
     </li> 
 </ul>
 
-<script>
-    $(function () {
-        function Recording(data) {
-            this.title = ko.observable(data.Name);
-        }
-
-        function RecordingsViewModel() {
-            // Data
-            var self = this;
-            self.recordings = ko.observableArray([]);
-
-            // Operations
-            self.deleteRecording = function (recording) { self.recordings.remove(recording) };
-
-            // Load initial state from server, convert it to Task instances, then populate self.tasks
-            $.getJSON("/api/recordings", function (allData) {
-                var mapped = $.map(allData, function (item) { return new Recording(item) });
-                self.recordings(mapped);
-            });
-        }
-
-        ko.applyBindings(new RecordingsViewModel());
-    });
-</script>
+@section Scripts{
+    @Scripts.Render("~/Scripts/recordings/index.js")
+}

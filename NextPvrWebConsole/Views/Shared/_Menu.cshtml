@@ -5,7 +5,9 @@
 }
 <nav class="mainmenu">
     <ul>
+        <li class="@(selected == "Dashboard" ? "selected" :"")">@Html.ActionLink("Dashboard", "Index", "Dashboard")</li>
         <li class="@(selected == "Guide" ? "selected" :"")">@Html.ActionLink("Guide", "Index", "Guide")</li>
         <li class="@(selected == "Recordings" ? "selected" :"")">@Html.ActionLink("Recordings", "Index", "Recordings")</li>
+        <li class="@(selected == "Configuration" ? "selected" :"")">@Html.ActionLink("Configuration", "Index", "Configuration")</li>
     </ul>
 </nav>

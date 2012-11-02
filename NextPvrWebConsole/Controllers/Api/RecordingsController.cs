@@ -10,17 +10,9 @@ namespace NextPvrWebConsole.Controllers.Api
     public class RecordingsController : ApiController
     {
         // GET api/recordings
-        public IEnumerable<NUtility.ScheduledRecording> Get()
+        public IEnumerable<Models.RecordingGroup> Get()
         {
-            List<NUtility.ScheduledRecording> data = NUtility.ScheduledRecording.LoadAll();
-#if(DEBUG)
-            if (data.Count == 0)
-            {
-                for (int i = 0; i < 10; i++)
-                    data.Add(new NUtility.ScheduledRecording() { ChannelOID = 1, Name = "Recording {0}".FormatStr(i), OID = i, StartTime = DateTime.Now.AddMinutes(-180), EndTime = DateTime.Now.AddMinutes(-120) });
-            }
-#endif
-            return data;
+            return Models.RecordingGroup.GetAll();
         }
 
         // GET api/recordings/5
@@ -40,8 +32,14 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         // DELETE api/recordings/5
-        public void Delete(int id)
+        public void Delete(int Oid)
         {
+            var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
+            if(recording == null)
+                throw new Exception("Failed to locate recording");
+
+            NUtility.ScheduleHelperFactory.GetScheduleHelper().DeleteRecording(recording);
+            Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Deleted recording: " + recording.Name, "Recording Deleted");
         }
     }
 }

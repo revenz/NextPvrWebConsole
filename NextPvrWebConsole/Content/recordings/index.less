@@ -1,0 +1,57 @@
+﻿/**********************************************************************************
+ *	 Recordings Index
+ **********************************************************************************/
+
+@import "~/Content/mixins.less";
+
+.recording-groups
+{
+    margin:0;
+    padding:0;
+    list-style:none;
+    .rounded(10px);
+    background:white;
+    border:solid 1px #666;
+    padding:10px;
+    width:300px;
+}
+.recording-group
+{
+    position:relative;
+    margin:5px 0;
+    > .name
+    {
+        position:absolute;
+        left:20px;
+        right:0;
+    }
+    .number-of-recordings
+    {
+        .rounded(10px);
+        width:16px;
+        height:16px;
+        text-align:center;
+        line-height:16px;
+        font-size:0.65em;
+        font-weight:bold;
+        background:black;
+        display:block;
+        color:White;
+    }
+}
+.recording-group-recordings
+{
+    display:none;
+    .status-completed-with-error
+    {
+        background:yellow;
+    }
+    .status-failed
+    {
+        background:red;
+    }
+    .status-inprogress
+    {
+        background:green;
+    }
+}
