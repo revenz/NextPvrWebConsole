@@ -15,19 +15,52 @@ STATUS_DELETED = 6,
 */
 
 $(function () {
-    function RecordingGroup(data) {
+
+    function RecordingsViewModel() {
+        // Data
+        var self = this;
+        self.recordingGroups = ko.observableArray([]);
+        self.selectedRecordingGroup = ko.observable();
+
+        // Operations
+        self.deleteRecording = function (recording) { self.recordings.remove(recording) };
+
+        // Load initial state from server, convert it to Task instances, then populate self.tasks
+        api.getJSON("recordings", function (allData) {
+            var index = 0;
+            var mapped = $.map(allData, function (item) { return new RecordingGroup(item, ++index) });
+            self.recordingGroups(mapped);
+        });
+    }
+    var viewModel = new RecordingsViewModel();
+    ko.applyBindings(viewModel);
+
+    function RecordingGroup(data, index) {
         var self = this;
         self.name = ko.observable(data.Name);
         self.recordings = ko.observableArray([]);
         self.numberOfRecordings = ko.computed(function () { return data.Recordings.length; });
-        var mapped = $.map(data.Recordings, function (item) { if (item.Status == 0) { return; } return new Recording(item) });
+        self.index = index;
+        var mapped = $.map(data.Recordings, function (item) { if (item.Status == 0) { return; } return new Recording(self, item) });
         self.recordings(mapped);
+        self.select = function (group) {
+            $('.recordings-groups-container .selected').removeClass('selected'); // clear last selection
+            $('#rg-' + index).addClass('selected');
+            viewModel.selectedRecordingGroup(group);
+        };
     }
 
-    function Recording(data) {
+    function Recording(group, data) {
         var self = this;
         self.filename = ko.observable(data.Filename);
         self.name = ko.observable(data.Name);
+        self.startTime = ko.observable(data.StartTime);
+        self.endTime = ko.observable(data.EndTime);
+        self.startTimeStr = ko.computed(function () { return gui.formatDateLong(data.StartTime); });
+        self.endTimeStr = ko.computed(function () { return gui.formatDateLong(data.EndTime); });
+        self.channelName = ko.observable(data.ChannelName);
+        self.channelOid = ko.observable(data.ChannelOID);
+        self.status = ko.observable(data.Status);
         self.status_pending = ko.computed(function () { return data.Status == 0 });
         self.status_inProgress = ko.computed(function () { return data.Status == 1 });
         self.status_completed = ko.computed(function () { return data.Status == 2 });
@@ -49,27 +82,16 @@ $(function () {
             return _class;
         });
         self.displayName = ko.computed(function () {
-            console.log(data);
             if (data.Subtitle && date.Subtitle.length > 0)
                 return data.Subtitle;
             return $.format.date(data.StartTime, 'd MMMM h:mm a')
         });
+        self.remove = function () {
+            group.recordings.remove(self);
+            if (group.recordings().length == 0) {
+                viewModel.recordingGroups.remove(group);
+                viewModel.selectedRecordingGroup(null);
+            }
+        };
     }
-
-    function RecordingsViewModel() {
-        // Data
-        var self = this;
-        self.recordingGroups = ko.observableArray([]);
-
-        // Operations
-        self.deleteRecording = function (recording) { self.recordings.remove(recording) };
-
-        // Load initial state from server, convert it to Task instances, then populate self.tasks
-        api.getJSON("recordings", function (allData) {
-            var mapped = $.map(allData, function (item) { return new RecordingGroup(item) });
-            self.recordingGroups(mapped);
-        });
-    }
-
-    ko.applyBindings(new RecordingsViewModel());
 });

@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NUtility;
+using System.Runtime.Serialization;
 
 namespace NextPvrWebConsole.Models
 {
+    [DataContract]
     public class RecordingGroup
     {
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public List<Recording> Recordings { get; set; }
 
         public RecordingGroup(string Name)
@@ -32,38 +36,62 @@ namespace NextPvrWebConsole.Models
         }
     }
 
+    [DataContract]
     public class Recording
     {
         NUtility.ScheduledRecording BaseRecording { get; set; }
 
         #region from ScheduledRecording
+        [DataMember]
         public int CaptureSourceOID { get; set; }
+        [DataMember]
         public string ChannelName { get; set; }
+        [DataMember]
         public int ChannelOID { get; set; }
+        [DataMember]
         public DateTime EndTime { get; set; }
+        [DataMember]
         public string FailureReason { get; set; }
+        [DataMember]
         public string Filename { get; set; }
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public int OID { get; set; }
+        [DataMember]
         public int PostPadding { get; set; }
+        [DataMember]
         public int PrePadding { get; set; }
+        [DataMember]
         public DateTime StartTime { get; set; }
+        [DataMember]
         public RecordingStatus Status { get; set; }
-
         #endregion
 
         #region from EPGEvent
+        [DataMember]
         public string Subtitle { get; set; }
+        [DataMember]
         public string Title { get; set; }
+        [DataMember]
         public DateTime OriginalAirDate { get; set; }
+        [DataMember]
         public string Quality { get; set; }
+        [DataMember]
         public string Rating { get; set; }
+        [DataMember]
         public int Season { get; set; }
+        [DataMember]
         public int Episode { get; set; }
+        [DataMember]
         public List<string> Genres { get; set; }
+        [DataMember]
         public string Description { get; set; }
+        [DataMember]
         public string Aspect { get; set; }
+        [DataMember]
         public string Audio { get; set; }
+        [DataMember]
         public string StarRating { get; set; }
         #endregion
 

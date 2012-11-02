@@ -3,26 +3,61 @@
  **********************************************************************************/
 
 @import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+@recordings-groups-container-width:360px;
+
+.recordings-groups-container
+{
+	position:absolute;
+	top:@header-height + 60px;
+	bottom:20px;
+	left:20px;
+    .rounded(10px);
+    background:white;
+    border:solid 1px #999;
+    width:@recordings-groups-container-width;
+	.drop-shadow(0, 1px, 10px, 0.3);
+	.gradient;
+}
+
+.recordings-list-container
+{
+	position:absolute;
+	top:@header-height + 60px;
+	bottom:20px;
+	left:@recordings-groups-container-width  + 40px;
+	right:20px;
+    .rounded(10px);
+    background:white;
+    border:solid 1px #999;
+	.drop-shadow(0, 1px, 10px, 0.3);
+	.gradient;
+}
 
 .recording-groups
 {
+	position:absolute;
+	top:6px;
+	left:6px;
+	right:6px;
+	bottom:6px;
+	overflow:auto;
     margin:0;
-    padding:0;
+    padding:2px 0;
     list-style:none;
-    .rounded(10px);
-    background:white;
-    border:solid 1px #666;
-    padding:10px;
-    width:300px;
 }
 .recording-group
 {
     position:relative;
-    margin:5px 0;
+    padding:5px 5px;
+	margin:0 5px 0 2px;
+	cursor:pointer;
+	border:solid 2px transparent;
     > .name
     {
         position:absolute;
-        left:20px;
+        left:30px;
         right:0;
     }
     .number-of-recordings
@@ -38,6 +73,12 @@
         display:block;
         color:White;
     }
+}
+.recording-group.selected {
+	.gradient(#9DCCFF, #9DCCFF, #ECF5FF);
+	.rounded(10px);
+	.drop-shadow(0, 1px, 5px, 0.6);
+	border:solid 2px #318AC5;
 }
 .recording-group-recordings
 {

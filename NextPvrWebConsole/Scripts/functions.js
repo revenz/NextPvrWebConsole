@@ -1,8 +1,19 @@
 ﻿/// <reference path="jquery-1.8.2.js" />
+/// <reference path="jquery.dateFormat-1.0.js" />
 
 var gui = new function () {
 
     var doWorkCount = 0;
+
+    this.formatDateLong = function (date) {
+        return $.format.date(date, 'd MMMM yyyy h:mm a');
+    }
+    this.formatDateShort = function (date) {
+        return $.format.date(date, 'd MMMM');
+    }
+    this.formatTime = function (date) {
+        return $.format.date(date, 'h:mm a');
+    }
 
     this.showMessage = function (message, title) {
         alert(message); // for now

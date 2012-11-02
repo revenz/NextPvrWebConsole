@@ -9,18 +9,41 @@
 
 <h2>Recordings</h2>
 
-<ul class="recording-groups" data-bind="foreach: recordingGroups, visible: recordingGroups().length > 0">
-    <li class="recording-group" data-bind="visible:recordings().length > 0">
-        <span class="name" data-bind="text: name"></span>
-        <span class="number-of-recordings" data-bind="text: numberOfRecordings"></span>
-        <ul class="recording-group-recordings" data-bind="foreach: recordings">
-            <li data-bind="attr: { class: cssClass }">
-                <span class="recording-filename" data-bind="text: filename"></span>
-                <span class="recording-name" data-bind="text: displayName"></span>
-            </li>
-        </ul>
-    </li> 
-</ul>
+<div class="recordings-groups-container">
+    <ul class="recording-groups" data-bind="foreach: recordingGroups, visible: recordingGroups().length > 0">
+        <li class="recording-group" data-bind="visible:recordings().length > 0, click: select, attr: { id: 'rg-' + index}">
+            <span class="name" data-bind="text: name"></span>
+            <span class="number-of-recordings" data-bind="text: numberOfRecordings"></span>
+        </li> 
+    </ul>
+</div>
+
+<div class="recordings-list-container" data-bind="with: selectedRecordingGroup">
+    <table class="recordings-list" data-bind="visible: recordings().length > 0">
+        <thead>
+            <tr>
+                <th class="recording-status">Status</th>
+                <th class="recording-name">Name</th>
+                <th class="recording-starttime">Start</th>
+                <th class="recording-endtime">End</th>
+                <th class="recording-filename">Filename</th>
+                <th class="recording-controls"></th>
+            </tr>
+        </thead>
+        <tbody class="recordings-list" data-bind="foreach: recordings">
+            <tr data-bind="attr: { class : cssClass }">
+                <td class="recording-status" data-bind="text:status"></td>
+                <td class="recording-name" data-bind="text: displayName"></td>
+                <td class="recording-starttime" data-bind="text:startTimeStr"></td>
+                <td class="recording-endtime" data-bind="text:endTimeStr"></td>
+                <td class="recording-filename" data-bind="text: filename"></td>
+                <td class="recording-controls">
+                    <a href="#" onclick="return false" class="delete" data-bind="click: remove">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 @section Scripts{
     @Scripts.Render("~/Scripts/recordings/index.js")

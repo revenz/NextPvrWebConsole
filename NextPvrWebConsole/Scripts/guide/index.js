@@ -20,8 +20,8 @@ function showInfo(apiChannel, apiShow) {
     self.description = ko.observable(apiShow.description);
     self.channelName = ko.observable(apiChannel.Name);
     self.channelNumber = ko.observable(apiChannel.Number);
-    self.startTimeLong = ko.computed(function () { return $.format.date(Date.parse(apiShow.startTime), 'd MMMM h:mm a'); });
-    self.endTimeShort = ko.computed(function () { return $.format.date(Date.parse(apiShow.endTime), 'h:mm a') });
+    self.startTimeLong = ko.computed(function () { return gui.formatDate(Date.parse(apiShow.startTime)); });
+    self.endTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(apiShow.endTime)); });
     self.duration = ko.computed(function () { return Math.floor((Math.abs(Date.parse(apiShow.endTime) - Date.parse(apiShow.startTime)) / 1000) / 60) + ' minutes' });
     self.genresString = ko.computed(function () {
         if (apiShow.genres)

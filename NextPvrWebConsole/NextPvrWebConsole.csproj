@@ -225,6 +225,7 @@
     <Content Include="Content\jquery.mobile.theme-1.2.0.min.css" />
     <Content Include="Content\mixins.less" />
     <None Include="Content\dashboard\index.less" />
+    <Content Include="Content\globals.less" />
     <None Include="Content\guide\epg.less" />
     <Content Include="Content\guide\index.css" />
     <Content Include="Content\guide\show-info-dialog.css" />
