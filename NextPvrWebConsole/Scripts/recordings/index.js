@@ -34,7 +34,7 @@ $(function () {
     }
     var viewModel = new RecordingsViewModel();
     ko.applyBindings(viewModel);
-
+    
     function RecordingGroup(data, index) {
         var self = this;
         self.name = ko.observable(data.Name);
@@ -87,11 +87,17 @@ $(function () {
             return $.format.date(data.StartTime, 'd MMMM h:mm a')
         });
         self.remove = function () {
-            group.recordings.remove(self);
-            if (group.recordings().length == 0) {
-                viewModel.recordingGroups.remove(group);
-                viewModel.selectedRecordingGroup(null);
-            }
+            gui.confirmMessage({
+                message: 'Are you sure you want to delete this recording?', yes: function () {
+                    api.deleteJSON('recordings/' + data.OID, null, function (result) {
+                        group.recordings.remove(self);
+                        if (group.recordings().length == 0) {
+                            viewModel.recordingGroups.remove(group);
+                            viewModel.selectedRecordingGroup(null);
+                        }
+                    });
+                }
+            });
         };
     }
 });

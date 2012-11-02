@@ -1,5 +1,6 @@
 ﻿/// <reference path="jquery-1.8.2.js" />
 /// <reference path="jquery.dateFormat-1.0.js" />
+/// <reference path="jquery-ui-1.9.0.js" />
 
 var gui = new function () {
 
@@ -47,5 +48,34 @@ var gui = new function () {
             $('#working').hide();
         else
             doWorkCount = 0; // make sure this doesnt drop below 0
+    };
+
+    this.confirmMessage = function (settings) {
+        settings = $.extend({
+                title: 'Confirm',
+                message: 'Are you sure?',
+                yesText: 'Yes',
+                noText: 'No',
+                yes: null,
+                no: null,
+                minWidth: 400,
+                minHeight: 200
+        }, settings);
+        console.log(settings);
+        var div = $('<div><span></span></div>');
+        div.appendTo('body')
+        div.find('span').text(settings.message);
+        var dialog_buttons = {};
+        dialog_buttons[settings.yesText] = function () { if (settings.yes) { settings.yes(); } div.dialog('close'); };
+        dialog_buttons[settings.noText] = function () { if (settings.no) { settings.no(); } div.dialog('close'); }
+        div.dialog(
+        {
+            resizable: false,
+            modal: true,
+            minWidth: settings.minWidth,
+            minHeight: settings.minHeight,
+            title: settings.title,
+            buttons: dialog_buttons
+        });
     };
 }

@@ -44,6 +44,10 @@ var api = new function()
     this.postJSON = function (url, data, callback) {
         _json('POST', url, data, callback);
     }
+
+    this.deleteJSON = function (url, data, callback) {
+        _json('DELETE', url, data, callback);
+    };
 }
 
 var npvrevent;

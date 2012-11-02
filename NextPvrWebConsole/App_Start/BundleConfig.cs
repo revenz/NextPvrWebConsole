@@ -31,6 +31,7 @@ namespace NextPvrWebConsole
             var cssBundle = new Bundle("~/Content/css").Include(
                                                         "~/Content/site.less", 
                                                         "~/Content/custom.css",
+                                                        "~/Content/buttons.css",
                                                         "~/Content/addons/toastr.css");
             cssBundle.Transforms.Add(new LessTransform());
             cssBundle.Transforms.Add(new CssMinify());

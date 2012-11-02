@@ -209,6 +209,8 @@
     <Compile Include="Models\ScheduledRecordingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\addons\toastr.css" />
+    <Content Include="Content\buttons.css" />
+    <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\header.jpg" />
     <Content Include="Content\images\icons-18-black.png" />
@@ -226,6 +228,11 @@
     <Content Include="Content\mixins.less" />
     <None Include="Content\dashboard\index.less" />
     <Content Include="Content\globals.less" />
+    <Content Include="Content\font\fontawesome-webfont.eot" />
+    <Content Include="Content\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\font\fontawesome-webfont.woff" />
+    <Content Include="Content\font\font-awesome-ie7.less" />
+    <Content Include="Content\font\font-awesome.less" />
     <None Include="Content\guide\epg.less" />
     <Content Include="Content\guide\index.css" />
     <Content Include="Content\guide\show-info-dialog.css" />
