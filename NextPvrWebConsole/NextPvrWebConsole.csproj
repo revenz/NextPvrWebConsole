@@ -189,7 +189,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\GuideController.cs" />
-    <Compile Include="Controllers\Api\TunersController.cs" />
+    <Compile Include="Controllers\Api\DevicesController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\Api\RecordingsController.cs" />
@@ -207,6 +207,7 @@
     <Compile Include="Models\RecordingGroup.cs" />
     <Compile Include="Models\RecordingSchedule.cs" />
     <Compile Include="Models\ScheduledRecordingModel.cs" />
+    <Compile Include="Models\Device.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\addons\toastr.css" />
     <Content Include="Content\buttons.css" />

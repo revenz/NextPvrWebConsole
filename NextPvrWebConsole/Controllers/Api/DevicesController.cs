@@ -7,13 +7,12 @@ using System.Web.Http;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
-    public class TunersController : ApiController
+    public class DevicesController : ApiController
     {
         // GET api/tuners
-        public IEnumerable<NShared.Visible.CaptureSource> Get()
+        public IEnumerable<Models.Device> Get()
         {
-            //string status = NUtility.ScheduleHelperFactory.GetScheduleHelper().GetServerStatus();
-            return NShared.Visible.CaptureSource.LoadAll();
+            return Models.Device.GetDevices();
         }
 
         // GET api/tuners/5
@@ -35,6 +34,15 @@ namespace NextPvrWebConsole.Controllers.Api
         // DELETE api/tuners/5
         public void Delete(int id)
         {
+        }
+
+        public bool DeleteStream(int Handle)
+        {
+            if (!Models.Device.StopStream(Handle))
+                return false;
+
+            Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Stopped Live Stream: " + Handle); // TODO: Get pretty info about live stream
+            return true;
         }
     }
 }

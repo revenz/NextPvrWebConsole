@@ -9,53 +9,44 @@ $(function () {
         // Data
         var self = this;
 
-        self.tuners = ko.observableArray([]);
+        self.devices = ko.observableArray([]);
         // Operations
         //self.deleteRecording = function (recording) { self.recordings.remove(recording) };
 
         // Load initial state from server, convert it to Task instances, then populate self.tasks
-        api.getJSON("tuners", function (allData) {
-            console.log(allData);
-            var mapped = $.map(allData, function (item) { return new Tuner(item) });
-            console.log(mapped);
-            self.tuners(mapped);
-        });
+        
+
+        var refreshDevices = function () {
+            api.getJSON("devices", function (allData) {
+                var mapped = $.map(allData, function (item) { return new Device(item) });
+                self.devices(mapped);
+            });
+        };
+        refreshDevices();
+        setInterval(refreshDevices, 30 * 1000); // maybe change this to a signalr update?
     }
 
     ko.applyBindings(new DashboardViewModel());
 });
 
-function Tuner(data) {
-    this.oid = ko.observable(data.OID);
-    this.name = ko.observable(data.Name);
-    this.priority = ko.observable(data.Priority);
-    this.enabled = ko.observable(data.Enabled);
-    this.sourceType = ko.observable(data.SourceType);
-    this.preset = ko.observable(data.Preset);
-    this.deviceStandard = ko.observable(new Recorder(data.Recorder));
-}
-
-function Recorder(data) {
+function Device(data) {
     var self = this;
-    self.captureSourceOid = data.CaptureSourceOID;
-    self.deviceFilter = data.DeviceFilter;
-    self.diSEqC = data.DiSEqC;
-    self.deviceInstance = data.DeviceInstance;
-    self.commonInterface = data.CommonInterface;
-    self.commonInterfaceInstances = data.CommonInterfaceInstances;
-    self.deviceStandard = data.DeviceStandard;
-    self.iniFile = data.iniFile;
-    self.lnbs = new Array();
-    if ($.isArray(data.lnbs)) {
-        $.each(data.lnbs, function (i, ele) {
-            self.lnbs.push(new Lnb(ele));
-        });
-    }
+    self.oid = ko.observable(data.Oid);
+    self.identifier = ko.observable(data.Identifier);
+    self.streams = ko.observableArray([]);
+    self.streams($.map(data.Streams, function (item) { return new Stream(self, item); }));
 }
 
-function Lnb(data){
-    this.iniFile = data.iniFile;
-    this.lnbLowOsc = data.lnbLowOsc;
-    this.lnbHighOsc = data.lnbHighOsc;
-    this.lnbSwitch = data.lnbSwitch
+function Stream(owner, data) {
+    var self = this;
+    self.type = ko.observable(data.Type);
+    self.handle = ko.observable(data.Handle);
+    self.filename = ko.observable(data.Filename);
+    self.stop = function () {
+        api.deleteJSON('devices/deleteStream?handle=' + data.Handle, null, function (result) {
+            console.log(result);
+            if(result)
+                owner.streams.remove(this);
+        });
+    };
 }

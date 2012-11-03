@@ -9,11 +9,19 @@
 <h2>Dashboard</h2>
 
 <div class="tuners">
-    <ul data-bind="foreach: tuners, visible: tuners().length > 0">
+    <ul data-bind="foreach: devices, visible: devices().length > 0">
         <li data-bind="attr: { 'data-oid': oid }" >
-            <span class="name" data-bind="text: name"></span>
-            <span class="priority" data-bind="text: priority"></span>
-            <span class="sourceType" data-bind="text: sourceType"></span>
+            <span class="identifier" data-bind="text: identifier"></span>
+            <ul class="streams" data-bind="foreach: streams, visible: streams().length > 0">
+                <li data-bind="attr: { 'data-handle': handle } ">
+                    <span dat-bind="text: type"></span>
+                    <span data-bind="text: filename"></span>
+
+                    <a href="#" onclick="return false" class="btn btn-danger" data-bind="click: stop">
+                        <i class="icon-trash icon-large"></i> Stop
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </div>
