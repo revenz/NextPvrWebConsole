@@ -38,19 +38,11 @@ namespace NextPvrWebConsole.Hubs
         {
             GetHubContext().Clients.showErrorMessage(Message, Title);
         }
+        public static void Clients_DeviceStatusUpdated(Workers.DeviceUpdateEvent[] Event)
+        {
+            GetHubContext().Clients.deviceStatusUpdated(Event);
+        }
         #endregion
     }
 
-    class NextPvrEventListener : NUtility.IEventNotification
-    {
-        public NextPvrEventListener()
-        {
-            NUtility.EventBus.GetInstance().AddListener(this);
-        }
-
-        public void Notify(string eventName, object eventArg)
-        {
-            NextPvrEventHub.Clients_ShowInfoMessage("NextPVR Event: " + eventName);
-        }
-    }
 }

@@ -23,7 +23,15 @@ $(function () {
             });
         };
         refreshDevices();
-        setInterval(refreshDevices, 30 * 1000); // maybe change this to a signalr update?
+
+        npvrevent.deviceStatusUpdated = function (events) {
+            console.log('device updated :)');
+            console.log(events);
+            $.each(events, function (i, ele) {
+                gui.showInfo(ele.Message, ele.CodeString);
+            });
+            refreshDevices();
+        };
     }
 
     ko.applyBindings(new DashboardViewModel());
@@ -42,6 +50,20 @@ function Stream(owner, data) {
     self.type = ko.observable(data.Type);
     self.handle = ko.observable(data.Handle);
     self.filename = ko.observable(data.Filename);
+    self.channelName = ko.observable(data.ChannelName);
+    self.channelNumber = ko.observable(data.ChannelNumber);
+    self.title = ko.observable(data.Title);
+    self.subtitle = ko.observable(data.Subtitle);
+    self.description = ko.observable(data.Description);
+    self.channelLogoAvailable = ko.computed(function () { return data.ChannelIcon != null && data.ChannelIcon.length > 0; });
+    self.channelLogoData = ko.computed(function () {
+        if (self.channelLogoAvailable()) {
+            return 'data:image/png;base64,' + data.ChannelIcon;
+        }
+        return '';
+    });
+    self.startTimeString = ko.computed(function () { return gui.formatTime(data.StartTime); });
+    self.endTimeString = ko.computed(function () { return gui.formatTime(data.EndTime); });
     self.stop = function () {
         api.deleteJSON('devices/deleteStream?handle=' + data.Handle, null, function (result) {
             console.log(result);

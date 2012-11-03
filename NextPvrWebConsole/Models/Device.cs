@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -14,8 +15,18 @@ namespace NextPvrWebConsole.Models
         public string Identifier { get; set; }
 
         public List<Stream> Streams { get; set; }
-
         public static List<Device> GetDevices()
+        {
+            var devices = GetDevicesBasic();
+            foreach (var d in devices)
+            {
+                foreach (var s in d.Streams)
+                    s.LookupInfo(); // loads more info about the streams
+            }
+            return devices;
+        }
+
+        public static List<Device> GetDevicesBasic()
         {
             var instance = NShared.RecordingServiceProxy.GetInstance();
             string xml = instance.GetServerStatus();
@@ -41,7 +52,10 @@ namespace NextPvrWebConsole.Models
                     });
                 }
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                Hubs.NextPvrEventHub.Clients_ShowErrorMessage(ex.Message);
+            }
             return devices;
         }
 
@@ -64,16 +78,54 @@ namespace NextPvrWebConsole.Models
             this.Type = Type;
             this.Handle = Handle;
             this.Filename = Filename;
-
-            //var instance = NShared.RecordingServiceProxy.GetInstance();
-            
-
         }
+
+        internal void LookupInfo()
+        {
+            if (Type == StreamType.LiveTV)
+            {
+                string channelName = Regex.Match(Filename, "(?<=(live-))[^-]+").Value;
+                if (!String.IsNullOrEmpty(channelName))
+                {
+                    var channel = NUtility.Channel.LoadAll().Where(x => Regex.Replace(x.Name.ToUpper(), @"[^\w\d]", "") == channelName).FirstOrDefault();
+                    if (channel != null)
+                    {
+                        this.ChannelIcon = channel.Icon != null ? channel.Icon.ToBase64String() : null;
+                        this.ChannelName = channel.Name;
+                        this.ChannelNumber = channel.Number;
+                        this.ChannelOid = channel.OID;
+                        NUtility.EPGEvent epg = NUtility.EPGEvent.GetListingsForTimePeriod(DateTime.UtcNow.AddHours(-6), DateTime.UtcNow.AddHours(1))
+                                                              .Where(x => x.Key.OID == channel.OID)
+                                                              .Select(x => x.Value.Where(y => y.EndTime > DateTime.UtcNow && y.StartTime < DateTime.UtcNow).FirstOrDefault()).FirstOrDefault();
+                        if (epg != null)
+                        {
+                            this.Title = epg.Title;
+                            this.Subtitle = epg.Subtitle;
+                            this.Description = epg.Description;
+                            this.StartTime = epg.StartTime;
+                            this.EndTime = epg.EndTime;
+                        }
+                    }
+                }
+            }
+        }
+
         public int Handle { get; set; }
 
         public string Filename { get; set; }
 
         public StreamType Type { get; set; }
+
+        public int ChannelNumber { get; set; }
+        public int ChannelOid { get; set; }
+        public string ChannelName { get; set; }
+        public string ChannelIcon { get; set; }
+
+        public string Title { get; set; }
+        public string Subtitle { get; set; }
+        public string Description { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         public enum StreamType
         {

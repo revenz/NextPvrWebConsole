@@ -209,6 +209,7 @@
     <Compile Include="Models\ScheduledRecordingModel.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workers\DeviceWatcher.cs" />
     <Content Include="Content\addons\toastr.css" />
     <Content Include="Content\buttons.css" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
@@ -303,6 +304,7 @@
     <Content Include="Scripts\jquery.mobile-1.2.0.js" />
     <Content Include="Scripts\jquery.mobile-1.2.0.min.js" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Dashboard\_Tuners.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />

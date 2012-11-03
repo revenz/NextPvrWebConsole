@@ -31,7 +31,12 @@ namespace NextPvrWebConsole
             t.Elapsed += delegate { Hubs.NextPvrEventHub.Clients_ShowErrorMessage("Testing: " + DateTime.Now.ToLongTimeString()); };
             t.Start();
 
-            var npvrEventListener = new NextPvrWebConsole.Hubs.NextPvrEventListener();
+            Workers.DeviceWatcher watcherDevice = new Workers.DeviceWatcher();
+            watcherDevice.Start();
+            watcherDevice.TunerStatusUpdated += delegate(Workers.DeviceUpdateEvent[] Events)
+            {
+                Hubs.NextPvrEventHub.Clients_DeviceStatusUpdated(Events);
+            };
         }
     }
 }

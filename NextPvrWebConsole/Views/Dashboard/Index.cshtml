@@ -8,24 +8,7 @@
 
 <h2>Dashboard</h2>
 
-<div class="tuners">
-    <ul data-bind="foreach: devices, visible: devices().length > 0">
-        <li data-bind="attr: { 'data-oid': oid }" >
-            <span class="identifier" data-bind="text: identifier"></span>
-            <ul class="streams" data-bind="foreach: streams, visible: streams().length > 0">
-                <li data-bind="attr: { 'data-handle': handle } ">
-                    <span dat-bind="text: type"></span>
-                    <span data-bind="text: filename"></span>
-
-                    <a href="#" onclick="return false" class="btn btn-danger" data-bind="click: stop">
-                        <i class="icon-trash icon-large"></i> Stop
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
-
+    @Html.Partial("_Tuners")
 
 @section Scripts{
     @Scripts.Render("~/Scripts/dashboard/index.js")

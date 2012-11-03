@@ -1,0 +1,26 @@
+﻿
+<div class="tuners">
+    <ul data-bind="foreach: devices, visible: devices().length > 0">
+        <li data-bind="attr: { 'data-oid': oid }" >
+            <span class="identifier" data-bind="text: identifier"></span>
+            <ul class="streams" data-bind="foreach: streams, visible: streams().length > 0">
+                <li data-bind="attr: { 'data-handle': handle } ">
+                    <span data-bind="text: type"></span>
+                    <span data-bind="text: filename"></span>
+                    <span data-bind="text: channelNumber"></span>
+                    <span data-bind="text: channelName"></span>
+                    <img data-bind="visible: channelLogoAvailable, attr: { src: channelLogoData }" />
+                    <span data-bind="text: title"></span>
+                    <span data-bind="text: subtitle"></span>
+                    <span data-bind="text: startTimeString"></span>
+                    <span data-bind="text: endTimeString"></span>
+                    <span data-bind="text: description"></span>
+
+                    <a href="#" onclick="return false" class="btn btn-danger" data-bind="click: stop">
+                        <i class="icon-trash icon-large"></i> Stop
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
