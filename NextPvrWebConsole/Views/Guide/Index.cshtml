@@ -6,52 +6,55 @@
     @Styles.Render("~/Content/guide/css")
 }
 
-<div class="epg-days">
-    <ul data-bind="foreach:epgdays">
-        <li class="epg-day">
-            <a href="#" data-bind="text: displayText, click: $root.changeEpgDay" onclick="return false"></a>
-        </li>
-    </ul>
-</div>
+<div class="epgpage-container">
 
-<div class="epg-container">
-    <div class="epg">
-        <div class="epg-channels">
-            <ul data-bind="foreach: channels, visible: channels().length > 0">
-                <li data-bind="attr: { class: $root.channelClass($data, 'epg-channel') }">
-                    <div class="logo"><img class="logo" data-bind="visible: iconVisible, attr: { src: icon } "  /></div>
-                    <span class="name" data-bind="text: name"></span>
-                    <span class="number" data-bind="text: number"></span>      
-                </li>
-            </ul>
-        </div>
-        <div class="epg-time">
-            <ul class="timeline">
-                @for (int i = 0; i < 24; i++)
-                {
-                <li class="time">
-                    <span>@(i == 0 ? "12am" : (i == 12 ? "12pm" : (i > 12 ? (i - 12) + "pm" : i + "am")))</span>
-                </li> 
-                }
-            </ul>
-        </div>
-        <div class="epg-listings">
-            <div class="epg-listings-channel" data-bind="foreach: channels, visible: channels().length > 0">
-                <ul class="listings" data-bind="foreach:listings, attr: { 'data-channeloid': oid } ">
-                    <li data-bind="attr: { style: $root.listingCss($data), class: $root.listingClass($data, 'listing'), 'data-start': startTime, 'data-oid': oid } ">
-                        <div>
-                            <span class="title" data-bind="text: title"></span>
-                            <span class="start" data-bind="text: $root.formattedDate(startTime)"></span>
-                            <span class="subtitle" data-bind="text: subtitle"></span>
-                            <span class="description" data-bind="text: description"></span>
-                        </div>
+    <div class="epg-days">
+        <ul data-bind="foreach:epgdays">
+            <li class="epg-day">
+                <a href="#" data-bind="text: displayText, click: $root.changeEpgDay" onclick="return false"></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="epg-container">
+        <div class="epg">
+            <div class="epg-channels">
+                <ul data-bind="foreach: channels, visible: channels().length > 0">
+                    <li data-bind="attr: { class: $root.channelClass($data, 'epg-channel') }">
+                        <div class="logo"><img class="logo" data-bind="visible: iconVisible, attr: { src: icon } "  /></div>
+                        <span class="name" data-bind="text: name"></span>
+                        <span class="number" data-bind="text: number"></span>      
                     </li>
                 </ul>
             </div>
-            <div id="epg-time-indicator" class="epg-time-indicator">
-                <div class="top"></div>
-                <div class="middle"></div>
-                <div class="bottom"></div>
+            <div class="epg-time">
+                <ul class="timeline">
+                    @for (int i = 0; i < 24; i++)
+                    {
+                    <li class="time">
+                        <span>@(i == 0 ? "12am" : (i == 12 ? "12pm" : (i > 12 ? (i - 12) + "pm" : i + "am")))</span>
+                    </li> 
+                    }
+                </ul>
+            </div>
+            <div class="epg-listings">
+                <div class="epg-listings-channel" data-bind="foreach: channels, visible: channels().length > 0">
+                    <ul class="listings" data-bind="foreach:listings, attr: { 'data-channeloid': oid } ">
+                        <li data-bind="attr: { style: $root.listingCss($data), class: $root.listingClass($data, 'listing'), 'data-start': startTime, 'data-oid': oid } ">
+                            <div>
+                                <span class="title" data-bind="text: title"></span>
+                                <span class="start" data-bind="text: $root.formattedDate(startTime)"></span>
+                                <span class="subtitle" data-bind="text: subtitle"></span>
+                                <span class="description" data-bind="text: description"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="epg-time-indicator" class="epg-time-indicator">
+                    <div class="top"></div>
+                    <div class="middle"></div>
+                    <div class="bottom"></div>
+                </div>
             </div>
         </div>
     </div>

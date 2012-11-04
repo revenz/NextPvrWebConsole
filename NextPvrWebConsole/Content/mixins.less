@@ -46,6 +46,12 @@
   box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
 }
 
+.drop-shadow-rgba(@x-axis: 0, @y-axis: 1px, @blur: 2px, @rgba: rgba(0,0,0,0.1)) {
+  -webkit-box-shadow: @x-axis @y-axis @blur @rgba;
+  -moz-box-shadow: @x-axis @y-axis @blur @rgba;
+  box-shadow: @x-axis @y-axis @blur @rgba;
+}
+
 .rounded(@radius: 5px) {
   -webkit-border-radius: @radius;
   -moz-border-radius: @radius;
@@ -180,4 +186,12 @@
   -o-transform: translate(@x, @y);
   -ms-transform: translate(@x, @y);
   transform: translate(@x, @y);
+}
+
+.container() { 
+	.drop-shadow(0, 1px, 10px, 0.3);
+	.gradient;
+    .rounded(10px);
+    background:white;
+    border:solid 1px #999;
 }

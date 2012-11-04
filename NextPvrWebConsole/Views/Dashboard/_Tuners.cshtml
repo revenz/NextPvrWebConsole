@@ -1,26 +1,29 @@
 ﻿
 <div class="tuners">
-    <ul data-bind="foreach: devices, visible: devices().length > 0">
-        <li data-bind="attr: { 'data-oid': oid }" >
-            <span class="identifier" data-bind="text: identifier"></span>
-            <ul class="streams" data-bind="foreach: streams, visible: streams().length > 0">
-                <li data-bind="attr: { 'data-handle': handle } ">
-                    <span data-bind="text: type"></span>
-                    <span data-bind="text: filename"></span>
-                    <span data-bind="text: channelNumber"></span>
-                    <span data-bind="text: channelName"></span>
-                    <img data-bind="visible: channelLogoAvailable, attr: { src: channelLogoData }" />
-                    <span data-bind="text: title"></span>
-                    <span data-bind="text: subtitle"></span>
-                    <span data-bind="text: startTimeString"></span>
-                    <span data-bind="text: endTimeString"></span>
-                    <span data-bind="text: description"></span>
-
+    <table data-bind="visible: devices().length > 0">
+        <tbody>
+        <!-- ko foreach: devices -->
+        <tr data-bind="attr: { 'data-oid': oid, class: 'device device' + $index() }" >
+            <td class="identifier" colspan="8" data-bind="text: identifier"></td>
+        </tr>
+            <!-- ko foreach: streams -->
+            <tr class="stream" data-bind="attr: { 'data-handle': handle, class: 'stream type-' + typeName().toLowerCase() } ">
+                <td class="typeicon live" data-bind="visible: type() == 1"><span>LIVE</span></td>
+                <td class="typeicon recording" data-bind="visible: type() == 2"><span>REC</span></span>
+                <td class="channelNumber" data-bind="text: channelNumber"></td>
+                <td class="channelLogo"><img data-bind="visible: channelLogoAvailable, attr: { src: channelLogoData }" /></td>
+                <td class="channelName" data-bind="text: channelName"></td>
+                <td class="title" data-bind="text: title"></td>
+                <td class="subtitle" data-bind="text: subtitle"></td>
+                <td class="time"><span data-bind="text: startTimeString"></span> to <span data-bind="text: endTimeString"></span></td>
+                <td class="controls">
                     <a href="#" onclick="return false" class="btn btn-danger" data-bind="click: stop">
                         <i class="icon-trash icon-large"></i> Stop
                     </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+                </td>
+            </tr>
+            <!-- /ko -->
+        <!-- /ko -->
+        </tbody>
+    </table>
 </div>

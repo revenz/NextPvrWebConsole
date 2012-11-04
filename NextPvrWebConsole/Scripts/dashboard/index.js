@@ -48,6 +48,13 @@ function Device(data) {
 function Stream(owner, data) {
     var self = this;
     self.type = ko.observable(data.Type);
+    self.typeName = ko.computed(function () {
+        if (data.Type == 1)
+            return 'LiveTV';
+        else if (data.Type == 2)
+            return 'Recording';
+        return 'Unknown';
+    });
     self.handle = ko.observable(data.Handle);
     self.filename = ko.observable(data.Filename);
     self.channelName = ko.observable(data.ChannelName);

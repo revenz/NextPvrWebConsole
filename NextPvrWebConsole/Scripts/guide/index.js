@@ -167,7 +167,7 @@ $(function () {
 
         self.selectedshow = ko.observable();
 
-        $('.epg-listings').on('click.epg', '.listing', function () {
+        $('.epg-listings').on('dblclick.epg', '.listing', function () {
             // get listing info, helper for this.
             var showElement = $(this);
             var showInfo = getShowInfo(showElement);
