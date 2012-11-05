@@ -9,11 +9,12 @@ namespace NextPvrWebConsole.Models
 {
     public class DbHelper
     {
+        private static string DbFile { get; set; }
         static DbHelper()
         {
-            string dbfile= HttpContext.Current.Server.MapPath("~/App_Data/NextPvrWebConsole.db");
-            if (!System.IO.File.Exists(dbfile))
-                CreateDatabase(dbfile);
+            DbFile= HttpContext.Current.Server.MapPath("~/App_Data/NextPvrWebConsole.db");
+            if (!System.IO.File.Exists(DbFile))
+                CreateDatabase(DbFile);
 
         }
 
@@ -39,6 +40,11 @@ namespace NextPvrWebConsole.Models
                 }
                 conn.Close();
             }
+        }
+
+        public static PetaPoco.Database GetDatabase()
+        {
+            return new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
         }
 
         public static void Test() { }

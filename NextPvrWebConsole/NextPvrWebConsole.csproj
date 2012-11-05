@@ -197,6 +197,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionFilter.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BCrypt.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\GuideController.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Models\ScheduledRecordingModel.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="MyMembershipProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Workers\DeviceWatcher.cs" />
     <Content Include="App_Readme\glimpse.readme.txt" />
