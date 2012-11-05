@@ -55,17 +55,21 @@ function updateTimeIndicator() {
     $('#epg-time-indicator').css({ left: mins * minuteWidth + 'px', height: $('.epg-listings-channel').height(), display: sameday ? '' : 'none' });
 }
 
+var epgScroller = null;
 $(function () {
+    epgScroller = $(".epg-container").niceScroll();
+
     guideStart = new Date(new Date().setHours(0, 0, 0, 0));
     setInterval(updateTimeIndicator, 15 * 1000);
 
     var epgtime = $('.epg-time');
     var epgchannels = $('.epg-channels');
+    var groupWidth = $('.epg-groups').width();
     $('.epg-container').scroll(function () {
         var top = $(this).scrollTop();
         epgtime.css('top', top);
         var left = $(this).scrollLeft();
-        epgchannels.css('left', left);
+        epgchannels.css('left', left + groupWidth);
     });
 
     // set scroll pos.
@@ -147,23 +151,31 @@ $(function () {
         self.epgdays = ko.observableArray(days);
 
         self.channels = ko.observableArray([]);
-        var loadEpgData = function (date) {
+        self.loadEpgData = function (date) {
             guideStart = date;
             self.channels.removeAll();
             $('#epg-time-indicator').css({ display: 'none' });
-            api.getJSON('guide?date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), function (allData) {
+            api.getJSON('guide?group=' + $('.epg-groups .selected').text() + '&date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), function (allData) {
                 var mapped = $.map(allData, function (item) { return new Channel(item) });
                 self.channels(mapped);
                 guideData = allData;
                 updateTimeIndicator();
+                epgScroller.resize();
             });
         }
 
         // Operations
-        self.changeEpgDay = function (day) { loadEpgData(day.date); }
+        self.changeEpgDay = function (day) {
+            $('.epg-days .selected').removeClass('selected');
+            var link = parseInt(day.link.substr(1), 10);
+            if (!isNaN(link)) {
+                $('.epg-days li:eq(' + (link - 1) + ')').addClass('selected');
+            }
+            self.loadEpgData(day.date);
+        }
 
         // Load initial state from server, convert it to Task instances, then populate self.tasks
-        loadEpgData(guideStart);
+        self.loadEpgData(guideStart);
 
         self.selectedshow = ko.observable();
 
@@ -171,8 +183,6 @@ $(function () {
             // get listing info, helper for this.
             var showElement = $(this);
             var showInfo = getShowInfo(showElement);
-            console.log('showInfo...');
-            console.log(showInfo);
 
             self.selectedshow(showInfo);
             $('#show-info').dialog({
@@ -205,7 +215,29 @@ $(function () {
         });
     }
 
-    ko.applyBindings(new GuideViewModel());
+    var viewModel = new GuideViewModel();
+    ko.applyBindings(viewModel);
+    $('.epg-days li:eq(0)').addClass('selected');
+
+    var pageResize = function () {
+        var epgGroupsHeight = $('.epg-groups').height();
+        $('.epg-groups li').css({ width: epgGroupsHeight, left: -epgGroupsHeight });
+    }
+    pageResize();
+    $(window).resize(pageResize);
+
+    $('.epg-groups-button.next').click(function () {
+        $('.epg-groups .selected').removeClass('selected').next().addClass('selected');
+        if ($('.epg-groups .selected').length == 0)
+            $('.epg-groups li:first-child').addClass('selected');
+        viewModel.loadEpgData(guideStart);
+    });
+    $('.epg-groups-button.previous').click(function () {
+        $('.epg-groups .selected').removeClass('selected').prev().addClass('selected');
+        if ($('.epg-groups .selected').length == 0)
+            $('.epg-groups li:last-child').addClass('selected');
+        viewModel.loadEpgData(guideStart);
+    });
 
     function getShowInfo(liElement) {
         var channelOid = parseInt(liElement.closest('ul').attr('data-channeloid'), 10);
@@ -241,7 +273,6 @@ $(function () {
                     var keep = $('#recording-keep').val();
 
                     api.postJSON('guide/record', { oid: showInfo.oid(), prepadding: prepadding, postpadding: postpadding, recordingdirectoryid: directory, numbertokeep: keep, type: type }, function (result) {
-                        console.log('result...');
                         console.log(result);
                     });
 

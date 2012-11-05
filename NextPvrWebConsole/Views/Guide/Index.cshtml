@@ -15,9 +15,25 @@
             </li>
         </ul>
     </div>
+    
+    <div class="epg-groups">
+        <ul>
+        @{
+        bool first = true;
+        foreach (var g in ViewBag.Groups)
+        {
+            <li class="group @(first ? "selected" : "")" data-name="@g.Name"><span>@g.Name</span></li>
+            first = false;
+        }        
+        }
+        </ul>
+        <div class="epg-groups-button previous"><span class="icon-caret-down"></span></div>
+        <div class="epg-groups-button next"><span class="icon-caret-up"></span></div>
+    </div>
 
     <div class="epg-container">
         <div class="epg">
+
             <div class="epg-channels">
                 <ul data-bind="foreach: channels, visible: channels().length > 0">
                     <li data-bind="attr: { class: $root.channelClass($data, 'epg-channel') }">
@@ -128,5 +144,6 @@
 </div>
 
 @section Scripts{
+    @Scripts.Render("~/scripts/jquery.nicescroll.js")
     @Scripts.Render("~/Scripts/guide/index.js")
 }

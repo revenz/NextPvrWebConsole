@@ -17,6 +17,7 @@ namespace NextPvrWebConsole.Controllers
             ViewBag.RecordingDirectories = Models.NextPvrConfigHelper.RecordingDirectories;
             ViewBag.PrePadding = Models.NextPvrConfigHelper.PrePadding;
             ViewBag.PostPadding = Models.NextPvrConfigHelper.PostPadding;
+            ViewBag.Groups = Models.ChannelGroup.LoadAll();
             return View();
         }
 

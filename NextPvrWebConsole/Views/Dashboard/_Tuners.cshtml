@@ -17,9 +17,9 @@
                 <td class="subtitle" data-bind="text: subtitle"></td>
                 <td class="time"><span data-bind="text: startTimeString"></span> to <span data-bind="text: endTimeString"></span></td>
                 <td class="controls">
-                    <a href="#" onclick="return false" class="btn btn-danger" data-bind="click: stop">
-                        <i class="icon-trash icon-large"></i> Stop
-                    </a>
+                    <button href="#" onclick="return false" class="ui-button-error ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: stop">
+                        <span><i class="icon-stop icon-large"></i> Stop</span>
+                    </button>
                 </td>
             </tr>
             <!-- /ko -->

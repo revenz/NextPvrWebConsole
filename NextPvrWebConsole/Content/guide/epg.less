@@ -4,6 +4,7 @@
 
 @import "~/Content/mixins.less";
 
+@channel_group_width:30px;
 @channel_height: 40px;
 @hour_width: 300px;
 @channel_info_width: 105px;
@@ -11,15 +12,29 @@
 @timeline-background-color: #A8C8EF;
 @guide-top: 160px;
 @guide-days-height:30px;
+@epgday_selected_background_gradient_start:#24945e;
+@epgday_selected_background_gradient_stop:#39c439;
 
+.epgpage-container {
+    .container;
+    
+    position:absolute;
+    top:@guide-top;
+    left:30px;
+    right:30px;
+    bottom:30px;
+}
 .epg-days
 {
     margin:0;
     padding:0;
     position:absolute;
-    top:@guide-top;
-    left:30px;
-    right:30px;
+    .border-radius-top;
+    .gradient(#006, #16A, #203);
+    border:solid 1px black;
+    top:5px;
+    left:5px;
+    right:5px;
     ul
     {
         margin:0;
@@ -34,7 +49,6 @@
         padding:0;
         display: table-cell;
         text-align: center;
-        .gradient(#006, #16A, #203);
         line-height:@guide-days-height;
         border:solid 1px black;
         border-right:none;
@@ -46,6 +60,10 @@
             text-decoration:none;
         }
     }
+    li.selected 
+    {
+        .gradient(@epgday_selected_background_gradient_stop, @epgday_selected_background_gradient_start, @epgday_selected_background_gradient_stop);
+    }
     li:last-child
     {
         border-right:solid 1px black;
@@ -55,12 +73,13 @@
 .epg-container
 {
     position:absolute;
-    top:@guide-top + @guide-days-height;
-    left:30px;
-    right:30px;
-    bottom:30px;
+    top:5px + @guide-days-height;
+    left:5px;
+    right:5px;
+    bottom:5px;
     overflow:scroll;
     border:solid 1px black;
+    .border-radius-bottom;
 }
 .epg
 {
@@ -70,9 +89,84 @@
     left:0;
     width:@hour_width * 24 + @channel_info_width;
 }
+.epg-groups
+{
+    ul, li
+    {
+        margin:0;
+        padding:0;
+        list-style:none;
+    }
+    background:black;
+    display:block;
+    width:@channel_group_width;
+    .border-radius(0, 0, 5px, 0);
+    position:absolute;    
+    left:5px;
+    bottom:5px;
+    top:5px + @guide-days-height + 28px;
+    z-index:10;
+    border-right:solid 1px white;
+    li 
+    {
+        position:absolute;
+        top:0;
+        left:0;
+        bottom:0;
+        right:0;
+        display:none;
+        span
+        {
+            .rotation(270deg);
+            -webkit-transform-origin: right top;
+            -moz-transform-origin: right top;
+            -ms-transform-origin: right top;
+            -o-transform-origin: right top;
+            transform-origin: right top;
+            color:white;   
+            display:block;    
+            text-align:center; 
+            font-weight:bold;
+            font-size:1.3em;
+        }
+    }
+    .selected { display: block;}
+    
+    .epg-groups-button
+    {
+        position:absolute;
+        left:6px;
+        width:18px;
+        height:19px;
+        background:white;
+        cursor:pointer;
+        .rounded(9px);
+        font-size:21px;
+    }
+    .epg-groups-button.next
+    {
+        top: 7px;
+        span 
+        {
+            position: relative;
+            top: -8px;
+            left: 3px;
+        }
+    }
+    .epg-groups-button.previous
+    {
+        bottom:7px;
+        span 
+        {
+            position: relative;
+            top: -6px;
+            left: 3px;
+        }
+    }
+}
 .epg-channels
 {
-    left:0px;
+    left:@channel_group_width;
     width:@channel_info_width;
     top:26px;
     position:absolute;
@@ -141,7 +235,7 @@
     {
         position: relative;
         margin:0;
-        padding:0 0 0 @channel_info_width;
+        padding:0 0 0 (@channel_info_width + @channel_group_width);
         background-color: @timeline-background-color;
         display: inline-block;
     }
@@ -162,7 +256,7 @@
 }
 .epg-listings
 {
-    left:@channel_info_width + 1;
+    left:@channel_group_width + @channel_info_width + 1;
     top:25px;
     position:absolute;
     padding:0;

@@ -12,12 +12,12 @@ namespace NextPvrWebConsole.Controllers.Api
     public class GuideController : ApiController
     {
         // GET api/guide
-        public IEnumerable<Models.Channel> Get(DateTime Date)
+        public IEnumerable<Models.Channel> Get(DateTime Date, string Group)
         {
             // round start to midnight today.
             DateTime start = new DateTime(Date.Year, Date.Month, Date.Day, 0, 0, 0);
             start = TimeZone.CurrentTimeZone.ToUniversalTime(start); // convert to utc
-            return Models.Channel.LoadForTimePeriod(start, start.AddDays(1));
+            return Models.Channel.LoadForTimePeriod(Group, start, start.AddDays(1));
         }
 
         // POST api/quickrecord

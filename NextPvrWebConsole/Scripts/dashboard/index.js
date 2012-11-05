@@ -70,7 +70,7 @@ function Stream(owner, data) {
         return '';
     });
     self.startTimeString = ko.computed(function () { return gui.formatTime(data.StartTime); });
-    self.endTimeString = ko.computed(function () { return gui.formatTime(data.EndTime); });
+    self.endTimeString = ko.computed(function () { console.log(data.EndTime); return gui.formatTime(data.EndTime); });
     self.stop = function () {
         api.deleteJSON('devices/deleteStream?handle=' + data.Handle, null, function (result) {
             console.log(result);
