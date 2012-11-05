@@ -37,6 +37,8 @@ namespace NextPvrWebConsole
             {
                 Hubs.NextPvrEventHub.Clients_DeviceStatusUpdated(Events);
             };
+
+            Models.DbHelper.Test();
         }
     }
 }

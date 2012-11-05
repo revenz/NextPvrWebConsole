@@ -1,0 +1,29 @@
+﻿@model NextPvrWebConsole.Models.Configuration
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Configuration</h2>
+
+<table>
+    <tr>
+        <td>Pre-Padding</td>
+        <td>@Html.EditorFor(m => m.PrePadding)</td>
+    </tr>
+    <tr>
+        <td>Post-Padding</td>
+        <td>@Html.EditorFor(m => m.PostPadding)</td>
+    </tr>
+    <tr>
+        <td>Folders</td>
+        <td>
+            <ul>
+                @foreach (var rd in Model.RecordingDirectories)
+                {
+                    <li>@rd.Name</li>
+                }
+            </ul>
+        </td>
+    </tr>
+</table>
