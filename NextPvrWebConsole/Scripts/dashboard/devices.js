@@ -5,7 +5,7 @@
 /// <reference path="../knockout-2.2.0.js" />
 
 $(function () {
-    function DashboardViewModel() {
+    function DevicesViewModel() {
         // Data
         var self = this;
 
@@ -25,8 +25,6 @@ $(function () {
         refreshDevices();
 
         npvrevent.deviceStatusUpdated = function (events) {
-            console.log('device updated :)');
-            console.log(events);
             $.each(events, function (i, ele) {
                 gui.showInfo(ele.Message, ele.CodeString);
             });
@@ -34,7 +32,7 @@ $(function () {
         };
     }
 
-    ko.applyBindings(new DashboardViewModel());
+    ko.applyBindings(new DevicesViewModel(), $('.tuners').get(0));
 });
 
 function Device(data) {
@@ -70,12 +68,13 @@ function Stream(owner, data) {
         return '';
     });
     self.startTimeString = ko.computed(function () { return gui.formatTime(data.StartTime); });
-    self.endTimeString = ko.computed(function () { console.log(data.EndTime); return gui.formatTime(data.EndTime); });
+    self.endTimeString = ko.computed(function () { return gui.formatTime(data.EndTime); });
     self.stop = function () {
         api.deleteJSON('devices/deleteStream?handle=' + data.Handle, null, function (result) {
-            console.log(result);
-            if(result)
+            if (result == true)
                 owner.streams.remove(this);
+            else
+                gui.showError("Failed to stop stream", self.title());
         });
     };
 }

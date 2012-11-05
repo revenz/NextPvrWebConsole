@@ -9,7 +9,9 @@
 <h2>Dashboard</h2>
 
     @Html.Partial("_Tuners")
+    @Html.Partial("_UpcomingRecordings")
 
 @section Scripts{
-    @Scripts.Render("~/Scripts/dashboard/index.js")
+    @Scripts.Render("~/Scripts/dashboard/devices.js")
+    @Scripts.Render("~/Scripts/dashboard/upcomingrecordings.js")
 }

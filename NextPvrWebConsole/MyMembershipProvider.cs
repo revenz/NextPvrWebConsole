@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace NextPvrWebConsole
 {
-    public class MyMembershipProvider:MembershipProvider
+    public class MyMembershipProvider:ExtendedMembershipProvider
     {
 
         public override string ApplicationName
@@ -37,7 +38,17 @@ namespace NextPvrWebConsole
 
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
-            return MyMembershipUser.CreateUser(username, password, email, passwordQuestion, passwordAnswer, isApproved, providerUserKey, out status);
+            status = MembershipCreateStatus.UserRejected;
+            var result = MyMembershipUser.CreateUser(username, password);
+            if (result != null)
+                status = MembershipCreateStatus.Success;
+            return result;
+        }
+
+        public override string CreateUserAndAccount(string UserName, string password, bool requireConfirmation, IDictionary<string, object> values)
+        {
+            var user = MyMembershipUser.CreateUser(UserName, password);
+            return user != null ? user.UserName : null;
         }
 
         #region not implemented yet
@@ -153,6 +164,71 @@ namespace NextPvrWebConsole
         }
 
         #endregion
+
+        public override bool ConfirmAccount(string accountConfirmationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ConfirmAccount(string userName, string accountConfirmationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string CreateAccount(string userName, string password, bool requireConfirmationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool DeleteAccount(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GeneratePasswordResetToken(string userName, int tokenExpirationInMinutesFromNow)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ICollection<OAuthAccountData> GetAccountsForUser(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DateTime GetCreateDate(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DateTime GetLastPasswordFailureDate(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override DateTime GetPasswordChangedDate(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int GetPasswordFailuresSinceLastSuccess(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int GetUserIdFromPasswordResetToken(string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsConfirmed(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ResetPasswordWithToken(string token, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class MyMembershipUser : MembershipUser
@@ -181,13 +257,10 @@ namespace NextPvrWebConsole
             return user == null ? false : user.ChangePassword(oldPassword, newPassword);
         }
 
-        internal static MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
+        internal static MembershipUser CreateUser(string username, string password)
         {
-            status = MembershipCreateStatus.UserRejected;
             var user = Models.User.CreateUser(username, password);
-            if (user != null)
-                status = MembershipCreateStatus.Success;
-            return new MyMembershipUser(user);
+            return user == null ? new MyMembershipUser(user) : null;
         }
     }
 }

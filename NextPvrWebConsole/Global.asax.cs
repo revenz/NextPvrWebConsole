@@ -39,6 +39,8 @@ namespace NextPvrWebConsole
             };
 
             Models.DbHelper.Test();
+
+            //WebMatrix.WebData.WebSecurity.InitializeDatabaseConnection(
         }
     }
 }

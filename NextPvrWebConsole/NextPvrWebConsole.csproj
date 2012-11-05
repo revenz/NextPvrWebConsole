@@ -237,6 +237,7 @@
     <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\addons\toastr.css" />
     <Content Include="Content\buttons.css" />
+    <None Include="Content\dashboard\upcomingrecordings.less" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\header.jpg" />
@@ -255,6 +256,7 @@
     <Content Include="Content\mixins.less" />
     <Content Include="Content\dashboard\devices.less" />
     <Content Include="Models\Database\CreateDatabase.sql" />
+    <Content Include="Scripts\dashboard\upcomingrecordings.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -361,7 +363,7 @@
     <None Include="Content\themes\bootstrap\theme.less" />
     <Content Include="Scripts\addons\toastr.js" />
     <Content Include="Scripts\apihelper.js" />
-    <Content Include="Scripts\dashboard\index.js" />
+    <Content Include="Scripts\dashboard\devices.js" />
     <Content Include="Scripts\jquery.mobile-1.2.0.js" />
     <Content Include="Scripts\jquery.mobile-1.2.0.min.js" />
     <Content Include="Scripts\jquery.nicescroll.js" />
@@ -375,6 +377,7 @@
     <None Include="Models\Generated\PetaPoco.Core.ttinclude" />
     <None Include="Models\Generated\PetaPoco.Generator.ttinclude" />
     <Content Include="Views\Configuration\Index.cshtml" />
+    <Content Include="Views\Dashboard\_UpcomingRecordings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />

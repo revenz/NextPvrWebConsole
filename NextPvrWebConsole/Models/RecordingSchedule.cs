@@ -38,9 +38,15 @@ namespace NextPvrWebConsole.Models
             Season_Monday_To_Friday_This_Timeslot = 5,
             Season_Weekends_This_Timeslot = 6,
             All_Episodes_All_Channels = 7
+        }
 
-
-
+        public static bool CancelRecording(int Oid)
+        {
+            var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
+            if (recording == null)
+                return false;
+            NShared.RecordingServiceProxy.GetInstance().CancelRecording(recording);            
+            return true;
         }
     }
 }

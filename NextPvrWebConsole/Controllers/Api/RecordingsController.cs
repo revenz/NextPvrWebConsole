@@ -15,6 +15,11 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.RecordingGroup.GetAll();
         }
 
+        public IEnumerable<Models.Recording> GetUpcoming()
+        {
+            return Models.Recording.GetUpcoming();
+        }
+
         // GET api/recordings/5
         public NUtility.ScheduledRecording Get(int id)
         {

@@ -23,7 +23,8 @@ namespace NextPvrWebConsole.Models
         public DateTime DateCreatedUtc { get; set; }
         public UserRole UserRole { get; set; }
         public bool ReadOnly { get; set; }
-        public string Password { set { BCrypt.HashPassword(value, BCrypt.GenerateSalt()); } }
+        [PetaPoco.Ignore]
+        public string Password { set { this.PasswordHash = BCrypt.HashPassword(value, BCrypt.GenerateSalt()); } }
 
         public static User GetByEmailAddress(string EmailAddress)
         {
@@ -58,6 +59,7 @@ namespace NextPvrWebConsole.Models
         {
             User user = new User();
             user.EmailAddress = EmailAddress;
+            user.LastLoggedInUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             user.Password = Password;
             user.DateCreatedUtc = DateTime.UtcNow;
             var db = DbHelper.GetDatabase();

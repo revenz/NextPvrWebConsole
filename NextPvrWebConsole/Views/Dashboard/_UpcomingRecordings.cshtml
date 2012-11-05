@@ -1,0 +1,9 @@
+﻿<div class="upcoming-recordings">
+    <ul data-bind="foreach: upcomingRecordings, visible: upcomingRecordings().length > 0">
+        <li>
+            <span data-bind="text: displayName"></span>
+            <span data-bind="text: startTime"></span>
+            <span data-bind="text: endTime"></span>
+        </li>
+    </ul>
+</div>

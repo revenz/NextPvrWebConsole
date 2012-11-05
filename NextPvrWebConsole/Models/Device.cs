@@ -70,11 +70,11 @@ namespace NextPvrWebConsole.Models
                         Identifier = element.Attribute("identifier").Value,
                         Streams = (element.Elements("LiveTV") == null ? 
                                         new List<Stream>() :
-                                        element.Elements("LiveTV").Select(x => new Stream(Stream.StreamType.LiveTV, int.Parse(element.Attribute("oid").Value), int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), x.Value))
+                                        element.Elements("LiveTV").Select(x => new Stream(Stream.StreamType.LiveTV, int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), int.Parse(element.Attribute("oid").Value), x.Value))
                                    ).Union(
                                    element.Elements("Recording") == null ? 
                                         new List<Stream>() :
-                                        element.Elements("Recording").Select(x => new Stream(Stream.StreamType.Recording, int.Parse(element.Attribute("oid").Value), int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), x.Value))
+                                        element.Elements("Recording").Select(x => new Stream(Stream.StreamType.Recording, int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), int.Parse(element.Attribute("oid").Value), x.Value))
                                    ).ToList()
                                                     
                     });
@@ -92,8 +92,30 @@ namespace NextPvrWebConsole.Models
             try
             {
                 var instance = NShared.RecordingServiceProxy.GetInstance();
-                instance.StopStream(Handle);
-                return true;
+
+                var stream = (from s in GetDevices().SelectMany(x => x.Streams)
+                              where s.Handle == Handle
+                              select s).FirstOrDefault();
+                if (stream == null)
+                    return true; // noting to stop
+
+                if (stream.Type == Stream.StreamType.LiveTV)
+                {
+                    instance.StopStream(Handle);
+                    System.Threading.Thread.Sleep(1000);
+                    // check if handle exists
+                    return !(GetDevices().Where(x => x.Streams.Where(y => y.Handle == Handle).Count() > 0).Count() > 0);
+                }
+                else if (stream.Type == Stream.StreamType.Recording)
+                {
+                    // can't just force an abort, have to stop the stream gracefully.      
+                    var recording = stream.LoadRecordingDetails();
+                    if (recording == null)
+                        throw new Exception("Failed to locate recording details.");
+                    RecordingSchedule.CancelRecording(recording.OID);
+
+                }
+                throw new Exception("Unknown stream type.");
             }
             catch (Exception) { return false; }
         }
@@ -145,7 +167,7 @@ namespace NextPvrWebConsole.Models
             }
             else if (Type == StreamType.Recording)
             {
-                var recording = NUtility.ScheduledRecording.LoadAll().Where(x => x.Filename == this.Filename).FirstOrDefault();
+                var recording = LoadRecordingDetails();
                 if (recording != null)
                 {
                     this.ChannelName = recording.ChannelName;
@@ -168,6 +190,11 @@ namespace NextPvrWebConsole.Models
                 }
                 
             }
+        }
+
+        public NUtility.ScheduledRecording LoadRecordingDetails()
+        {
+            return NUtility.ScheduledRecording.LoadAll().Where(x => x.Filename == this.Filename).FirstOrDefault();
         }
 
         public int CaptureSourceOid { get; set; }

@@ -130,5 +130,13 @@ namespace NextPvrWebConsole.Models
                 this.StarRating = epgevent.StarRating;
             }
         }
+
+        internal static Recording[] GetUpcoming()
+        {
+            return NUtility.ScheduledRecording.LoadAll().Where(x => x.Status == RecordingStatus.STATUS_PENDING)
+                                                        .OrderBy(x => x.StartTime)
+                                                        .Take(5)
+                                                        .Select(x => new Recording(x)).ToArray();
+        }
     }
 }
