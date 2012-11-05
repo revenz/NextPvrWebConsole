@@ -95,6 +95,11 @@ namespace NextPvrWebConsole.Models
         public string StarRating { get; set; }
         #endregion
 
+        [DataMember]
+        public string ChannelIcon { get; set; }
+        [DataMember]
+        public int ChannelNumber { get; set; }
+
         public Recording(NUtility.ScheduledRecording BaseRecording)
         {
             this.BaseRecording = BaseRecording;
@@ -111,6 +116,14 @@ namespace NextPvrWebConsole.Models
             this.PrePadding = BaseRecording.PrePadding;
             this.StartTime = BaseRecording.StartTime;
             this.Status = BaseRecording.Status;
+
+            NUtility.Channel channel = NUtility.Channel.LoadByOID(this.ChannelOID);
+            if (channel != null) // can be null if channel is deleted? (i got a null exception here....)
+            {
+                if (channel.Icon != null)
+                    this.ChannelIcon = channel.Icon.ToBase64String();
+                this.ChannelNumber = channel.Number;
+            }
 
             NUtility.EPGEvent epgevent = NUtility.EPGEvent.LoadByOID(BaseRecording.OID);
 

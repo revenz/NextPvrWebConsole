@@ -1,9 +1,16 @@
 ﻿<div class="upcoming-recordings">
     <ul data-bind="foreach: upcomingRecordings, visible: upcomingRecordings().length > 0">
         <li>
-            <span data-bind="text: displayName"></span>
-            <span data-bind="text: startTime"></span>
-            <span data-bind="text: endTime"></span>
+            <div class="channelNumber" data-bind="text: channelNumber"></div>
+            <div class="channelIcon"><img data-bind="visible: channelIconAvailable, attr: { src: channelIconData }" /></div>
+            <div class="channelName" data-bind="text: channelName"></div>
+            <div class="name" data-bind="text: name"></div>
+            <div class="time"><span data-bind="text: startTimeString"></span> to <span data-bind="text: endTimeString"></span></div>
+            <div class="controls">
+                <button href="#" onclick="return false" class="ui-button-error ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: stop">
+                    <span><i class="icon-stop icon-large"></i> Cancel</span>
+                </button>
+            </div>
         </li>
     </ul>
 </div>

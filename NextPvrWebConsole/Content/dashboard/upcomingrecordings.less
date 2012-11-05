@@ -1,1 +1,56 @@
-﻿
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.upcoming-recordings {
+    ul, li
+    {
+        margin:0;
+        padding:0;
+        list-style:none;
+    }
+    li {
+        position:relative;
+        height:40px;
+        width:380px;
+        display:block;
+        div
+        {
+            position: absolute;
+        }
+    }
+    .channelNumber {
+        left:5px;
+        font-weight:bold;
+        top:8px;
+        width:20px;
+        text-align:center;
+    }
+    .channelName {
+        display:none;
+    }
+    .channelIcon {
+        left:30px;
+        top:2px;
+        img {
+            width:32px;
+            height:32px;
+        }
+    }
+    .name {
+        left:65px;
+        font-weight:bold;
+        right:80px;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        overflow:hidden;
+    }
+    .time {
+        left:65px;
+        bottom:5px;
+        right:80px;
+    }
+    .controls {
+        top:3px;
+        right:5px;
+    }
+}

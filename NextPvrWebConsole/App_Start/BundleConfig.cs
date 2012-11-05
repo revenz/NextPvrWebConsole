@@ -28,6 +28,8 @@ namespace NextPvrWebConsole
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/api.js").IncludeDirectory("~/Scripts/api-wrappers", "*.js"));
+
             var cssBundle = new Bundle("~/Content/css").Include(
                                                         "~/Content/site.less", 
                                                         "~/Content/custom.css",

@@ -9,7 +9,7 @@
             <!-- ko foreach: streams -->
             <tr class="stream" data-bind="attr: { 'data-handle': handle, class: 'stream type-' + typeName().toLowerCase() } ">
                 <td class="typeicon live" data-bind="visible: type() == 1"><span>LIVE</span></td>
-                <td class="typeicon recording" data-bind="visible: type() == 2"><span>REC</span></span>
+                <td class="typeicon recording" data-bind="visible: type() == 2"><span>REC</span></td>
                 <td class="channelNumber" data-bind="text: channelNumber"></td>
                 <td class="channelLogo"><img data-bind="visible: channelLogoAvailable, attr: { src: channelLogoData }" /></td>
                 <td class="channelName" data-bind="text: channelName"></td>

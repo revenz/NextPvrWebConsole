@@ -8,8 +8,20 @@
 
 <h2>Dashboard</h2>
 
-    @Html.Partial("_Tuners")
-    @Html.Partial("_UpcomingRecordings")
+    <div class="portlets">
+        <div class="portlet container">
+            <div class="container-title">
+                Device Status
+            </div>
+            @Html.Partial("_Tuners")
+        </div>
+        <div class="portlet small container">
+            <div class="container-title">
+                Upcoming Recordings
+            </div>
+            @Html.Partial("_UpcomingRecordings")
+        </div>
+    </div>
 
 @section Scripts{
     @Scripts.Render("~/Scripts/dashboard/devices.js")
