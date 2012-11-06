@@ -7,6 +7,8 @@ using System.Web.Http;
 using System.Xml.Linq;
 using NextPvrWebConsole;
 using System.Text.RegularExpressions;
+using System.Text;
+using NextPvrWebConsole.Models;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
@@ -22,6 +24,9 @@ namespace NextPvrWebConsole.Controllers.Api
             throw new NotImplementedException();
         }
 
+        private static Dictionary<string, int> SessionUserOids = new Dictionary<string, int>();
+        private static Dictionary<string, string> SidsAndSalts = new Dictionary<string, string>();
+
         public HttpResponseMessage Get(string Method, string Ver = null, string Device = null, string Sid = null, string Md5 = null, int channel_id = 0, int start = 0, int end = 0, string group_id = null, string filter = null, int recording_id = 0, string name = null, int channel = 0, int time_t = 0, int duration = 0)
         {
             object response = new Response() { ErrorCode = 0, ErrorMessage = "Unknown method." };
@@ -31,14 +36,30 @@ namespace NextPvrWebConsole.Controllers.Api
                 {
                     case "session.initiate": response = Session_Initiate(Ver, Device); break;
                     case "session.login": response = Session_Login(Sid, Md5); break;
-                    case "setting.list": response = Setting_List(); break;
-                    case "channel.listings": response = Channel_Listings(channel_id, start, end); break;
-                    case "channel.list": response = Channel_List(group_id); break;
-                    case "channel.icon": response = Channel_Icon(channel_id); break;
-                    case "channel.groups": response = Channel_Groups(); break;
-                    case "recording.list": response = Recording_List(filter); break;
-                    case "recording.delete": response = Recording_Delete(recording_id); break;
-                    case "recording.save": response = Recording_Save(name, channel, time_t, duration); break;
+                    default:
+                        {
+                            var config = new Models.Configuration();
+                            int userOid = 0;
+                            if (config.EnableUserSupport) /* ensure a user is found if users are enabled */
+                            {
+                                if (!String.IsNullOrWhiteSpace(Sid) && SessionUserOids.ContainsKey(Sid))
+                                    userOid = SessionUserOids[Sid];
+                                else
+                                    throw new UnauthorizedAccessException();
+                            }
+                            switch ((Method ?? "").ToLower())
+                            {
+                                case "setting.list": response = Setting_List(); break;
+                                case "channel.listings": response = Channel_Listings(userOid, channel_id, start, end); break;
+                                case "channel.list": response = Channel_List(userOid, group_id); break;
+                                case "channel.icon": response = Channel_Icon(userOid, channel_id); break;
+                                case "channel.groups": response = Channel_Groups(userOid); break;
+                                case "recording.list": response = Recording_List(userOid, filter); break;
+                                case "recording.delete": response = Recording_Delete(userOid, recording_id); break;
+                                case "recording.save": response = Recording_Save(userOid, name, channel, time_t, duration); break;
+                            }
+                    }
+                    break;
                 }
             }
             catch (InvalidSessionException)
@@ -69,12 +90,21 @@ namespace NextPvrWebConsole.Controllers.Api
         #region session stuff
         private Response Session_Initiate(string Version, string Device)
         {
+            string sid = null;
+            do
+            {
+                sid = Guid.NewGuid().ToString("N");
+            } while (SidsAndSalts.ContainsKey(sid));
+            string salt = Guid.NewGuid().ToString();
+
+            SidsAndSalts.Add(sid, salt);
+
             // to do, get these from npvr somehow....
             return new Response()
             {
                 Type= Response.ResponseType.SessionInitiate,
-                Sid = Guid.NewGuid().ToString("N"),
-                Salt = Guid.NewGuid().ToString()
+                Sid = sid,
+                Salt = salt
             };
         }
 
@@ -82,6 +112,26 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             try
             {
+                string salt = SidsAndSalts[Sid];
+                // get the useroid 
+                var db = DbHelper.GetDatabase();
+                var users = Models.User.LoadAll();
+                int userOid = 0;
+                foreach (var user in users)
+                {
+                    if (CalculateMd5Hash(":{0}:{1}".FormatStr(CalculateMd5Hash(user.Username).ToLower(), salt)) == Md5)
+                    {
+                        if (SessionUserOids.ContainsKey(Sid))
+                            SessionUserOids.Remove(Sid);
+                        SessionUserOids.Add(Sid, user.Oid);
+                        userOid = user.Oid;
+                        break;
+                    }
+                }
+
+                if (userOid == 0)
+                    throw new Exception("Failed to locate user.");
+
                 return new Response()
                 {
                     Type = Response.ResponseType.SessionLogin,
@@ -122,10 +172,10 @@ namespace NextPvrWebConsole.Controllers.Api
         #endregion
 
         #region channel stuff
-        private Response Channel_Listings(int ChannelOid, long Start, long End)
+        private Response Channel_Listings(int UserOid, int ChannelOid, long Start, long End)
         {
             // todo: authorization session...
-            var channel = NUtility.Channel.LoadByOID(ChannelOid);
+            var channel = Models.Channel.Load(UserOid);
             if(channel == null)
                 throw new ChannelNotFoundException();
             var epgdata = NUtility.EPGEvent.GetListingsForTimePeriod(Start.FromUnixTime(), End.FromUnixTime()).Where(x => x.Key.OID == ChannelOid).Select(x => x.Value).FirstOrDefault().ToList();
@@ -136,34 +186,19 @@ namespace NextPvrWebConsole.Controllers.Api
                 Type = Response.ResponseType.ChannelListings,
                 Stat = Response.ResponseStat.ok
             };
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw new InvalidSessionException();
-            }
         }
 
-        private Response Channel_List(string Group)
+        private Response Channel_List(int UserOid, string GroupName)
         {
             return new Response()
             {
-                Channels = NUtility.Channel.LoadForGroup(Group),
+                Channels = String.IsNullOrWhiteSpace(GroupName) ? Models.Channel.LoadAll(UserOid).ToList() : Models.Channel.LoadChannelsForGroup(UserOid, GroupName).ToList(),
                 Stat = Response.ResponseStat.ok,
                 Type = Response.ResponseType.ChannelList
             };
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception)
-            {
-                throw new InvalidSessionException();
-            }
         }
 
-        private object Channel_Icon(int ChannelOid)
+        private object Channel_Icon(int UserOid, int ChannelOid)
         {
             var channel = NUtility.Channel.LoadByOID(ChannelOid);
             if (channel == null || channel.Icon == null)
@@ -179,38 +214,21 @@ namespace NextPvrWebConsole.Controllers.Api
                 response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
                 return response;
             }
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception)
-            {
-                throw new InvalidSessionException();
-            }
         }
 
-        private Response Channel_Groups()
+        private Response Channel_Groups(int UserOid)
         {
             return new Response()
             {
                 Type = Response.ResponseType.ChannelGroups,
                 Stat = Response.ResponseStat.ok,
-                Groups = NUtility.Channel.GetChannelGroups()
+                Groups = Models.ChannelGroup.LoadAll(UserOid).ToList()
             };
-
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception)
-            {
-                throw new InvalidSessionException();
-            }
         }
         #endregion
 
         #region recoring stuff
-        private Response Recording_List(string Filter)
+        private Response Recording_List(int UserOid, string Filter)
         {
             try
             {
@@ -261,7 +279,7 @@ namespace NextPvrWebConsole.Controllers.Api
             }
         }
 
-        private Response Recording_Delete(int RecordingId)
+        private Response Recording_Delete(int UserOid, int RecordingId)
         {
             NUtility.ScheduledRecording recording = NUtility.ScheduledRecording.LoadByOID(RecordingId);
             if (recording == null)
@@ -277,7 +295,7 @@ namespace NextPvrWebConsole.Controllers.Api
             }
         }
 
-        private Response Recording_Save(string Name, int ChannelOid, long Time, int Duration)
+        private Response Recording_Save(int UserOid, string Name, int ChannelOid, long Time, int Duration)
         {
             DateTime start = Time.FromUnixTime();
             DateTime end = start.AddSeconds(Duration);
@@ -289,6 +307,22 @@ namespace NextPvrWebConsole.Controllers.Api
 
         class InvalidSessionException : Exception { }
         class ChannelNotFoundException : Exception { }
+
+        public string CalculateMd5Hash(string input)
+        {
+            // step 1, calculate MD5 hash from input
+            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            // step 2, convert byte array to hex string
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+            return sb.ToString();
+        }
 
         private class MyScheduledRecording
         {
@@ -316,8 +350,8 @@ namespace NextPvrWebConsole.Controllers.Api
             public bool ChannelDetailsLevel { get; set; }
             public int ChannelOid { get; set; }
             public List<NUtility.EPGEvent> Listings { get; set; }
-            public List<NUtility.Channel> Channels { get; set; }
-            public List<string> Groups { get; set; }
+            public List<Models.Channel> Channels { get; set; }
+            public List<Models.ChannelGroup> Groups { get; set; }
             public List<MyScheduledRecording> Recordings { get; set; }
 
             public Response()
@@ -348,12 +382,12 @@ namespace NextPvrWebConsole.Controllers.Api
                         case ResponseType.ChannelList:
                             {
                                 //todo: change type from hardcoded 0x02 (which I assume is live tv...)
-                                root.Add(new XElement("channels", this.Channels.Select(x => new XElement("channel", new XElement("id", x.OID), new XElement("name", x.Name), new XElement("number", x.Number), new XElement("type", "0x02")))));
+                                root.Add(new XElement("channels", this.Channels.Select(x => new XElement("channel", new XElement("id", x.Oid), new XElement("name", x.Name), new XElement("number", x.Number), new XElement("type", "0x02")))));
                             }
                             break;
                         case ResponseType.ChannelGroups:
                             {
-                                root.Add(new XElement("groups", this.Groups.Select(x => new XElement("group", new XElement("id", x), new XElement("name", x)))));
+                                root.Add(new XElement("groups", this.Groups.Select(x => new XElement("group", new XElement("id", x.Name), new XElement("name", x.Name)))));
                             }
                             break;
                         case ResponseType.RecordingList:
@@ -391,9 +425,22 @@ namespace NextPvrWebConsole.Controllers.Api
                     }
                 }
 
-                XDocument doc = new XDocument(root);
-                return doc.ToString();
+                XDocument doc = new XDocument(root);                
+                StringBuilder builder = new StringBuilder();
+                using (System.IO.TextWriter writer = new Utf8StringWriter(builder))
+                {
+                    doc.Save(writer);
+                }
+                string result = builder.ToString();
+                result = result.Replace("\"?>", "\" ?>");
+                return result + Environment.NewLine;
             }
+        }
+
+        public class Utf8StringWriter : System.IO.StringWriter
+        {
+            public Utf8StringWriter(StringBuilder sb) : base(sb) { }
+            public override Encoding Encoding { get { return Encoding.UTF8; } }
         }
     }
 }

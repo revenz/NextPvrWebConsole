@@ -113,7 +113,7 @@ namespace NextPvrWebConsole.Models
         internal static List<User> LoadAll()
         {
             var db = DbHelper.GetDatabase();
-            return db.Fetch<User>("select * from user");
+            return db.Fetch<User>("select * from user where oid > 0");
         }
     }
 }

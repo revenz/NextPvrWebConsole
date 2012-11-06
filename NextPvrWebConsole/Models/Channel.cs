@@ -66,5 +66,18 @@ namespace NextPvrWebConsole.Models
             var db = DbHelper.GetDatabase();
             return db.Fetch<Channel>("select c.* from channelgroup cg inner join channelgroupchannel cgc on cg.oid = cgc.channelgroupoid inner join channel c on cgc.channeloid = c.oid inner join userchannel uc on c.oid = uc.channeloid where uc.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray();
         }
+
+        internal static Channel Load(int ChannelOid, int UserOid)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.FirstOrDefault<Channel>("select c.* from channel c innser join userchannel uc on c.oid = uc.channeloid where c.oid = @0 and uc.useroid = @1", ChannelOid, UserOid);
+        }
+
+        internal static Channel Load(int ChannelOid)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.FirstOrDefault<Channel>("select * from channel c where oid = @0", ChannelOid);
+
+        }
     }
 }
