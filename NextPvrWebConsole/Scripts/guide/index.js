@@ -155,7 +155,7 @@ $(function () {
             guideStart = date;
             self.channels.removeAll();
             $('#epg-time-indicator').css({ display: 'none' });
-            api.getJSON('guide?group=' + $('.epg-groups .selected').text() + '&date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), function (allData) {
+            api.getJSON('guide?group=' + $('.epg-groups .selected').text() + '&date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new Channel(item) });
                 self.channels(mapped);
                 guideData = allData;

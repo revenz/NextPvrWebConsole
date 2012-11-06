@@ -13,7 +13,7 @@ namespace NextPvrWebConsole.Models
 	public class Channel
     {
         [DataMember]
-        public int OID { get; set; }
+        public int Oid { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
@@ -45,7 +45,7 @@ namespace NextPvrWebConsole.Models
                 {
                     Name = key.Name,
                     Number = key.Number,
-                    OID = key.OID,
+                    Oid = key.OID,
                     Icon = key.Icon != null ? key.Icon.ToBase64String() : null,
 
                     Listings = data[key].Where(x => x.EndTime > Start).ToList()
@@ -54,5 +54,17 @@ namespace NextPvrWebConsole.Models
             return results;
         }
 
-	}
+
+        internal static Channel[] LoadAll(int UserOid)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.Fetch<Channel>("select c.* from channel c inner join userchannel uc on c.oid = uc.channeloid where uc.useroid = @0", UserOid).ToArray();
+        }
+
+        internal static Channel[] LoadChannelsForGroup(int UserOid, string GroupName)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.Fetch<Channel>("select c.* from channelgroup cg inner join channelgroupchannel cgc on cg.oid = cgc.channelgroupoid inner join channel c on cgc.channeloid = c.oid inner join userchannel uc on c.oid = uc.channeloid where uc.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray();
+        }
+    }
 }

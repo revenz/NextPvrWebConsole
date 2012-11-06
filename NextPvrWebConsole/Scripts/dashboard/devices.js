@@ -17,7 +17,7 @@ $(function () {
         
 
         var refreshDevices = function () {
-            api.getJSON("devices", function (allData) {
+            api.getJSON("devices", null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new Device(item) });
                 self.devices(mapped);
             });

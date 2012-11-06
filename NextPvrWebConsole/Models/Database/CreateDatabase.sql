@@ -48,4 +48,24 @@ CREATE TABLE [userchannel]
 (
 	useroid				integer				NOT NULL			REFERENCES [user](oid),
 	channeloid			integer				NOT NULL			REFERENCES [channel](oid)
-)GOCREATE TABLE [channelgroup] /** oh i can create my own channel groups... this would allow each user to create their own group, eg "Favourite" for everyone could be unique ... **/(	oid					integer				NOT NULL			PRIMARY KEY				AUTOINCREMENT,	useroid				integer				NOT NULL			REFERENCES [user](oid),	name				varchar(50)			NOT NULL,	orderoid			integer				NOT NULL)GOCREATE TABLE [channelgroupchannel](	channelgroupoid		integer				NOT NULL			REFERENCES [channelgroup](oid),	channeloid			integer				NOT NULL			REFERENCES [channel](oid)			)GOINSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly]) VALUES (0, 'Everyone', '', '', 0, DATETIME('now'), '1970-01-01', 1)  /* special user */GO
+)
+GO
+
+CREATE TABLE [channelgroup] /** oh i can create my own channel groups... this would allow each user to create their own group, eg "Favourite" for everyone could be unique ... **/
+(
+	oid					integer				NOT NULL			PRIMARY KEY				AUTOINCREMENT,
+	useroid				integer				NOT NULL			REFERENCES [user](oid),
+	name				varchar(50)			NOT NULL,
+	orderoid			integer				NOT NULL
+)
+GO
+
+CREATE TABLE [channelgroupchannel]
+(
+	channelgroupoid		integer				NOT NULL			REFERENCES [channelgroup](oid),
+	channeloid			integer				NOT NULL			REFERENCES [channel](oid)			
+)
+GO
+
+INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly]) VALUES (0, 'Everyone', '', '', 0, DATETIME('now'), '1970-01-01', 1)  /* special user */
+GO

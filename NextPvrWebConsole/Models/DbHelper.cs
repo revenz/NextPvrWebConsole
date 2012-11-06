@@ -46,7 +46,7 @@ namespace NextPvrWebConsole.Models
             try
             {
                 // insert channels
-                var channels = NUtility.Channel.LoadAll().OrderBy(x => x.Number).Select(x => new Channel() { OID = x.OID, Name = x.Name, Number = x.Number }).ToArray();
+                var channels = NUtility.Channel.LoadAll().OrderBy(x => x.Number).Select(x => new Channel() { Oid = x.OID, Name = x.Name, Number = x.Number }).ToArray();
                 foreach (var c in channels)
                     db.Insert(c);
 

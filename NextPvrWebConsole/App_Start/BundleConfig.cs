@@ -62,6 +62,8 @@ namespace NextPvrWebConsole
             PageBundle(bundles, "Dashboard");
             PageBundle(bundles, "Guide");
             PageBundle(bundles, "Recordings");
+            PageBundle(bundles, "UserSettings");
+            PageBundle(bundles, "Configuration");
 
             // this allows bundling when in debug mode
             //BundleTable.EnableOptimizations = true;   
@@ -69,11 +71,22 @@ namespace NextPvrWebConsole
 
         private static void PageBundle(BundleCollection bundles, string Name)
         {
-            var lessBundle = new Bundle("~/Content/{0}/css".FormatStr(Name)).IncludeDirectory("~/Content/{0}".FormatStr(Name), "*.less").IncludeDirectory("~/Content/{0}".FormatStr(Name), "*.css");
-            lessBundle.Transforms.Add(new LessTransform());
-            lessBundle.Transforms.Add(new CssMinify());
-            lessBundle.Orderer = new BundleTransformer.Core.Orderers.NullOrderer();
-            bundles.Add(lessBundle);
+            try
+            {
+                var lessBundle = new Bundle("~/Content/{0}/css".FormatStr(Name)).IncludeDirectory("~/Content/{0}".FormatStr(Name), "*.less").IncludeDirectory("~/Content/{0}".FormatStr(Name), "*.css");
+                lessBundle.Transforms.Add(new LessTransform());
+                lessBundle.Transforms.Add(new CssMinify());
+                lessBundle.Orderer = new BundleTransformer.Core.Orderers.NullOrderer();
+                bundles.Add(lessBundle);
+            }
+            catch (Exception) { /* throws exception if directory doesn't exist */ }
+
+            try
+            {
+                var jsBundle = new ScriptBundle("~/Scripts/{0}/js".FormatStr(Name)).IncludeDirectory("~/Scripts/{0}".FormatStr(Name), "*.js");
+                bundles.Add(jsBundle);
+            }
+            catch (Exception) { /* throws exception if directory doesn't exist */ }
         }
     }
 }

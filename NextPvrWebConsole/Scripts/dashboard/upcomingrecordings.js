@@ -13,7 +13,7 @@ $(function () {
         self.upcomingRecordings = ko.observableArray([]);
 
         var refreshUpcomingRecordings = function () {
-            api.getJSON("recordings/getupcoming", function (allData) {
+            api.getJSON("recordings/getupcoming", null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new recording(item) });
                 self.upcomingRecordings(mapped);
             });

@@ -1,0 +1,33 @@
+﻿<div class="channel-groups container">
+    <div class="container-title">Channel Groups</div>
+    <ul data-bind="foreach: channelgroups">
+        <li>
+            <span data-bind="text: name"></span>
+            <div class="controls">
+                <button href="#" onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select">
+                    <span><i class="icon-edit icon-large"></i> Edit</span>
+                </button>
+            </div>
+        </li>
+    </ul>
+
+    <div id="channel-group-editor" style="display:none">
+        <table data-bind="with: selectedChannelGroup">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" data-bind="value: name" /></td>
+            </tr>
+            <tr>
+                <td>Channels</td>
+                <td>
+                    <ul data-bind="foreach: channels">
+                        <li>
+                            <input type="checkbox" data-bind="attr : { 'data-oid': oid, label: 'channel_' + $index, checked: enabled }" />
+                            <label data-bind="text: name, attr: { for: 'channel_' + $index}"></label>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

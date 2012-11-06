@@ -6,22 +6,20 @@
     @Styles.Render("~/Content/dashboard/css")
 }
 
-<h2>Dashboard</h2>
-
-    <div class="portlets">
-        <div class="portlet container">
-            <div class="container-title">
-                Device Status
-            </div>
-            @Html.Partial("_Tuners")
+<div class="portlets">
+    <div class="portlet container">
+        <div class="container-title">
+            Device Status
         </div>
-        <div class="portlet small container">
-            <div class="container-title">
-                Upcoming Recordings
-            </div>
-            @Html.Partial("_UpcomingRecordings")
-        </div>
+        @Html.Partial("_Tuners")
     </div>
+    <div class="portlet small container">
+        <div class="container-title">
+            Upcoming Recordings
+        </div>
+        @Html.Partial("_UpcomingRecordings")
+    </div>
+</div>
 
 @section Scripts{
     @Scripts.Render("~/Scripts/dashboard/devices.js")

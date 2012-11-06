@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    @Styles.Render("~/Content/usersettings/css")
+}
+
+<div class="usersettings">
+
+    @Html.Partial("_ChannelGroups")
+    @Html.Partial("_Channels")
+    @Html.Partial("_RecordingDirectories")
+
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/usersettings/js")
+}

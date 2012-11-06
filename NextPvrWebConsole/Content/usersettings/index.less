@@ -1,0 +1,23 @@
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.usersettings
+{
+	position:absolute;
+	left:30px;
+	right:30px;
+	bottom:30px;
+	top:170px;
+	text-align:center;
+	> div
+	{
+		float:left;
+		.container;
+		width:28%;
+		margin:auto 10px;
+		ul {
+			height:300px;
+			overflow-y:scroll;
+		}
+	}
+}

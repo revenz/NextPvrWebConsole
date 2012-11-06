@@ -37,8 +37,8 @@ var api = new function()
         });
     }
 
-    this.getJSON = function (url, callback) {
-        _json('GET', url, null, callback);
+    this.getJSON = function (url, data, callback) {
+        _json('GET', url, data, callback);
     }
 
     this.postJSON = function (url, data, callback) {

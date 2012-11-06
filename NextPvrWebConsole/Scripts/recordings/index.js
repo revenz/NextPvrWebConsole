@@ -26,7 +26,7 @@ $(function () {
         self.deleteRecording = function (recording) { self.recordings.remove(recording) };
 
         // Load initial state from server, convert it to Task instances, then populate self.tasks
-        api.getJSON("recordings", function (allData) {
+        api.getJSON("recordings", null, function (allData) {
             var index = 0;
             var mapped = $.map(allData, function (item) { return new RecordingGroup(item, ++index) });
             self.recordingGroups(mapped);
