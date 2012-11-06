@@ -17,6 +17,8 @@ namespace NextPvrWebConsole
     {
         protected void Application_Start()
         {
+            Models.DbHelper.Test();
+
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -38,9 +40,7 @@ namespace NextPvrWebConsole
                 Hubs.NextPvrEventHub.Clients_DeviceStatusUpdated(Events);
             };
 
-            Models.DbHelper.Test();
-
-            //WebMatrix.WebData.WebSecurity.InitializeDatabaseConnection(
+            Models.Configuration config = new Models.Configuration();
         }
     }
 }

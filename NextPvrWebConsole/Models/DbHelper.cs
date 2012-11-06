@@ -15,7 +15,6 @@ namespace NextPvrWebConsole.Models
             DbFile= HttpContext.Current.Server.MapPath("~/App_Data/NextPvrWebConsole.db");
             if (!System.IO.File.Exists(DbFile))
                 CreateDatabase(DbFile);
-
         }
 
         static void CreateDatabase(string DbFile)
@@ -40,6 +39,30 @@ namespace NextPvrWebConsole.Models
                 }
                 conn.Close();
             }
+
+            // insert defaults
+            var db = DbHelper.GetDatabase();
+            db.BeginTransaction();
+            try
+            {
+                // insert channels
+                var channels = NUtility.Channel.LoadAll().OrderBy(x => x.Number).Select(x => new Channel() { OID = x.OID, Name = x.Name, Number = x.Number }).ToArray();
+                foreach (var c in channels)
+                    db.Insert(c);
+
+                // insert groups
+                var groups = NUtility.Channel.GetChannelGroups().Select(x => new ChannelGroup() { Name = x }).ToArray();
+                for (int i = 0; i < groups.Length; i++)
+                {
+                    groups[i].OrderOid = i + 1;
+                    db.Insert("channelgroup", "oid", true, groups[i]);
+                    foreach (int channelOid in NUtility.Channel.LoadForGroup(groups[i].Name).Select(x => x.OID))
+                        db.Execute("insert into [channelgroupchannel](channelgroupoid, channeloid) values (@0, @1)", groups[i].Oid, channelOid);
+                }
+
+                db.CompleteTransaction();
+            }
+            catch (Exception ex) { db.AbortTransaction(); }
         }
 
         public static PetaPoco.Database GetDatabase()

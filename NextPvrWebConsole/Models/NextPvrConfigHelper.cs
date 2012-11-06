@@ -22,38 +22,42 @@ namespace NextPvrWebConsole.Models
             set { settings.SetSetting("/Settigns/Recording/PostPadding", value); }
         }
 
-
-        private static RecordingDirectory[] _RecordingDirectories;
-        public static RecordingDirectory[] RecordingDirectories
+        public static string DefaultRecordingDirectory
         {
             get
             {
-                if (_RecordingDirectories == null || _RecordingDirectories.Length == 0)
-                {
-                    List<RecordingDirectory> dirs = new List<RecordingDirectory>();
-                    string defaultdir = NUtility.SettingsHelper.GetInstance().GetSetting("/Settings/Recording/RecordingDirectory", string.Empty);
-                    if (!String.IsNullOrWhiteSpace(defaultdir))
-                        dirs.Add(new RecordingDirectory() { IsDefault = true, Name = "Default", Path = defaultdir });
-
-                    string otherdirs = NUtility.SettingsHelper.GetInstance().GetSetting("/Settings/Recording/ExtraRecordingDirectories", string.Empty);
-                    foreach (Match match in Regex.Matches(otherdirs ?? "", "[^~]+~[^~]+"))
-                    {
-                        RecordingDirectory dir = new RecordingDirectory();
-                        string[] parts = match.Value.Split('~');
-                        dir.Name = parts[0];
-                        dir.Path = parts[1];
-                        dirs.Add(dir);
-                    }
-                    _RecordingDirectories = dirs.ToArray();
-                }
-                return _RecordingDirectories;
+                return NUtility.SettingsHelper.GetInstance().GetSetting("/Settings/Recording/RecordingDirectory", null);
             }
             set
             {
-                if (value == null || value.Length == 0)
-                    throw new Exception("Must specify at least one recording directory.");
-                settings.SetSetting("/Settings/Recording/RecordingDirectory", value[0].Name);
-                settings.SetSetting("/Settings/Recording/ExtraRecordingDirectories", String.Join("", (from rd in value.Skip(1) select "{0}~{1}~".FormatStr(rd.Name, rd.Path)).ToArray()));
+                NUtility.SettingsHelper.GetInstance().SetSetting("/Settings/Recording/RecordingDirectory", value);
+            }
+        }
+
+        public static KeyValuePair<string, string>[] ExtraRecordingDirectories
+        {
+            set
+            {
+                // make sure the paths exist
+                if (value != null)
+                {
+                    foreach (KeyValuePair<string, string> dir in value)
+                    {
+                        try
+                        {
+                            if (System.IO.Directory.Exists(dir.Value))
+                            {
+                                if (!System.IO.Directory.CreateDirectory(dir.Value).Exists)
+                                    throw new Exception("Failed to create directory: " + dir.Value);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("Failed to create recording directory: " + dir.Value);
+                        }
+                    }
+                }
+                settings.SetSetting("/Settings/Recording/ExtraRecordingDirectories", value == null ? "" : String.Join("", (from rd in value select "{0}~{1}~".FormatStr(rd.Key, rd.Value)).ToArray()));
             }
         }
     }

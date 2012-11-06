@@ -4,20 +4,22 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using NextPvrWebConsole;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
+    [Authorize]
     public class RecordingsController : ApiController
     {
         // GET api/recordings
         public IEnumerable<Models.RecordingGroup> Get()
         {
-            return Models.RecordingGroup.GetAll();
+            return Models.RecordingGroup.GetAll(this.GetUser().Oid);
         }
 
         public IEnumerable<Models.Recording> GetUpcoming()
         {
-            return Models.Recording.GetUpcoming();
+            return Models.Recording.GetUpcoming(this.GetUser().Oid);
         }
 
         // GET api/recordings/5

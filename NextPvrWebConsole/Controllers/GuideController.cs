@@ -14,10 +14,12 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.RecordingDirectories = Models.NextPvrConfigHelper.RecordingDirectories;
-            ViewBag.PrePadding = Models.NextPvrConfigHelper.PrePadding;
-            ViewBag.PostPadding = Models.NextPvrConfigHelper.PostPadding;
-            ViewBag.Groups = Models.ChannelGroup.LoadAll();
+            var config = new Models.Configuration();
+            var user = this.GetUser();
+            ViewBag.RecordingDirectories = Models.RecordingDirectory.LoadForUser(user.Oid, true);
+            ViewBag.Groups = Models.ChannelGroup.LoadAll(user.Oid);
+            ViewBag.PrePadding = config.PrePadding;
+            ViewBag.PostPadding = config.PostPadding;
             return View();
         }
 

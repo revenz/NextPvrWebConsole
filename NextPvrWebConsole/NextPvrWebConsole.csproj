@@ -202,6 +202,7 @@
     <Compile Include="Controllers\Api\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\GuideController.cs" />
     <Compile Include="Controllers\Api\DevicesController.cs" />
+    <Compile Include="Controllers\Api\ServiceController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -225,6 +226,7 @@
     </Compile>
     <Compile Include="Models\NextPvrConfigHelper.cs" />
     <Compile Include="Models\PetaPoco.cs" />
+    <Compile Include="Models\Property.cs" />
     <Compile Include="Models\RecordingDirectory.cs" />
     <Compile Include="Models\RecordingGroup.cs" />
     <Compile Include="Models\RecordingSchedule.cs" />

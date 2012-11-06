@@ -21,7 +21,7 @@ namespace NextPvrWebConsole.Models
             this.Recordings = new List<Recording>();
         }
 
-        public static RecordingGroup[] GetAll()
+        public static RecordingGroup[] GetAll(int UserOid)
         {
             SortedDictionary<string, RecordingGroup> results = new SortedDictionary<string, RecordingGroup>();
             List<NUtility.ScheduledRecording> data = NUtility.ScheduledRecording.LoadAll();
@@ -144,7 +144,7 @@ namespace NextPvrWebConsole.Models
             }
         }
 
-        internal static Recording[] GetUpcoming()
+        internal static Recording[] GetUpcoming(int UserOid)
         {
             return NUtility.ScheduledRecording.LoadAll().Where(x => x.Status == RecordingStatus.STATUS_PENDING)
                                                         .OrderBy(x => x.StartTime)

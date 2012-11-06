@@ -13,45 +13,39 @@ namespace NextPvrWebConsole.Models
 	public class Channel
     {
         [DataMember]
-        public string EPGMapping { get; set; }
-        [DataMember]
-        public string EPGSource { get; set; }
-        [DataMember]
-        public List<string> Groups { get; set; }
-        [DataMember]
-        public string Icon { get; set; }
-        //public List<ChannelMapping> Mappings { get; }
+        public int OID { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
         public int Number { get; set; }
         [DataMember]
-        public int OID { get; set; }
+        [PetaPoco.Ignore]
+        public string Icon { get; set; }
+        //public List<ChannelMapping> Mappings { get; }
 
+        [PetaPoco.Ignore]
         [DataMember]
         public List<NUtility.EPGEvent> Listings { get; set; }
 
-        private Channel()
+        public Channel()
         {
         }
 
-        public static List<Channel> LoadForTimePeriod(string Group, DateTime Start, DateTime End)
+        public static List<Channel> LoadForTimePeriod(int UserOid, string GroupName, DateTime Start, DateTime End)
         {
+            int[] channelOids = ChannelGroup.LoadChannelOids(UserOid, GroupName);
+
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
-            var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End);            
+            var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End);
+
             List<Channel> results = new List<Channel>();
-            foreach (var key in data.Keys)
+            foreach (var key in data.Keys.Where(x => channelOids.Contains(x.OID)))
             {
-                if (Group != "All Channels" && !key.Groups.Contains(Group))
-                    continue;
                 results.Add(new Channel() 
                 {
                     Name = key.Name,
                     Number = key.Number,
                     OID = key.OID,
-                    EPGMapping = key.EPGMapping,
-                    EPGSource = key.EPGSource,
-                    Groups = key.Groups,
                     Icon = key.Icon != null ? key.Icon.ToBase64String() : null,
 
                     Listings = data[key].Where(x => x.EndTime > Start).ToList()

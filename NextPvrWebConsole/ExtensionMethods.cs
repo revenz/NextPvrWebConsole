@@ -19,7 +19,42 @@ namespace NextPvrWebConsole
         {
             return String.Format(Input, args);
         }
+        /// <summary>
+        /// Converts a long into a date time
+        /// </summary>
+        /// <param name="unixTime">the seconds since 1 jan 1970</param>
+        /// <returns>a dateime</returns>
+        public static DateTime FromUnixTime(this long unixTime)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unixTime);
+        }
+        /// <summary>
+        /// Converts a date to the seconds since 1 jan 1970
+        /// </summary>
+        /// <param name="date">the date</param>
+        /// <returns>the number of milliseconds</returns>
+        public static long ToUnixTime(this DateTime date)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return Convert.ToInt64((date - epoch).TotalSeconds);
+        }
 
+        public static NextPvrWebConsole.Models.User GetUser(this System.Web.Http.ApiController Controller)
+        {
+            var user = NextPvrWebConsole.Models.User.GetByUsername(Controller.User.Identity.Name);
+            if (user == null)
+                throw new UnauthorizedAccessException();
+            return user;
+        }
+
+        public static NextPvrWebConsole.Models.User GetUser(this System.Web.Mvc.Controller Controller)
+        {
+            var user = NextPvrWebConsole.Models.User.GetByUsername(Controller.User.Identity.Name);
+            if (user == null)
+                throw new UnauthorizedAccessException();
+            return user;
+        }
 
         public enum ResizeMode {
             Fill = 0,

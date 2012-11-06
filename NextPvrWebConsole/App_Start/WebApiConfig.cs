@@ -25,6 +25,8 @@ namespace NextPvrWebConsole
                 defaults: new { id = RouteParameter.Optional }
             );
              * */
+            config.Routes.MapHttpRoute("ApiServiceRoute", "service", new { controller = "service" });
+            config.Routes.MapHttpRoute("ApiLiveRoute", "live", new { controller = "service", action = "live" });
             config.Routes.MapHttpRoute("DefaultApiWithId", "api/{controller}/{id}", new { id = RouteParameter.Optional }, new { id = @"^\d+$" });
             config.Routes.MapHttpRoute("DefaultApiWithAction", "api/{controller}/{action}");
             config.Routes.MapHttpRoute("DefaultApiGet", "api/{controller}", new { action = "Get" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });

@@ -18,8 +18,6 @@ namespace NextPvrWebConsole.Models
             if(epgevent == null)
                 throw new Exception("EPG Event not found.");
 
-            var helper = NUtility.ScheduleHelperFactory.GetScheduleHelper();
-
             if (String.IsNullOrWhiteSpace(RecordingDirectoryId)) // if not set, use default directory (which is "null")
                 RecordingDirectoryId = null;
 
@@ -30,12 +28,17 @@ namespace NextPvrWebConsole.Models
 
             try
             {
-                return helper.ScheduleRecording(epgevent, OnlyNewEpisodes, PrePadding.Value, PostPadding.Value, Days, NumberToKeep, NUtility.RecordingQuality.QUALITY_DEFAULT, TimeSlot, RecordingDirectoryId);
+                return NShared.RecordingServiceProxy.GetInstance().ScheduleRecording(epgevent, OnlyNewEpisodes, PrePadding.Value, PostPadding.Value, Days, NumberToKeep, NUtility.RecordingQuality.QUALITY_DEFAULT, TimeSlot, RecordingDirectoryId);
             }
             catch (Exception ex)
             {
                 throw new Exception("Failed to schedule recording.");
             }
+        }
+
+        public static NUtility.ScheduledRecording BasicRecord(string Name, int ChannelOId, DateTime Start, DateTime End)
+        {
+            return NShared.RecordingServiceProxy.GetInstance().ScheduleRecording(Name, ChannelOId, Start, End, NextPvrConfigHelper.PrePadding, NextPvrConfigHelper.PostPadding, NUtility.RecordingQuality.QUALITY_DEFAULT);
         }
     }
 }

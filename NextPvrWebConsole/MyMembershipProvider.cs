@@ -259,8 +259,7 @@ namespace NextPvrWebConsole
 
         internal static MembershipUser CreateUser(string username, string password)
         {
-            var user = Models.User.CreateUser(username, password);
-            return user == null ? new MyMembershipUser(user) : null;
+            throw new NotImplementedException(); // cant implement because we require a email address, could make username email and substring user part of that to get username....
         }
     }
 }

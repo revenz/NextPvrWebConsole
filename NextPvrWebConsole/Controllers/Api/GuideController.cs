@@ -14,10 +14,17 @@ namespace NextPvrWebConsole.Controllers.Api
         // GET api/guide
         public IEnumerable<Models.Channel> Get(DateTime Date, string Group)
         {
+            int userOid = 0;
+            var config = new Configuration();
+            if (config.EnableUserSupport)
+            {
+                var user = this.GetUser();
+                userOid = user.Oid;
+            }
             // round start to midnight today.
             DateTime start = new DateTime(Date.Year, Date.Month, Date.Day, 0, 0, 0);
-            start = TimeZone.CurrentTimeZone.ToUniversalTime(start); // convert to utc
-            return Models.Channel.LoadForTimePeriod(Group, start, start.AddDays(1));
+            start = TimeZone.CurrentTimeZone.ToUniversalTime(start); // convert to utc            
+            return Models.Channel.LoadForTimePeriod(userOid, Group, start, start.AddDays(1));
         }
 
         // POST api/quickrecord
