@@ -4,13 +4,12 @@
 
 var api = new function()
 {
-    var _json = function (type, url, data, callback) {
+    var _json = function (type, url, data, callback, errorCallback) {
         gui.doWork();
         $.ajax(
         {
             url: "/api/" + url, 
             type: type,
-            //contentType: 'application/json; charset=utf-8',
             accepts: 'application/json',
             dataType: 'json',
             data: data,
@@ -21,14 +20,23 @@ var api = new function()
                     if(callback)
                         callback(data);
                 },
+                204: function(data) /* no data, usually from a delete action */
+                {
+                    if (callback)
+                        callback(data);
+                },
                 401: function(jqXHR, textStatus, errorThrown) {
                     self.location = '/Account/Login/';
                 },
             },
             error: function(jqXHR, textStatus, errorThrown)
             {
-                var error = $.parseJSON(jqXHR.responseText); 
-                gui.showError(error && error.message ? error.message : 'An unexpected server error occurred.');
+                var error = $.parseJSON(jqXHR.responseText);
+                var msg = error && error.message ? error.message : 'An unexpected server error occurred.';
+                if (errorCallback)
+                    errorCallback(msg);
+                else
+                    gui.showError(msg);
             },
             complete: function(jqXHR, textStatus)
             {
@@ -37,16 +45,16 @@ var api = new function()
         });
     }
 
-    this.getJSON = function (url, data, callback) {
-        _json('GET', url, data, callback);
+    this.getJSON = function (url, data, callback, errorCallback) {
+        _json('GET', url, data, callback, errorCallback);
     }
 
-    this.postJSON = function (url, data, callback) {
-        _json('POST', url, data, callback);
+    this.postJSON = function (url, data, callback, errorCallback) {
+        _json('POST', url, data, callback, errorCallback);
     }
 
-    this.deleteJSON = function (url, data, callback) {
-        _json('DELETE', url, data, callback);
+    this.deleteJSON = function (url, data, callback, errorCallback) {
+        _json('DELETE', url, data, callback, errorCallback);
     };
 }
 

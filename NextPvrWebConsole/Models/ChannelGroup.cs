@@ -37,6 +37,12 @@ namespace NextPvrWebConsole.Models
             return db.Fetch<int>("select channeloid from channelgroupchannel cgc inner join channelgroup cg on cgc.channelgroupoid = cg.oid where cg.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray();
         }
 
+        public static int[] LoadChannelOids(int UserOid, int Oid)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.Fetch<int>("select channeloid from channelgroupchannel cgc inner join channelgroup cg on cgc.channelgroupoid = cg.oid where cg.useroid = @0 and cg.oid = @1", UserOid, Oid).ToArray();
+        }
+
         internal void Save(int[] ChannelOids = null)
         {
             var db = DbHelper.GetDatabase();
@@ -52,7 +58,7 @@ namespace NextPvrWebConsole.Models
             {
                 if (this.Oid == 0) // new group
                 {
-                    this.OrderOid = db.FirstOrDefault<int>("select isnull(max(orderoid), 0) + 1 from channelgroup where useroid = @0", this.UserOid);
+                    this.OrderOid = db.FirstOrDefault<int>("select ifnull(max(orderoid),0) + 1 from channelgroup where useroid = @0", this.UserOid);
                     db.Insert("channelgroup", "oid", true, this);
                     if (this.Oid < 1)
                         throw new Exception("Failed to inert channel group.");
@@ -78,6 +84,32 @@ namespace NextPvrWebConsole.Models
             {
                 db.AbortTransaction();
                 throw ex;
+            }
+        }
+
+        internal static bool Delete(int Oid, int UserOid)
+        {
+            var db = DbHelper.GetDatabase();
+
+            var group = GetById(Oid);
+            if(group == null)
+                return true; // nothing to delete
+            if (group.UserOid != UserOid)
+                throw new UnauthorizedAccessException(); // can't delete someone elses group
+
+            db.BeginTransaction();
+            try
+            {
+                db.Execute("delete from channelgroupchannel where channelgroupoid = @0", group.Oid);
+                db.Delete(group);
+
+                db.CompleteTransaction();
+                return true;
+            }
+            catch (Exception)
+            {
+                db.AbortTransaction();
+                return false;
             }
         }
     }

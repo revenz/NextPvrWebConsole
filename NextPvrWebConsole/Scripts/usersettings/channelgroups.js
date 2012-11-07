@@ -10,11 +10,30 @@ $(function () {
         self.channelgroups = ko.observableArray([]);
         self.selectedChannelGroup = ko.observable();
 
+        self.delete = function (group) {
+            api.deleteJSON("channelgroups/" + group.oid(), null, function () {
+                self.channelgroups.remove(group);
+            });
+        };
+
+        self.add = function () {
+            console.log('adding');
+            var group = new ChannelGroup();
+            showEditor(group, function () {
+                self.channelgroups.push(group);
+            });
+        };
+
         self.select = function (channelGroup) {
-            api.getJSON("channelgroups/getchannels", { groupName: channelGroup.name() }, function (allData) {
+            showEditor(channelGroup);
+        };
+
+        var showEditor = function (group, callback) {
+            api.getJSON("channelgroups/channels/" + group.oid(), null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new ChannelGroupEditorChannel(item) });
-                channelGroup.channels(mapped);
-                self.selectedChannelGroup(channelGroup);
+                group.channels(mapped)
+
+                self.selectedChannelGroup(group);
 
                 var editor = $('#channel-group-editor').dialog({
                     autoOpen: true,
@@ -30,8 +49,9 @@ $(function () {
                             });
                             if (channelsStr.length > 0)
                                 channelsStr = channelsStr.substring(0, channelsStr.length - 1);
-                            console.log(channelsStr);
-                            SaveChannelGroup({ oid: channelGroup.oid(), name: channelGroup.name(), orderOid: channelGroup.orderOid, channels: channelsStr }, function () {
+                            SaveChannelGroup({ oid: group.oid(), name: group.name(), orderOid: group.orderOid, channels: channelsStr }, function () {
+                                if (callback)
+                                    callback();
                                 editor.dialog('close');
                             });
                         },

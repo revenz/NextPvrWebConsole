@@ -33,16 +33,17 @@
 
 } /* the overflow property removes extra width in IE */
 
-.ui-button-primary {
+.ui-button-primary, 
+.ui-button:hover {
   color: #ffffff;
   background-repeat: repeat-x;
-  .gradient(@button_background, @button_background_graident_start, @button_background_graident_end);
+  .gradient(@button_background_graident_end, @button_background_graident_start, @button_background_graident_end);
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   border-color: #0064cd #0064cd #003f81;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
-.ui-button-success{
+.ui-button-success {
   color:#ffffff;
   background-repeat: repeat-x;
   .gradient(@button_success_background, @button_success_background_gradient_start, @button_success_background_gradient_end);
@@ -87,7 +88,7 @@ button.ui-button-icons-only { width: 3.7em; }
 }
 .ui-buttonset .ui-button { margin-left: 0; margin-right: -.4em; }
 
-.ui-button-error{
+.ui-button-error, .ui-button-danger:hover {
   color:#ffffff;
   background-repeat: repeat-x;
   .gradient(@button_danger_background, @button_danger_background_gradient_start, @button_danger_background_gradient_end);

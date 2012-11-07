@@ -14,12 +14,25 @@ namespace NextPvrWebConsole.Models
 
         public static int PrePadding 
         { 
-            get { return settings.GetSetting("/Settigns/Recording/PrePadding", 1); }
-            set { settings.SetSetting("/Settigns/Recording/PrePadding", value); }
+            get { return settings.GetSetting("/Settings/Recording/PrePadding", 1); }
+            set { settings.SetSetting("/Settings/Recording/PrePadding", value); }
         }
         public static int PostPadding {
-            get { return settings.GetSetting("/Settigns/Recording/PostPadding", 2); }
-            set { settings.SetSetting("/Settigns/Recording/PostPadding", value); }
+            get { return settings.GetSetting("/Settings/Recording/PostPadding", 2); }
+            set { settings.SetSetting("/Settings/Recording/PostPadding", value); }
+        }
+        public static int WebServerPort
+        {
+            get { return settings.GetSetting("/Settings/WebServer/Port", 8866); }
+            set { settings.SetSetting("/Settings/WebServer/Port", value); }
+        }
+        public static Version NextPvrVersion
+        {
+            get
+            {
+                string version = settings.GetSetting("/Settings/Version/CurrentVersion", "0.0.0");
+                return Version.Parse(version);
+            }
         }
 
         public static string DefaultRecordingDirectory
@@ -34,8 +47,41 @@ namespace NextPvrWebConsole.Models
             }
         }
 
+        public static Dictionary<string, string> GetAllRecordingDirectories()
+        {
+            Dictionary<string, string> results = new Dictionary<string, string>();
+            results.Add(null, DefaultRecordingDirectory);
+            foreach (var kv in ExtraRecordingDirectories)
+                results.Add(kv.Key, kv.Value);
+            return results;
+        }
+
+        public static Dictionary<string, string> GetAllRecordingDirectories(int UserOid)
+        {
+            string username = Models.User.GetUsername(UserOid);
+            Dictionary<string, string> results = new Dictionary<string, string>();
+            results.Add("", DefaultRecordingDirectory);
+            foreach (var kv in ExtraRecordingDirectories)
+            {
+                if(kv.Key.EndsWith("[{0}]".FormatStr(username)))
+                    results.Add(kv.Key, kv.Value);
+            }
+            return results;
+        }
+
         public static KeyValuePair<string, string>[] ExtraRecordingDirectories
         {
+            get
+            {
+                string str = settings.GetSetting("/Settings/Recording/ExtraRecordingDirectories", "");
+                List<KeyValuePair<string, string>> results = new List<KeyValuePair<string,string>>();
+                foreach (Match match in Regex.Matches(str, "[^~]+~[^~]+~"))
+                {
+                    string[] parts = match.Value.Split(new string[]{"~"}, StringSplitOptions.RemoveEmptyEntries);
+                    results.Add(new KeyValuePair<string, string>(parts[0], parts[1]));
+                }
+                return results.ToArray();
+            }
             set
             {
                 // make sure the paths exist

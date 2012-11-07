@@ -360,6 +360,7 @@
     <Content Include="Content\themes\bootstrap\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\bootstrap\images\ui-icons_f6cf3b_256x240.png" />
     <None Include="Content\themes\bootstrap\icons.less" />
+    <Content Include="Content\themes\bootstrap\inputs.less" />
     <None Include="Content\themes\bootstrap\jquery.accordion.less" />
     <None Include="Content\themes\bootstrap\jquery.autocomplete.less" />
     <None Include="Content\themes\bootstrap\jquery.datepicker.less" />

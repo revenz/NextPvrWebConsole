@@ -12,7 +12,18 @@
     li 
     {
         position:relative;
-        text-align:left;
+        text-align:left;		
+		div.controls 
+		{
+			position:absolute;
+			right:10px;
+			top:5px;
+			i 
+			{
+				position:relative;
+				left:-9px;
+			}
+		}
     }
     li > span 
     {
@@ -20,17 +31,6 @@
         border-bottom: solid 1px @general_border_color;
         padding:0 10px;
         line-height:36px;
-    }
-    div.controls 
-    {
-        position:absolute;
-        right:10px;
-        top:5px;
-        i 
-        {
-            position:relative;
-            left:-9px;
-        }
     }
 }
 
@@ -73,16 +73,15 @@
         ul 
         {
             margin:0;
-            padding:0;
+            padding:2px;
             position:absolute;
-            left:5px;
-            right:5px;
+            left:7px;
+            right:7px;
             top:5px;
             bottom:20px;
             overflow:auto;
-            border:solid 1px @general_border_color;
+            border:@input_border;
             .rounded;
-            .drop-shadow(0, 0, 5px, 0.3);
             li
             {
                 margin:0;

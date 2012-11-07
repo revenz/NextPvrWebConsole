@@ -34,6 +34,12 @@ namespace NextPvrWebConsole.Models
             return db.FirstOrDefault<User>("select * from [user] where emailaddress = @0", EmailAddress);
         }
 
+        public static string GetUsername(int Oid)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.FirstOrDefault<string>("select username from [user] where oid = @0", Oid);
+        }
+
         public static User GetByUsername(string Username)
         {
             var db = DbHelper.GetDatabase();

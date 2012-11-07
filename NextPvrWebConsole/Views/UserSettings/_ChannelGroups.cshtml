@@ -1,11 +1,22 @@
 ﻿<div class="channel-groups container">
-    <div class="container-title">Channel Groups</div>
+    <div class="container-title">
+        Channel Groups
+
+        <div class="controls">
+            <button onclick="return false" class="ui-button" data-bind="click: $root.add">
+                <span><i class="icon-plus icon-large"></i> Add</span>
+            </button>
+        </div>
+    </div>
     <ul data-bind="foreach: channelgroups">
         <li>
             <span data-bind="text: name"></span>
             <div class="controls">
-                <button href="#" onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select">
+                <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select">
                     <span><i class="icon-edit icon-large"></i> Edit</span>
+                </button>
+                <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
+                    <span><i class="icon-trash icon-large"></i> Delete</span>
                 </button>
             </div>
         </li>

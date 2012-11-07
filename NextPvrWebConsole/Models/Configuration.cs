@@ -53,7 +53,6 @@ namespace NextPvrWebConsole.Models
 
             NextPvrConfigHelper.PrePadding = PrePadding;
             NextPvrConfigHelper.PostPadding = PostPadding;
-
             NextPvrConfigHelper.DefaultRecordingDirectory = System.IO.Path.Combine(this.DefaultRecordingDirectoryRoot, "Everyone");
 
             List<KeyValuePair<string, string>> recordingDirectories = new List<KeyValuePair<string, string>>();

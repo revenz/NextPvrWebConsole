@@ -17,13 +17,6 @@ namespace NextPvrWebConsole.Controllers.Api
     /// </summary>
     public class ServiceController : ApiController
     {
-        [HttpGet]
-        public void Live()
-        { 
-            // Server.Transfer only works locally.... hmm...
-            throw new NotImplementedException();
-        }
-
         private static Dictionary<string, int> SessionUserOids = new Dictionary<string, int>();
         private static Dictionary<string, string> SidsAndSalts = new Dictionary<string, string>();
 
@@ -37,27 +30,27 @@ namespace NextPvrWebConsole.Controllers.Api
                     case "session.initiate": response = Session_Initiate(Ver, Device); break;
                     case "session.login": response = Session_Login(Sid, Md5); break;
                     default:
+                    {
+                        var config = new Models.Configuration();
+                        int userOid = 0;
+                        if (config.EnableUserSupport) /* ensure a user is found if users are enabled */
                         {
-                            var config = new Models.Configuration();
-                            int userOid = 0;
-                            if (config.EnableUserSupport) /* ensure a user is found if users are enabled */
-                            {
-                                if (!String.IsNullOrWhiteSpace(Sid) && SessionUserOids.ContainsKey(Sid))
-                                    userOid = SessionUserOids[Sid];
-                                else
-                                    throw new UnauthorizedAccessException();
-                            }
-                            switch ((Method ?? "").ToLower())
-                            {
-                                case "setting.list": response = Setting_List(); break;
-                                case "channel.listings": response = Channel_Listings(userOid, channel_id, start, end); break;
-                                case "channel.list": response = Channel_List(userOid, group_id); break;
-                                case "channel.icon": response = Channel_Icon(userOid, channel_id); break;
-                                case "channel.groups": response = Channel_Groups(userOid); break;
-                                case "recording.list": response = Recording_List(userOid, filter); break;
-                                case "recording.delete": response = Recording_Delete(userOid, recording_id); break;
-                                case "recording.save": response = Recording_Save(userOid, name, channel, time_t, duration); break;
-                            }
+                            if (!String.IsNullOrWhiteSpace(Sid) && SessionUserOids.ContainsKey(Sid))
+                                userOid = SessionUserOids[Sid];
+                            else
+                                throw new UnauthorizedAccessException();
+                        }
+                        switch ((Method ?? "").ToLower())
+                        {
+                            case "setting.list": response = Setting_List(); break;
+                            case "channel.listings": response = Channel_Listings(userOid, channel_id, start, end); break;
+                            case "channel.list": response = Channel_List(userOid, group_id); break;
+                            case "channel.icon": response = Channel_Icon(userOid, channel_id); break;
+                            case "channel.groups": response = Channel_Groups(userOid); break;
+                            case "recording.list": response = Recording_List(userOid, filter); break;
+                            case "recording.delete": response = Recording_Delete(userOid, recording_id); break;
+                            case "recording.save": response = Recording_Save(userOid, name, channel, time_t, duration); break;
+                        }
                     }
                     break;
                 }
@@ -153,16 +146,19 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             try
             {
+                Version npvrVersion = Models.NextPvrConfigHelper.NextPvrVersion;
+                int streamingPort = Models.NextPvrConfigHelper.WebServerPort;
+
                 return new Response()
                 {
                     Type = Response.ResponseType.SettingList,
                     Stat = Response.ResponseStat.ok,
                     Version = "70230000",
-                    NextPvrVersion = "020509",
+                    NextPvrVersion = "{0}{1}{2}".FormatStr(npvrVersion.Major.ToString("D2"), npvrVersion.Minor.ToString("D2"), npvrVersion.Build.ToString("D2")),
                     ChannelsUseSegmenter = false,
                     RecordingsUseSegmenter = true,
                     ChannelDetailsLevel = true,
-                    StreamingPort = 8866
+                    StreamingPort = streamingPort
                 };
             }
             catch (Exception)
@@ -176,7 +172,7 @@ namespace NextPvrWebConsole.Controllers.Api
         private Response Channel_Listings(int UserOid, int ChannelOid, long Start, long End)
         {
             // todo: authorization session...
-            var channel = Models.Channel.Load(UserOid);
+            var channel = Models.Channel.Load(ChannelOid, UserOid);
             if(channel == null)
                 throw new ChannelNotFoundException();
             var epgdata = NUtility.EPGEvent.GetListingsForTimePeriod(Start.FromUnixTime(), End.FromUnixTime()).Where(x => x.Key.OID == ChannelOid).Select(x => x.Value).FirstOrDefault().ToList();
@@ -245,7 +241,8 @@ namespace NextPvrWebConsole.Controllers.Api
                         break;
                     case "pending":
                         {
-                            recordings = (from r in NUtility.ScheduledRecording.LoadAll(true)
+                            recordings = (from r in Models.ScheduledRecordingModel.LoadAll(UserOid, true)
+                                          where r.Status == NUtility.RecordingStatus.STATUS_PENDING
                                           select new MyScheduledRecording()
                                           {
                                               Recording = r,
@@ -255,7 +252,8 @@ namespace NextPvrWebConsole.Controllers.Api
                         break;
                     case "ready":
                         {
-                            recordings = (from r in NUtility.ScheduledRecording.LoadCompleted()
+                            recordings = (from r in Models.ScheduledRecordingModel.LoadAll(UserOid, true)
+                                          where r.Status == NUtility.RecordingStatus.STATUS_COMPLETED || r.Status == NUtility.RecordingStatus.STATUS_COMPLETED_WITH_ERROR                                            
                                           select new MyScheduledRecording()
                                           {
                                               Recording = r,
@@ -274,7 +272,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
                 throw new NotImplementedException();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new InvalidSessionException();
             }

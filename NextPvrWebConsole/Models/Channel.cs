@@ -70,7 +70,7 @@ namespace NextPvrWebConsole.Models
         internal static Channel Load(int ChannelOid, int UserOid)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<Channel>("select c.* from channel c innser join userchannel uc on c.oid = uc.channeloid where c.oid = @0 and uc.useroid = @1", ChannelOid, UserOid);
+            return db.FirstOrDefault<Channel>("select c.* from channel c inner join userchannel uc on c.oid = uc.channeloid where c.oid = @0 and uc.useroid = @1", ChannelOid, UserOid);
         }
 
         internal static Channel Load(int ChannelOid)

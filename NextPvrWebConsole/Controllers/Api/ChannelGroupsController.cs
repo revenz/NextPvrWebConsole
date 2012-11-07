@@ -16,12 +16,12 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         // GET api/channelgroups/getchannels
-        public IEnumerable<dynamic> GetChannels(string GroupName)
+        [ActionName("Channels")]
+        public IEnumerable<dynamic> GetChannels(int Oid)
         {
             var user = this.GetUser();
-            var groupChannels = Models.ChannelGroup.LoadChannelOids(user.Oid, GroupName);
+            var groupChannels = Models.ChannelGroup.LoadChannelOids(user.Oid, Oid);
             var allChannels = Models.Channel.LoadAll(user.Oid);
-
             return allChannels.Select(x => new 
             {
                 Name = x.Name,
@@ -46,6 +46,15 @@ namespace NextPvrWebConsole.Controllers.Api
             channelGroup.Name = Name;
             channelGroup.Save(channelOids);
             return true;
+        }
+
+        // DELETE api/channelgroup/5
+        public void Delete(int Oid)
+        {
+            var user = this.GetUser();
+            if (user == null)
+                throw new UnauthorizedAccessException();
+            Models.ChannelGroup.Delete(Oid, user.Oid);
         }
     }
 }

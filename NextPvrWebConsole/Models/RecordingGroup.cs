@@ -25,7 +25,7 @@ namespace NextPvrWebConsole.Models
         {
             SortedDictionary<string, RecordingGroup> results = new SortedDictionary<string, RecordingGroup>();
             List<NUtility.ScheduledRecording> data = NUtility.ScheduledRecording.LoadAll();
-            foreach (ScheduledRecording sr in data)
+            foreach (var sr in data)
             {
                 if (!results.ContainsKey(sr.Name))
                     results.Add(sr.Name, new RecordingGroup(sr.Name));
