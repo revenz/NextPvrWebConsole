@@ -161,7 +161,8 @@ namespace NextPvrWebConsole.Controllers.Api
                     NextPvrVersion = "020509",
                     ChannelsUseSegmenter = false,
                     RecordingsUseSegmenter = true,
-                    ChannelDetailsLevel = true
+                    ChannelDetailsLevel = true,
+                    StreamingPort = 8866
                 };
             }
             catch (Exception)
@@ -345,6 +346,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
             public string Version { get; set; }
             public string NextPvrVersion { get; set; }
+            public int StreamingPort { get; set; }
             public bool ChannelsUseSegmenter { get; set; }
             public bool RecordingsUseSegmenter { get; set; }
             public bool ChannelDetailsLevel { get; set; }
@@ -371,7 +373,7 @@ namespace NextPvrWebConsole.Controllers.Api
                     {
                         case ResponseType.SessionInitiate: root.Add(new XElement("sid", this.Sid ?? ""), new XElement("salt", this.Salt ?? "")); break;
                         case ResponseType.SessionLogin: root.Add(new XElement("sid", this.Sid ?? "")); break;
-                        case ResponseType.SettingList: root.Add(new XElement("Version", this.Version ?? ""), new XElement("NextPVRVersion", this.NextPvrVersion ?? ""), new XElement("ChannelsUseSegmenter", this.ChannelsUseSegmenter), new XElement("RecordingsUseSegmenter", this.RecordingsUseSegmenter), new XElement("ChannelDetailsLevel", this.ChannelDetailsLevel)); break;
+                        case ResponseType.SettingList: root.Add(new XElement("Version", this.Version ?? ""), new XElement("NextPVRVersion", this.NextPvrVersion ?? ""), new XElement("ChannelsUseSegmenter", this.ChannelsUseSegmenter), new XElement("RecordingsUseSegmenter", this.RecordingsUseSegmenter), new XElement("ChannelDetailsLevel", this.ChannelDetailsLevel), new XElement("StreamingPort", this.StreamingPort)); break;
                         case ResponseType.ChannelListings:
                             {
                                 XElement listings = new XElement("listings", new XElement("channel_id", this.ChannelOid));
