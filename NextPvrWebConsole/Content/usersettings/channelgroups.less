@@ -1,0 +1,99 @@
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.user-settings > .channel-groups
+{
+    ul, li
+    {
+        padding:0;
+        margin:0;
+        list-style:none;
+    }
+    li 
+    {
+        position:relative;
+        text-align:left;
+    }
+    li > span 
+    {
+        display:block;
+        border-bottom: solid 1px @general_border_color;
+        padding:0 10px;
+        line-height:36px;
+    }
+    div.controls 
+    {
+        position:absolute;
+        right:10px;
+        top:5px;
+        i 
+        {
+            position:relative;
+            left:-9px;
+        }
+    }
+}
+
+#channel-group-editor 
+{
+    .input-group 
+    {
+        position:absolute;
+        left:10px;
+        right:10px;
+        .label 
+        {
+            position:absolute;
+            left:0;
+            width:100px;
+            top:10px;
+            text-align:right;
+        }
+        .value 
+        {
+            position:absolute;
+            left:106px;
+            right:0px;
+            > input 
+            {
+                position:absolute;
+                left:5px;
+                right:5px;
+            }
+        }
+    }
+    .input-group.channels 
+    {
+        top:40px;
+        bottom:0;
+        .value 
+        {
+            height:100%;
+        }
+        ul 
+        {
+            margin:0;
+            padding:0;
+            position:absolute;
+            left:5px;
+            right:5px;
+            top:5px;
+            bottom:20px;
+            overflow:auto;
+            border:solid 1px @general_border_color;
+            .rounded;
+            .drop-shadow(0, 0, 5px, 0.3);
+            li
+            {
+                margin:0;
+                padding:0;
+                list-style:none;
+                overflow:hidden;
+                text-overflow:ellipsis;
+                display: inline-block;
+                width: 200px;
+                float: left;
+            }
+        }
+    }
+}

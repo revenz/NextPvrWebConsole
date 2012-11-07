@@ -18,7 +18,7 @@ $(function () {
         refreshChannels();
     }
 
-    var div = $('.usersettings > .channels');
+    var div = $('.user-settings > .channels');
     if (div.length > 0)
         ko.applyBindings(new ChannelsViewModel(), div.get(0));
 });

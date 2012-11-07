@@ -18,7 +18,7 @@ $(function () {
         refreshRecordingDirectories();
     }
 
-    var div = $('.usersettings > .recording-directories');
+    var div = $('.user-settings > .recording-directories');
     if(div.length > 0)
         ko.applyBindings(new RecordingDirectoriesViewModel(), div.get(0));
 });

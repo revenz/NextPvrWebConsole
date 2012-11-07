@@ -30,5 +30,22 @@ namespace NextPvrWebConsole.Controllers.Api
                 Enabled = groupChannels.Contains(x.Oid)
             }).OrderBy(x => x.Number);
         }
+
+        [HttpGet]
+        public bool SaveChannelGroup(int Oid, string Name, string Channels)
+        {
+            var user = this.GetUser();
+            int[] channelOids = (Channels ?? "").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => int.Parse(x)).ToArray();
+            var channelGroup = new Models.ChannelGroup() { UserOid = user.Oid };
+            if (Oid != 0)
+            {
+                channelGroup = Models.ChannelGroup.GetById(Oid);
+                if (channelGroup == null || channelGroup.UserOid != user.Oid)
+                    throw new ArgumentException();
+            }
+            channelGroup.Name = Name;
+            channelGroup.Save(channelOids);
+            return true;
+        }
     }
 }

@@ -12,22 +12,22 @@
     </ul>
 
     <div id="channel-group-editor" style="display:none">
-        <table data-bind="with: selectedChannelGroup">
-            <tr>
-                <td>Name</td>
-                <td><input type="text" data-bind="value: name" /></td>
-            </tr>
-            <tr>
-                <td>Channels</td>
-                <td>
+        <div data-bind="with: selectedChannelGroup">
+            <div class="input-group name">
+                <div class="label">Name</div>
+                <div class="value"><input type="text" data-bind="value: name" /></div>
+            </div>
+            <div class="input-group channels">
+                <div class="label">Channels</div>
+                <div class="value">
                     <ul data-bind="foreach: channels">
                         <li>
-                            <input type="checkbox" data-bind="attr : { 'data-oid': oid, label: 'channel_' + $index, checked: enabled }" />
-                            <label data-bind="text: name, attr: { for: 'channel_' + $index}"></label>
+                            <input type="checkbox" data-bind="attr : { 'data-oid': oid, id: 'channel_' + $index(), value: oid, checked: enabled }" />
+                            <label data-bind="text: name, attr: { for: 'channel_' + $index()}"></label>
                         </li>
                     </ul>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

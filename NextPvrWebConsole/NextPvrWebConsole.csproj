@@ -383,6 +383,9 @@
     <Content Include="Views\Dashboard\_Tuners.cshtml" />
     <None Include="Content\themes\bootstrap\variables.less" />
     <Content Include="Content\usersettings\index.less" />
+    <None Include="Content\usersettings\channelgroups.less" />
+    <None Include="Content\usersettings\channels.less" />
+    <None Include="Content\usersettings\recordingdirectories.less" />
     <None Include="Models\Generated\Database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Database.cs</LastGenOutput>
