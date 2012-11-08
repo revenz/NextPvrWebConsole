@@ -11,8 +11,9 @@ var api = new function()
             url: "/api/" + url, 
             type: type,
             accepts: 'application/json',
+            contentType: 'application/json',
             dataType: 'json',
-            data: data,
+            data: data != null ? JSON.stringify(data) : data,
             statusCode:
             {
                 200: function(data)

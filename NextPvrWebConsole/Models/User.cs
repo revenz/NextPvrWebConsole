@@ -86,7 +86,7 @@ namespace NextPvrWebConsole.Models
                     throw new Exception("Failed to create user.");
 
                 // insert default channels.
-                db.Execute("insert into [userchannel](useroid, channeloid) select @0, oid from channel", user.Oid);
+                db.Execute("insert into [userchannel](useroid, channeloid,[enabled],number) select @0, oid, [enabled], number from channel", user.Oid);
 
                 // insert default groups
                 var channelGroups = ChannelGroup.LoadAll(0);

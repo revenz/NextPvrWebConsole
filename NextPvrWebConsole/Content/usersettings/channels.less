@@ -1,2 +1,47 @@
-﻿body {
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.user-settings > .channels
+{
+    ul, li
+    {
+        margin:0;
+        padding:0;
+        list-style:none;
+    }
+    table 
+    {
+        thead > tr, tbody
+        {
+         display:block;
+        }
+        width:100%;
+		border-spacing:0;
+		border-collapse:collapse;
+		tbody 
+		{
+		    overflow-y:auto;
+		    height:300px;
+        }
+    }
+    th, td 
+    {
+        border-bottom:solid 1px @general_border_color;
+    }
+    .name 
+    {
+        text-align:left;
+        width:255px;
+    }
+    .number 
+    {
+        width:120px;
+        text-align:center;
+        input { text-align: right; }
+    }
+    .enabled
+    {
+        width:120px;
+        text-align:center;
+    }
 }

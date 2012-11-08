@@ -19,6 +19,8 @@ namespace NextPvrWebConsole.Models
         [DataMember]
         public int Number { get; set; }
         [DataMember]
+        public bool Enabled { get; set; }
+        [DataMember]
         [PetaPoco.Ignore]
         public string Icon { get; set; }
         //public List<ChannelMapping> Mappings { get; }
@@ -55,22 +57,39 @@ namespace NextPvrWebConsole.Models
         }
 
 
-        internal static Channel[] LoadAll(int UserOid)
+        internal static Channel[] LoadAll(int UserOid, bool IncludeDisabled = false)
         {
             var db = DbHelper.GetDatabase();
-            return db.Fetch<Channel>("select c.* from channel c inner join userchannel uc on c.oid = uc.channeloid where uc.useroid = @0", UserOid).ToArray();
+            var results = db.Fetch<Channel>(@"
+select c.oid, c.name, uc.*,
+case
+    when uc.useroid is null then 0
+    else 1
+end as enabled
+from userchannel uc
+     inner join channel c on uc.channeloid = c.oid and c.enabled = 1 and uc.useroid = @0
+order by uc.number", UserOid);
+            if (IncludeDisabled)
+                return results.ToArray();
+            return results.Where(x => x.Enabled).ToArray();
         }
 
         internal static Channel[] LoadChannelsForGroup(int UserOid, string GroupName)
         {
             var db = DbHelper.GetDatabase();
-            return db.Fetch<Channel>("select c.* from channelgroup cg inner join channelgroupchannel cgc on cg.oid = cgc.channelgroupoid inner join channel c on cgc.channeloid = c.oid inner join userchannel uc on c.oid = uc.channeloid where uc.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray();
+            return db.Fetch<Channel>(@"
+select c.oid, c.name, uc.*
+from channelgroup cg
+inner join channelgroupchannel cgc on cg.oid = cgc.channelgroupoid
+inner join channel c on cgc.channeloid = c.oid
+inner join userchannel uc on c.oid = uc.channeloid
+where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray();
         }
 
         internal static Channel Load(int ChannelOid, int UserOid)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<Channel>("select c.* from channel c inner join userchannel uc on c.oid = uc.channeloid where c.oid = @0 and uc.useroid = @1", ChannelOid, UserOid);
+            return db.FirstOrDefault<Channel>("select c.oid, c.name, uc.* from channel c inner join userchannel uc on c.oid = uc.channeloid where c.oid = @0 and uc.useroid = @1 and c.enabled = 1", ChannelOid, UserOid);
         }
 
         internal static Channel Load(int ChannelOid)

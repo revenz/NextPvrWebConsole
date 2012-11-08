@@ -40,14 +40,17 @@ CREATE TABLE [channel]
 (
 	oid					integer				NOT NULL			PRIMARY KEY,
 	name				text				NOT NULL,
-	number				INTEGER				NOT NULL
+	number				INTEGER				NOT NULL,
+	[enabled]			bit					NOT NULL
 )
 GO
 
 CREATE TABLE [userchannel]
 (
 	useroid				integer				NOT NULL			REFERENCES [user](oid),
-	channeloid			integer				NOT NULL			REFERENCES [channel](oid)
+	channeloid			integer				NOT NULL			REFERENCES [channel](oid),
+	number				integer				NOT NULL,
+	[enabled]			bit					NOT NULL		
 )
 GO
 

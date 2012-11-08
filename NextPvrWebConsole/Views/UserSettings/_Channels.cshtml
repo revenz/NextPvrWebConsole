@@ -1,9 +1,31 @@
 ﻿<div class="channels container">
-    <div class="container-title">Channels</div>
-    <ul data-bind="foreach: channels">
-        <li>
-            <span data-bind="text: number"></span>
-            <span data-bind="text: name"></span>
-        </li>
-    </ul>
+    <div class="container-title">Channels
+
+        <div class="controls">
+            <button id="user-settings-channels-edit" onclick="return false" class="ui-button" data-bind="click: $root.edit">
+                <span><i class="icon-edit icon-large"></i> Edit</span>
+            </button>
+            <button id="user-settings-channels-save" onclick="return false" class="ui-button" data-bind="click: $root.save" style="display:none">
+                <span><i class="icon-save icon-large"></i> Save</span>
+            </button>
+            <button id="user-settings-channels-cancel" onclick="return false" class="ui-button" data-bind="click: $root.cancel" style="display:none">
+                <span><i class="icon-cancel icon-large"></i> Cancel</span>
+            </button>
+        </div></div>
+    <table class="readonly">
+        <thead>
+            <tr>
+                <th class="name">Name</th>
+                <th class="number">Number</th>
+                <th class="enabled">Enabled</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: channels">
+            <tr>        
+                <td class="name" data-bind="text: name"></td>
+                <td class="number"><input type="number" data-bind="value:number" readonly disabled min="0" max="9999" /></td>
+                <td class="enabled"><input type="checkbox" data-bind="checked: enabled" readonly disabled /></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
