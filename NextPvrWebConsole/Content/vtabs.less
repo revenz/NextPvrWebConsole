@@ -1,7 +1,4 @@
-﻿/* use this for vtabs: http://www.faridesign.net/2012/05/create-a-awesome-vertical-tabbed-content-area-using-css3-jquery/ */
-
-
-@import "mixins.less";
+﻿@import "mixins.less";
 @import "globals.less";
 
 @tab_button_width:210px;
@@ -37,7 +34,7 @@
             outline: 0;
             text-decoration: none;
             
-            width: 180px;
+            width: 157px;
             list-style-type: none;
             display: block;
             text-shadow: 0px 1px 1px #F2F1F0;
@@ -46,8 +43,15 @@
 			border: solid 1px #d3d3d3;
 			border-bottom:none;
             margin: auto;
-            padding: 20px 15px !important;      
+            padding: 20px 15px 20px 38px !important;      
 			cursor:pointer;
+			.icon {
+				position:absolute;
+				left:8px;
+				top:14px;
+				font-size:22px;
+				color: #333;
+			}
         }        
         .selected
         {
@@ -60,7 +64,7 @@
             -webkit-box-shadow: inset 0 0 35px 5px #fafbfd;
             box-shadow: inset 0 0 35px 5px #fafbfd;
         }
-        .first.current
+        .first
         {
             border-bottom: 1px solid #DDD;
 			.border-radius(0,0,0,5px);
