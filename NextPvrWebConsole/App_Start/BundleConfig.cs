@@ -25,6 +25,7 @@ namespace NextPvrWebConsole
                         "~/Scripts/jquery.dateFormat-1.0.js",
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/addons/toastr.js",
+                        "~/Scripts/vtabs.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js"));
 

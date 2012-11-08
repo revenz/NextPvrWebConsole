@@ -4,11 +4,15 @@
 @import "mixins.less";
 @import "globals.less";
 
+@tab_button_width:210px;
+
 .vtab-container
 {
     margin: auto;
     color: #333;
-    
+	position:relative;
+    overflow:hidden;
+	top:-20px;
     > ul, > ul li
     {    
         margin: 0;
@@ -20,33 +24,18 @@
     .vtab-buttons
     {
         float: left;
-        width: 210px;
+        width: @tab_button_width;
         display: block;
-        position: relative;
+        position: absolute;
         top: 0;
-        border: 1px solid #DDD;
-        border-right-width: 0;
-        margin: auto 0 !important;
-        padding:0;  
+		bottom:-10px;
+        padding:50px 0 0;  
+		border-right:1px solid #d3d3d3;
+		.inner-shadow(-5px, -4px, 7px, 0.1);
         li 
         {        
             outline: 0;
             text-decoration: none;
-            -webkit-transition-property: background color;
-            -moz-transition-property: background color;
-            -o-transition-property: background color;
-            -ms-transition-property: background color;
-            transition-property: background color;
-            -webkit-transition-duration: 0.12s;
-            -moz-transition-duration: 0.12s;
-            -o-transition-duration: 0.12s;
-            -ms-transition-duration: 0.12s;
-            transition-duration: 0.12s;
-            -webkit-transition-timing-function: ease-out;
-            -moz-transition-timing-function: ease-out;
-            -o-transition-timing-function: ease-out;
-            -ms-transition-timing-function: ease-out;
-            transition-timing-function: ease-out;
             
             width: 180px;
             list-style-type: none;
@@ -54,16 +43,16 @@
             text-shadow: 0px 1px 1px #F2F1F0;
             font-size: 1.11em;
             position: relative;
-            border-right-width: 0;
-            border-bottom: 1px solid #DDD;
+			border: solid 1px #d3d3d3;
+			border-bottom:none;
             margin: auto;
-            padding: 10px 15px !important;  
-            .gradient(#f2f2f2, #fff, #f2f2f2);        
+            padding: 20px 15px !important;      
+			cursor:pointer;
         }        
-        .current
+        .selected
         {
             color: black;
-            border-right: none;
+            border-right: solid 1px white;
             z-index: 10;
             background: white !important;
             position: relative;
@@ -74,26 +63,32 @@
         .first.current
         {
             border-bottom: 1px solid #DDD;
+			.border-radius(0,0,0,5px);
         }
         .last
         {
-            border-bottom: none;
+			.border-radius(0,0,5px,0);
+			border-bottom: solid 1px #d3d3d3;
         }
     }
     .vtab-content
     {
-        margin-left: 210px;
-        border: 1px solid #ddd;
-        background-color: #FFF;
-        min-height: 400px;
-        position: relative;
+        margin-left: @tab_button_width;
+        position: absolute;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
         z-index: 9;
-        padding: 12px;
-        .inner-shadow;
         display: none;
-        padding: 25px;
+        padding: 45px 25px 25px;
+		background: -webkit-gradient(linear,
+                               left top,
+                               right top,
+                               color-stop(0, #fff),
+                               color-stop(1, @page_background));
     }
-    .vtab-content.current 
+    .vtab-content.selected 
     {
         display:block;
     }

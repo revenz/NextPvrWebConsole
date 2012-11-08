@@ -3,20 +3,27 @@
 
 .user-settings
 {
-	position:absolute;
-	left:30px;
-	right:30px;
-	bottom:30px;
-	top:170px;
-	> div
-	{
-		float:left;
-		.container;
-		width:28%;
-		margin:auto 10px;
+	margin:auto;
+
+	.vtab-content > .container {
+		position:absolute;
+		top:20px;
+		bottom:20px;
+		left:20px;
+		right:0;
+		.description {
+			
+		}
 		ul {
-			height:300px;
+			position:absolute;
+			left:10px;
+			right:10px;
+			bottom:10px;
+			top:100px;
 			overflow-y:scroll;
+			padding:0;
+			margin:0;
+			list-style:none;
 		}
 	}
 }

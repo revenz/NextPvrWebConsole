@@ -268,6 +268,7 @@
     <Content Include="Scripts\usersettings\channelgroups.js" />
     <Content Include="Scripts\usersettings\channels.js" />
     <Content Include="Scripts\usersettings\recordingdirectories.js" />
+    <Content Include="Scripts\vtabs.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

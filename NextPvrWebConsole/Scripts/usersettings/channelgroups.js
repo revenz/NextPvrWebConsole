@@ -75,7 +75,7 @@ $(function () {
         refreshChannelGroups();
     }
 
-    var div = $('.user-settings > .channel-groups');
+    var div = $('.user-settings .vtab-content > .channel-groups');
     if (div.length > 0)
         ko.applyBindings(new ChannelGroupsViewModel(), div.get(0));
 

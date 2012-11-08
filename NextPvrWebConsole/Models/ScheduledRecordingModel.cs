@@ -14,12 +14,14 @@ namespace NextPvrWebConsole.Models
             var recordingDirectories = RecordingDirectory.LoadForUser(UserOid, IncludeShared).Select(x=> x.FullPath).ToArray();
             // step 2, get all allowed reoccuring recordings
             var reoccuring = new List<int>();
-            foreach(var r in NUtility.RecurringRecording.LoadAll()) {
-                if(String.IsNullOrWhiteSpace(r.RecordingDirectoryID)){
-                    if(IncludeShared)
+            foreach (var r in NUtility.RecurringRecording.LoadAll())
+            {
+                if (String.IsNullOrWhiteSpace(r.RecordingDirectoryID))
+                {
+                    if (IncludeShared)
                         reoccuring.Add(r.OID);
-                } 
-                else if(allRecordingDirectories.ContainsKey(r.RecordingDirectoryID))
+                }
+                else if (allRecordingDirectories.ContainsKey(r.RecordingDirectoryID))
                 {
                     reoccuring.Add(r.OID);
                 }

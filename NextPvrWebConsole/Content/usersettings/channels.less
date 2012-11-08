@@ -1,27 +1,21 @@
 ﻿@import "~/Content/mixins.less";
 @import "~/Content/globals.less";
 
-.user-settings > .channels
+.user-settings .vtab-content > .channels
 {
-    ul, li
-    {
-        margin:0;
-        padding:0;
-        list-style:none;
-    }
     table 
     {
+		position:absolute;
+		top:100px;
         thead > tr, tbody
         {
          display:block;
         }
-        width:100%;
 		border-spacing:0;
 		border-collapse:collapse;
 		tbody 
 		{
 		    overflow-y:auto;
-		    height:300px;
         }
     }
     th, td 
@@ -31,7 +25,6 @@
     .name 
     {
         text-align:left;
-        width:255px;
     }
     .number 
     {

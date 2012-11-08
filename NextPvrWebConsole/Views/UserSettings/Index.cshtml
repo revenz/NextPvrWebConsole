@@ -10,12 +10,12 @@
 <div class="user-settings vtab-container">
 
     <ul class="vtab-buttons">
-        <li data-tab="user-settings-tab-channelgroups" class="first current">Channel Groups</li>
+        <li data-tab="user-settings-tab-channelgroups" class="first selected">Channel Groups</li>
         <li data-tab="user-settings-tab-channels">Channels</li>
         <li data-tab="user-settings-tab-recordingdirectories" class="last">Recording Directories</li>
     </ul>
 
-    <div class="vtab-content current" id="user-settings-tab-channelgroups">
+    <div class="vtab-content selected" id="user-settings-tab-channelgroups">
         @Html.Partial("_ChannelGroups")
     </div>
     <div class="vtab-content" id="user-settings-tab-channels">

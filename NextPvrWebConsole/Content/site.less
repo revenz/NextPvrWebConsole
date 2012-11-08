@@ -9,12 +9,12 @@ html {
 }
 
 body {
-	.gradient(#F0F0F0, #dcdcdc, #fff);
+	background: @page_background;
     border:0;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
-    margin: 30px;
+    margin: 0 30px;
     padding: 0;
 	margin-top:@header-height + 20px;
 }
@@ -109,6 +109,7 @@ body {
     text-align:center;
     .gradient(#444, #333, #666);
     .rounded;
+	z-index:100000;
 }
 .container {
 	.container;

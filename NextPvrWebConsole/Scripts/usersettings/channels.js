@@ -15,6 +15,7 @@ $(function () {
             api.getJSON("channels", { IncludeDisabled: true }, function (allData) {
                 var mapped = $.map(allData, function (item) { return new Channel(item) });
                 self.channels(mapped);
+                resizeTable();
             });
         };
         refreshChannels();
@@ -53,7 +54,19 @@ $(function () {
         };
     }
 
-    var div = $('.user-settings > .channels');
+    var div = $('.user-settings .vtab-content > .channels');
     if (div.length > 0)
         ko.applyBindings(new ChannelsViewModel(), div.get(0));
+
+    var resizeTable = function () {
+        var width = $('.vtab-content.selected').width();
+        var height = $('.vtab-content.selected').height();
+        var tbl = $('#usersettings-channels');
+        tbl.width(width);
+        tbl.find('tbody').height(height - 100);
+        $('#usersettings-channels .name').css('width', width - 270);
+    };
+
+    $(window).resize(resizeTable);
+    resizeTable();
 });
