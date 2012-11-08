@@ -6,11 +6,11 @@
     @Styles.Render("~/Content/guide/css")
 }
 
-<div class="epgpage-container">
+<div class="epgpage-container" style="visibility:hidden">
 
     <div class="epg-days">
         <ul data-bind="foreach:epgdays">
-            <li class="epg-day">
+            <li data-bind="attr: { class: cssClass }">
                 <a href="#" data-bind="text: displayText, click: $root.changeEpgDay" onclick="return false"></a>
             </li>
         </ul>
@@ -19,12 +19,12 @@
     <div class="epg-groups">
         <ul>
         @{
-        bool first = true;
-        foreach (var g in ViewBag.Groups)
-        {
+            bool first = true;
+            foreach (var g in ViewBag.Groups)
+            {
             <li class="group @(first ? "selected" : "")" data-name="@g.Name"><span>@g.Name</span></li>
-            first = false;
-        }        
+                first = false;
+            }        
         }
         </ul>
         <div class="epg-groups-button previous"><span class="icon-caret-down"></span></div>
@@ -120,7 +120,7 @@
             <td>Directory</td>
             <td>
                 <select id="recording-directory">
-                    @foreach(var dir in ViewBag.RecordingDirectories)
+                    @foreach (var dir in ViewBag.RecordingDirectories)
                     {
                         <option value="@dir.Oid">@dir.Name</option>
                     }
@@ -146,4 +146,17 @@
 @section Scripts{
     @Scripts.Render("~/scripts/jquery.nicescroll.js")
     @Scripts.Render("~/Scripts/guide/index.js")
+
+    <script>
+        $(function () {
+            var resize = function () {
+                $('.body-wrapper').height($(window).height() - 40);
+            };
+            resize();
+            $(window).resize(resize);
+            setTimeout(function () {
+                $('.epgpage-container').css("visibility", "visible");
+            }, 500);
+        });
+    </script>
 }

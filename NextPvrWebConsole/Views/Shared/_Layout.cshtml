@@ -13,23 +13,34 @@
 </head>
 <body>
 
-    <div class="siteheader">
+    <div class="body-background"></div>
 
-        <div class="logo"></div>
+    <div class="body-wrapper">
 
-        <section id="login">
-            @Html.Partial("_LoginPartial")
-        </section>
+        <div class="siteheader-wrapper">
+            <div class="siteheader">
 
-        @Html.Partial("_Menu")
-    </div>
+                <div class="logo"></div>
+
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
+
+                @Html.Partial("_Menu")
+            </div>
+        </div>
+
+        <div class="siteheader-spacer"></div>
     
-    @RenderBody()
+        <div class="maincontent">
+            @RenderBody()
+        </div>
 
-    <div id="working">
-        Working...
+        <div id="working">
+            Working...
+        </div>
+
     </div>
-    
     
     @Scripts.Render("~/bundles/jscore")
     @Scripts.Render("~/signalr/hubs")

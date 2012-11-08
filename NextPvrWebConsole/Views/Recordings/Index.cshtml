@@ -55,4 +55,14 @@
 
 @section Scripts{
     @Scripts.Render("~/Scripts/recordings/js")
+
+    <script>
+        $(function () {
+            var resize = function () {
+                $('.body-wrapper').height($(window).height() - 40);
+            };
+            resize();
+            $(window).resize(resize);
+        });
+    </script>
 }

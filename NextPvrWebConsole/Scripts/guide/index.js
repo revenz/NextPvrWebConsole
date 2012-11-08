@@ -144,7 +144,8 @@ $(function () {
             var tDate = new Date();
             tDate.setDate(tDate.getDate() + i);
             tDate.setHours(0, 0, 0, 0);
-            days.push({ name: daysOfWeekString[currentDayOfWeek], link: '#' + currentDayOfWeek, date: tDate, displayText: daysOfWeekString[currentDayOfWeek] + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')' });
+            days.push(new epgDate(tDate, i == 0, daysOfWeekString[currentDayOfWeek] + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')'));
+            //days.push({ name: daysOfWeekString[currentDayOfWeek], link: '#' + currentDayOfWeek, date: tDate, displayText: daysOfWeekString[currentDayOfWeek] + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')' });
             if (++currentDayOfWeek >= 7)
                 currentDayOfWeek = 0;
         }
@@ -166,12 +167,9 @@ $(function () {
 
         // Operations
         self.changeEpgDay = function (day) {
-            $('.epg-days .selected').removeClass('selected');
-            var link = parseInt(day.link.substr(1), 10);
-            if (!isNaN(link)) {
-                $('.epg-days li:eq(' + (link - 1) + ')').addClass('selected');
-            }
-            self.loadEpgData(day.date);
+            $.each(self.epgdays(), function (i, ele) { ele.selected(false); });
+            day.selected(true);
+            self.loadEpgData(day.date());
         }
 
         // Load initial state from server, convert it to Task instances, then populate self.tasks
@@ -280,6 +278,16 @@ $(function () {
                 },
                 'Cancel': function () { $('#recording-options').dialog('close'); }
             }
+        });
+    }
+
+    function epgDate(date, selected, displayText) {
+        var self = this;
+        self.displayText = ko.observable(displayText);
+        self.selected = ko.observable(selected);
+        self.date = ko.observable(date);
+        self.cssClass = ko.computed(function () {
+            return 'epg-day ' + (self.selected() ? 'selected' : '');
         });
     }
 });

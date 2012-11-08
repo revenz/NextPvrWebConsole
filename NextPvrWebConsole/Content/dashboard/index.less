@@ -1,13 +1,44 @@
 ﻿@import "~/Content/mixins.less";
 @import "~/Content/globals.less";
 
+@portlet-small-width:400px;
+@portlet-margin:20px;
+
 .portlets {
+	display:inline-block;
 	.portlet {
+		margin:@portlet-margin;
+		display:inline-block;
 		float:left;
-		clear:none;
-		margin:10px;
 	}
-	.portlet.small {
-		width:380px;
+	.portlet.small 
+	{
+	    width:400px;
 	}
+}
+
+@media only screen and (min-width:1540px)
+{
+    .portlets .portlet 
+    {
+        width: @screen_width_default - @portlet-small-width - (3 * @wrapper_padding) - (4.5 * @portlet-margin) - 100;
+    }
+    .portlets .portlet.small
+    {
+        width: 500px;
+    }
+}
+@media only screen and (max-width: 1540px) 
+{
+    .portlets .portlet 
+    {
+        width: @screen_width_1540 - @portlet-small-width - (3 * @wrapper_padding) - (4.5 * @portlet-margin);
+    }
+}
+@media only screen and (max-width: 1200px) 
+{
+    .portlets .portlet 
+    {
+        width: @screen_width_1200 - @portlet-small-width - (3 * @wrapper_padding) - (4.5 * @portlet-margin);
+    }
 }
