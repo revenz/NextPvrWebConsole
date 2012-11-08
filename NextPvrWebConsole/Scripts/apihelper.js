@@ -13,7 +13,7 @@ var api = new function()
             accepts: 'application/json',
             contentType: 'application/json',
             dataType: 'json',
-            data: data != null ? JSON.stringify(data) : data,
+            data: data != null && type != 'GET' ? JSON.stringify(data) : data,
             statusCode:
             {
                 200: function(data)

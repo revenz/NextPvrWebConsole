@@ -7,6 +7,7 @@ using System.Web.Http;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
+    [Authorize]
     public class RecordingDirectoriesController : ApiController
     {
         // GET api/recordingdirectories

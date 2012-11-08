@@ -7,6 +7,7 @@ using System.Web.Http;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
+    [Authorize]
     public class ChannelsController : ApiController
     {
         // GET api/channels
@@ -17,7 +18,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         public void Update(Models.Channel[] Channels)
         {
-            throw new NotImplementedException();
+            Models.Channel.Update(this.GetUser().Oid, Channels);
         }
     }
 }

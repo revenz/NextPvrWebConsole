@@ -70,5 +70,5 @@ CREATE TABLE [channelgroupchannel]
 )
 GO
 
-INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly]) VALUES (0, 'Everyone', '', '', 0, DATETIME('now'), '1970-01-01', 1)  /* special user */
+INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly]) VALUES (0, 'Shared', '', '', 0, DATETIME('now'), '1970-01-01', 1)  /* special user */
 GO

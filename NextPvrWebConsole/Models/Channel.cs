@@ -61,13 +61,9 @@ namespace NextPvrWebConsole.Models
         {
             var db = DbHelper.GetDatabase();
             var results = db.Fetch<Channel>(@"
-select c.oid, c.name, uc.*,
-case
-    when uc.useroid is null then 0
-    else 1
-end as enabled
+select c.oid, c.name, uc.*
 from userchannel uc
-     inner join channel c on uc.channeloid = c.oid and c.enabled = 1 and uc.useroid = @0
+inner join channel c on uc.channeloid = c.oid and c.enabled = 1 and uc.useroid = @0
 order by uc.number", UserOid);
             if (IncludeDisabled)
                 return results.ToArray();
@@ -97,6 +93,24 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
             var db = DbHelper.GetDatabase();
             return db.FirstOrDefault<Channel>("select * from channel c where oid = @0", ChannelOid);
 
+        }
+
+        internal static void Update(int UserOid, Channel[] Channels)
+        {
+            var db = DbHelper.GetDatabase();
+            try
+            {
+                db.BeginTransaction();
+                int[] allowedChanneldOids = db.Fetch<int>("select oid from channel where [enabled] = 1").ToArray();
+                foreach (var channel in Channels.Where(x => allowedChanneldOids.Contains(x.Oid)))
+                    db.Execute("update userchannel set number = @0, [enabled] = @1 where channeloid = @2 and useroid = @3", channel.Number, channel.Enabled, channel.Oid, UserOid);
+                db.CompleteTransaction();
+            }
+            catch (Exception ex)
+            {
+                db.AbortTransaction();
+                throw ex;
+            }
         }
     }
 }
