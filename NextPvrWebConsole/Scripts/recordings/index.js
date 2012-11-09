@@ -1,9 +1,9 @@
 ﻿/// <reference path="../functions.js" />
 /// <reference path="../apihelper.js" />
-/// <reference path="../jquery-1.8.2.js" />
-/// <reference path="../jquery-ui-1.9.0.js" />
-/// <reference path="../knockout-2.2.0.js" />
-/// <reference path="../jquery.dateFormat-1.0.js" />
+/// <reference path="../core/jquery-1.8.2.js" />
+/// <reference path="../core/jquery-ui-1.9.0.js" />
+/// <reference path="../core/knockout-2.2.0.js" />
+/// <reference path="../core/jquery.dateFormat-1.0.js" />
 /*
 STATUS_PENDING = 0,
 STATUS_IN_PROGRESS = 1,

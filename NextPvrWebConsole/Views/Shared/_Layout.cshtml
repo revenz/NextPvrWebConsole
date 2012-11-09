@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title data-lang="@ViewBag.Title">@ViewBag.Title</title>
     
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/bootstrap/css")         
     @RenderSection("styles", required: false)
 
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/languages/en.js")
 </head>
 <body>
 

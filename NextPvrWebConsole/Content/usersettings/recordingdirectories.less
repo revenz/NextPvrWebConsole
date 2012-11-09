@@ -1,2 +1,34 @@
-﻿body {
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.user-settings .vtab-content > .recording-directories
+{
+    ul, li
+    {
+    }
+    li 
+    {
+        position:relative;
+        text-align:left;	
+        display:block;
+        height:40px;
+        border-bottom: solid 1px @general_border_color;
+		div.controls 
+		{
+			position:absolute;
+			right:10px;
+			top:5px;
+			i 
+			{
+				position:relative;
+				left:-9px;
+			}
+		}
+    }
+    li > span 
+    {
+        display:block;
+        line-height:36px;
+        padding:0 10px;
+    }
 }

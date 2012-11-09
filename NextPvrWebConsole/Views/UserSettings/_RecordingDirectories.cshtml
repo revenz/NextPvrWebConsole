@@ -1,14 +1,29 @@
 ﻿<div class="recording-directories container">
-    <div class="container-title">Recording Directories</div>
+    <div class="container-title">    
+        <span data-lang="Recording Directories"></span>
+
+        <div class="controls">
+            <button onclick="return false" class="ui-button" data-bind="click: $root.add">
+                <span class="icon-plus icon-large" data-lang="Add"></span>
+            </button>
+        </div>
+    </div>
     
-    <div class="description">
-        Here you can configure your own personal Recording Directories, you will have access to all Shared directories and your own personal Recording Directories.  Anything you record to your
-        personal Recording Directories will not be available to any other users.
+    <div class="description" data-lang="RecordingDirectoriesDescription">
+        
     </div>
 
     <ul data-bind="foreach: recordingdirectories">
         <li>
             <span data-bind="text: name"></span>
+            <div class="controls">
+                <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select">
+                    <span class="icon-edit icon-large" data-lang="Edit"></span>
+                </button>
+                <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
+                    <span class="icon-trash icon-large" data-lang="Delete"></span>
+                </button>
+            </div>
         </li>
     </ul>
 </div>

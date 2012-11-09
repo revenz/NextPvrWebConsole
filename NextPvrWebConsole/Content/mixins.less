@@ -17,7 +17,6 @@
                                    @start 0%,
                                    @stop 100%);
 }
-
 .bw-gradient(@color: #F5F5F5, @start: 0, @stop: 255) {
   background: @color;
   background: -webkit-gradient(linear,
@@ -31,6 +30,15 @@
   background: -moz-linear-gradient(center bottom,
                                    rgb(@start,@start,@start) 0%,
                                    rgb(@stop,@stop,@stop) 100%);
+}
+
+.gradient-linear(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
+  background: @color;
+  background: -o-linear-gradient(left, @start, @stop); 
+  background: -webkit-linear-gradient(left, @start, @stop); 
+  background: -moz-linear-gradient(left, @start, @stop); 
+  background: -ms-linear-gradient(left, @start, @stop); 
+  background: linear-gradient(left, @start, @stop); 
 }
 
 .bordered(@top-color: #EEE, @right-color: #EEE, @bottom-color: #EEE, @left-color: #EEE) {

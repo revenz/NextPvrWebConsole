@@ -56,10 +56,10 @@
             <div class="epg-listings">
                 <div class="epg-listings-channel" data-bind="foreach: channels, visible: channels().length > 0">
                     <ul class="listings" data-bind="foreach:listings, attr: { 'data-channeloid': oid } ">
-                        <li data-bind="attr: { style: $root.listingCss($data), class: $root.listingClass($data, 'listing'), 'data-start': startTime, 'data-oid': oid } ">
+                        <li data-bind="attr: { style: $root.listingCss($data), class: $root.listingClass($data, 'listing') }, event: { dblclick: $root.openListing }">
                             <div>
                                 <span class="title" data-bind="text: title"></span>
-                                <span class="start" data-bind="text: $root.formattedDate(startTime)"></span>
+                                <span class="start" data-bind="text: $root.formattedDate(startTime())"></span>
                                 <span class="subtitle" data-bind="text: subtitle"></span>
                                 <span class="description" data-bind="text: description"></span>
                             </div>
@@ -91,33 +91,33 @@
 <div id="recording-options" style="display:none">
     <table>
         <tr>
-            <td>Recording Type</td>
+            <td data-lang="Recording Type"></td>
             <td>
                 <select id="recording-type">
-                    <option value="0">Record Once
-                    <option value="1">Record Season (NEW episodes on this channel)
-                    <option value="2">Record Season (All episodes on this channel)
-                    <option value="3">Record Season (Daily, this timeslot)
-                    <option value="4">Record Season (Weekly, this timeslot)
-                    <option value="5">Record Season (Monday - Friday, this timeslot)
-                    <option value="6">Record Season (Weekends, this timeslot)
-                    <option value="7">Record All Episodes, All Channels
+                    <option value="0" data-lang="Record_Once"></option>
+                    <option value="1" data-lang="Record_Season_New"></option>
+                    <option value="2" data-lang="Record_Seaon_All"></option>
+                    <option value="3" data-lang="Record_Season_Daily"></option>
+                    <option value="4" data-lang="Record_Season_Weekly"></option>
+                    <option value="5" data-lang="Record_Season_Mon_To_Fri"></option>
+                    <option value="6" data-lang="Record_Season_Weekends"></option>
+                    <option value="7" data-lang="Record_All_Eps_All_Chs"></option>
                 </select>
             </td>
         </tr>
 
         <tr>
-            <td>Pre-Padding</td>
-            <td><input type="number" min="0" max="89" id="recording-prepadding" value="@ViewBag.PrePadding" /> (Minutes)</td>
+            <td data-lang="PrePadding"></td>
+            <td><input type="number" min="0" max="89" id="recording-prepadding" value="@ViewBag.PrePadding" /> (<span data-lang="Minutes"></span>)</td>
         </tr>
 
         <tr>
-            <td>Post-Padding</td>
-            <td><input type="number" min="0" max="89" id="recording-postpadding" value="@ViewBag.PostPadding" /> (Minutes)</td>
+            <td data-lang="PostPadding"></td>
+            <td><input type="number" min="0" max="89" id="recording-postpadding" value="@ViewBag.PostPadding" /> (<span data-lang="Minutes"></span>)</td>
         </tr>
 
         <tr>
-            <td>Directory</td>
+            <td data-lang="RecordingDirectory"></td>
             <td>
                 <select id="recording-directory">
                     @foreach (var dir in ViewBag.RecordingDirectories)
@@ -129,13 +129,13 @@
         </tr>
 
         <tr>
-            <td>Keep</td>
+            <td data-lang="Keep"></td>
             <td>
                 <select id="recording-keep">
-                    <option value="0">All Recordings
+                    <option value="0" data-lang="All Recordings"></option>
                     @for (int i = 1; i < 29; i++)
                     {
-                        <option value="@i">@i @(i == 1 ? "Recording" : "Recordings")</option>
+                        <option value="@i">@i <span data-lang="@(i == 1 ? "RecordingSingle" : "RecordingPlural")" /></option>
                     }
                 </select>
             </td>
@@ -144,7 +144,7 @@
 </div>
 
 @section Scripts{
-    @Scripts.Render("~/scripts/jquery.nicescroll.js")
+    @Scripts.Render("~/scripts/core/jquery.nicescroll.js")
     @Scripts.Render("~/Scripts/guide/index.js")
 
     <script>

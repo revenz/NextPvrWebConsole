@@ -1,44 +1,16 @@
-﻿/// <reference path="../jquery-ui-1.9.0.js" />
-/// <reference path="../jquery-1.8.2.js" />
-/// <reference path="../jquery.linq.js" />
+﻿/// <reference path="../core/jquery-ui-1.9.0.js" />
+/// <reference path="../core/jquery-1.8.2.js" />
+/// <reference path="../core/jquery.linq.js" />
 /// <reference path="../apihelper.js" />
-/// <reference path="../jquery.signalR-0.5.3.js" />
-/// <reference path="../knockout-2.2.0.js" />
+/// <reference path="../core/jquery.signalR-0.5.3.js" />
+/// <reference path="../core/knockout-2.2.0.js" />
 /// <reference path="../modernizr-2.6.2.js" />
+/// <reference path="../api-wrappers/listing.js" />
+/// <reference path="../api-wrappers/channel.js" />
 
 var guideStart;
 var minuteWidth = 5;
 var guideData = null;
-
-function showInfo(apiChannel, apiShow) {
-    var self = this;
-    self.apiChannel = apiChannel;
-    self.apiShow = apiShow;
-    self.oid = ko.observable(apiShow.oid);
-    self.title = ko.observable(apiShow.title);
-    self.subtitle = ko.observable(apiShow.subtitle);
-    self.description = ko.observable(apiShow.description);
-    self.channelName = ko.observable(apiChannel.Name);
-    self.channelNumber = ko.observable(apiChannel.Number);
-    self.startTimeLong = ko.computed(function () { return gui.formatDateLong(Date.parse(apiShow.startTime)); });
-    self.endTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(apiShow.endTime)); });
-    self.duration = ko.computed(function () { return Math.floor((Math.abs(Date.parse(apiShow.endTime) - Date.parse(apiShow.startTime)) / 1000) / 60) + ' minutes' });
-    self.genresString = ko.computed(function () {
-        if (apiShow.genres)
-            return $.Enumerable.From(apiShow.genres).Select(function (x) {
-                x = x.replace('/', ', ');
-                x = x.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1); });
-                return x.replace(' , ', ', ');
-            }).ToString(', ');
-        return '';
-    });
-    self.channelLogoVisible = ko.computed(function () { return apiChannel.Icon && apiChannel.Icon.length > 0; });
-    self.channelLogoData = ko.computed(function () {
-        if (apiChannel.Icon && apiChannel.Icon.length > 0)
-            return 'data:image/png;base64,' + apiChannel.Icon;
-        return '';
-    });
-}
 
 function getMinutesFromStartOfGuide(time) {
     var diff = time - guideStart;
@@ -75,27 +47,14 @@ $(function () {
     // set scroll pos.
     $('.epg-container').scrollLeft(getMinutesFromStartOfGuide(new Date()) * minuteWidth);
 
-    function Channel(data) {
-        this.name = ko.observable(data.Name);
-        this.number = ko.observable(data.Number);
-        this.icon = ko.computed(function () {
-            if (data.Icon && data.Icon.length > 0)
-                return 'data:image/png;base64,' + data.Icon;
-            return '';
-        });
-        this.iconVisible = (data.Icon && data.Icon.length > 0);
-        this.oid = ko.observable(data.OID);
-        this.listings = ko.observable(data.Listings);
-    }
-
     function GuideViewModel() {
         // Data
         var self = this;
 
         self.listingCss = function (listing) {
             var css = '';
-            var dStart = Date.parse(listing.startTime);
-            var dEnd = Date.parse(listing.endTime);
+            var dStart = Date.parse(listing.startTime());
+            var dEnd = Date.parse(listing.endTime());
 
             var guideEnd = new Date(guideStart.getTime());
             guideEnd.setDate(guideEnd.getDate() + 1);
@@ -116,16 +75,16 @@ $(function () {
 
             var end = new Date(guideStart.getTime());
             end.setDate(end.getDate() + 1);
-            if (Date.parse(listing.startTime) < guideStart)
+            if (Date.parse(listing.startTime()) < guideStart)
                 _class += 'pre-guide-start ';
-            if (Date.parse(listing.endTime) > end)
+            if (Date.parse(listing.endTime()) > end)
                 _class += 'post-guide-end ';
             return _class;
         }
         self.channelClass = function (channel, _class) {
             if (_class) _class += ' ';
             else _class = '';
-            if (channel.iconVisible)
+            if (channel.iconVisible())
                 _class += 'logo-available ';
             return _class;
         }
@@ -144,8 +103,7 @@ $(function () {
             var tDate = new Date();
             tDate.setDate(tDate.getDate() + i);
             tDate.setHours(0, 0, 0, 0);
-            days.push(new epgDate(tDate, i == 0, daysOfWeekString[currentDayOfWeek] + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')'));
-            //days.push({ name: daysOfWeekString[currentDayOfWeek], link: '#' + currentDayOfWeek, date: tDate, displayText: daysOfWeekString[currentDayOfWeek] + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')' });
+            days.push(new epgDate(tDate, i == 0, $.i18n._(daysOfWeekString[currentDayOfWeek]) + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')'));
             if (++currentDayOfWeek >= 7)
                 currentDayOfWeek = 0;
         }
@@ -177,40 +135,37 @@ $(function () {
 
         self.selectedshow = ko.observable();
 
-        $('.epg-listings').on('dblclick.epg', '.listing', function () {
-            // get listing info, helper for this.
-            var showElement = $(this);
-            var showInfo = getShowInfo(showElement);
+        self.openListing = function (listing) {
+            self.selectedshow(listing);
 
-            self.selectedshow(showInfo);
+            var dialog_buttons = {};
+            dialog_buttons[$.i18n._("Quick Record")] = function () {
+                api.postJSON('guide/quickrecord?oid=' + listing.oid(), null, function (data) {
+                    console.log('data...');
+                    console.log(data);
+                });
+                $('#show-info').dialog('close');
+            };
+            dialog_buttons[$.i18n._('Record')] = function () {
+                showRecordingOptions(listing);
+                $('#show-info').dialog('close');
+            };            
+            dialog_buttons[$.i18n._('Find All')] = function () {
+                $('#show-info').dialog('close');
+            };        
+            dialog_buttons[$.i18n._('Close')] = function () {
+                $('#show-info').dialog('close');
+            };
             $('#show-info').dialog({
                 modal: true,
-                title: showInfo.title(),
+                title: listing.title(),
                 minWidth: 600,
                 beforeClose: function (event, ui) {
                     self.selectedshow(null);
                 },
-                buttons: {
-                    'Quick Record': function () {
-                        api.postJSON('guide/quickrecord?oid=' + showInfo.oid(), null, function (data) {
-                            console.log('data...');
-                            console.log(data);
-                        });
-                        $(this).dialog('close');
-                    },
-                    'Record': function () {
-                        showRecordingOptions(showElement, showInfo);
-                        $(this).dialog('close');
-                    },
-                    'Find All': function () {
-                        $(this).dialog('close');
-                    },
-                    'Close': function () {
-                        $(this).dialog('close');
-                    }
-                }
+                buttons: dialog_buttons
             });
-        });
+        };
     }
 
     var viewModel = new GuideViewModel();
@@ -237,47 +192,31 @@ $(function () {
         viewModel.loadEpgData(guideStart);
     });
 
-    function getShowInfo(liElement) {
-        var channelOid = parseInt(liElement.closest('ul').attr('data-channeloid'), 10);
-        var programOid = parseInt(liElement.attr('data-oid'), 10);
+    function showRecordingOptions(listing) {
+        var dialog_buttons = {};
+        dialog_buttons[$.i18n._("OK")] = function () {
+            var type = $('#recording-type').val();
+            var prepadding = $('#recording-prepadding').val();
+            var postpadding = $('#recording-postpadding').val();
+            var directory = $('#recording-directory').val();
+            var keep = $('#recording-keep').val();
 
-        var channel = $.Enumerable.From(guideData)
-                                          .Where(function (x) { return x.OID == channelOid; })
-                                          .FirstOrDefault();
-        if (!channel)
-            return null;
+            api.postJSON('guide/record', { oid: listing.oid(), prepadding: prepadding, postpadding: postpadding, recordingdirectoryid: directory, numbertokeep: keep, type: type }, function (result) {
+                console.log(result);
+            });
 
-        var show = $.Enumerable.From(channel.Listings)
-                                       .Where(function (x) { return x.oid == programOid; })
-                                       .FirstOrDefault();
-        if (!show)
-            return null;
+            $('#recording-options').dialog('close');
+        };
+        dialog_buttons[$.i18n._("Cancel")] = function () {
+            $('#recording-options').dialog('close');
+        }
 
-        return new showInfo(channel, show);
-    }
-
-    function showRecordingOptions(element, showInfo) {
         $('#recording-options').dialog({
             modal: true,
-            title: 'Record: ' + showInfo.title(),
+            title: listing.title(),
             width: 600,
             height: 300,
-            buttons: {
-                'OK': function () {
-                    var type = $('#recording-type').val();
-                    var prepadding = $('#recording-prepadding').val();
-                    var postpadding = $('#recording-postpadding').val();
-                    var directory = $('#recording-directory').val();
-                    var keep = $('#recording-keep').val();
-
-                    api.postJSON('guide/record', { oid: showInfo.oid(), prepadding: prepadding, postpadding: postpadding, recordingdirectoryid: directory, numbertokeep: keep, type: type }, function (result) {
-                        console.log(result);
-                    });
-
-                    $('#recording-options').dialog('close');
-                },
-                'Cancel': function () { $('#recording-options').dialog('close'); }
-            }
+            buttons: dialog_buttons
         });
     }
 

@@ -1,8 +1,8 @@
 ﻿/// <reference path="../functions.js" />
 /// <reference path="../apihelper.js" />
-/// <reference path="../jquery-1.8.2.js" />
-/// <reference path="../jquery-ui-1.9.0.js" />
-/// <reference path="../knockout-2.2.0.js" />
+/// <reference path="../core/jquery-1.8.2.js" />
+/// <reference path="../core/jquery-ui-1.9.0.js" />
+/// <reference path="../core/knockout-2.2.0.js" />
 
 $(function () {
     function ChannelGroupsViewModel() {
@@ -17,7 +17,6 @@ $(function () {
         };
 
         self.add = function () {
-            console.log('adding');
             var group = new ChannelGroup();
             showEditor(group, function () {
                 self.channelgroups.push(group);
@@ -90,4 +89,12 @@ $(function () {
         console.log('saving channel group');
         api.getJSON('ChannelGroups/SaveChannelGroup', channelGroup, callBack);
     }
+    
+
+    $("#channelgrouplist").sortable( { stop:function()
+    {
+        // push update to server 
+        // use this to fix the knockoutjs + jqueryui sortable issue: http://stackoverflow.com/questions/4146751/knockoutjs-with-jquery-ui-sortable
+    });
+    $("#channelgrouplist").disableSelection();
 });

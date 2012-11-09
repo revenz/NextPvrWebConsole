@@ -55,6 +55,18 @@ var gui = new function () {
         else
             doWorkCount = 0; // make sure this doesnt drop below 0
     };
+    window.onbeforeunload = function (e) {
+        if (doWorkCount > 0) {
+            var message = "This page is currently procesing a request.";
+            e = e || window.event;
+            // For IE and Firefox
+            if (e) {
+                e.returnValue = message;
+            }
+            // For Safari
+            return message;
+        }
+    };
 
     this.confirmMessage = function (settings) {
         settings = $.extend({

@@ -1,29 +1,30 @@
 ﻿<div class="channels container">
-    <div class="container-title">Channels
+    <div class="container-title">
+        <span data-lang="Channels"></span>
 
         <div class="controls">
             <button id="user-settings-channels-edit" onclick="return false" class="ui-button" data-bind="click: $root.edit">
-                <span><i class="icon-edit icon-large"></i> Edit</span>
+                <span class="icon-edit icon-large" data-lang="Edit"></span>
             </button>
             <button id="user-settings-channels-save" onclick="return false" class="ui-button" data-bind="click: $root.save" style="display:none">
-                <span><i class="icon-save icon-large"></i> Save</span>
+                <span class="icon-save icon-large" data-lang="Save></span>
             </button>
             <button id="user-settings-channels-cancel" onclick="return false" class="ui-button" data-bind="click: $root.cancel" style="display:none">
-                <span><i class="icon-cancel icon-large"></i> Cancel</span>
+                <span class="icon-cancel icon-large" data-lang="Cancel"></span>
             </button>
         </div>
     </div>
 
-    <div class="description">
-        Here you can configure your own personal Channels.  You can disable Channels to hide them and you can change the Channel numbers to your liking.
+    <div class="description" data-lang="ChannelsDescription">
+        
     </div>
 
     <table class="readonly" id="usersettings-channels">
         <thead>
             <tr>
-                <th class="name">Name</th>
-                <th class="number">Number</th>
-                <th class="enabled">Enabled</th>
+                <th class="name" data-lang="Name"></th>
+                <th class="number" data-lang="Number"></th>
+                <th class="enabled" data-lang="Enabled"></th>
             </tr>
         </thead>
         <tbody data-bind="foreach: channels">

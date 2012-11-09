@@ -15,15 +15,17 @@ namespace NextPvrWebConsole
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jscore").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery-ui-{version}.js",
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*",
-                        "~/Scripts/jquery.signalR-{version}.js",
-                        "~/Scripts/linq.js",
-                        "~/Scripts/jquery.linq.js*",
-                        "~/Scripts/jquery.dateFormat-1.0.js",
-                        "~/Scripts/knockout-{version}.js",
+                        "~/Scripts/core/jquery-{version}.js",
+                        "~/Scripts/core/jquery-ui-{version}.js",
+                        "~/Scripts/core/jquery.unobtrusive*",
+                        "~/Scripts/core/jquery.validate*",
+                        "~/Scripts/core/jquery.i18n.js",
+                        "~/Scripts/translator.js",
+                        "~/Scripts/core/jquery.signalR-{version}.js",
+                        "~/Scripts/core/linq.js",
+                        "~/Scripts/core/jquery.linq.js*",
+                        "~/Scripts/core/jquery.dateFormat-1.0.js",
+                        "~/Scripts/core/knockout-{version}.js",
                         "~/Scripts/addons/toastr.js",
                         "~/Scripts/vtabs.js",
                         "~/Scripts/functions.js",
@@ -40,19 +42,6 @@ namespace NextPvrWebConsole
             cssBundle.Transforms.Add(new CssMinify());
             bundles.Add(cssBundle);
 
-            //bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
-            //            "~/Content/themes/base/jquery.ui.core.css",
-            //            "~/Content/themes/base/jquery.ui.resizable.css",
-            //            "~/Content/themes/base/jquery.ui.selectable.css",
-            //            "~/Content/themes/base/jquery.ui.accordion.css",
-            //            "~/Content/themes/base/jquery.ui.autocomplete.css",
-            //            "~/Content/themes/base/jquery.ui.button.css",
-            //            "~/Content/themes/base/jquery.ui.dialog.css",
-            //            "~/Content/themes/base/jquery.ui.slider.css",
-            //            "~/Content/themes/base/jquery.ui.tabs.css",
-            //            "~/Content/themes/base/jquery.ui.datepicker.css",
-            //            "~/Content/themes/base/jquery.ui.progressbar.css",
-            //            "~/Content/themes/base/jquery.ui.theme.css"));
             bundles.Add(new StyleBundle("~/Content/themes/bootstrap/css").Include("~/Content/themes/bootstrap/theme.less"));
 
             bundles.Add(new StyleBundle("~/Content/jquery.mobile/css").Include(

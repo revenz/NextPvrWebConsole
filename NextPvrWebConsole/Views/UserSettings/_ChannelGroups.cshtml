@@ -1,28 +1,27 @@
 ﻿<div class="channel-groups container">
 
     <div class="container-title">
-        Channel Groups
+        <span data-lang="Channel Groups"></span>
 
         <div class="controls">
             <button onclick="return false" class="ui-button" data-bind="click: $root.add">
-                <span><i class="icon-plus icon-large"></i> Add</span>
+                <span class="icon-plus icon-large" data-lang="Add"></span>
             </button>
         </div>
     </div>
 
-    <div class="description">
-        Here you can configure your own Chanel Groups which allows you to group channels into logically groups, for example 'General Entertainment', 'Sports', 'Movies' etc.
+    <div class="description" data-lang="ChannelGroupsDescription">        
     </div>
 
-    <ul data-bind="foreach: channelgroups">
+    <ul data-bind="foreach: channelgroups" id="channelgrouplist">
         <li>
             <span data-bind="text: name"></span>
             <div class="controls">
                 <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select">
-                    <span><i class="icon-edit icon-large"></i> Edit</span>
+                    <span class="icon-edit icon-large" data-lang="Edit"></span>
                 </button>
                 <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
-                    <span><i class="icon-trash icon-large"></i> Delete</span>
+                    <span class="icon-trash icon-large" data-lang="Delete"></span>
                 </button>
             </div>
         </li>
@@ -31,11 +30,11 @@
     <div id="channel-group-editor" style="display:none">
         <div data-bind="with: selectedChannelGroup">
             <div class="input-group name">
-                <div class="label">Name</div>
+                <div class="label" data-lang="Name"></div>
                 <div class="value"><input type="text" data-bind="value: name" /></div>
             </div>
             <div class="input-group channels">
-                <div class="label">Channels</div>
+                <div class="label" data-lang="Channels"></div>
                 <div class="value">
                     <ul data-bind="foreach: channels">
                         <li>
