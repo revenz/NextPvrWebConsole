@@ -1,29 +1,195 @@
 ﻿@model NextPvrWebConsole.Models.Configuration
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Configuration";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Configuration</h2>
+@section Styles{
+    @Styles.Render("~/Content/configuration/css")
+}
 
-<table>
-    <tr>
-        <td>Pre-Padding</td>
-        <td>@Html.EditorFor(m => m.PrePadding)</td>
-    </tr>
-    <tr>
-        <td>Post-Padding</td>
-        <td>@Html.EditorFor(m => m.PostPadding)</td>
-    </tr>
-    <tr>
-        <td>Folders</td>
-        <td>
-            <ul>
-                @foreach (var rd in Model.RecordingDirectories)
-                {
-                    <li>@rd.Name</li>
-                }
-            </ul>
-        </td>
-    </tr>
-</table>
+<div class="configuration vtab-container">
+
+    <ul class="vtab-buttons">
+        <li data-tab="configuration-tab-general" class="first selected"><i class="icon icon-wrench"></i><span data-lang="General" /></li>
+        <li data-tab="configuration-tab-devices"><i class="icon icon-cogs"></i><span data-lang="Devices" /></li>
+        <li data-tab="configuration-tab-recording"><i class="icon icon-adjust"></i><span data-lang="Recording" /></li>
+        <li data-tab="configuration-tab-channelgroups"><i class="icon icon-sitemap"></i><span data-lang="Channel Groups" /></li>
+        <li data-tab="configuration-tab-channels"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
+        <li data-tab="configuration-tab-users" class="last"><i class="icon icon-group"></i><span data-lang="Users" /></li>
+    </ul>
+    
+    <div class="vtab-content selected" id="configuration-tab-general">
+        <table>
+            <tr>
+                <td class="label" data-lang="Live TV Buffer"></td>
+                <td class="value">
+                    <input type="text" id="LiveTvBuffer" />
+                    <span class="description" data-lang="LiveTvBuffer-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label" data-lang="UpdateDvbEpgDuringLiveTv"></td>
+                <td class="value">
+                    <input type="checkbox" id="UpdateDvbEpgDuringLiveTv" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" /> 
+                    <span class="description" data-lang="UpdateDvbEpgDuringLiveTv-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label" data-lang="EpgUpdateHour"></td>
+                <td class="value">
+                    <input type="number" min="0" max="23" id="EpgUpdateHour" />
+                    <span class="description" data-lang="EpgUpdateHour-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label"></td>
+                <td class="value">
+                    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <span class="icon-save icon-large" data-lang="Save"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+        
+    </div>
+    <div class="vtab-content" id="configuration-tab-devices">
+
+        <table class="devices">
+            <thead>
+                <tr>
+                    <th class="type" data-lang="Type"></th>
+                    <th class="device" data-lang="Device"></th>
+                    <th class="present" data-lang="Present"></th>
+                    <th class="enabled" data-lang="Enabled"></th>
+                    <th class="channels" data-lang="Channels"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="type">DVB-S</td>
+                    <td class="device">TBS 6984 Quad DVB/S2 Tuner A</td>
+                    <td class="present">Yes</td>
+                    <td class="enabled">Yes</td>
+                    <td class="channels">64</td>
+                </tr>
+                <tr>
+                    <td class="type">DVB-S</td>
+                    <td class="device">TBS 6984 Quad DVB/S2 Tuner B</td>
+                    <td class="present">Yes</td>
+                    <td class="enabled">Yes</td>
+                    <td class="channels">64</td>
+                </tr>
+                <tr>
+                    <td class="type">DVB-S</td>
+                    <td class="device">TBS 6984 Quad DVB/S2 Tuner C</td>
+                    <td class="present">Yes</td>
+                    <td class="enabled">Yes</td>
+                    <td class="channels">64</td>
+                </tr>
+                <tr>
+                    <td class="type">DVB-S</td>
+                    <td class="device">TBS 6984 Quad DVB/S2 Tuner D</td>
+                    <td class="present">Yes</td>
+                    <td class="enabled">Yes</td>
+                    <td class="channels">64</td>
+                </tr>
+                <tr>
+                    <td class="type"></td>
+                    <td class="device"></td>
+                    <td class="present"></td>
+                    <td class="enabled"></td>
+                    <td class="channels"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <tr>
+                <td class="label" data-lang="UseReverseOrderForTv"></td>
+                <td class="value">
+                    <input type="checkbox" id="UseReverseOrderForTv" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" />
+                    <span class="description" data-lang="UseReverseOrderForTv-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label"></td>
+                <td class="value">
+                    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <span class="icon-save icon-large" data-lang="Save"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+    <div class="vtab-content" id="configuration-tab-channelgroups">
+        
+    </div>
+    <div class="vtab-content" id="configuration-tab-channels">
+        
+    </div>
+    <div class="vtab-content" id="configuration-tab-recording">
+        <table>
+            <tr>
+                <td class="label" data-lang="Pre-Padding"></td>
+                <td class="value">
+                    @Html.EditorFor(m => m.PrePadding)
+                    <span class="description" data-lang="PrePadding-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label" data-lang="Post-Padding"></td>
+                <td class="value">
+                    @Html.EditorFor(m => m.PostPadding)
+                    <span class="description" data-lang="PostPadding-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label" data-lang="BlockShutdownWhileRecording"></td>
+                <td class="value">
+                    <input type="checkbox" id="BlockShutdownWhileRecording" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" /> 
+                    <span class="description" data-lang="BlockShutdownWhileRecording-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label" data-lang="RecurringMatch"></td>
+                <td class="value">
+                    <select>
+                        <option data-lang="Match Exact Title"></option>
+                        <option data-lang="Match Start of Title"></option>
+                    </select>
+                    <span class="description" data-lang="RecurringMatch-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label" data-lang="AvoidDuplicateRecordingsWherePossible"></td>
+                <td class="value"> 
+                    <input type="checkbox" id="AvoidDuplicateRecordingsWherePossible" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" /> 
+                    <span class="description" data-lang="AvoidDuplicateRecordingsWherePossible-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label" data-lang="Recording Directories"></td>
+                <td class="value">
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="label"></td>
+                <td class="value">
+                    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <span class="icon-save icon-large" data-lang="Save"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/configuration/js")
+}

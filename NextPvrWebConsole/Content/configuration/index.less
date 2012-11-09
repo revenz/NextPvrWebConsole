@@ -1,0 +1,63 @@
+﻿@import "~/Content/mixins.less";
+
+.configuration {
+	.vtab-content {
+		font-size:1.3em;
+		td {
+			padding:5px;
+			vertical-align:top;
+		}
+		td.label {
+			width:350px;
+			text-align:right;
+			color:#666;
+			padding-top:9px;
+		}
+		select, input[type=number], input[type=text] {
+			font-size:1em;			
+		}
+		input[type=number] {
+			width:100px;
+		}
+		select, input[type=text] {
+			width:300px;
+		}
+		.value button {
+			font-size:1em;
+			padding-left:15px;
+			padding-right:15px;
+			margin-top:10px;
+		}
+		.description {
+			display:block;
+			font-size:0.7em;
+			color:#777;
+			max-width:600px;
+		}
+		.ibutton-container {
+			margin-top:2px;
+			margin-bottom:2px;
+		}
+
+		table.devices {
+			width:80%;
+			margin:auto;
+			border-spacing:0;
+			border-collapse:collapse;
+			border-bottom:solid 1px #d3d3d3;
+			td, th { padding: 5px; }
+			th { border-bottom: solid 1px #d3d3d3;}
+			.device {
+				text-align:left;
+			}
+			.type { 
+				width:60px;
+				text-align:left;
+			}
+			.present, .enabled, .channels {
+				width:100px;
+				text-align:center;
+			}
+		}
+	}
+}

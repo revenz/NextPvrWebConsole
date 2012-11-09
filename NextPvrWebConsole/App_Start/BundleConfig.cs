@@ -26,10 +26,14 @@ namespace NextPvrWebConsole
                         "~/Scripts/core/jquery.linq.js*",
                         "~/Scripts/core/jquery.dateFormat-1.0.js",
                         "~/Scripts/core/knockout-{version}.js",
+                        "~/Scripts/core/jquery.easing.1.3.js",
+                        "~/Scripts/core/jquery.metadata.js",
+                        "~/Scripts/core/jquery.ibutton.js",
                         "~/Scripts/addons/toastr.js",
                         "~/Scripts/vtabs.js",
                         "~/Scripts/functions.js",
-                        "~/Scripts/apihelper.js"));
+                        "~/Scripts/apihelper.js",
+                        "~/Scripts/startup.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/api.js").IncludeDirectory("~/Scripts/api-wrappers", "*.js"));
 
@@ -37,7 +41,8 @@ namespace NextPvrWebConsole
                                                         "~/Content/site.less", 
                                                         "~/Content/custom.css",
                                                         "~/Content/buttons.css",
-                                                        "~/Content/addons/toastr.css");
+                                                        "~/Content/addons/toastr.css",
+                                                        "~/Content/jquery.ibutton.css");
             cssBundle.Transforms.Add(new LessTransform());
             cssBundle.Transforms.Add(new CssMinify());
             bundles.Add(cssBundle);

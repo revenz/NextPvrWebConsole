@@ -58,4 +58,22 @@
     'Edit'                              :               'Edit',
     'Save'                              :               'Save',
     'Recording Type'                    :               'Recording Type',
+    'Live TV Buffer'                    :               'Live TV Buffer',
+    'LiveTvBuffer-Description'          :               'The location to use for the temporary buffer files created when watching Live TV.',
+    'UpdateDvbEpgDuringLiveTv'          :               'Update DVB EPG During Live TV',
+    'UpdateDvbEpgDuringLiveTv-Description':             'If using a digital OTA EPG, set whether NextPVR should updates the listings while watching live TV. This can be helpful if a broadcaster changes a start time or swaps a show at short notice.',
+    'EpgUpdateHour'                     :               'EPG Update Hour',
+    'EpgUpdateHour-Description'         :               'Sets the time at when the TV Guide (EPG) should update automatically. If the computer is in hibernate or standby mode, NextPVR will attempt to wake it up.   Set to \'None\' to disable automatic EPG updates.',
+    'UseReverseOrderForTv'              :               'Use Reverse Order For TV',
+    'UseReverseOrderForTv-Description'  :               'Set whether to use the listed devices in order from bottom to top for Live TV.\nTop to bottom priority order will still be used for Recordings.',
+    'PrePadding-Description'            :               'The number of minutes to record before the scheduled start of a show.',
+    'PostPadding-Description'           :               'The number of minutes to record after the scheduled start of a show.',
+    'BlockShutdownWhileRecording'       :               'Block shutdown while recording',
+    'BlockShutdownWhileRecording-Description':          'Set whether shutdown operations should be blocked giving a \'NextPVR is currently recording\' message as the status on the Vista and higher \'force close\' screen.',
+    'RecurringMatch'                    :               'Recurring Match',
+    'RecurringMatch-Description'        :               'Set the way NextPVR will match the titles of the show when processing season recordings.\nMatch Exact Title will only record the show if the title exactly matches.\nMatch Start Of Title will only record the show if the start of the title matches. For example, setting a season recording for \'The Best TV Show\' will cause \'The Best TV Show : Part 2\' \'The Best TV Show : Part 3\' to also be recorded.',
+    'AvoidDuplicateRecordingsWherePossible':            'Avoid Duplicate Recordings Where Possible',
+    'AvoidDuplicateRecordingsWherePossible-Description': 'Set if NextPVR should not record shows which have previously been recorded. Note that this function requires an EPG which uniquely identifies each show and episode, as of September 2011, only the Schedules Direct EPG source for North America provide this.'
+
+
 };

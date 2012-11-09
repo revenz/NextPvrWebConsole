@@ -219,6 +219,8 @@
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
+    <Content Include="Content\images\ibutton-slider-default.png" />
+    <Content Include="Content\jquery.ibutton.css" />
     <Content Include="Languages\en.js" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ChannelGroup.cs" />
@@ -245,6 +247,7 @@
     <Content Include="Content\addons\toastr.css" />
     <Content Include="Content\buttons.css" />
     <Content Include="Content\accounts\index.less" />
+    <Content Include="Content\configuration\index.less" />
     <None Include="Content\dashboard\upcomingrecordings.less" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\images\ajax-loader.gif" />
@@ -268,9 +271,13 @@
     <Content Include="Scripts\api-wrappers\listing.js" />
     <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
     <Content Include="Scripts\api-wrappers\recordings.js" />
+    <Content Include="Scripts\core\jquery.easing.1.3.js" />
     <Content Include="Scripts\core\jquery.i18n.js" />
     <Content Include="Scripts\core\jquery.i18n.min.js" />
+    <Content Include="Scripts\core\jquery.ibutton.js" />
+    <Content Include="Scripts\core\jquery.metadata.js" />
     <Content Include="Scripts\dashboard\upcomingrecordings.js" />
+    <Content Include="Scripts\startup.js" />
     <Content Include="Scripts\translator.js" />
     <Content Include="Scripts\usersettings\channelgroups.js" />
     <Content Include="Scripts\usersettings\channels.js" />
