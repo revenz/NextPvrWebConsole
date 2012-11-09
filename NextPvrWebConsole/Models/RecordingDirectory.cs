@@ -12,13 +12,27 @@ namespace NextPvrWebConsole.Models
         public string Name { get; set; }
         public string Oid { get; set; }
         public int UserOid { get; set; }
+        /// <summary>
+        /// Gets or sets teh RecordingDirectoryId used by NextPVR to identify the directory, this should be "{Username} - {Name}"
+        /// </summary>
+        public string RecordingDirectoryId { get; set; }
+        [PetaPoco.ResultColumn]
+        public string ShortName { get; set; }
 
+        private string _FullPath;
         [PetaPoco.Ignore]
         public string FullPath
         {
             get
             {
-                return System.IO.Path.Combine(new Configuration().DefaultRecordingDirectoryRoot, User.GetUsername(this.UserOid), Name);
+                if (String.IsNullOrWhiteSpace(_FullPath))
+                {
+                    if (!String.IsNullOrWhiteSpace(this.ShortName))
+                        _FullPath = System.IO.Path.Combine(new Configuration().DefaultRecordingDirectoryRoot, this.ShortName);
+                    else
+                        _FullPath = System.IO.Path.Combine(new Configuration().DefaultRecordingDirectoryRoot, User.GetUsername(this.UserOid), Name);
+                }
+                return _FullPath;
             }
         }
 
@@ -37,12 +51,30 @@ namespace NextPvrWebConsole.Models
             }
         }
 
+        public static List<RecordingDirectory> LoadAll()
+        {
+            var db = DbHelper.GetDatabase();
+            return db.Fetch<RecordingDirectory>("select rd.*, username || '\' || rd.name as shortname from recordingdirectory rd inner join user u on rd.useroid = u.oid");
+        }
+
+        public static RecordingDirectory LoadByShortName(string ShortName)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username || '\' || rd.name as shortname from recordingdirectory rd inner join user u on rd.useroid = u.oid where shortname = @0", ShortName);
+        }
+
         public static RecordingDirectory Create(int UserOid, string Name)
         {
             var db = DbHelper.GetDatabase();
-            RecordingDirectory directory = new RecordingDirectory() { UserOid = UserOid, Name = Name };
+            string username = User.GetUsername(UserOid);
+            RecordingDirectory directory = new RecordingDirectory() { UserOid = UserOid, Name = Name, RecordingDirectoryId = GetRecordingDirectoryId(username, Name) };
             db.Insert(directory);
             return directory;
+        }
+
+        public static string GetRecordingDirectoryId(string Username, string RecordingDirectoryName)
+        {
+            return "{0} - {1}".FormatStr(Username, RecordingDirectoryName);
         }
 
     }

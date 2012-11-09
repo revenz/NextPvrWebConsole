@@ -24,6 +24,7 @@
             <tr>
                 <th class="recording-status"></th>
                 <th class="recording-name" data-lang="Name"></th>
+                <th class="recording-directory" data-lang="Directory"></th>
                 <th class="recording-starttime" data-lang="Start"></th>
                 <th class="recording-endtime" data-lang="End"></th>
                 <th class="recording-controls"></th>
@@ -33,6 +34,7 @@
             <tr data-bind="attr: { class : cssClass }">
                 <td class="recording-status"><span data-bind="attr: { class: 'status status_' + status() }"></span></td>
                 <td class="recording-name" data-bind="text: displayName"></td>
+                <td class="recording-directory" data-bind="text: recordingDirectory"></td>
                 <td class="recording-starttime" data-bind="text:startTimeStr"></td>
                 <td class="recording-endtime" data-bind="text:endTimeStr"></td>
                 <td class="recording-controls">

@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title data-lang="@ViewBag.Title">@ViewBag.Title</title>
+    
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/bootstrap/css")         
+    @Styles.Render("~/Content/accounts/css")         
+    @RenderSection("styles", required: false)
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/languages/en.js")
+
+</head>
+<body class="login-page">
+
+    <div class="login-page-wrapper">
+
+        <div class="login-page-content">
+            @RenderBody()
+        </div>
+
+
+    </div>
+
+
+    @Scripts.Render("~/bundles/jscore")
+    @Scripts.Render("~/bundles/api.js")
+    @Scripts.Render("~/bundles/accounts/js")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

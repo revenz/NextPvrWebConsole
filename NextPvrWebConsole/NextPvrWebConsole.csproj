@@ -217,6 +217,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Globals.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Languages\en.js" />
     <Compile Include="Models\AccountModels.cs" />
@@ -243,6 +244,7 @@
     <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\addons\toastr.css" />
     <Content Include="Content\buttons.css" />
+    <Content Include="Content\accounts\index.less" />
     <None Include="Content\dashboard\upcomingrecordings.less" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\images\ajax-loader.gif" />
@@ -406,6 +408,7 @@
     <Content Include="Views\UserSettings\_ChannelGroups.cshtml" />
     <Content Include="Views\UserSettings\_RecordingDirectories.cshtml" />
     <Content Include="Scripts\api-wrappers\channel.js" />
+    <Content Include="Views\Account\_LoginLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />
@@ -469,6 +472,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\accounts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
