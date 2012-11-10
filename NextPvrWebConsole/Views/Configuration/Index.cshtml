@@ -20,7 +20,7 @@
     
     <div class="vtab-content selected" id="configuration-tab-general">
         @{
-            var modelGeneral = new NextPvrWebConsole.Models.ConfigurationModels.GeneralConfiguration();          
+            var modelGeneral = (NextPvrWebConsole.Models.ConfigurationModels.GeneralConfiguration)ViewBag.GeneralModel;
         }
         @using(Ajax.BeginForm("UpdateGeneral", "Configuration",new AjaxOptions() { OnBegin = "api.onbegin", OnComplete = "api.oncomplete", OnFailure = "api.onfailure", OnSuccess = "api.onsuccess" })) 
         {

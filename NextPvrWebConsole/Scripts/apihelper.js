@@ -2,6 +2,50 @@
 /// <reference path="functions.js" />
 /// <reference path="jquery.signalR-0.5.3.js" />
 
+var ajax = new function () {
+
+    var _json = function (type, url, data, callback, errorCallback) {
+        gui.doWork();
+        $.ajax(
+        {
+            url: url,
+            type: type,
+            accepts: 'application/json',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: data != null && type != 'GET' ? JSON.stringify(data) : data,
+            statusCode:
+            {
+                200: function (data) {
+                    if (callback)
+                        callback(data);
+                },
+                204: function (data) /* no data, usually from a delete action */ {
+                    if (callback)
+                        callback(data);
+                },
+                401: function (jqXHR, textStatus, errorThrown) {
+                    self.location = '/Account/Login/';
+                },
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var error = $.parseJSON(jqXHR.responseText);
+                var msg = error && error.message ? error.message : 'An unexpected server error occurred.';
+                if (errorCallback)
+                    errorCallback(msg);
+                else
+                    gui.showError(msg);
+            },
+            complete: function (jqXHR, textStatus) {
+                gui.finishWork();
+            }
+        });
+    }
+    this.postJSON = function (url, data, callback, errorCallback) {
+        _json('POST', url, data, callback, errorCallback);
+    }
+}
+
 var api = new function()
 {
     var _json = function (type, url, data, callback, errorCallback) {

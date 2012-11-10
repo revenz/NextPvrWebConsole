@@ -16,7 +16,14 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult Index()
         {
-            return View(new Models.Configuration());
+            var config = new Models.Configuration();
+            var GeneralModel = new Models.ConfigurationModels.GeneralConfiguration();
+            GeneralModel.EpgUpdateHour = config.EpgUpdateHour;
+            GeneralModel.UpdateDvbEpgDuringLiveTv = config.UpdateDvbEpgDuringLiveTv;
+            GeneralModel.LiveTvBufferDirectory = config.LiveTvBufferDirectory;
+
+            ViewBag.GeneralModel = GeneralModel;
+            return View();
         }
         
         [HttpPost]
@@ -30,7 +37,21 @@ namespace NextPvrWebConsole.Controllers
                 throw new HttpException((int)HttpStatusCode.BadRequest, String.Join(Environment.NewLine, errors.ToArray()));
             }
 
-            throw new NotImplementedException();
+            SaveConfig(ModelGeneral);
+
+            return Json(new { success = true });
+        }
+
+        private void SaveConfig(object PartialModel)
+        {
+            var config = new Models.Configuration();
+            foreach(var property in PartialModel.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.SetProperty))
+            {
+                var configProperty = config.GetType().GetProperty(property.Name);
+                if(configProperty != null)
+                    configProperty.SetValue(config, property.GetValue(PartialModel, null), null);
+            }
+            config.Save();
         }
 
     }

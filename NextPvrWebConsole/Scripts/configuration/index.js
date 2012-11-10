@@ -22,7 +22,31 @@ $(function () {
             height: 400,
             modal: true,
             open: function () {
-                $('#FolderBrowserWindow').closest('.ui-dialog').find('.ui-dialog-buttonpane').prepend('<button id="FileTree-NewFolder" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span>Create Folder</span></button>');
+                var buttonpane = $('#FolderBrowserWindow').closest('.ui-dialog').find('.ui-dialog-buttonpane');
+                buttonpane.prepend('<button id="FileTree-NewFolder" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span></span></button>');                
+                var btnNewFolder = buttonpane.find('#FileTree-NewFolder');
+                btnNewFolder.find('span').text($.i18n._('New Folder'));
+                btnNewFolder.click(function () {
+                    var selected = $('#FolderBrowserWindow').find('.jqueryFileTree .selected').closest('li');
+                    var path = selected.find('a').attr('rel');
+                    gui.promptMessage({
+                        title: $.i18n._('Create Folder'),
+                        message: $.i18n._('Type in the name of the folder to create.'),
+                        validationMessage: $.i18n._('Invalid folder name'),
+                        validationExpression: '^([^"*/:?|<>\\\\.\\x00-\\x20]([^"*/:?|<>\\\\\\x00-\\x1F]*[^"*/:?|<>\\\\.\\x00-\\x20])?)$',
+                        success: function (name) {
+                            ajax.postJSON('File/CreateDirectory', { path: path, name: name }, function (result) {
+                                if (result.success) {
+                                    // easiest way to refresh this list, not the prettiest though, might improve this addon one day.
+                                    if (!selected.hasClass('expanded'))
+                                        selected.removeClass('expanded').addClass('collapsed');
+                                    selected.addClass('collapsed');
+                                    selected.find('a').click();
+                                }
+                            });
+                        }
+                    });
+                });
             }
         });
     });

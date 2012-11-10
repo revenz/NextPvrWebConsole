@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NextPvrWebConsole.Validators;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +13,12 @@ namespace NextPvrWebConsole.Models
         public int PostPadding { get; set; }
         public string DefaultRecordingDirectoryRoot { get; set; }
         public bool EnableUserSupport { get; set; }
+        [Range(0, 23)]
+        public int EpgUpdateHour { get; set; }
+        public bool UpdateDvbEpgDuringLiveTv { get; set; }
+        [Required]
+        [Directory]
+        public string LiveTvBufferDirectory { get; set; }
 
         public Configuration()
         {
@@ -19,6 +27,10 @@ namespace NextPvrWebConsole.Models
             this.DefaultRecordingDirectoryRoot = NextPvrConfigHelper.DefaultRecordingDirectory;
             this.PrePadding = NextPvrConfigHelper.PrePadding;
             this.PostPadding = NextPvrConfigHelper.PostPadding;
+
+            this.EpgUpdateHour = NextPvrConfigHelper.EpgUpdateHour;
+            this.UpdateDvbEpgDuringLiveTv = NextPvrConfigHelper.UpdateDvbEpgDuringLiveTv;
+            this.LiveTvBufferDirectory = NextPvrConfigHelper.LiveTvBufferDirectory;
             #endregion
 
             var db = DbHelper.GetDatabase();
@@ -51,8 +63,13 @@ namespace NextPvrWebConsole.Models
         {
             SaveToDatabase();
 
+            NextPvrConfigHelper.EpgUpdateHour = this.EpgUpdateHour;
+            NextPvrConfigHelper.UpdateDvbEpgDuringLiveTv = this.UpdateDvbEpgDuringLiveTv;
+            NextPvrConfigHelper.LiveTvBufferDirectory = this.LiveTvBufferDirectory;
+
             NextPvrConfigHelper.PrePadding = PrePadding;
             NextPvrConfigHelper.PostPadding = PostPadding;
+            /* dont do this until its working, testing against a live system after all....
             NextPvrConfigHelper.DefaultRecordingDirectory = System.IO.Path.Combine(this.DefaultRecordingDirectoryRoot, "Everyone");
 
             List<KeyValuePair<string, string>> recordingDirectories = new List<KeyValuePair<string, string>>();
@@ -71,6 +88,9 @@ namespace NextPvrWebConsole.Models
             }
 
             NextPvrConfigHelper.ExtraRecordingDirectories = recordingDirectories.ToArray();
+             * */
+
+            NextPvrConfigHelper.Save();
         }
 
         private void SaveToDatabase()

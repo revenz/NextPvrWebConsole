@@ -12,6 +12,21 @@ namespace NextPvrWebConsole.Models
     {
         private static SettingsHelper settings = SettingsHelper.GetInstance();
 
+        public static int EpgUpdateHour
+        {
+            get { return settings.GetSetting("/Settings/General/EPGUpdateHour", 2); }
+            set { settings.SetSetting("/Settings/General/EPGUpdateHour", value); }
+        }
+        public static bool UpdateDvbEpgDuringLiveTv
+        {
+            get { return settings.GetSetting("/Settings/General/EPGLiveTVUpdates", false); }
+            set { settings.SetSetting("/Settings/General/EPGLiveTVUpdates", value); }
+        }
+        public static string LiveTvBufferDirectory
+        {
+            get { return settings.GetSetting("/Settings/Recording/LiveTVBufferDirectory", null); }
+            set { settings.SetSetting("/Settings/Recording/LiveTVBufferDirectory", value.EndsWith(@"\") ? value : (value + @"\") ); }
+        }
         public static int PrePadding 
         { 
             get { return settings.GetSetting("/Settings/Recording/PrePadding", 1); }
@@ -105,6 +120,11 @@ namespace NextPvrWebConsole.Models
                 }
                 settings.SetSetting("/Settings/Recording/ExtraRecordingDirectories", value == null ? "" : String.Join("", (from rd in value select "{0}~{1}~".FormatStr(rd.Key, rd.Value)).ToArray()));
             }
+        }
+
+        internal static void Save()
+        {
+            settings.Save();
         }
     }
 }

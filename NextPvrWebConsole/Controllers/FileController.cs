@@ -14,12 +14,13 @@ namespace NextPvrWebConsole.Controllers
     {
         public ActionResult CreateDirectory(string Path, string Name)
         {
-            if (System.IO.Directory.Exists(Path))
+            if (!System.IO.Directory.Exists(Path))
                 return Json(new { success = false, message = "Directory does not exist." });
             try
             {
-                if (System.IO.Directory.CreateDirectory(System.IO.Path.Combine(Path, Name)).Exists)
-                    return Json(new { success = true });
+                string fullpath = System.IO.Path.Combine(Path, Name);
+                if (System.IO.Directory.CreateDirectory(fullpath).Exists)
+                    return Json(new { success = true, path =  fullpath});
                 return Json(new { success = false, message = "Failed to create directory." });
             }
             catch (Exception ex)
