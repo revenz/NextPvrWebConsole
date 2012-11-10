@@ -25,11 +25,11 @@
         @using(Ajax.BeginForm("UpdateGeneral", "Configuration",new AjaxOptions() { OnBegin = "api.onbegin", OnComplete = "api.oncomplete", OnFailure = "api.onfailure", OnSuccess = "api.onsuccess" })) 
         {
             <table>
-                <tr>
+                <tr class="livetvbuffer">
                     <td class="label" data-lang="Live TV Buffer"></td>
                     <td class="value">
-                        @Html.EditorFor(m => modelGeneral.LiveTvBufferDirectory)
-                        @Html.ValidationMessageFor(m => modelGeneral.LiveTvBufferDirectory)
+                        @Html.TextBoxFor(m => modelGeneral.LiveTvBufferDirectory, new { @readonly= "readonly" })
+                        <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
                         <span class="description" data-lang="LiveTvBuffer-Description" />
                     </td>
                 </tr>
@@ -168,10 +168,10 @@
                 </td>
             </tr>
             <tr>
-                <td class="label" data-lang="AvoidDuplicateRecordingsWherePossible"></td>
+                <td class="label" data-lang="AvoidDuplicateRecordings"></td>
                 <td class="value"> 
-                    <input type="checkbox" id="AvoidDuplicateRecordingsWherePossible" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" /> 
-                    <span class="description" data-lang="AvoidDuplicateRecordingsWherePossible-Description" />
+                    <input type="checkbox" id="AvoidDuplicateRecordings" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" /> 
+                    <span class="description" data-lang="AvoidDuplicateRecordings-Description" />
                 </td>
             </tr>
             <tr>
@@ -194,6 +194,12 @@
 </div>
 
 
+<div id="FolderBrowserWindow" style="display:none">
+    @Html.Partial("FileTree")
+</div>
+
+
 @section Scripts{
     @Scripts.Render("~/Scripts/configuration/js")
+    @Scripts.Render("/Scripts/jquery.filetree.js")
 }

@@ -1,0 +1,107 @@
+﻿@import "mixins.less";
+
+UL.jqueryFileTree {
+	font-family: Verdana, sans-serif;
+	font-size: 11px;
+	line-height: 18px;
+	padding: 0;
+	margin: 0;
+    padding-left:20px;
+}
+.jqueryFileTree-container > ul.jqueryFileTree{
+    padding-left:0;
+}
+
+UL.jqueryFileTree LI {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+}
+
+ul.jqueryFileTree a {
+	color: #333;
+	text-decoration: none;
+	display: block;
+	padding: 2px 2px;
+	padding-left: 20px;
+    background-position: 3px 3px;
+    background-repeat:no-repeat;
+}
+
+UL.jqueryFileTree A:hover {
+}
+UL.jqueryFileTree .selected {
+    .rounded;
+    background-color:rgba(36, 123, 255, 0.6);
+}
+
+#FileTree-NewFolder {
+    position:absolute;
+}
+
+/* Core Styles */
+.jqueryFileTree LI.directory > a { background-image: url(images/jquery.filetree/directory.png) ; }
+.jqueryFileTree LI.expanded > a { background-image: url(images/jquery.filetree/folder_open.png) ; }
+.jqueryFileTree LI.hdd > a { background-image: url(images/jquery.filetree/hdd.png) ; }
+.jqueryFileTree LI.file > a { background-image: url(images/jquery.filetree/file.png) ; }
+.jqueryFileTree LI.wait > a { background-image: url(images/jquery.filetree/spinner.gif) ; }
+/* File Extensions*/
+.jqueryFileTree LI.ext_3gp > a { background-image: url(images/jquery.filetree/film.png) ; }
+.jqueryFileTree LI.ext_afp > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_afpa > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_asp > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_aspx > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_avi > a { background-image: url(images/jquery.filetree/film.png) ; }
+.jqueryFileTree LI.ext_bat > a { background-image: url(images/jquery.filetree/application.png) ; }
+.jqueryFileTree LI.ext_bmp > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_c > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_cfm > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_cgi > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_com > a { background-image: url(images/jquery.filetree/application.png) ; }
+.jqueryFileTree LI.ext_cpp > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_css > a { background-image: url(images/jquery.filetree/css.png) ; }
+.jqueryFileTree LI.ext_doc > a { background-image: url(images/jquery.filetree/doc.png) ; }
+.jqueryFileTree LI.ext_exe > a { background-image: url(images/jquery.filetree/application.png) ; }
+.jqueryFileTree LI.ext_gif > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_fla > a { background-image: url(images/jquery.filetree/flash.png) ; }
+.jqueryFileTree LI.ext_h > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_htm > a { background-image: url(images/jquery.filetree/html.png) ; }
+.jqueryFileTree LI.ext_html > a { background-image: url(images/jquery.filetree/html.png) ; }
+.jqueryFileTree LI.ext_jar > a { background-image: url(images/jquery.filetree/java.png) ; }
+.jqueryFileTree LI.ext_jpg > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_jpeg > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_js > a { background-image: url(images/jquery.filetree/script.png) ; }
+.jqueryFileTree LI.ext_lasso > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_log > a { background-image: url(images/jquery.filetree/txt.png) ; }
+.jqueryFileTree LI.ext_m4p > a { background-image: url(images/jquery.filetree/music.png) ; }
+.jqueryFileTree LI.ext_mov > a { background-image: url(images/jquery.filetree/film.png) ; }
+.jqueryFileTree LI.ext_mp3 > a { background-image: url(images/jquery.filetree/music.png) ; }
+.jqueryFileTree LI.ext_mp4 > a { background-image: url(images/jquery.filetree/film.png) ; }
+.jqueryFileTree LI.ext_mpg > a { background-image: url(images/jquery.filetree/film.png) ; }
+.jqueryFileTree LI.ext_mpeg > a { background-image: url(images/jquery.filetree/film.png) ; }
+.jqueryFileTree LI.ext_ogg > a { background-image: url(images/jquery.filetree/music.png) ; }
+.jqueryFileTree LI.ext_pcx > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_pdf > a { background-image: url(images/jquery.filetree/pdf.png) ; }
+.jqueryFileTree LI.ext_php > a { background-image: url(images/jquery.filetree/php.png) ; }
+.jqueryFileTree LI.ext_png > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_ppt > a { background-image: url(images/jquery.filetree/ppt.png) ; }
+.jqueryFileTree LI.ext_psd > a { background-image: url(images/jquery.filetree/psd.png) ; }
+.jqueryFileTree LI.ext_pl > a { background-image: url(images/jquery.filetree/script.png) ; }
+.jqueryFileTree LI.ext_py > a { background-image: url(images/jquery.filetree/script.png) ; }
+.jqueryFileTree LI.ext_rb > a { background-image: url(images/jquery.filetree/ruby.png) ; }
+.jqueryFileTree LI.ext_rbx > a { background-image: url(images/jquery.filetree/ruby.png) ; }
+.jqueryFileTree LI.ext_rhtml > a { background-image: url(images/jquery.filetree/ruby.png) ; }
+.jqueryFileTree LI.ext_rpm > a { background-image: url(images/jquery.filetree/linux.png) ; }
+.jqueryFileTree LI.ext_ruby > a { background-image: url(images/jquery.filetree/ruby.png) ; }
+.jqueryFileTree LI.ext_sql > a { background-image: url(images/jquery.filetree/db.png) ; }
+.jqueryFileTree LI.ext_swf > a { background-image: url(images/jquery.filetree/flash.png) ; }
+.jqueryFileTree LI.ext_tif > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_tiff > a { background-image: url(images/jquery.filetree/picture.png) ; }
+.jqueryFileTree LI.ext_txt > a { background-image: url(images/jquery.filetree/txt.png) ; }
+.jqueryFileTree LI.ext_vb > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_wav > a { background-image: url(images/jquery.filetree/music.png) ; }
+.jqueryFileTree LI.ext_wmv > a { background-image: url(images/jquery.filetree/film.png) ; }
+.jqueryFileTree LI.ext_xls > a { background-image: url(images/jquery.filetree/xls.png) ; }
+.jqueryFileTree LI.ext_xml > a { background-image: url(images/jquery.filetree/code.png) ; }
+.jqueryFileTree LI.ext_zip > a { background-image: url(images/jquery.filetree/zip.png) ; }

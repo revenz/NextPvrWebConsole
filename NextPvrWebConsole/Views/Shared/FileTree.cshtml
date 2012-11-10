@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "FileTree";
+}
+
+@Styles.Render("~/Content/jquery.filelist.less")
+
+<div id="FileTree">
+    <div></div>
+</div>
+
+<script>
+    var filelistLoad = function () {
+        $('#FileTree div').fileTree(
+            {
+                root: '%root%',
+                script: '/file/LoadDirectory',
+            }, function (file) {
+                alert(file);
+            });
+    };
+
+    if (window.addEventListener)
+        window.addEventListener('load', filelistLoad, false);
+    else if (window.attachEvent)
+        window.attachEvent('onload', filelistLoad);
+</script>

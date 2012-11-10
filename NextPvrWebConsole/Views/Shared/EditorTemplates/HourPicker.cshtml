@@ -25,7 +25,7 @@
 <input type="text" value="@time" id="@spinnerid" />
 
 <script>
-    window.onload = function (e) {
+    var HourPickerLoad = function (e) {
         var parent = $('#@id');
         var timeSpinner = $('#@spinnerid').timespinner().keydown(function () { return false; });
         var spinner = parent.siblings('.ui-spinner');
@@ -34,4 +34,10 @@
             parent.val(hour.getHours());
         });
     };
+
+    if (window.addEventListener)
+        window.addEventListener('load', HourPickerLoad, false);
+    else if (window.attachEvent) 
+        window.attachEvent('onload', HourPickerLoad);
+
 </script>

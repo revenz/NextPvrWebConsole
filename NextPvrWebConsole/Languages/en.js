@@ -72,8 +72,8 @@
     'BlockShutdownWhileRecording-Description':          'Set whether shutdown operations should be blocked giving a \'NextPVR is currently recording\' message as the status on the Vista and higher \'force close\' screen.',
     'RecurringMatch'                    :               'Recurring Match',
     'RecurringMatch-Description'        :               'Set the way NextPVR will match the titles of the show when processing season recordings.\nMatch Exact Title will only record the show if the title exactly matches.\nMatch Start Of Title will only record the show if the start of the title matches. For example, setting a season recording for \'The Best TV Show\' will cause \'The Best TV Show : Part 2\' \'The Best TV Show : Part 3\' to also be recorded.',
-    'AvoidDuplicateRecordingsWherePossible':            'Avoid Duplicate Recordings Where Possible',
-    'AvoidDuplicateRecordingsWherePossible-Description': 'Set if NextPVR should not record shows which have previously been recorded. Note that this function requires an EPG which uniquely identifies each show and episode, as of September 2011, only the Schedules Direct EPG source for North America provide this.'
+    'AvoidDuplicateRecordings'          :               'Avoid Duplicate Recordings',
+    'AvoidDuplicateRecordings-Description': 'Set if NextPVR should not record shows which have previously been recorded. Note that this function requires an EPG which uniquely identifies each show and episode, as of September 2011, only the Schedules Direct EPG source for North America provide this.'
 
 
 };
