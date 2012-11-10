@@ -1,0 +1,37 @@
+﻿@model int
+
+@{
+    string time = "";
+    if (Model == 0 || Model == 12){
+        time = "12";
+    }else if (Model < 12){
+        time = Model.ToString();
+    }else {
+        time = (Model - 12).ToString();
+    }
+
+    time += ":00";
+    if (Model < 12){
+        time += " a.m.";
+    } else {
+        time += "p.m.";
+    }
+
+    string id = ViewData.TemplateInfo.HtmlFieldPrefix.Replace(".", "_");
+    string name = ViewData.TemplateInfo.HtmlFieldPrefix;
+    string spinnerid = @id + "_TimeSpinner";
+}
+<input type="text" value="@Model" id="@id" name="@name" style="display:none" />
+<input type="text" value="@time" id="@spinnerid" />
+
+<script>
+    window.onload = function (e) {
+        var parent = $('#@id');
+        var timeSpinner = $('#@spinnerid').timespinner().keydown(function () { return false; });
+        var spinner = parent.siblings('.ui-spinner');
+        spinner.find('.ui-spinner-button').click(function () {
+            var hour = new Date(parseInt(timeSpinner.attr('aria-valuenow'), 10));
+            parent.val(hour.getHours());
+        });
+    };
+</script>

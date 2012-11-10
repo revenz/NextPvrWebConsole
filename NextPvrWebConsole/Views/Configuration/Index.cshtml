@@ -1,5 +1,4 @@
-﻿@model NextPvrWebConsole.Models.Configuration
-@{
+﻿@{
     ViewBag.Title = "Configuration";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -20,38 +19,45 @@
     </ul>
     
     <div class="vtab-content selected" id="configuration-tab-general">
-        <table>
-            <tr>
-                <td class="label" data-lang="Live TV Buffer"></td>
-                <td class="value">
-                    <input type="text" id="LiveTvBuffer" />
-                    <span class="description" data-lang="LiveTvBuffer-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label" data-lang="UpdateDvbEpgDuringLiveTv"></td>
-                <td class="value">
-                    <input type="checkbox" id="UpdateDvbEpgDuringLiveTv" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" /> 
-                    <span class="description" data-lang="UpdateDvbEpgDuringLiveTv-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label" data-lang="EpgUpdateHour"></td>
-                <td class="value">
-                    <input type="number" min="0" max="23" id="EpgUpdateHour" />
-                    <span class="description" data-lang="EpgUpdateHour-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label"></td>
-                <td class="value">
-                    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                        <span class="icon-save icon-large" data-lang="Save"></span>
-                    </button>
-                </td>
-            </tr>
-        </table>
-
+        @{
+            var modelGeneral = new NextPvrWebConsole.Models.ConfigurationModels.GeneralConfiguration();          
+        }
+        @using(Ajax.BeginForm("UpdateGeneral", "Configuration",new AjaxOptions() { OnBegin = "api.onbegin", OnComplete = "api.oncomplete", OnFailure = "api.onfailure", OnSuccess = "api.onsuccess" })) 
+        {
+            <table>
+                <tr>
+                    <td class="label" data-lang="Live TV Buffer"></td>
+                    <td class="value">
+                        @Html.EditorFor(m => modelGeneral.LiveTvBufferDirectory)
+                        @Html.ValidationMessageFor(m => modelGeneral.LiveTvBufferDirectory)
+                        <span class="description" data-lang="LiveTvBuffer-Description" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label" data-lang="UpdateDvbEpgDuringLiveTv"></td>
+                    <td class="value">
+                        @Html.EditorFor(m => modelGeneral.UpdateDvbEpgDuringLiveTv)
+                        <span class="description" data-lang="UpdateDvbEpgDuringLiveTv-Description" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label" data-lang="EpgUpdateHour"></td>
+                    <td class="value">
+                        @Html.EditorFor(m => modelGeneral.EpgUpdateHour, "HourPicker")
+                        @Html.ValidationMessageFor(m => modelGeneral.EpgUpdateHour)
+                        <span class="description" data-lang="EpgUpdateHour-Description" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"></td>
+                    <td class="value">
+                        <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                            <span class="icon-save icon-large" data-lang="Save"></span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        }
         
     </div>
     <div class="vtab-content" id="configuration-tab-devices">
@@ -135,14 +141,12 @@
             <tr>
                 <td class="label" data-lang="Pre-Padding"></td>
                 <td class="value">
-                    @Html.EditorFor(m => m.PrePadding)
                     <span class="description" data-lang="PrePadding-Description" />
                 </td>
             </tr>
             <tr>
                 <td class="label" data-lang="Post-Padding"></td>
                 <td class="value">
-                    @Html.EditorFor(m => m.PostPadding)
                     <span class="description" data-lang="PostPadding-Description" />
                 </td>
             </tr>

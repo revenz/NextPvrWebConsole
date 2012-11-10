@@ -57,6 +57,19 @@ var api = new function()
     this.deleteJSON = function (url, data, callback, errorCallback) {
         _json('DELETE', url, data, callback, errorCallback);
     };
+
+    this.oncomplete = function () {
+        console.log('completed');
+    }
+    this.onbegin = function () {
+        console.log('begin');
+    }
+    this.onsuccess = function () {
+        console.log('success');
+    }
+    this.onfailure = function () {
+        console.log('failure');
+    }
 }
 
 var npvrevent;

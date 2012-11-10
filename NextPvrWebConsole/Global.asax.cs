@@ -21,6 +21,10 @@ namespace NextPvrWebConsole
 
             AreaRegistration.RegisterAllAreas();
 
+            // Register CustomRegularExpressionValidator
+            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.DirectoryAttribute), typeof(Validators.DirectoryValidator));
+
+
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
