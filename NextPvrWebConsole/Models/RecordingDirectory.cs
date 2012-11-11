@@ -13,6 +13,7 @@ namespace NextPvrWebConsole.Models
         public int Oid { get; set; }
         public int UserOid { get; set; }
         public string Path { get; set; }
+        public bool IsDefault { get; set; }
         /// <summary>
         /// Gets or sets teh RecordingDirectoryId used by NextPVR to identify the directory, this should be "{Username} - {Name}"
         /// </summary>

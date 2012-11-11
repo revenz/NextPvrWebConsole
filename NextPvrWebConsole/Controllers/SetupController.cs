@@ -38,7 +38,7 @@ namespace NextPvrWebConsole.Controllers
             KeyValuePair<string, string>[] extras = Models.NextPvrConfigHelper.ExtraRecordingDirectories;
 
             if (!String.IsNullOrWhiteSpace(defaultRecordingDirectory))
-                new Models.RecordingDirectory() { Name = "Default", UserOid = Globals.SHARED_USER_OID, Path = defaultRecordingDirectory, RecordingDirectoryId = Models.RecordingDirectory.GetRecordingDirectoryId(Globals.SHARED_USER_USERNAME, "Default") }.Save();
+                new Models.RecordingDirectory() { Name = "Default", UserOid = Globals.SHARED_USER_OID, Path = defaultRecordingDirectory, RecordingDirectoryId = Models.RecordingDirectory.GetRecordingDirectoryId(Globals.SHARED_USER_USERNAME, "Default"), IsDefault = true }.Save();
             foreach (var extra in extras)
                 new Models.RecordingDirectory() { Name = extra.Key, UserOid = Globals.SHARED_USER_OID, Path = extra.Value, RecordingDirectoryId = Models.RecordingDirectory.GetRecordingDirectoryId(Globals.SHARED_USER_USERNAME, extra.Key) }.Save();
 

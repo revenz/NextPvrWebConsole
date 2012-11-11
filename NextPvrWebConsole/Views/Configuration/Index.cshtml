@@ -140,8 +140,6 @@
         @{
             var modelRecording = (NextPvrWebConsole.Models.ConfigurationModels.RecordingConfiguration)ViewBag.RecordingModel;
         }
-        @using(Ajax.BeginForm("UpdateRecording", "Configuration",new AjaxOptions() { OnBegin = "api.onbegin", OnComplete = "api.oncomplete", OnFailure = "api.onfailure", OnSuccess = "api.onsuccess" })) 
-        {
         <table>
             <tr>
                 <td class="label" data-lang="Pre-Padding"></td>
@@ -178,30 +176,37 @@
                     <span class="description" data-lang="AvoidDuplicateRecordings-Description" />
                 </td>
             </tr>
-            <tr>
+            <tr class="recording-directories">
                 <td class="label" data-lang="Recording Directories"></td>
                 <td class="value">
-                    <ul>
-                        @foreach(var rd in modelRecording.RecordingDirectories)
-                        {
-                        <li data-oid="@rd.Oid">
-                            <span class="name">@rd.Name</span>
-                            <span class="path">@rd.Path</span>
+                    <ul data-bind="foreach: recordingDirectories">
+                        <li>
+                            <div class="controls">
+                                <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
+                                    <span class="icon-trash icon-large" data-lang="Delete"></span>
+                                </button>
+                            </div>
+                            <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, checked: isDefault" />
+                            <label data-bind="attr: { for : 'recording-directory-default-' + $index() }">
+                                <span class="name" data-bind="text: name"></span>
+                                <span class="path" data-bind="text: path"></span>
+                            </label>
                         </li>
-                        }
-                    </ul>
+                    </ul>    
+                    <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: add">
+                        <span class="icon-plus icon-large" data-lang="Add Recording Folder"></span>
+                    </button>                
                 </td>
             </tr>
             <tr>
                 <td class="label"></td>
                 <td class="value">
-                    <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <button id="btnRecordingsSave" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
                         <span class="icon-save icon-large" data-lang="Save"></span>
                     </button>
                 </td>
             </tr>
         </table>
-        }
     </div>
 
 </div>
@@ -213,6 +218,16 @@
 
 
 @section Scripts{
+    <script>
+        var recordingDirectories = new Array();
+        $(function(){
+        @foreach(var rd in modelRecording.RecordingDirectories)
+        {
+            <text>recordingDirectories.push(new RecordingDirectory( { Oid: @rd.Oid, Name: "@rd.Name", Path: "@rd.Path.Replace(@"\", @"\\")", IsDefault: @rd.IsDefault.ToString().ToLower() }) );</text>
+        }
+        });
+    </script>
+
     @Scripts.Render("~/Scripts/configuration/js")
     @Scripts.Render("/Scripts/jquery.filetree.js")
 }

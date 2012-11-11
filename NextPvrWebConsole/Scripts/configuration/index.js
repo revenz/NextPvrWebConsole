@@ -5,6 +5,55 @@
 
 $(function () {
 
+    var dirRegularExpression = '^([^"*/:?|<>\\\\.\\x00-\\x20]([^"*/:?|<>\\\\\\x00-\\x1F]*[^"*/:?|<>\\\\.\\x00-\\x20])?)$';
+    var dirErrorMessage = $.i18n._('Invalid folder name');
+
+    function RecordingDirectoriesViewModel() {
+        // Data
+        var self = this;
+
+        self.add = function () {
+            ShowFolderBrowser(function (dir) {
+                gui.promptMessage({
+                    title: $.i18n._('Create Recording Folder'),
+                    message: $.i18n._('Type in the name of the folder to create.'),
+                    validationMessage: dirErrorMessage,
+                    validationExpression: dirRegularExpression,
+                    success: function (name) {
+                        self.recordingDirectories.push(new RecordingDirectory({ Oid: 0, Name: name, Path: dir, IsDefault: false }));
+                    }
+                });
+            });
+        }
+
+        self.remove = function (recordingDirectory) {
+            self.recordingDirectories.remove(recordingDirectory);
+        };
+
+        self.recordingDirectories = ko.observableArray(recordingDirectories);
+
+        $('#btnRecordingsSave').click(function () {
+            var recordings = new Array();
+            $.each(self.recordingDirectories(), function (i, ele) {
+                recordings.push(ele.toApiObject());
+            });
+            console.log(recordings);
+            ajax.postJSON('Configuration/UpdateRecording',
+                {
+                    PrePadding: $('#modelRecording_PrePadding').val(),
+                    PostPadding: $('#modelRecording_PostPadding').val(),
+                    BlockShutDownWhileRecording: $('#modelRecording_BlockShutDownWhileRecording:checked').length > 0,
+                    RecurringMatch: $('#modelRecording_RecurringMatch :selected').val(),
+                    AvoidDuplicateRecordings: $('#modelRecording__AvoidDuplicateRecordings:checked').length > 0,
+                    RecordingDirectories: recordings
+                    },
+                function () {
+                    console.log('success');
+                });
+        });
+    }
+    ko.applyBindings(new RecordingDirectoriesViewModel(), $('#RecordingDirectories').get(0));
+
     $.each($('.configuration.vtab-container input[type=number]'), function (i, ele) {
         var $ele = $(ele);
         var min = parseInt($ele.attr('data-val-range-min'), 10);
@@ -16,12 +65,18 @@ $(function () {
     });
 
     $('#btnLiveTvBufferBrowse').click(function () {
-        
+        ShowFolderBrowser(function (dir) {
+            $('[id$=LiveTvBufferDirectory]').val(dir);
+        });
+    });
+
+    function ShowFolderBrowser(callback) {
+
         var dialog_buttons = {};
         dialog_buttons[$.i18n._("OK")] = function () {
             var dir = $('#FolderBrowserWindow').find('.selected').attr('rel');
-            $('[id$=LiveTvBufferDirectory]').val(dir);
-            // get selected folder...
+            if (callback)
+                callback(dir);
             dialog.dialog('close');
         };
         dialog_buttons[$.i18n._("Cancel")] = function () { dialog.dialog('close'); };
@@ -34,7 +89,7 @@ $(function () {
             modal: true,
             open: function () {
                 var buttonpane = $('#FolderBrowserWindow').closest('.ui-dialog').find('.ui-dialog-buttonpane');
-                buttonpane.prepend('<button id="FileTree-NewFolder" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span></span></button>');                
+                buttonpane.prepend('<button id="FileTree-NewFolder" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span></span></button>');
                 var btnNewFolder = buttonpane.find('#FileTree-NewFolder');
                 btnNewFolder.find('span').text($.i18n._('New Folder'));
                 btnNewFolder.click(function () {
@@ -43,8 +98,8 @@ $(function () {
                     gui.promptMessage({
                         title: $.i18n._('Create Folder'),
                         message: $.i18n._('Type in the name of the folder to create.'),
-                        validationMessage: $.i18n._('Invalid folder name'),
-                        validationExpression: '^([^"*/:?|<>\\\\.\\x00-\\x20]([^"*/:?|<>\\\\\\x00-\\x1F]*[^"*/:?|<>\\\\.\\x00-\\x20])?)$',
+                        validationMessage: dirErrorMessage,
+                        validationExpression: dirRegularExpression,
                         success: function (name) {
                             ajax.postJSON('File/CreateDirectory', { path: path, name: name }, function (result) {
                                 if (result.success) {
@@ -60,5 +115,5 @@ $(function () {
                 });
             }
         });
-    });
+    }
 });

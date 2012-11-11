@@ -28,6 +28,7 @@ namespace NextPvrWebConsole.Controllers
             RecordingModel.PostPadding = config.PostPadding;
             RecordingModel.PrePadding = config.PrePadding;
             RecordingModel.RecurringMatch = config.RecurringMatch;
+            RecordingModel.RecordingDirectories = Models.RecordingDirectory.LoadForUser(Globals.SHARED_USER_OID);
 
             ViewBag.GeneralModel = GeneralModel;
             ViewBag.RecordingModel = RecordingModel;
