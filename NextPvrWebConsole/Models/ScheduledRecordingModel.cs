@@ -11,7 +11,7 @@ namespace NextPvrWebConsole.Models
         {
             // step 1, get all allowed recording directories for the user
             Dictionary<string, string> allRecordingDirectories = NextPvrConfigHelper.GetAllRecordingDirectories(UserOid);
-            var recordingDirectories = RecordingDirectory.LoadForUser(UserOid, IncludeShared).Select(x=> x.FullPath).ToArray();
+            var recordingDirectories = RecordingDirectory.LoadForUser(UserOid, IncludeShared).Select(x=> x.Path).ToArray();
             // step 2, get all allowed reoccuring recordings
             var reoccuring = new List<int>();
             foreach (var r in NUtility.RecurringRecording.LoadAll())

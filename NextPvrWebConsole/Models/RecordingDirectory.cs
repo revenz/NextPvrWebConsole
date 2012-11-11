@@ -10,8 +10,9 @@ namespace NextPvrWebConsole.Models
     public class RecordingDirectory
     {
         public string Name { get; set; }
-        public string Oid { get; set; }
+        public int Oid { get; set; }
         public int UserOid { get; set; }
+        public string Path { get; set; }
         /// <summary>
         /// Gets or sets teh RecordingDirectoryId used by NextPVR to identify the directory, this should be "{Username} - {Name}"
         /// </summary>
@@ -19,35 +20,17 @@ namespace NextPvrWebConsole.Models
         [PetaPoco.ResultColumn]
         public string ShortName { get; set; }
 
-        private string _FullPath;
-        [PetaPoco.Ignore]
-        public string FullPath
-        {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(_FullPath))
-                {
-                    if (!String.IsNullOrWhiteSpace(this.ShortName))
-                        _FullPath = System.IO.Path.Combine(new Configuration().DefaultRecordingDirectoryRoot, this.ShortName);
-                    else
-                        _FullPath = System.IO.Path.Combine(new Configuration().DefaultRecordingDirectoryRoot, User.GetUsername(this.UserOid), Name);
-                }
-                return _FullPath;
-            }
-        }
-
         public static List<RecordingDirectory> LoadForUser(int UserOid, bool IncludeShared = false)
         {
+            var db = DbHelper.GetDatabase();
             var config = new Configuration();
             if (config.EnableUserSupport)
             {
-                var db = DbHelper.GetDatabase();
-                return db.Fetch<RecordingDirectory>("select * from recordingdirectory where useroid = @0" + (IncludeShared ? " or useroid is null" : ""), UserOid);
+                return db.Fetch<RecordingDirectory>("select * from recordingdirectory where useroid = @0 or useroid = @1", UserOid, Globals.SHARED_USER_OID);
             }
             else
             {
-                // return default recording folder(s). // TODO: Add support for more than one default folder
-                return new RecordingDirectory[] { new RecordingDirectory() { Oid = String.Empty, Name = "Default", UserOid = 0 } }.ToList();
+                return db.Fetch<RecordingDirectory>("select * from recordingdirectory where useroid = @0", Globals.SHARED_USER_OID);
             }
         }
 
@@ -77,5 +60,12 @@ namespace NextPvrWebConsole.Models
             return "{0} - {1}".FormatStr(Username, RecordingDirectoryName);
         }
 
+
+        public void Save()
+        {
+            var db = DbHelper.GetDatabase();
+            if (this.Oid == 0)
+                db.Insert("recordingdirectory", "oid", true, this);
+        }
     }
 }

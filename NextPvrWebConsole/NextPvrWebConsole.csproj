@@ -274,6 +274,9 @@
     <Compile Include="MyMembershipProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\DirectoryAttribute.cs" />
+    <Compile Include="Validators\EmailAttribute.cs" />
+    <Compile Include="Models\SetupModel.cs" />
+    <Compile Include="Validators\UsernameAttribute.cs" />
     <Compile Include="Workers\DeviceWatcher.cs" />
     <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\addons\toastr.css" />
@@ -408,6 +411,7 @@
     <Content Include="Content\themes\bootstrap\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\bootstrap\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\bootstrap\images\ui-icons_f6cf3b_256x240.png" />
+    <Content Include="Content\setup\index.less" />
     <None Include="Content\themes\bootstrap\icons.less" />
     <Content Include="Content\themes\bootstrap\inputs.less" />
     <None Include="Content\themes\bootstrap\jquery.accordion.less" />
@@ -534,16 +538,8 @@
     <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
     <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\Manage.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_LoginPartial.cshtml" />

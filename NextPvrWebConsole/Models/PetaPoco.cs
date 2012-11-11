@@ -759,7 +759,7 @@ namespace PetaPoco
 					}
 					catch (Exception x)
 					{
-						OnException(x);
+                        OnException(x);
 						throw;
 					}
 					var factory = pd.GetFactory(cmd.CommandText, _sharedConnection.ConnectionString, ForceDateTimesToUtc, 0, r.FieldCount, r) as Func<IDataReader, T>;

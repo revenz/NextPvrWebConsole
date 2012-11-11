@@ -72,16 +72,15 @@ namespace NextPvrWebConsole.Models
                 var prop = type.GetProperty(name);
                 if (prop == null)
                     continue;
-                var proptype = prop.GetType();
-                if (proptype == typeof(int))
-                    prop.SetValue(this, d.intvalue, null);
-                else if(proptype == typeof(string))
+                if (prop.PropertyType == typeof(int))
+                    prop.SetValue(this, (int)d.intvalue, null);
+                else if(prop.PropertyType == typeof(string))
                     prop.SetValue(this, d.stringvalue, null);
-                else if (proptype == typeof(double))
+                else if (prop.PropertyType == typeof(double))
                     prop.SetValue(this, d.doublevalue, null);
-                else if (proptype == typeof(bool))
+                else if (prop.PropertyType == typeof(bool))
                     prop.SetValue(this, d.boolvalue, null);
-                else if (proptype == typeof(DateTime))
+                else if (prop.PropertyType == typeof(DateTime))
                     prop.SetValue(this, d.datetimevalue, null);
             }
             if(!found)

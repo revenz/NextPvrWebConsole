@@ -75,5 +75,7 @@
     'AvoidDuplicateRecordings'          :               'Avoid Duplicate Recordings',
     'AvoidDuplicateRecordings-Description':             'Set if NextPVR should not record shows which have previously been recorded. Note that this function requires an EPG which uniquely identifies each show and episode, as of September 2011, only the Schedules Direct EPG source for North America provide this.',
     'RecurringMatchType-Exact'          :               'Match Exact Title',
-    'RecurringMatchType-Start'          :               'Match Start Of Title'
+    'RecurringMatchType-Start'          :               'Match Start Of Title',
+    'Setup-Title'                       :               'Welcome to NextPVR Webconsole Setup',
+    'Setup-Description'                 :               'You will need to create a administrative user to continue.   Once created you will be able to login and use the NextPVR Webconsole.'
 };

@@ -33,6 +33,7 @@ CREATE TABLE [recordingdirectory]
 	oid						integer				NOT NULL			PRIMARY KEY				AUTOINCREMENT,
 	useroid					integer				NOT NULL			REFERENCES [user](oid),
 	name					varchar(50)			NOT NULL,
+	[path]					text				NOT NULL,
 	recordingdirectoryid	varchar(250)		NOT NULL
 )
 GO

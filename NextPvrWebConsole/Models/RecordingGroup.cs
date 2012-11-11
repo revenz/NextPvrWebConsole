@@ -25,7 +25,7 @@ namespace NextPvrWebConsole.Models
         {
             Dictionary<int, NUtility.RecurringRecording> recurringRecordings = NUtility.RecurringRecording.LoadAll().ToDictionary(x => x.OID); // get in memory
             List<NUtility.ScheduledRecording> data = NUtility.ScheduledRecording.LoadAll(); // get in memory
-            Dictionary<string, Models.RecordingDirectory> recordingDirectories = Models.RecordingDirectory.LoadAll().ToDictionary(x => x.FullPath.ToLower()); // get in memory
+            Dictionary<string, Models.RecordingDirectory> recordingDirectories = Models.RecordingDirectory.LoadAll().ToDictionary(x => x.Path.ToLower()); // get in memory
             Dictionary<string, Models.RecordingDirectory> recordingDirectoriesNpvrIdIndex = Models.RecordingDirectory.LoadAll().ToDictionary(x => x.RecordingDirectoryId); // get in memory
             SortedDictionary<string, RecordingGroup> results = new SortedDictionary<string, RecordingGroup>();       
 

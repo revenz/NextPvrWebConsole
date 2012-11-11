@@ -38,6 +38,17 @@ namespace NextPvrWebConsole
                         "~/Scripts/apihelper.js",
                         "~/Scripts/startup.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/setup").Include(
+                        "~/Scripts/core/jquery-{version}.js",
+                        "~/Scripts/core/jquery-ui-{version}.js",
+                        "~/Scripts/core/jquery.unobtrusive-ajax",
+                        "~/Scripts/core/jquery.validate*",
+                        "~/Scripts/core/jquery.unobtrusive*",
+                        "~/Scripts/core/jquery.validate.unobtrusive",
+                        "~/Scripts/core/jquery.i18n.js",
+                        "~/Scripts/translator.js"
+                ));
+
             bundles.Add(new ScriptBundle("~/bundles/api.js").IncludeDirectory("~/Scripts/api-wrappers", "*.js"));
 
             var cssBundle = new Bundle("~/Content/css").Include(
@@ -63,6 +74,7 @@ namespace NextPvrWebConsole
             PageBundle(bundles, "UserSettings");
             PageBundle(bundles, "Configuration");
             PageBundle(bundles, "Accounts");
+            PageBundle(bundles, "Setup");
 
             // this allows bundling when in debug mode
             //BundleTable.EnableOptimizations = true;   

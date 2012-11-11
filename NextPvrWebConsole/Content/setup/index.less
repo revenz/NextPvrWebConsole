@@ -5,21 +5,25 @@ html {
     height:auto !important;
     height:100%;
 }
-.login-page {
+.setup-page {
     height:100%;
+	
+	h1 {
+		margin:0;
+	}
 }
-.login-page-wrapper {
+.setup-page-wrapper {
     position:absolute;
     left:0;
     right:0;
     top:0;
     bottom:0;
-    height:440px;
-    width:540px;
+    height:660px;
+    width:640px;
     margin:auto;
 	background:transparent url('/Content/images/logo.png') no-repeat 10px 0;
 }
-.login-page-content {
+.setup-page-content {
 	position:absolute;
 	bottom:50px;
 	left:0;
@@ -29,7 +33,7 @@ html {
 	border:solid 1px #d3d3d3;
 	padding:30px;
 }
-#loginForm form
+.setup-page form
 {
 	font-size:1.5em;
 	> ul, > ul li
@@ -45,24 +49,19 @@ html {
 	input[type=text],input[type=password] {
 		font-size:1.5em;
 		padding: 0 15px;
-		width:440px
+		width:540px
 	}
 	input[type=password] {
 		letter-spacing:10px;
 	}
-	.rememberme {
-		input, span, label {
-			display:inline-block;
-		}
-	}
-	button{
+	button, input[type=submit]{
 		margin-top:20px;
 		font-size:1.1em;
 		position:absolute;
-		bottom:60px;
+		bottom:20px;
 		right:40px;
 	}
-	.field-validation-error, .field-validation-valid{ 
+	.field-validation-error, .field-validation-valid { 
 		color:red;
 		font-style:italic;
 		font-size:0.6em;

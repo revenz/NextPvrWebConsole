@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Net.Http.Formatting;
+using System.Text.RegularExpressions;
 
 namespace NextPvrWebConsole
 {
@@ -23,6 +24,8 @@ namespace NextPvrWebConsole
 
             // Register CustomRegularExpressionValidator
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.DirectoryAttribute), typeof(Validators.DirectoryValidator));
+            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.EmailAttribute), typeof(Validators.EmailValidator));
+            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.UsernameAttribute), typeof(Validators.UsernameValidator));
 
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -42,17 +45,15 @@ namespace NextPvrWebConsole
             Models.Configuration config = new Models.Configuration();
         }
 
-        public void Session_Start()
+        public void Application_BeginRequest()
         {
-            Models.Configuration config = new Models.Configuration();
-            if (config.FirstRun)
-                HttpContext.Current.Response.Redirect("~/Setup");
-
-        }
-
-        public void Begin_Request()
-        {
-
+            string url = Request.Url.ToString().ToLower();
+            if (!Regex.IsMatch(url, "/(setup|bundle|scripts|content|languages)"))
+            {
+                Models.Configuration config = new Models.Configuration();
+                if (config.FirstRun)
+                    HttpContext.Current.Response.Redirect("~/Setup");
+            }
         }
     }
 }

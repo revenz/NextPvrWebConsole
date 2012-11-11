@@ -1,4 +1,6 @@
-﻿@{
+﻿@model NextPvrWebConsole.Models.SetupModel
+
+@{
     Layout = null;
 }
 
@@ -7,13 +9,55 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div>
-        
-        welcome to the initial configuration page...
+    <title data-lang="NextPVR Webconsole Setup"></title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/bootstrap/css")  
+    @Styles.Render("~/Content/setup/css")  
 
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/languages/en.js")       
+</head>
+<body class="setup-page">
+
+    <div class="setup-page-wrapper">
+
+        <div class="setup-page-content">
+
+            <h1 data-lang="Setup-Title"></h1>
+
+            <div class="description" data-lang="Setup-Description"></div>
+        
+            @using(Html.BeginForm())
+            {
+            <ul>
+                <li>
+                    <span data-lang="Username"></span>
+                    @Html.EditorFor(m => Model.Username)
+                    @Html.ValidationMessageFor(m => Model.Username)
+                </li>
+                <li>
+                    <span data-lang="Email Address"></span>
+                    @Html.EditorFor(m => Model.EmailAddress)
+                    @Html.ValidationMessageFor(m => Model.EmailAddress)
+                </li>
+                <li>
+                    <span data-lang="Password"></span>
+                    @Html.EditorFor(m => Model.Password)
+                    @Html.ValidationMessageFor(m => Model.Password)
+                </li>
+                <li>
+                    <span data-lang="Confirm Password"></span>
+                    @Html.EditorFor(m => Model.ConfirmPassword)
+                    @Html.ValidationMessageFor(m => Model.ConfirmPassword)
+                </li>    
+                <li>
+                    <button data-lang="Continue" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
+                </li>      
+            </ul>
+            }
+        </div>
     </div>
+    
+    @Scripts.Render("~/bundles/setup")
 </body>
 </html>
