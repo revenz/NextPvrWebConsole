@@ -12,6 +12,11 @@ $(function () {
         // Data
         var self = this;
 
+        self.selectedDefault = ko.observable();
+        for (var i = 0; i < recordingDirectories.length; i++)
+            if (recordingDirectories[i].isDefault)
+                self.selectedDefault(i);
+
         self.add = function () {
             ShowFolderBrowser(function (dir) {
                 gui.promptMessage({
@@ -26,7 +31,13 @@ $(function () {
             });
         }
 
+        $('.recording-directories').on('click.recordingdirectories', 'input[type=radio]', function () {
+            self.selectedDefault(parseInt($(this).val(), 10));
+        });
+
         self.remove = function (recordingDirectory) {
+            if (recordingDirectory.isDefault())
+                self.selectedDefault(0);
             self.recordingDirectories.remove(recordingDirectory);
         };
 
@@ -34,11 +45,16 @@ $(function () {
 
         $('#btnRecordingsSave').click(function () {
             var recordings = new Array();
+            console.log('default: ' + self.selectedDefault());
             $.each(self.recordingDirectories(), function (i, ele) {
+                ele.isDefault(i == self.selectedDefault());
+                console.log(ele.toApiObject());
                 recordings.push(ele.toApiObject());
             });
-            console.log(recordings);
-            ajax.postJSON('Configuration/UpdateRecording',
+            if (recordings.length == 0) {
+                gui.showError($.i18n._('At least one recording directory is required.'));
+            } else {
+                ajax.postJSON('Configuration/UpdateRecording',
                 {
                     PrePadding: $('#modelRecording_PrePadding').val(),
                     PostPadding: $('#modelRecording_PostPadding').val(),
@@ -46,10 +62,11 @@ $(function () {
                     RecurringMatch: $('#modelRecording_RecurringMatch :selected').val(),
                     AvoidDuplicateRecordings: $('#modelRecording__AvoidDuplicateRecordings:checked').length > 0,
                     RecordingDirectories: recordings
-                    },
+                },
                 function () {
                     console.log('success');
                 });
+            }
         });
     }
     ko.applyBindings(new RecordingDirectoriesViewModel(), $('#RecordingDirectories').get(0));

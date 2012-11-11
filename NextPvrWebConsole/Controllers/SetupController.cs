@@ -38,14 +38,14 @@ namespace NextPvrWebConsole.Controllers
             KeyValuePair<string, string>[] extras = Models.NextPvrConfigHelper.ExtraRecordingDirectories;
 
             if (!String.IsNullOrWhiteSpace(defaultRecordingDirectory))
-                new Models.RecordingDirectory() { Name = "Default", UserOid = Globals.SHARED_USER_OID, Path = defaultRecordingDirectory, RecordingDirectoryId = Models.RecordingDirectory.GetRecordingDirectoryId(Globals.SHARED_USER_USERNAME, "Default"), IsDefault = true }.Save();
+                new Models.RecordingDirectory() { Name = "Default", UserOid = Globals.SHARED_USER_OID, Path = defaultRecordingDirectory, Username = Globals.SHARED_USER_USERNAME, IsDefault = true }.Save();
             foreach (var extra in extras)
-                new Models.RecordingDirectory() { Name = extra.Key, UserOid = Globals.SHARED_USER_OID, Path = extra.Value, RecordingDirectoryId = Models.RecordingDirectory.GetRecordingDirectoryId(Globals.SHARED_USER_USERNAME, extra.Key) }.Save();
+                new Models.RecordingDirectory() { Name = extra.Key, UserOid = Globals.SHARED_USER_OID, Path = extra.Value, Username = Globals.SHARED_USER_USERNAME }.Save();
 
             // create user, do this after importing folders, otherwise this users new folder with have an oid lower than the origial defaults (not a big deal, just prettier this way)
             var user = Models.User.CreateUser(Model.Username, Model.EmailAddress, Model.Password);
             if (user == null)
-                throw new Exception("Failed to create user: " + user.Username);
+                throw new Exception("Failed to create user: " + Model.Username);
 
             WebMatrix.WebData.WebSecurity.Login(Model.Username, Model.Password);
 

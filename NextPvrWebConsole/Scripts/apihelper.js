@@ -17,8 +17,17 @@ var ajax = new function () {
             statusCode:
             {
                 200: function (data) {
+                    if(data != null && data._error == true)
+                    {                         
+                        var msg = data.message ? data.message : 'An unexpected server error occurred.';
+                        if (errorCallback)
+                            errorCallback(msg);
+                        else
+                            gui.showError(msg);
+                    } else {
                     if (callback)
                         callback(data);
+                    }
                 },
                 204: function (data) /* no data, usually from a delete action */ {
                     if (callback)
@@ -28,7 +37,7 @@ var ajax = new function () {
                     self.location = '/Account/Login/';
                 },
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {            
                 var error = $.parseJSON(jqXHR.responseText);
                 var msg = error && error.message ? error.message : 'An unexpected server error occurred.';
                 if (errorCallback)

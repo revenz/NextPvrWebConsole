@@ -183,10 +183,10 @@
                         <li>
                             <div class="controls">
                                 <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
-                                    <span class="icon-trash icon-large" data-lang="Delete"></span>
+                                    <span class="icon-remove icon-large" data-lang="Remove"></span>
                                 </button>
                             </div>
-                            <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, checked: isDefault" />
+                            <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, value:$index, checked: $root.selectedDefault" />
                             <label data-bind="attr: { for : 'recording-directory-default-' + $index() }">
                                 <span class="name" data-bind="text: name"></span>
                                 <span class="path" data-bind="text: path"></span>

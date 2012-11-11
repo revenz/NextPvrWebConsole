@@ -6,7 +6,6 @@
     self.name = ko.observable(data.Name);
     self.path = ko.observable(data.Path);
     self.isDefault = ko.observable(data.IsDefault);
-
     self.toApiObject = function () {
         data.Oid = self.oid();
         data.Name = self.name();

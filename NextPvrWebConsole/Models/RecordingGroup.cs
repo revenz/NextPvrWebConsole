@@ -63,7 +63,8 @@ namespace NextPvrWebConsole.Models
                 if (!results.ContainsKey(sr.Name))
                     results.Add(sr.Name, new RecordingGroup(sr.Name));
 
-                results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectory = recordingDirectory == null ? "" : recordingDirectory.ShortName });
+                throw new Exception("Have to fix this, removed recordingDirectory.ShortName.");
+                //results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectory = recordingDirectory == null ? "" : recordingDirectory.ShortName });
             }
 
             return results.Values.ToArray();

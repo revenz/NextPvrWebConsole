@@ -103,8 +103,7 @@ namespace NextPvrWebConsole.Models
                 }
 
                 // create default recording directory
-
-                db.Execute("insert into [recordingdirectory](useroid, name, recordingdirectoryid, isdefault, path) values (@0, @1, @2, 1, '')", user.Oid, "Default", RecordingDirectory.GetRecordingDirectoryId(user.Username, "Default"));
+                db.Execute("insert into [recordingdirectory](useroid, name, isdefault, path) values (@0, @1, 1, '')", user.Oid, "Default");
 
                 db.CompleteTransaction();
 

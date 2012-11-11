@@ -734,10 +734,10 @@ namespace PetaPoco
 			return Fetch<T>(sqlPage, args);
 		}
 
-		public List<T> SkipTake<T>(long skip, long take, Sql sql)
-		{
-			return SkipTake<T>(skip, take, sql.SQL, sql.Arguments);
-		}
+        public List<T> SkipTake<T>(long skip, long take, Sql sql)
+        {
+            return SkipTake<T>(skip, take, sql.SQL, sql.Arguments);
+        }
 
 		// Return an enumerable collection of pocos
 		public IEnumerable<T> Query<T>(string sql, params object[] args) 

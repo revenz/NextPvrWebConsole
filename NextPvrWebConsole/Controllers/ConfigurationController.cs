@@ -44,6 +44,11 @@ namespace NextPvrWebConsole.Controllers
         [HttpPost]
         public ActionResult UpdateRecording(Models.ConfigurationModels.RecordingConfiguration ModelRecording)
         {
+            // save recording directories
+            if (ModelRecording.RecordingDirectories == null || ModelRecording.RecordingDirectories.Count == 0)
+                return Json(new { _error = true, message = "At least one recording directory is required." });
+            if (ModelState.IsValid && !Models.RecordingDirectory.SaveForUser(Globals.SHARED_USER_OID, ModelRecording.RecordingDirectories))
+                return Json(new { _error = true, message = "Failed to save recording directories." });
             return SaveConfig(ModelRecording);
         }
 

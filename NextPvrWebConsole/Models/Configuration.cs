@@ -103,26 +103,34 @@ namespace NextPvrWebConsole.Models
             NextPvrConfigHelper.AvoidDuplicateRecordings = this.AvoidDuplicateRecordings;
             NextPvrConfigHelper.BlockShutDownWhileRecording = this.BlockShutDownWhileRecording;
             NextPvrConfigHelper.RecurringMatch = this.RecurringMatch;
-            /* dont do this until its working, testing against a live system after all....
-            NextPvrConfigHelper.DefaultRecordingDirectory = System.IO.Path.Combine(this.DefaultRecordingDirectoryRoot, "Everyone");
 
-            List<KeyValuePair<string, string>> recordingDirectories = new List<KeyValuePair<string, string>>();
-            if (EnableUserSupport)
+            #region recording folders
+
+            // first do shared
+            var sharedRecordingDirectories = Models.RecordingDirectory.LoadForUser(Globals.SHARED_USER_OID);
+            Models.RecordingDirectory defaultDir = null;
+            if (sharedRecordingDirectories.Count > 0)
             {
-                var users = Models.User.LoadAll();
-                foreach (var user in users)
-                {
-                    var userDirectories = RecordingDirectory.LoadForUser(user.Oid);
-                    if (userDirectories.Count == 0)
-                        userDirectories.Add(RecordingDirectory.Create(user.Oid, "Default")); // no directories for the user, create the default one
-
-                    recordingDirectories.AddRange(userDirectories.Select(x => new KeyValuePair<string, string>("{0}-{1}".FormatStr(user.Username, x.Name),
-                                                                                                               System.IO.Path.Combine(this.DefaultRecordingDirectoryRoot, user.Username, x.Name))));
-                }
+                // only update if there is at least one directory.
+                defaultDir = sharedRecordingDirectories.Where(x => x.IsDefault).FirstOrDefault();
+                if (defaultDir == null)
+                    defaultDir = sharedRecordingDirectories[0];
+                sharedRecordingDirectories.Remove(defaultDir);
             }
+            List<KeyValuePair<string, string>> extraRecordingDirs = sharedRecordingDirectories.Select(x => new KeyValuePair<string, string>(x.RecordingDirectoryId, x.Path)).ToList();
 
-            NextPvrConfigHelper.ExtraRecordingDirectories = recordingDirectories.ToArray();
-             * */
+            // if user support is turned on, write out user directories
+            if (this.EnableUserSupport)
+            {
+                extraRecordingDirs.AddRange(RecordingDirectory.LoadAll().Where(x => x.UserOid != Globals.SHARED_USER_OID).Select(x => new KeyValuePair<string, string>(x.RecordingDirectoryId, x.Path)));
+            }
+            if (defaultDir != null)
+                NextPvrConfigHelper.DefaultRecordingDirectory = defaultDir.Path;
+
+            // only write out the defaults
+            NextPvrConfigHelper.ExtraRecordingDirectories = extraRecordingDirs.ToArray();
+            #endregion
+
             #endregion
 
             NextPvrConfigHelper.Save();
@@ -132,43 +140,53 @@ namespace NextPvrWebConsole.Models
         {
             var db = DbHelper.GetDatabase();
 
-            var type = this.GetType();
-            Action<string> deleteSetting = delegate(string settingName){
-                db.Execute("delete from setting where name = @0", settingName);
-            };
-            foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.SetProperty | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+            db.BeginTransaction(); // wrap this up in a transaction to improve the speed of saving these settings
+            try
             {
-                var proptype = prop.PropertyType;
-                if (proptype == typeof(int))
+                var type = this.GetType();
+                Action<string> deleteSetting = delegate(string settingName)
                 {
-                    deleteSetting(prop.Name);
-                    db.Execute("insert into setting(name, intvalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
-                }
-                else if (proptype.IsEnum)
+                    db.Execute("delete from setting where name = @0", settingName);
+                };
+                foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.SetProperty | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                 {
-                    deleteSetting(prop.Name);
-                    db.Execute("insert into setting(name, intvalue) values (@0, @1)", prop.Name, (int)prop.GetValue(this, null));
+                    var proptype = prop.PropertyType;
+                    if (proptype == typeof(int))
+                    {
+                        deleteSetting(prop.Name);
+                        db.Execute("insert into setting(name, intvalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
+                    }
+                    else if (proptype.IsEnum)
+                    {
+                        deleteSetting(prop.Name);
+                        db.Execute("insert into setting(name, intvalue) values (@0, @1)", prop.Name, (int)prop.GetValue(this, null));
+                    }
+                    else if (proptype == typeof(string))
+                    {
+                        deleteSetting(prop.Name);
+                        db.Execute("insert into setting(name, stringvalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
+                    }
+                    else if (proptype == typeof(double))
+                    {
+                        deleteSetting(prop.Name);
+                        db.Execute("insert into setting(name, doublevalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
+                    }
+                    else if (proptype == typeof(bool))
+                    {
+                        deleteSetting(prop.Name);
+                        db.Execute("insert into setting(name, boolvalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
+                    }
+                    else if (proptype == typeof(DateTime))
+                    {
+                        deleteSetting(prop.Name);
+                        db.Execute("insert into setting(name, datetimevalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
+                    }
                 }
-                else if (proptype == typeof(string))
-                {
-                    deleteSetting(prop.Name);
-                    db.Execute("insert into setting(name, stringvalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
-                }
-                else if (proptype == typeof(double))
-                {
-                    deleteSetting(prop.Name);
-                    db.Execute("insert into setting(name, doublevalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
-                }
-                else if (proptype == typeof(bool))
-                {
-                    deleteSetting(prop.Name);
-                    db.Execute("insert into setting(name, boolvalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
-                }
-                else if (proptype == typeof(DateTime))
-                {
-                    deleteSetting(prop.Name);
-                    db.Execute("insert into setting(name, datetimevalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
-                }
+                db.CompleteTransaction();
+            }
+            catch (Exception)
+            {
+                db.AbortTransaction();
             }
         }
     }

@@ -34,8 +34,7 @@ CREATE TABLE [recordingdirectory]
 	useroid					integer				NOT NULL			REFERENCES [user](oid),
 	name					varchar(50)			NOT NULL,
 	[path]					text				NOT NULL,
-	isdefault				bit					NOT NULL,
-	recordingdirectoryid	varchar(250)		NOT NULL
+	isdefault				bit					NOT NULL
 )
 GO
 
