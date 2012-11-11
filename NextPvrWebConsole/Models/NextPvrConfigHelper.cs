@@ -12,6 +12,30 @@ namespace NextPvrWebConsole.Models
     {
         private static SettingsHelper settings = SettingsHelper.GetInstance();
 
+        public static bool BlockShutDownWhileRecording
+        {
+            get { return settings.GetSetting("/Settings/Recording/BlockShutdownWhileRecording", false); }
+            set { settings.SetSetting("/Settings/Recording/BlockShutdownWhileRecording", value); }            
+        }
+
+        public static bool AvoidDuplicateRecordings
+        {
+            get { return settings.GetSetting("/Settings/Recording/AllowDuplicates", false); }
+            set { settings.SetSetting("/Settings/Recording/AllowDuplicates", value); }
+        }
+
+        public static RecurringMatchType RecurringMatch
+        {
+            get {
+                string raw = settings.GetSetting("/Settings/Recording/RecurringMatch", "Exact");
+                RecurringMatchType result;
+                if (!Enum.TryParse(raw, out result))
+                    result = RecurringMatchType.Exact; // default
+                return (RecurringMatchType) result;
+            }
+            set { settings.GetSetting("/Settings/Recording/RecurringMatch", value.ToString()); }
+        }
+
         public static int EpgUpdateHour
         {
             get { return settings.GetSetting("/Settings/General/EPGUpdateHour", 2); }

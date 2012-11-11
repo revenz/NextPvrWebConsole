@@ -41,5 +41,18 @@ namespace NextPvrWebConsole
 
             Models.Configuration config = new Models.Configuration();
         }
+
+        public void Session_Start()
+        {
+            Models.Configuration config = new Models.Configuration();
+            if (config.FirstRun)
+                HttpContext.Current.Response.Redirect("~/Setup");
+
+        }
+
+        public void Begin_Request()
+        {
+
+        }
     }
 }

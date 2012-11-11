@@ -1,0 +1,12 @@
+﻿@model object
+@using System.Linq;
+@{
+    Enum m = (Enum)Model;
+}
+@Model
+<select id="@ViewData.TemplateInfo.HtmlFieldPrefix.Replace(".", "_")" name="@ViewData.TemplateInfo.HtmlFieldPrefix">
+    @foreach(var value in Enum.GetValues(m.GetType()))
+    {
+        <option data-lang="@(m.GetType().Name + "-" + Enum.GetName(m.GetType(), value))" value="@((int)value)" @((int)Model == ((int)value) ? "selected" : "")></option>
+    }
+</select>

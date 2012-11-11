@@ -22,12 +22,31 @@ namespace NextPvrWebConsole.Controllers
             GeneralModel.UpdateDvbEpgDuringLiveTv = config.UpdateDvbEpgDuringLiveTv;
             GeneralModel.LiveTvBufferDirectory = config.LiveTvBufferDirectory;
 
+            var RecordingModel = new Models.ConfigurationModels.RecordingConfiguration();
+            RecordingModel.AvoidDuplicateRecordings = config.AvoidDuplicateRecordings;
+            RecordingModel.BlockShutDownWhileRecording = config.BlockShutDownWhileRecording;
+            RecordingModel.PostPadding = config.PostPadding;
+            RecordingModel.PrePadding = config.PrePadding;
+            RecordingModel.RecurringMatch = config.RecurringMatch;
+
             ViewBag.GeneralModel = GeneralModel;
+            ViewBag.RecordingModel = RecordingModel;
             return View();
         }
         
         [HttpPost]
         public ActionResult UpdateGeneral(Models.ConfigurationModels.GeneralConfiguration ModelGeneral)
+        {
+            return SaveConfig(ModelGeneral);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateRecording(Models.ConfigurationModels.RecordingConfiguration ModelRecording)
+        {
+            return SaveConfig(ModelRecording);
+        }
+
+        private ActionResult SaveConfig(object PartialModel)
         {
             if (!ModelState.IsValid)
             {
@@ -37,13 +56,6 @@ namespace NextPvrWebConsole.Controllers
                 throw new HttpException((int)HttpStatusCode.BadRequest, String.Join(Environment.NewLine, errors.ToArray()));
             }
 
-            SaveConfig(ModelGeneral);
-
-            return Json(new { success = true });
-        }
-
-        private void SaveConfig(object PartialModel)
-        {
             var config = new Models.Configuration();
             foreach(var property in PartialModel.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.SetProperty))
             {
@@ -52,6 +64,8 @@ namespace NextPvrWebConsole.Controllers
                     configProperty.SetValue(config, property.GetValue(PartialModel, null), null);
             }
             config.Save();
+
+            return Json(new { success = true });
         }
 
     }

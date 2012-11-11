@@ -73,7 +73,7 @@
     'RecurringMatch'                    :               'Recurring Match',
     'RecurringMatch-Description'        :               'Set the way NextPVR will match the titles of the show when processing season recordings.\nMatch Exact Title will only record the show if the title exactly matches.\nMatch Start Of Title will only record the show if the start of the title matches. For example, setting a season recording for \'The Best TV Show\' will cause \'The Best TV Show : Part 2\' \'The Best TV Show : Part 3\' to also be recorded.',
     'AvoidDuplicateRecordings'          :               'Avoid Duplicate Recordings',
-    'AvoidDuplicateRecordings-Description': 'Set if NextPVR should not record shows which have previously been recorded. Note that this function requires an EPG which uniquely identifies each show and episode, as of September 2011, only the Schedules Direct EPG source for North America provide this.'
-
-
+    'AvoidDuplicateRecordings-Description':             'Set if NextPVR should not record shows which have previously been recorded. Note that this function requires an EPG which uniquely identifies each show and episode, as of September 2011, only the Schedules Direct EPG source for North America provide this.',
+    'RecurringMatchType-Exact'          :               'Match Exact Title',
+    'RecurringMatchType-Start'          :               'Match Start Of Title'
 };

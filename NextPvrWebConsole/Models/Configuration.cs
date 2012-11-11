@@ -7,30 +7,59 @@ using System.Web;
 
 namespace NextPvrWebConsole.Models
 {
+    public enum RecurringMatchType
+    {
+        Exact = 0, /* exact match */
+        Start = 1 /* match start of title */
+    }
     public class Configuration
     {
-        public int PrePadding { get; set; }
-        public int PostPadding { get; set; }
+        /// <summary>
+        /// Gets or sets if this is the first run of the Webconsole, used when display the initial configuration page
+        /// </summary>
+        public bool FirstRun { get; set; }
+
         public string DefaultRecordingDirectoryRoot { get; set; }
         public bool EnableUserSupport { get; set; }
+
+        #region general
         [Range(0, 23)]
         public int EpgUpdateHour { get; set; }
         public bool UpdateDvbEpgDuringLiveTv { get; set; }
         [Required]
         [Directory]
         public string LiveTvBufferDirectory { get; set; }
+        #endregion
+
+        #region recordings
+        public int PrePadding { get; set; }
+        public int PostPadding { get; set; }
+        public bool BlockShutDownWhileRecording { get; set; }
+        public RecurringMatchType RecurringMatch { get; set; }
+        public bool AvoidDuplicateRecordings { get; set; }
+        #endregion
 
         public Configuration()
         {
             #region defaults
+            this.FirstRun = true;
+
             this.EnableUserSupport = true;
             this.DefaultRecordingDirectoryRoot = NextPvrConfigHelper.DefaultRecordingDirectory;
-            this.PrePadding = NextPvrConfigHelper.PrePadding;
-            this.PostPadding = NextPvrConfigHelper.PostPadding;
 
+            #region general
             this.EpgUpdateHour = NextPvrConfigHelper.EpgUpdateHour;
             this.UpdateDvbEpgDuringLiveTv = NextPvrConfigHelper.UpdateDvbEpgDuringLiveTv;
             this.LiveTvBufferDirectory = NextPvrConfigHelper.LiveTvBufferDirectory;
+            #endregion
+
+            #region recordings
+            this.PrePadding = NextPvrConfigHelper.PrePadding;
+            this.PostPadding = NextPvrConfigHelper.PostPadding;
+            this.BlockShutDownWhileRecording = NextPvrConfigHelper.BlockShutDownWhileRecording;
+            this.RecurringMatch = NextPvrConfigHelper.RecurringMatch;
+            this.AvoidDuplicateRecordings = NextPvrConfigHelper.AvoidDuplicateRecordings;
+            #endregion
             #endregion
 
             var db = DbHelper.GetDatabase();
@@ -63,12 +92,18 @@ namespace NextPvrWebConsole.Models
         {
             SaveToDatabase();
 
+            #region general
             NextPvrConfigHelper.EpgUpdateHour = this.EpgUpdateHour;
             NextPvrConfigHelper.UpdateDvbEpgDuringLiveTv = this.UpdateDvbEpgDuringLiveTv;
             NextPvrConfigHelper.LiveTvBufferDirectory = this.LiveTvBufferDirectory;
+            #endregion
 
-            NextPvrConfigHelper.PrePadding = PrePadding;
-            NextPvrConfigHelper.PostPadding = PostPadding;
+            #region recordings
+            NextPvrConfigHelper.PrePadding = this.PrePadding;
+            NextPvrConfigHelper.PostPadding = this.PostPadding;
+            NextPvrConfigHelper.AvoidDuplicateRecordings = this.AvoidDuplicateRecordings;
+            NextPvrConfigHelper.BlockShutDownWhileRecording = this.BlockShutDownWhileRecording;
+            NextPvrConfigHelper.RecurringMatch = this.RecurringMatch;
             /* dont do this until its working, testing against a live system after all....
             NextPvrConfigHelper.DefaultRecordingDirectory = System.IO.Path.Combine(this.DefaultRecordingDirectoryRoot, "Everyone");
 
@@ -89,6 +124,7 @@ namespace NextPvrWebConsole.Models
 
             NextPvrConfigHelper.ExtraRecordingDirectories = recordingDirectories.ToArray();
              * */
+            #endregion
 
             NextPvrConfigHelper.Save();
         }
@@ -108,6 +144,11 @@ namespace NextPvrWebConsole.Models
                 {
                     deleteSetting(prop.Name);
                     db.Execute("insert into setting(name, intvalue) values (@0, @1)", prop.Name, prop.GetValue(this, null));
+                }
+                else if (proptype.IsEnum)
+                {
+                    deleteSetting(prop.Name);
+                    db.Execute("insert into setting(name, intvalue) values (@0, @1)", prop.Name, (int)prop.GetValue(this, null));
                 }
                 else if (proptype == typeof(string))
                 {

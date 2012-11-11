@@ -103,10 +103,10 @@ var api = new function()
     };
 
     this.oncomplete = function () {
-        console.log('completed');
+        gui.finishWork();
     }
     this.onbegin = function () {
-        console.log('begin');
+        gui.doWork();
     }
     this.onsuccess = function () {
         console.log('success');

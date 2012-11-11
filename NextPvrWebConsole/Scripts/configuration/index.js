@@ -4,6 +4,17 @@
 /// <reference path="../core/knockout-2.2.0.js" />
 
 $(function () {
+
+    $.each($('.configuration.vtab-container input[type=number]'), function (i, ele) {
+        var $ele = $(ele);
+        var min = parseInt($ele.attr('data-val-range-min'), 10);
+        var max = parseInt($ele.attr('data-val-range-max'), 10);
+        if (!isNaN(min))
+            $ele.attr('min', min);
+        if (!isNaN(max))
+            $ele.attr('max', max);
+    });
+
     $('#btnLiveTvBufferBrowse').click(function () {
         
         var dialog_buttons = {};
