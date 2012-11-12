@@ -76,7 +76,7 @@
                     <th class="channels" data-lang="Channels"></th>
                 </tr>
             </thead>
-            <tbody data-bind="sortable: { template: 'device-template', data: devices, options: { handle: 'td:first' }, afterMove: afterMove } ">
+            <tbody data-bind="sortable: { template: 'device-template', data: devices, options: { handle: 'td:first' }, afterMove: afterMove }">
             </tbody>
         </table>
 
@@ -110,7 +110,51 @@
         </table>
     </div>
     <div class="vtab-content" id="configuration-tab-channelgroups">
+        <p>Here you can configure the global channel groups for the system.  If in user mode each user will be able to use these channel groups, they will not be able to edit them however.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="handle"></th>
+                    <th class="name" data-lang="Channel Group Name"></th>
+                    <th class="channels" data-lang="Channels"></th>
+                    <th class="controls"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="sortable: { data: channelGroups, options: { handle: 'td:first' } }">
+                <tr>
+                    <td class="handle"><i class="icon-move"></i></td>
+                    <td class="name" data-bind="text: name"></td>
+                    <td class="channels">
+                        <a href="#" onclick="return false" data-bind="text:numberOfChannels, click: $root.selectChannels"></a>
+                    </td>
+                    <td class="controls">
+                        <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
+                            <span class="icon-remove icon-large" data-lang="Remove"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="buttons">
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnCreateChannelGroup">
+                <span class="icon-plus icon-large" data-lang="Create Channel Group"></span>
+            </button>
+            <br />
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnChannelGroupsSave">
+                <span class="icon-save icon-large" data-lang="Save"></span>
+            </button>
+        </p>
         
+
+        <div id="ChannelGroups-Channels" style="display:none">
+            <ul data-bind="foreach: channels">
+                <li>
+                    <input type="checkbox" class="noibutton" data-bind="checked: enabled, attr: { id: 'ChannelGroups-Channels-Channel-' + $index() }"  />
+                    <label data-bind="text: name, attr: { for: 'ChannelGroups-Channels-Channel-' + $index() }" />
+                </li>
+            </ul>
+        </div>
     </div>
     <div class="vtab-content" id="configuration-tab-channels">
         
@@ -195,21 +239,24 @@
     @Html.Partial("FileTree")
 </div>
 
-
 @section Scripts{
     <script>
         var recordingDirectories = new Array();
-        $(function(){
         @foreach(var rd in modelRecording.RecordingDirectories)
         {
             <text>recordingDirectories.push(new RecordingDirectory( { Oid: @rd.Oid, Name: "@rd.Name", Path: "@rd.Path.Replace(@"\", @"\\")", IsDefault: @rd.IsDefault.ToString().ToLower() }) );</text>
         }
-        });
 
         var devices = new Array();        
         @foreach (var d in modelDevices.Devices)
         {
             <text>devices.push(new Device( { Name: "@d.Name.Replace(@"\", @"\\")", Oid: @d.Oid, Enabled: @d.Enabled.ToString().ToLower(), Present: @d.Present.ToString().ToLower(), Priority: @d.Priority, SourceType: "@d.SourceType", NumberOfChannels: @d.NumberOfChannels }) );</text>
+        }
+
+        var channelGroups = new Array();            
+        @foreach (NextPvrWebConsole.Models.ChannelGroup g in ViewBag.ChannelGroups)
+        {
+            <text>channelGroups.push(new ChannelGroup( { Name: "@g.Name.Replace(@"\", @"\\")", Oid: @g.Oid, ChannelOids: [@(String.Join(",", g.ChannelOids.Select(x => x.ToString()).ToArray())) ] }) );</text>
         }
     </script>
 

@@ -39,6 +39,7 @@ namespace NextPvrWebConsole.Controllers
             ViewBag.GeneralModel = GeneralModel;
             ViewBag.RecordingModel = RecordingModel;
             ViewBag.DevicesModel = DevicesModel;
+            ViewBag.ChannelGroups = Models.ChannelGroup.LoadAll(Globals.SHARED_USER_OID, true);
             return View();
         }
         
@@ -69,6 +70,14 @@ namespace NextPvrWebConsole.Controllers
             if (ModelState.IsValid && !Models.RecordingDirectory.SaveForUser(Globals.SHARED_USER_OID, ModelRecording.RecordingDirectories))
                 return Json(new { _error = true, message = "Failed to save recording directories." });
             return SaveConfig(ModelRecording);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateChannelGroups(List<Models.ChannelGroup> ChannelGroups)
+        {
+            if (Models.ChannelGroup.SaveForUser(Globals.SHARED_USER_OID, ChannelGroups))
+                return Json(new { success = true });
+            return Json(new { _error = true, message = "Failed to save channel groups" });
         }
 
         private ActionResult SaveConfig(object PartialModel)

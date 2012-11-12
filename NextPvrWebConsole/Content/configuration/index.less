@@ -23,11 +23,10 @@
 		select, input[type=text] {
 			width:305px;
 		}
-		.value button {
+		button {
 			font-size:1em;
 			padding-left:15px;
 			padding-right:15px;
-			margin-top:10px;
 		}
 		.description {
 			display:block;
@@ -38,6 +37,9 @@
 		.ibutton-container {
 			margin-top:2px;
 			margin-bottom:2px;
+		}
+		.ui-spinner {
+			width:120px;
 		}
 
 		table.devices {
@@ -60,9 +62,47 @@
 				text-align:center;
 			}
 		}
-		.ui-spinner {
-			width:120px;
-		}
+	}		
+	a 
+	{
+	    text-decoration:none;
+	}
+	#configuration-tab-channelgroups
+	{
+	    p.buttons 
+	    { 
+	        text-align:center;
+	        button 
+	        {
+	            margin-bottom:10px;
+	        }
+	    }
+	    table {
+		    width:80%;
+		    margin:auto;
+		    margin-bottom:10px;
+		    border-spacing:0;
+		    border-collapse:collapse;
+		    border-bottom:solid 1px #d3d3d3;
+		    td, th { padding: 5px; }
+		    th { border-bottom: solid 1px #d3d3d3;}
+		    .name {
+			    text-align:left;
+		    }
+		    .handle 
+		    {
+		        width:20px;
+		    }
+		    .channels {
+			    width:160px;
+			    text-align:center;
+		    }
+		    .controls {
+			    width:200px;
+			    text-align:center;
+			    font-size:0.8em;
+		    }
+	    }
 	}
 	.livetvbuffer .value {
 		position:relative;
@@ -73,7 +113,7 @@
 		}
 	}
 	.recording-directories ul {
-		margin:0;
+		margin:0 0 10px;
 		padding:0;
 		list-style:none;
 		li { 
@@ -105,8 +145,34 @@
 			right:0;
 		}
 	}
-	#device-table td.handle 
+	td.handle 
 	{
 	    cursor: pointer;
+	}
+}
+	
+#ChannelGroups-Channels
+{
+	ul
+	{
+	    margin:0;
+	    padding:5px;
+	    position:absolute;
+	    left:10px;
+	    right:10px;
+	    bottom:20px;
+	    top:20px;
+	    overflow:auto;
+	    border:solid 1px @general_border_color;
+	    li
+	    {
+	        margin:0;
+	        padding:0;
+	        list-style:none;
+	        float:left;
+	        width:200px;
+	        overflow:hidden;
+	        text-overflow:ellipsis;
+	    }
 	}
 }

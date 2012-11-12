@@ -1,3 +1,3 @@
 ﻿$(function () {
-    $(":checkbox").iButton();
+    $(":checkbox:not(.noibutton)").iButton();
 });
