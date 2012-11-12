@@ -249,6 +249,8 @@
     <Content Include="Content\images\jquery.filetree\xls.png" />
     <Content Include="Content\images\jquery.filetree\zip.png" />
     <None Include="Content\jquery.filelist.less" />
+    <Content Include="Content\images\loading-large.gif" />
+    <Content Include="Content\images\logo-dark.png" />
     <Content Include="Content\jquery.ibutton.css" />
     <Content Include="Languages\en.js" />
     <Compile Include="Models\AccountModels.cs" />
@@ -320,6 +322,7 @@
     <Content Include="Scripts\core\knockout-sortable.js" />
     <Content Include="Scripts\dashboard\upcomingrecordings.js" />
     <Content Include="Scripts\jquery.filetree.js" />
+    <Content Include="Scripts\setup\index.js" />
     <Content Include="Scripts\startup.js" />
     <Content Include="Scripts\translator.js" />
     <Content Include="Scripts\usersettings\channelgroups.js" />

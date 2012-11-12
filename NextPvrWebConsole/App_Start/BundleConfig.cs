@@ -47,7 +47,8 @@ namespace NextPvrWebConsole
                         "~/Scripts/core/jquery.unobtrusive*",
                         "~/Scripts/core/jquery.validate.unobtrusive",
                         "~/Scripts/core/jquery.i18n.js",
-                        "~/Scripts/translator.js"
+                        "~/Scripts/translator.js",
+                        "~/Scripts/setup/*.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/api.js").IncludeDirectory("~/Scripts/api-wrappers", "*.js"));

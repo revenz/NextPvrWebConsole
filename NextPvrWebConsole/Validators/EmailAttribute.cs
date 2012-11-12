@@ -10,7 +10,7 @@ namespace NextPvrWebConsole.Validators
 {
     public class EmailAttribute : RegularExpressionAttribute
     {
-        internal static readonly string _Pattern = @"^(?:(?:[^@,""\[\]\x5c\x00-\x20\x7f-\xff\.]|\x5c(?=[@,""\[\]\x5c\x00-\x20\x7f-\xff]))(?:[^@,""\[\]\x5c\x00-\x20\x7f-\xff\.]|(?<=\x5c)[@,""\[\]\x5c\x00-\x20\x7f-\xff]|\x5c(?=[@,""\[\]\x5c\x00-\x20\x7f-\xff])|\.(?=[^\.])){1,62}(?:[^@,""\[\]\x5c\x00-\x20\x7f-\xff\.]|(?<=\x5c)[@,""\[\]\x5c\x00-\x20\x7f-\xff])|""(?:[^""]|(?<=\x5c)""){1,62}"")@(?:(?:[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\.?)+\.[a-z]{2,6}|\[(?:[0-1]?\d?\d|2[0-4]\d|25[0-5])(?:\.(?:[0-1]?\d?\d|2[0-4]\d|25[0-5])){3}\])$";
+        internal static readonly string _Pattern = @"^([a-zA-Z0-9]+([\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\.|[-]{1,2})[a-zA-Z0-9]+)*)\.[a-zA-Z]{2,6})$";
 
         public EmailAttribute()
             : base(_Pattern)

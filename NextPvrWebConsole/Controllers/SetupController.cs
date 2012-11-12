@@ -25,6 +25,9 @@ namespace NextPvrWebConsole.Controllers
         [HttpPost]
         public ActionResult Index(Models.SetupModel Model)
         {
+#if(DEBUG)
+            System.Threading.Thread.Sleep(2000);
+#endif
             var config = new Models.Configuration();
             if (!config.FirstRun)
                 return RedirectToAction("Login", "Account");
