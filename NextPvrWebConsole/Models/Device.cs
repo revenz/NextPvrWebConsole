@@ -11,24 +11,54 @@ namespace NextPvrWebConsole.Models
     public class Device
     {
         public int Oid { get; set; }
+        public string Name { get; set; }
 
-        public string Identifier { get; set; }
-
+        public string SourceType { get; set; }
+        public int Priority { get; set; }
+        public bool Present { get; set; }
+        public bool Enabled { get; set; }
+        public int NumberOfChannels { get; set; }
+        
         public List<Stream> Streams { get; set; }
         public static List<Device> GetDevices()
         {
             var devices = GetDevicesBasic();
             foreach (var d in devices)
             {
-                foreach (var s in d.Streams)
-                    s.LookupInfo(); // loads more info about the streams
+                if (d.Streams != null)
+                {
+                    foreach (var s in d.Streams)
+                        s.LookupInfo(); // loads more info about the streams
+                }
+            }
+            return devices;
+        }
+
+        public static List<Device> LoadAll()
+        {
+            List<Device> devices = new List<Device>();
+
+            var captureSources = NShared.Visible.CaptureSource.LoadAll().OrderBy(x => x.Priority);
+            foreach (var cs in captureSources)
+            {
+                devices.Add(new Device()
+                {
+                    SourceType = cs.SourceType,
+                    Priority = cs.Priority,
+                    Present = cs.Present,
+                    Oid = cs.OID,
+                    Name = cs.Name,
+                    Enabled = cs.Enabled,
+                    NumberOfChannels = cs.GetChannels().Count
+                });
             }
             return devices;
         }
 
         public static List<Device> GetDevicesBasic()
         {
-            List<Device> devices = new List<Device>();
+            Dictionary<int, Device> devices = LoadAll().ToDictionary(x => x.Oid);
+
             try
             {
                 string xml = "";
@@ -64,27 +94,25 @@ namespace NextPvrWebConsole.Models
                 XDocument doc = XDocument.Parse(xml);
                 foreach (var element in doc.Element("Status").Elements("Device"))
                 {
-                    devices.Add(new Device()
+                    int oid = int.Parse(element.Attribute("oid").Value);
+                    if (devices.ContainsKey(oid))
                     {
-                        Oid = int.Parse(element.Attribute("oid").Value),
-                        Identifier = element.Attribute("identifier").Value,
-                        Streams = (element.Elements("LiveTV") == null ? 
-                                        new List<Stream>() :
-                                        element.Elements("LiveTV").Select(x => new Stream(Stream.StreamType.LiveTV, int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), int.Parse(element.Attribute("oid").Value), x.Value))
-                                   ).Union(
-                                   element.Elements("Recording") == null ? 
-                                        new List<Stream>() :
-                                        element.Elements("Recording").Select(x => new Stream(Stream.StreamType.Recording, int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), int.Parse(element.Attribute("oid").Value), x.Value))
-                                   ).ToList()
-                                                    
-                    });
+                        devices[oid].Streams = (element.Elements("LiveTV") == null ?
+                                                    new List<Stream>() :
+                                                    element.Elements("LiveTV").Select(x => new Stream(Stream.StreamType.LiveTV, int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), int.Parse(element.Attribute("oid").Value), x.Value))
+                                               ).Union(
+                                               element.Elements("Recording") == null ?
+                                                    new List<Stream>() :
+                                                    element.Elements("Recording").Select(x => new Stream(Stream.StreamType.Recording, int.Parse(x.Attribute("handle").Value, System.Globalization.NumberStyles.HexNumber), int.Parse(element.Attribute("oid").Value), x.Value))
+                                               ).ToList();
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Hubs.NextPvrEventHub.Clients_ShowErrorMessage(ex.Message);
             }
-            return devices;
+            return devices.Values.ToList();
         }
 
         public static bool StopStream(int Handle)
@@ -118,6 +146,18 @@ namespace NextPvrWebConsole.Models
                 throw new Exception("Unknown stream type.");
             }
             catch (Exception) { return false; }
+        }
+
+        internal bool Save()
+        {
+            NShared.Visible.CaptureSource cs = NShared.Visible.CaptureSource.LoadAll().Where(x => x.OID == this.Oid).FirstOrDefault();
+            if (cs == null)
+                return false;
+
+            cs.Priority = this.Priority;
+            cs.Enabled = this.Enabled;
+            cs.Save();
+            return true;
         }
     }
     

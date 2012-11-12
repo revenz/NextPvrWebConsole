@@ -39,6 +39,10 @@ namespace NextPvrWebConsole.Models
         public bool AvoidDuplicateRecordings { get; set; }
         #endregion
 
+        #region devices
+        public bool UseReverseOrderForLiveTv { get; set; }
+        #endregion
+
         public Configuration()
         {
             #region defaults
@@ -53,6 +57,10 @@ namespace NextPvrWebConsole.Models
             this.LiveTvBufferDirectory = NextPvrConfigHelper.LiveTvBufferDirectory;
             #endregion
 
+            #region devices
+            this.UseReverseOrderForLiveTv = NextPvrConfigHelper.UseReverseOrderForLiveTv;
+            #endregion
+
             #region recordings
             this.PrePadding = NextPvrConfigHelper.PrePadding;
             this.PostPadding = NextPvrConfigHelper.PostPadding;
@@ -60,6 +68,7 @@ namespace NextPvrWebConsole.Models
             this.RecurringMatch = NextPvrConfigHelper.RecurringMatch;
             this.AvoidDuplicateRecordings = NextPvrConfigHelper.AvoidDuplicateRecordings;
             #endregion
+
             #endregion
 
             var db = DbHelper.GetDatabase();
@@ -95,6 +104,10 @@ namespace NextPvrWebConsole.Models
             NextPvrConfigHelper.EpgUpdateHour = this.EpgUpdateHour;
             NextPvrConfigHelper.UpdateDvbEpgDuringLiveTv = this.UpdateDvbEpgDuringLiveTv;
             NextPvrConfigHelper.LiveTvBufferDirectory = this.LiveTvBufferDirectory;
+            #endregion
+
+            #region devices
+            NextPvrConfigHelper.UseReverseOrderForLiveTv = this.UseReverseOrderForLiveTv;
             #endregion
 
             #region recordings

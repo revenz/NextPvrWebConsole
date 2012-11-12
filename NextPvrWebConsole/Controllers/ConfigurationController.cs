@@ -30,8 +30,15 @@ namespace NextPvrWebConsole.Controllers
             RecordingModel.RecurringMatch = config.RecurringMatch;
             RecordingModel.RecordingDirectories = Models.RecordingDirectory.LoadForUser(Globals.SHARED_USER_OID);
 
+
+            var DevicesModel = new Models.ConfigurationModels.DevicesConfiguration();
+            DevicesModel.Devices = Models.Device.LoadAll();
+            DevicesModel.UseReverseOrderForLiveTv = config.UseReverseOrderForLiveTv;
+
+
             ViewBag.GeneralModel = GeneralModel;
             ViewBag.RecordingModel = RecordingModel;
+            ViewBag.DevicesModel = DevicesModel;
             return View();
         }
         
@@ -39,6 +46,18 @@ namespace NextPvrWebConsole.Controllers
         public ActionResult UpdateGeneral(Models.ConfigurationModels.GeneralConfiguration ModelGeneral)
         {
             return SaveConfig(ModelGeneral);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateDevices(Models.ConfigurationModels.DevicesConfiguration ModelDevice)
+        {
+            if (ModelDevice.Devices != null)
+            {
+                foreach (var d in ModelDevice.Devices)
+                    d.Save();
+            }
+
+            return SaveConfig(ModelDevice);
         }
 
         [HttpPost]

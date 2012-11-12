@@ -61,10 +61,14 @@
         
     </div>
     <div class="vtab-content" id="configuration-tab-devices">
-
-        <table class="devices">
+    
+        @{
+            var modelDevices = (NextPvrWebConsole.Models.ConfigurationModels.DevicesConfiguration)ViewBag.DevicesModel;
+        }
+        <table class="devices" id="device-table">
             <thead>
                 <tr>
+                    <th class="handle"></th>
                     <th class="type" data-lang="Type"></th>
                     <th class="device" data-lang="Device"></th>
                     <th class="present" data-lang="Present"></th>
@@ -72,63 +76,38 @@
                     <th class="channels" data-lang="Channels"></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td class="type">DVB-S</td>
-                    <td class="device">TBS 6984 Quad DVB/S2 Tuner A</td>
-                    <td class="present">Yes</td>
-                    <td class="enabled">Yes</td>
-                    <td class="channels">64</td>
-                </tr>
-                <tr>
-                    <td class="type">DVB-S</td>
-                    <td class="device">TBS 6984 Quad DVB/S2 Tuner B</td>
-                    <td class="present">Yes</td>
-                    <td class="enabled">Yes</td>
-                    <td class="channels">64</td>
-                </tr>
-                <tr>
-                    <td class="type">DVB-S</td>
-                    <td class="device">TBS 6984 Quad DVB/S2 Tuner C</td>
-                    <td class="present">Yes</td>
-                    <td class="enabled">Yes</td>
-                    <td class="channels">64</td>
-                </tr>
-                <tr>
-                    <td class="type">DVB-S</td>
-                    <td class="device">TBS 6984 Quad DVB/S2 Tuner D</td>
-                    <td class="present">Yes</td>
-                    <td class="enabled">Yes</td>
-                    <td class="channels">64</td>
-                </tr>
-                <tr>
-                    <td class="type"></td>
-                    <td class="device"></td>
-                    <td class="present"></td>
-                    <td class="enabled"></td>
-                    <td class="channels"></td>
-                </tr>
+            <tbody data-bind="sortable: { template: 'device-template', data: devices, options: { handle: 'td:first' }, afterMove: afterMove } ">
             </tbody>
         </table>
 
+        <script  type="text/html" id="device-template">
+            <tr>
+                <td class="handle"><i class="icon-move"></i></td>
+                <td class="type" data-bind="text: sourceType"></td>
+                <td class="device" data-bind="text: name"></td>
+                <td class="present" data-bind="text: presentString"></td>
+                <td class="enabled"><input type="checkbox" data-bind="checked: enabled, attr: { id: 'device_' + oid() + '_enabled' }" /></td>
+                <td class="channels" data-bind="text: numberOfChannels"></td>
+            </tr>            
+        </script>
+
         <table>
             <tr>
-                <td class="label" data-lang="UseReverseOrderForTv"></td>
+                <td class="label" data-lang="UseReverseOrderForLiveTv"></td>
                 <td class="value">
-                    <input type="checkbox" id="UseReverseOrderForTv" value="true" class="{labelOn: 'Yes', labelOff: 'No'}" />
-                    <span class="description" data-lang="UseReverseOrderForTv-Description" />
+                    @Html.EditorFor(m => modelDevices.UseReverseOrderForLiveTv)
+                    <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
                 </td>
             </tr>
             <tr>
                 <td class="label"></td>
                 <td class="value">
-                    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnDevicesSave">
                         <span class="icon-save icon-large" data-lang="Save"></span>
                     </button>
                 </td>
             </tr>
         </table>
-        
     </div>
     <div class="vtab-content" id="configuration-tab-channelgroups">
         
@@ -226,6 +205,12 @@
             <text>recordingDirectories.push(new RecordingDirectory( { Oid: @rd.Oid, Name: "@rd.Name", Path: "@rd.Path.Replace(@"\", @"\\")", IsDefault: @rd.IsDefault.ToString().ToLower() }) );</text>
         }
         });
+
+        var devices = new Array();        
+        @foreach (var d in modelDevices.Devices)
+        {
+            <text>devices.push(new Device( { Name: "@d.Name.Replace(@"\", @"\\")", Oid: @d.Oid, Enabled: @d.Enabled.ToString().ToLower(), Present: @d.Present.ToString().ToLower(), Priority: @d.Priority, SourceType: "@d.SourceType", NumberOfChannels: @d.NumberOfChannels }) );</text>
+        }
     </script>
 
     @Scripts.Render("~/Scripts/configuration/js")

@@ -72,11 +72,11 @@ namespace NextPvrWebConsole.Workers
                 // check if a device have been removed
                 foreach (var d in Devices)
                     if (newDevices.Where(x => x.Oid == d.Oid).Count() == 0)
-                        events.Add(new DeviceUpdateEvent() { Code = DeviceUpdateEventCode.DeviceRemoved, Message = d.Identifier });
+                        events.Add(new DeviceUpdateEvent() { Code = DeviceUpdateEventCode.DeviceRemoved, Message = d.Name });
                 // check if a device have been added
                 foreach (var d in newDevices)
                     if (Devices.Where(x => x.Oid == d.Oid).Count() == 0)
-                        events.Add(new DeviceUpdateEvent() { Code = DeviceUpdateEventCode.DeviceAdded, Message = d.Identifier });
+                        events.Add(new DeviceUpdateEvent() { Code = DeviceUpdateEventCode.DeviceAdded, Message = d.Name });
 
                 // check if a stream has been stopped
                 foreach (var d in Devices)
@@ -95,10 +95,13 @@ namespace NextPvrWebConsole.Workers
                         }
                         continue;
                     }
-                    foreach (var s in d.Streams)
+                    if (d.Streams != null)
                     {
-                        if (newD.Streams.Where(x => x.Filename == s.Filename).Count() == 0)
-                            events.Add(new DeviceUpdateEvent() { Code = s.Type == Models.Stream.StreamType.LiveTV ? DeviceUpdateEventCode.LiveStream_Stopped : DeviceUpdateEventCode.Recording_Stopped, Message = s.Filename });
+                        foreach (var s in d.Streams)
+                        {
+                            if (newD.Streams.Where(x => x.Filename == s.Filename).Count() == 0)
+                                events.Add(new DeviceUpdateEvent() { Code = s.Type == Models.Stream.StreamType.LiveTV ? DeviceUpdateEventCode.LiveStream_Stopped : DeviceUpdateEventCode.Recording_Stopped, Message = s.Filename });
+                        }
                     }
                 }
 
@@ -120,10 +123,13 @@ namespace NextPvrWebConsole.Workers
                         continue;
                     }
 
-                    foreach (var s in d.Streams)
+                    if (d.Streams != null)
                     {
-                        if (oldD.Streams.Where(x => x.Filename == s.Filename).Count() == 0)
-                            events.Add(new DeviceUpdateEvent() { Code = s.Type == Models.Stream.StreamType.LiveTV ? DeviceUpdateEventCode.LiveStream_Started : DeviceUpdateEventCode.Recording_Started });
+                        foreach (var s in d.Streams)
+                        {
+                            if (oldD.Streams.Where(x => x.Filename == s.Filename).Count() == 0)
+                                events.Add(new DeviceUpdateEvent() { Code = s.Type == Models.Stream.StreamType.LiveTV ? DeviceUpdateEventCode.LiveStream_Started : DeviceUpdateEventCode.Recording_Started });
+                        }
                     }
                 }
 

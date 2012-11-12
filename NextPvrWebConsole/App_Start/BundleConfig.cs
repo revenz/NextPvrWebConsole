@@ -28,6 +28,7 @@ namespace NextPvrWebConsole
                         "~/Scripts/core/jquery.linq.js*",
                         "~/Scripts/core/jquery.dateFormat-1.0.js",
                         "~/Scripts/core/knockout-{version}.js",
+                        "~/Scripts/core/knockout-sortable.js",
                         "~/Scripts/core/jquery.easing.1.3.js",
                         "~/Scripts/core/jquery.metadata.js",
                         "~/Scripts/core/jquery.ibutton.js",

@@ -12,6 +12,12 @@ namespace NextPvrWebConsole.Models
     {
         private static SettingsHelper settings = SettingsHelper.GetInstance();
 
+        public static bool UseReverseOrderForLiveTv
+        {
+            get { return settings.GetSetting("/Settings/General/ReversePriorityForLiveTV", false); }
+            set { settings.SetSetting("/Settings/General/ReversePriorityForLiveTV", value); }       
+        }
+
         public static bool BlockShutDownWhileRecording
         {
             get { return settings.GetSetting("/Settings/Recording/BlockShutdownWhileRecording", false); }

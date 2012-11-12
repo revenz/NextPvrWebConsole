@@ -60,7 +60,7 @@ $(function () {
                     PostPadding: $('#modelRecording_PostPadding').val(),
                     BlockShutDownWhileRecording: $('#modelRecording_BlockShutDownWhileRecording:checked').length > 0,
                     RecurringMatch: $('#modelRecording_RecurringMatch :selected').val(),
-                    AvoidDuplicateRecordings: $('#modelRecording__AvoidDuplicateRecordings:checked').length > 0,
+                    AvoidDuplicateRecordings: $('#modelRecording_AvoidDuplicateRecordings:checked').length > 0,
                     RecordingDirectories: recordings
                 },
                 function () {
@@ -69,7 +69,7 @@ $(function () {
             }
         });
     }
-    ko.applyBindings(new RecordingDirectoriesViewModel(), $('#RecordingDirectories').get(0));
+    ko.applyBindings(new RecordingDirectoriesViewModel(), $('#configuration-tab-recording').get(0));
 
     $.each($('.configuration.vtab-container input[type=number]'), function (i, ele) {
         var $ele = $(ele);

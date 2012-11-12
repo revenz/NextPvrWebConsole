@@ -254,6 +254,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ChannelGroup.cs" />
     <Compile Include="Models\Configuration.cs" />
+    <Compile Include="Models\ConfigurationModels\DevicesConfiguration.cs" />
     <Compile Include="Models\ConfigurationModels\GeneralConfiguration.cs" />
     <Compile Include="Models\ConfigurationModels\RecordingConfiguration.cs" />
     <Compile Include="Models\DbHelper.cs" />
@@ -303,9 +304,11 @@
     <Content Include="Content\dashboard\devices.less" />
     <Content Include="Models\Database\CreateDatabase.sql" />
     <Content Include="Scripts\api-wrappers\channelgroup.js" />
+    <Content Include="Scripts\api-wrappers\device.js" />
     <Content Include="Scripts\api-wrappers\listing.js" />
     <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
     <Content Include="Scripts\api-wrappers\recordings.js" />
+    <Content Include="Scripts\configuration\devices.js" />
     <Content Include="Scripts\configuration\index.js" />
     <Content Include="Scripts\core\jquery.easing.1.3.js" />
     <Content Include="Scripts\core\jquery.i18n.js" />
@@ -313,6 +316,7 @@
     <Content Include="Scripts\core\jquery.ibutton.js" />
     <Content Include="Scripts\core\jquery.metadata.js" />
     <Content Include="Scripts\core\jquery.timespinner.js" />
+    <Content Include="Scripts\core\knockout-sortable.js" />
     <Content Include="Scripts\dashboard\upcomingrecordings.js" />
     <Content Include="Scripts\jquery.filetree.js" />
     <Content Include="Scripts\startup.js" />
