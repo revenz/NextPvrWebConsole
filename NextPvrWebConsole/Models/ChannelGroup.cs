@@ -89,7 +89,7 @@ namespace NextPvrWebConsole.Models
             else // update
             {
                 // only allow updating of the name here.. maybe add order too?
-                db.Update(this, this.Oid, new string[] { "name" });
+                db.Update(this, this.Oid, new string[] { "name", "orderoid" });
             }
 
             if (ChannelOids != null)
@@ -131,6 +131,9 @@ namespace NextPvrWebConsole.Models
 
         internal static bool SaveForUser(int UserOid, List<ChannelGroup> ChannelGroups)
         {
+            if (ChannelGroups.DuplicatesBy(x => x.Name.ToLower()).Count() > 0)
+                throw new Exception("Channel group names must be unique.");
+
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();
             try

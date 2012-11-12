@@ -40,6 +40,28 @@ namespace NextPvrWebConsole
             return Convert.ToInt64((date - epoch).TotalSeconds);
         }
 
+        /// <summary>
+        /// Gets a list of duplicate objects
+        /// </summary>
+        /// <typeparam name="TSource">the source</typeparam>
+        /// <typeparam name="TKey">the key</typeparam>
+        /// <param name="source">the source</param>
+        /// <param name="keySelector">the key</param>
+        /// <returns>any duplicates</returns>
+        public static IEnumerable<TSource> DuplicatesBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        {
+            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            foreach (TSource element in source)
+            {
+                // Yield it if the key hasn't actually been added - i.e. it
+                // was already in the set
+                if (!seenKeys.Add(keySelector(element)))
+                {
+                    yield return element;
+                }
+            }
+        }
+
         public static NextPvrWebConsole.Models.User GetUser(this System.Web.Http.ApiController Controller)
         {
             var user = NextPvrWebConsole.Models.User.GetByUsername(Controller.User.Identity.Name);

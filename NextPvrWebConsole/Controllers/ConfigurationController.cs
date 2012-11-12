@@ -75,9 +75,16 @@ namespace NextPvrWebConsole.Controllers
         [HttpPost]
         public ActionResult UpdateChannelGroups(List<Models.ChannelGroup> ChannelGroups)
         {
-            if (Models.ChannelGroup.SaveForUser(Globals.SHARED_USER_OID, ChannelGroups))
-                return Json(new { success = true });
-            return Json(new { _error = true, message = "Failed to save channel groups" });
+            try
+            {
+                if (Models.ChannelGroup.SaveForUser(Globals.SHARED_USER_OID, ChannelGroups))
+                    return Json(new { success = true });
+                return Json(new { _error = true, message = "Failed to save channel groups" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { _error = true, message = ex.Message });
+            }
         }
 
         private ActionResult SaveConfig(object PartialModel)

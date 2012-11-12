@@ -38,9 +38,10 @@ $(function () {
 function Device(data) {
     var self = this;
     self.oid = ko.observable(data.Oid);
-    self.identifier = ko.observable(data.Identifier);
+    self.identifier = ko.observable(data.Name);
     self.streams = ko.observableArray([]);
-    self.streams($.map(data.Streams, function (item) { return new Stream(self, item); }));
+    if(data.Streams)
+        self.streams($.map(data.Streams, function (item) { return new Stream(self, item); }));
 }
 
 function Stream(owner, data) {

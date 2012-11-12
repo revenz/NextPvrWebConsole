@@ -4,11 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace NextPvrWebConsole.Models
 {
     public class DbHelper
     {
+        private static Mutex dbMutex = new Mutex();
+
         private static string DbFile { get; set; }
         static DbHelper()
         {
@@ -37,37 +40,43 @@ namespace NextPvrWebConsole.Models
                         cmd.ExecuteNonQuery();
                     }
                 }
+                using(SQLiteCommand cmd = new SQLiteCommand("INSERT INTO [version](databaseversion) VALUES ({0})".FormatStr(Globals.DB_VERSION), conn))
+                {
+                    cmd.ExecuteNonQuery();
+                }
                 conn.Close();
             }
-
-            // insert defaults
-            var db = DbHelper.GetDatabase();
-            db.BeginTransaction();
-            try
-            {
-                // insert channels
-                var channels = NUtility.Channel.LoadAll().OrderBy(x => x.Number).Select(x => new Channel() { Oid = x.OID, Name = x.Name, Number = x.Number, Enabled = true }).ToArray();
-                foreach (var c in channels)
-                    db.Insert(c);
-
-                // insert groups
-                var groups = NUtility.Channel.GetChannelGroups().Select(x => new ChannelGroup() { Name = x }).ToArray();
-                for (int i = 0; i < groups.Length; i++)
-                {
-                    groups[i].OrderOid = i + 1;
-                    db.Insert("channelgroup", "oid", true, groups[i]);
-                    foreach (int channelOid in NUtility.Channel.LoadForGroup(groups[i].Name).Select(x => x.OID))
-                        db.Execute("insert into [channelgroupchannel](channelgroupoid, channeloid) values (@0, @1)", groups[i].Oid, channelOid);
-                }
-
-                db.CompleteTransaction();
-            }
-            catch (Exception ex) { db.AbortTransaction(); }
         }
 
         public static PetaPoco.Database GetDatabase()
         {
-            return new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
+            dbMutex.WaitOne();
+            try
+            {
+                var db = new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
+#if(DEBUG)
+                int version = 0;
+                try
+                {
+                    version = db.ExecuteScalar<int>("select databaseversion from [version]");
+                }
+                catch (Exception) { }
+
+                if (version != Globals.DB_VERSION)
+                {
+                    db.Dispose();
+                    // recreate db
+                    System.IO.File.Delete(DbFile);
+                    CreateDatabase(DbFile);
+                    db = new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
+                }
+#endif
+                return db;
+            }
+            finally
+            {
+                dbMutex.ReleaseMutex();
+            }
         }
 
         public static void Test() { }

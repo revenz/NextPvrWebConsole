@@ -102,6 +102,7 @@ var gui = new function () {
             message: $.i18n._('Please inut a value'),
             validationExpression: "(.*?)",
             validationMessage: $.i18n._('Input is required.'),
+            initialValue: '',
             success: null,
             maxLength:100
         }, settings);
@@ -114,6 +115,7 @@ var gui = new function () {
         var input = div.find('input');
         if(settings.maxLength > 0)
             input.attr('maxlength', settings.maxLength);
+        input.val(settings.initialValue);
         var errorMessage = div.find('.errormessage');
         var rgxValidate = null;
         if (settings.validationExpression) {

@@ -1,9 +1,6 @@
 ﻿CREATE TABLE [version] (
-	databaseversion			varchar(10)			NOT NULL	
+	databaseversion			int					NOT NULL	
 )
-GO
-
-INSERT INTO [version](databaseversion) VALUES (1000)
 GO
 
 CREATE TABLE [user] (
