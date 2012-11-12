@@ -161,7 +161,7 @@
         </div>
     </div>
     <div class="vtab-content" id="configuration-tab-channels">
-        
+        @Html.Partial("_Channels")
     </div>
     <div class="vtab-content" id="configuration-tab-recording">
         @{
@@ -265,6 +265,12 @@
         @foreach (NextPvrWebConsole.Models.ChannelGroup g in ViewBag.ChannelGroups)
         {
             <text>channelGroups.push(new ChannelGroup( { Name: "@g.Name.Replace(@"\", @"\\")", Oid: @g.Oid, ChannelOids: [@(String.Join(",", g.ChannelOids.Select(x => x.ToString()).ToArray())) ] }) );</text>
+        }
+
+        var channels = new Array();            
+        @foreach (NextPvrWebConsole.Models.Channel c in ViewBag.Channels)
+        {
+            <text>channels.push(new Channel( { Name: "@c.Name.Replace(@"\", @"\\")", Oid: @c.Oid, Enabled: @c.Enabled.ToString().ToLower(), Number: @c.Number }) );</text>
         }
     </script>
 

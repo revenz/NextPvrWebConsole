@@ -1,0 +1,32 @@
+﻿<p>Here you can configure the global channels for the system.  If in user mode each user will be able to use these channels.</p>
+
+<table id="channels-table">
+    <thead>
+        <tr>
+            <th class="name" data-lang="Channel Name"></th>
+            <th class="number" data-lang="Number"></th>
+            <th class="enabled" data-lang="Enabled"></th>
+            <th class="controls"></th>
+        </tr>
+    </thead>
+    <tbody data-bind="template: { name: 'channel-template', foreach: channels }">
+    </tbody>
+</table>
+<p class="buttons">
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnChannelsSave" data-bind="click: $root.save">
+        <span class="icon-save icon-large" data-lang="Save"></span>
+    </button>
+</p>
+
+<script type="text/html" id="channel-template">
+    <tr>
+        <td class="name"><input type="text" data-bind="value: name" /></td>
+        <td class="number"><input type="number" data-bind="value: number" min="1" max="999" /></td>
+        <td class="enabled"><input type="checkbox" data-bind="checked: enabled" /></td>
+        <td class="controls">
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
+                <span class="icon-remove icon-large">Remove</span>
+            </button>
+        </td>
+    </tr>
+</script>

@@ -60,11 +60,19 @@ namespace NextPvrWebConsole.Models
         internal static Channel[] LoadAll(int UserOid, bool IncludeDisabled = false)
         {
             var db = DbHelper.GetDatabase();
-            var results = db.Fetch<Channel>(@"
+            List<Channel> results = null;
+            if (UserOid == Globals.SHARED_USER_OID)
+            {
+                results = db.Fetch<Channel>(@"select * from channel order by number");
+            }
+            else
+            {
+                results = db.Fetch<Channel>(@"
 select c.oid, c.name, uc.*
 from userchannel uc
 inner join channel c on uc.channeloid = c.oid and c.enabled = 1 and uc.useroid = @0
 order by uc.number", UserOid);
+            }
             if (IncludeDisabled)
                 return results.ToArray();
             return results.Where(x => x.Enabled).ToArray();
@@ -105,6 +113,42 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
                 foreach (var channel in Channels.Where(x => allowedChanneldOids.Contains(x.Oid)))
                     db.Execute("update userchannel set number = @0, [enabled] = @1 where channeloid = @2 and useroid = @3", channel.Number, channel.Enabled, channel.Oid, UserOid);
                 db.CompleteTransaction();
+            }
+            catch (Exception ex)
+            {
+                db.AbortTransaction();
+                throw ex;
+            }
+        }
+
+        internal static bool SaveForUser(int UserOid, List<Channel> Channels)
+        {
+            var db = DbHelper.GetDatabase();
+            db.BeginTransaction();
+            try
+            {
+                if (UserOid == Globals.SHARED_USER_OID)
+                {
+                    // delete any missing channels
+                    db.Execute("delete from userchannel where channeloid not in ({0})".FormatStr(String.Join(",", Channels.Where(x => x.Oid > 0).Select(x => x.Oid.ToString()).ToArray())));
+                    foreach (var channel in Channels)
+                    {
+                        if (String.IsNullOrWhiteSpace(channel.Name))
+                            throw new Exception("Channel name required.");
+                        if (channel.Number < 0 || channel.Number > 1000)
+                            throw new Exception("Channel number must be in the range 0 to 999.");
+                        if (channel.Oid > 0)
+                            db.Update("channel", "oid", channel, channel.Oid, new string[] { "Name", "Number", "Enabled" });
+                        else
+                            db.Insert("channel", "oid", true, channel);
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+                db.CompleteTransaction();
+                return true;
             }
             catch (Exception ex)
             {

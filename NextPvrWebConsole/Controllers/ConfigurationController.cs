@@ -40,6 +40,7 @@ namespace NextPvrWebConsole.Controllers
             ViewBag.RecordingModel = RecordingModel;
             ViewBag.DevicesModel = DevicesModel;
             ViewBag.ChannelGroups = Models.ChannelGroup.LoadAll(Globals.SHARED_USER_OID, true);
+            ViewBag.Channels = Models.Channel.LoadAll(Globals.SHARED_USER_OID, true);
             return View();
         }
         
@@ -80,6 +81,21 @@ namespace NextPvrWebConsole.Controllers
                 if (Models.ChannelGroup.SaveForUser(Globals.SHARED_USER_OID, ChannelGroups))
                     return Json(new { success = true });
                 return Json(new { _error = true, message = "Failed to save channel groups" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { _error = true, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateChannels(List<Models.Channel> Channels)
+        {
+            try
+            {
+                if (Models.Channel.SaveForUser(Globals.SHARED_USER_OID, Channels))
+                    return Json(new { success = true });
+                return Json(new { _error = true, message = "Failed to save channels" });
             }
             catch (Exception ex)
             {
