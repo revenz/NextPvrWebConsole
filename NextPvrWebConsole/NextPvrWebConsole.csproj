@@ -468,6 +468,7 @@
     <Content Include="Views\Shared\FileTree.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Enum.cshtml" />
     <Content Include="Views\Setup\Index.cshtml" />
+    <Content Include="Views\Configuration\_About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />
