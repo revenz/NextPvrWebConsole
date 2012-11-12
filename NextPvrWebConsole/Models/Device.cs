@@ -40,7 +40,7 @@ namespace NextPvrWebConsole.Models
 
             var captureSources = NShared.Visible.CaptureSource.LoadAll().OrderBy(x => x.Priority);
             foreach (var cs in captureSources)
-            {
+            {                
                 devices.Add(new Device()
                 {
                     SourceType = cs.SourceType,
@@ -49,7 +49,7 @@ namespace NextPvrWebConsole.Models
                     Oid = cs.OID,
                     Name = cs.Name,
                     Enabled = cs.Enabled,
-                    NumberOfChannels = cs.GetChannels().Count
+                    NumberOfChannels = NUtility.Channel.LoadForCaptureSource(cs.OID).Count
                 });
             }
             return devices;
