@@ -21,14 +21,16 @@ namespace NextPvrWebConsole.Controllers.Api
 
         public Models.User Post(Models.UserModel value)
         {
-            bool isvalid = ModelState.IsValid;
-            if (!isvalid && value.Oid > 0)
+            if (value.Oid > 0) // edit
             {
-                // if the errors are just passwords ignore, we dont update the password when updating a user any how
-                isvalid = ModelState.Keys.Where(x => !x.ToLower().Contains("password")).Count() == 0;
+                if (!Validators.Validator.IsValid(value, "Password", "ConfirmPassword")) 
+                    throw new ArgumentException();
             }
-            if (!isvalid)
-                throw new ArgumentException();
+            else
+            {
+                if (!Validators.Validator.IsValid(value)) // need to pass in properties to ignore...
+                    throw new ArgumentException();
+            }
             
             var user = value.Save();
             if (user != null)

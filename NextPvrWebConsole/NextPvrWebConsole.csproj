@@ -286,6 +286,7 @@
     <Compile Include="Validators\EmailAttribute.cs" />
     <Compile Include="Models\SetupModel.cs" />
     <Compile Include="Validators\UsernameAttribute.cs" />
+    <Compile Include="Validators\Validator.cs" />
     <Compile Include="Workers\DeviceWatcher.cs" />
     <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\addons\toastr.css" />
