@@ -11,13 +11,21 @@ namespace NextPvrWebConsole.Models
     public class DbHelper
     {
         private static Mutex dbMutex = new Mutex();
-
-        private static string DbFile { get; set; }
-        static DbHelper()
+        
+        static string _DbFile;
+#if(DEBUG)
+        public static string DbFile // need this public for unit testing
+#else
+        static string DbFile
+#endif
         {
-            DbFile= HttpContext.Current.Server.MapPath("~/App_Data/NextPvrWebConsole.db");
-            if (!System.IO.File.Exists(DbFile))
-                CreateDatabase(DbFile);
+            private get
+            {
+                if(_DbFile == null)
+                    _DbFile = HttpContext.Current.Server.MapPath("~/App_Data/NextPvrWebConsole.db");
+                return _DbFile;
+            }
+            set { _DbFile = value; }
         }
 
         static void CreateDatabase(string DbFile)
@@ -48,9 +56,19 @@ namespace NextPvrWebConsole.Models
             }
         }
 
+        private static bool _Loaded = false;
+
         public static PetaPoco.Database GetDatabase()
         {
             dbMutex.WaitOne();
+
+            if (!_Loaded)
+            {
+                if (!System.IO.File.Exists(DbFile))
+                    CreateDatabase(DbFile);
+                _Loaded = true;
+            }
+
             try
             {
                 var db = new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
