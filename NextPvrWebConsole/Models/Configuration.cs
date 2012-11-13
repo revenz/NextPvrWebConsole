@@ -83,6 +83,8 @@ namespace NextPvrWebConsole.Models
                     continue;
                 if (prop.PropertyType == typeof(int))
                     prop.SetValue(this, (int)d.intvalue, null);
+                else if (prop.PropertyType.IsEnum)
+                    prop.SetValue(this, (int)d.intvalue, null);
                 else if(prop.PropertyType == typeof(string))
                     prop.SetValue(this, d.stringvalue, null);
                 else if (prop.PropertyType == typeof(double))
