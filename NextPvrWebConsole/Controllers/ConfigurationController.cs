@@ -21,6 +21,7 @@ namespace NextPvrWebConsole.Controllers
             GeneralModel.EpgUpdateHour = config.EpgUpdateHour;
             GeneralModel.UpdateDvbEpgDuringLiveTv = config.UpdateDvbEpgDuringLiveTv;
             GeneralModel.LiveTvBufferDirectory = config.LiveTvBufferDirectory;
+            GeneralModel.EnableUserSupport = config.EnableUserSupport;
 
             var RecordingModel = new Models.ConfigurationModels.RecordingConfiguration();
             RecordingModel.AvoidDuplicateRecordings = config.AvoidDuplicateRecordings;

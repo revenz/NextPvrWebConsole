@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 namespace NextPvrWebConsole.Models
 {
     [DataContract]
+    [PetaPoco.PrimaryKey("Oid")]
 	public class Channel
     {
         [DataMember]
@@ -130,17 +131,19 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
                 if (UserOid == Globals.SHARED_USER_OID)
                 {
                     // delete any missing channels
-                    db.Execute("delete from userchannel where channeloid not in ({0})".FormatStr(String.Join(",", Channels.Where(x => x.Oid > 0).Select(x => x.Oid.ToString()).ToArray())));
+                    int[] knownOids = db.Fetch<int>("select oid from [channel]").ToArray();
+                    db.Execute("delete from [userchannel] where channeloid not in ({0})".FormatStr(String.Join(",", Channels.Where(x => x.Oid > 0).Select(x => x.Oid.ToString()).ToArray())));
+                    db.Execute("delete from [channel] where oid not in ({0})".FormatStr(String.Join(",", Channels.Where(x => x.Oid > 0).Select(x => x.Oid.ToString()).ToArray())));
                     foreach (var channel in Channels)
                     {
                         if (String.IsNullOrWhiteSpace(channel.Name))
                             throw new Exception("Channel name required.");
                         if (channel.Number < 0 || channel.Number > 1000)
                             throw new Exception("Channel number must be in the range 0 to 999.");
-                        if (channel.Oid > 0)
-                            db.Update("channel", "oid", channel, channel.Oid, new string[] { "Name", "Number", "Enabled" });
+                        if (knownOids.Contains(channel.Oid))
+                            db.Update(channel);
                         else
-                            db.Insert("channel", "oid", true, channel);
+                            db.Insert("channel", "oid", false, channel);
                     }
                 }
                 else

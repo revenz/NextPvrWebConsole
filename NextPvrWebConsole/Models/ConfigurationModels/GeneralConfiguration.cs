@@ -23,5 +23,7 @@ namespace NextPvrWebConsole.Models.ConfigurationModels
         [DisplayName("EPG Update Hour")]
         public int EpgUpdateHour { get; set; }
 
+        public bool EnableUserSupport { get; set; }
+
     }
 }

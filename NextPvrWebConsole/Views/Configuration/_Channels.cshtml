@@ -13,13 +13,18 @@
     </tbody>
 </table>
 <p class="buttons">
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnChannelsSave" data-bind="click: $root.save">
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.importMissing">
+        <span class="icon-signin icon-large" data-lang="Import Missing From NextPVR"></span>
+    </button>
+</p>
+<p class="buttons">
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
         <span class="icon-save icon-large" data-lang="Save"></span>
     </button>
 </p>
 
 <script type="text/html" id="channel-template">
-    <tr>
+    <tr data-bind="attr: { id: 'channel-' + oid() }">
         <td class="name"><input type="text" data-bind="value: name" /></td>
         <td class="number"><input type="number" data-bind="value: number" min="1" max="999" /></td>
         <td class="enabled"><input type="checkbox" data-bind="checked: enabled" /></td>

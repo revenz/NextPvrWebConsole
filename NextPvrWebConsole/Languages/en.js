@@ -86,5 +86,7 @@
     'UserRole-SuperAdmin'               :               'Administrator',
     'Configuration-Users-Summary'       :               'Here you can configure users who can access NextPVR Webconsole.  You can specific user roles for each user, limiting their access as needed. \nIf enabled users will also have their own sets of Channel Groups, Channels and Recordings.',
     'Configuration-Channels-Summary'    :               'Here you can configure the global channels for the system.  If in user mode each user will be able to use these channels.',
-    'Configuration-ChannelGroups-Summary':              'Here you can configure the global channel groups for the system.  If in user mode each user will be able to use these channel groups, they will not be able to edit them however.'
+    'Configuration-ChannelGroups-Summary':              'Here you can configure the global channel groups for the system.  If in user mode each user will be able to use these channel groups, they will not be able to edit them however.',
+    'EnableUserSupport'                 :               'Enable User Support',
+    'EnableUserSupport-Description'     :               'When enabled, users will be able to create their own Channel Groups, managed their own Channels, create their own Recording Directories and schedule personal recordings.\nNote XBMC is currently the only front-end that truly supports this feature.'
 };

@@ -20,5 +20,13 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             Models.Channel.Update(this.GetUser().Oid, Channels);
         }
+
+        public IEnumerable<Models.Channel> GetMissingChannels()
+        {
+            int[] knownChannels = Models.Channel.LoadAll(Globals.SHARED_USER_OID, true).Select(x => x.Oid).OrderBy(x => x).ToArray();
+            var npvrChannels = NUtility.Channel.LoadAll();
+            return npvrChannels.Where(x => !knownChannels.Contains(x.OID)).OrderBy(x => x.Number).Select(x => new Models.Channel() { Oid = x.OID, Name = x.Name, Number = x.Number, Enabled = true }).OrderBy(x => x.Oid);
+        }
+
     }
 }

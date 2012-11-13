@@ -14,9 +14,20 @@ $(function () {
             self.channels.remove(item);
         };
 
+        self.importMissing = function () {
+            api.getJSON('Channels/GetMissingChannels', null, function (results) {
+                $.each(results, function (i, ele) {
+                    if($('#channel-' + ele.Oid).length == 0)
+                        self.channels.push(new Channel(ele));
+                });
+                $('#configuration-tab-channels .enabled > input[type=checkbox]').iButton();
+            });
+        };
+
         self.save = function () {
             var channels = new Array();
             $.each(self.channels(), function (i, ele) {
+                ele.enabled($('#channel-' + ele.oid() + ' .enabled :checked').length > 0);
                 channels.push(ele.toApiObject());
             });
             ajax.postJSON('Configuration/UpdateChannels',

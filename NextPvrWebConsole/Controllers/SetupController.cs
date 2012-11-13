@@ -56,7 +56,7 @@ namespace NextPvrWebConsole.Controllers
                 // insert channels
                 var channels = NUtility.Channel.LoadAll().OrderBy(x => x.Number).Select(x => new Models.Channel() { Oid = x.OID, Name = x.Name, Number = x.Number, Enabled = true }).ToArray();
                 foreach (var c in channels)
-                    db.Insert(c);
+                    db.Insert("channel", "oid", false, c);
 
                 // insert groups
                 var groups = NUtility.Channel.GetChannelGroups().Select(x => new Models.ChannelGroup() { Name = x, UserOid = Globals.SHARED_USER_OID }).ToArray();
