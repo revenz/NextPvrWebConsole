@@ -39,7 +39,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             }
             catch (Exception ex)
             {
-                Assert.AreSame(ex.Message, "test");
+                Assert.IsTrue(ex.Message.Contains("already exists"));
             }
         }
     }

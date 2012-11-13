@@ -31,12 +31,10 @@ namespace NextPvrWebConsole.Models
         static void CreateDatabase(string DbFile)
         {
             SQLiteConnection.CreateFile(DbFile);
-
-            string createDb = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Models/Database/CreateDatabase.sql"));
-
+            
             using(SQLiteConnection conn = new SQLiteConnection(@"Data Source={0};Version=3;".FormatStr(DbFile))){
                 conn.Open();
-                foreach (Match match in Regex.Matches(createDb, @"(.*?)(([\s]+GO[\s]*)|$)", RegexOptions.Singleline | RegexOptions.IgnoreCase))
+                foreach (Match match in Regex.Matches(Resources.Files.CreateDatabase_sql, @"(.*?)(([\s]+GO[\s]*)|$)", RegexOptions.Singleline | RegexOptions.IgnoreCase))
                 {
                     string sql = match.Value.Trim();
                     if (sql.ToUpper().EndsWith("GO"))

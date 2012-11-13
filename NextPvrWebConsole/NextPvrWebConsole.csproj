@@ -277,6 +277,11 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="MyMembershipProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Files.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Files.resx</DependentUpon>
+    </Compile>
     <Compile Include="Validators\DirectoryAttribute.cs" />
     <Compile Include="Validators\EmailAttribute.cs" />
     <Compile Include="Models\SetupModel.cs" />
@@ -305,7 +310,7 @@
     <Content Include="Content\jquery.mobile.theme-1.2.0.min.css" />
     <Content Include="Content\mixins.less" />
     <Content Include="Content\dashboard\devices.less" />
-    <Content Include="Models\Database\CreateDatabase.sql" />
+    <Content Include="Resources\Files\CreateDatabase.sql" />
     <Content Include="Scripts\api-wrappers\channelgroup.js" />
     <Content Include="Scripts\api-wrappers\device.js" />
     <Content Include="Scripts\api-wrappers\listing.js" />
@@ -568,6 +573,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Files.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Files.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
