@@ -56,7 +56,7 @@ namespace NextPvrWebConsole.Models
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();
 
-            bool exists = db.ExecuteScalar<int>("select count(oid) from [user] where (lower(username) = @0 or lower(emailaddress)=@1) and (oid <> @2 or @2 = 0)", this.Username.ToLower(), this.EmailAddress.ToLower(), this.Oid) > 0;
+            bool exists = db.ExecuteScalar<int>("select count(oid) from [user] where (lower(username) = @0 or lower(emailaddress)=@1) and (oid <> @2 or @2 = @3)", this.Username.ToLower(), this.EmailAddress.ToLower(), this.Oid, Globals.SHARED_USER_OID) > 0;
             if (exists)
                 throw new Exception("User with that username or email address already exists.");
             try
