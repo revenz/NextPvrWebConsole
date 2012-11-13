@@ -206,6 +206,7 @@
     <Compile Include="Controllers\Api\DevicesController.cs" />
     <Compile Include="Controllers\Api\RecordingDirectoriesController.cs" />
     <Compile Include="Controllers\Api\ServiceController.cs" />
+    <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
@@ -310,10 +311,12 @@
     <Content Include="Scripts\api-wrappers\listing.js" />
     <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
     <Content Include="Scripts\api-wrappers\recordings.js" />
+    <Content Include="Scripts\api-wrappers\user.js" />
     <Content Include="Scripts\configuration\channelgroups.js" />
     <Content Include="Scripts\configuration\channels.js" />
     <Content Include="Scripts\configuration\devices.js" />
     <Content Include="Scripts\configuration\index.js" />
+    <Content Include="Scripts\configuration\users.js" />
     <Content Include="Scripts\core\jquery.easing.1.3.js" />
     <Content Include="Scripts\core\jquery.i18n.js" />
     <Content Include="Scripts\core\jquery.i18n.min.js" />
@@ -471,6 +474,11 @@
     <Content Include="Views\Setup\Index.cshtml" />
     <Content Include="Views\Configuration\_About.cshtml" />
     <Content Include="Views\Configuration\_Channels.cshtml" />
+    <Content Include="Views\Configuration\_Users.cshtml" />
+    <Content Include="Views\Configuration\_ChannelGroups.cshtml" />
+    <Content Include="Views\Configuration\_Recording.cshtml" />
+    <Content Include="Views\Configuration\_Devices.cshtml" />
+    <Content Include="Views\Configuration\_General.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />

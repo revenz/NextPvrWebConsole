@@ -1,0 +1,96 @@
+﻿<p data-lang="Configuration-Users-Summary"></p>
+
+<table id="users-table">
+    <thead>
+        <tr>
+            <th class="username" data-lang="Username"></th>
+            <th class="email" data-lang="Email Address"></th>
+            <th class="lastloggedin" data-lang="Last Logged In"></th>
+            <th class="administrator" data-lang="Administrator"></th>
+            <th class="controls"></th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: users">
+        <tr>
+            <td class="username" data-bind="text: username"></td>
+            <td class="email" data-bind="text: emailaddress"></td>
+            <td class="lastloggedin" data-bind="text: lastLoggedInString"></td>
+            <td class="administrator" data-bind="text: administratorString"></td>
+            <td class="controls">
+                <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.edit">
+                    <span class="icon-edit icon-large" data-lang="Edit"></span>
+                </button>
+                <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
+                    <span class="icon-trash icon-large" data-lang="Delete"></span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p class="buttons">
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.add">
+        <span class="icon-plus icon-large" data-lang="Create User"></span>
+    </button>
+</p>
+
+<div id="Configuration-User-Editor" style="display:none">
+    @{
+        var userModel = new NextPvrWebConsole.Models.UserModel();
+    }
+    @using (Ajax.BeginForm("CreateUser", null))
+    {
+    <table data-bind="with: user">
+        <tr class="username">
+            <td class="label"><span data-lang="Username"></span>:</td>
+            <td class="value">
+                @Html.EditorFor(m => userModel.Username)
+                @Html.ValidationMessageFor(m => userModel.Username)
+            </td>
+        </tr>
+        <tr class="emailaddress">
+            <td class="label"><span data-lang="Email Address"></span>:</td>
+            <td class="value">
+                @Html.EditorFor(m => userModel.EmailAddress)
+                @Html.ValidationMessageFor(m => userModel.EmailAddress)
+            </td>
+        </tr>
+        <tr class="password">
+            <td class="label"><span data-lang="Password"></span>:</td>
+            <td class="value">
+                @Html.EditorFor(m => userModel.Password)
+                @Html.ValidationMessageFor(m => userModel.Password)
+            </td>
+        </tr>
+        <tr class="passwordconfirm">
+            <td class="label"><span data-lang="Confirm Password"></span>:</td>
+            <td class="value">
+                @Html.EditorFor(m => userModel.ConfirmPassword)
+                <span id="confirmpassword-error" class="field-validation-error" style="display:none">
+                    <span for="userModel_ConfirmPassword" class="" style="">The password and confirmation password do not match.</span>
+                </span>
+            </td>
+        </tr>   
+        <tr class="administrator">
+            <td class="label"><span data-lang="Adminirstrator"></span>:</td>
+            <td class="value">
+                <input type="checkbox" class="noibutton" data-bind="checked: administrator, click: $root.adminClick" />
+            </td>
+        </tr>
+        <tr class="userroles">
+            <td class="label"><span data-lang="User Roles"></span>:</td>  
+            <td class="value">
+                <ul>
+                @foreach (var value in Enum.GetValues(typeof(NextPvrWebConsole.Models.UserRole)))
+                {
+                    <li>
+                        <input class="noibutton" type="checkbox" id="userroles-@((int)value)" data-bind="checked: role@(value.ToString())" />
+                        <label for="userroles-@((int)value)" data-lang="UserRole-@(value.ToString())" />
+                    </li>
+                }
+                </ul>
+            </td>
+        </tr>
+    </table>
+    }
+</div>
+

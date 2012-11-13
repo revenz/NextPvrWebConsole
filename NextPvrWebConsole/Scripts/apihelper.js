@@ -50,6 +50,9 @@ var ajax = new function () {
             }
         });
     }
+    this.getJSON = function (url, data, callback, errorCallback) {
+        _json('GET', url, data, callback, errorCallback);
+    }
     this.postJSON = function (url, data, callback, errorCallback) {
         _json('POST', url, data, callback, errorCallback);
     }

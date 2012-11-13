@@ -2,8 +2,13 @@
 @import "~/Content/globals.less";
 
 .configuration {
-	.vtab-content {
+	.vtab-content 
+	{
 		font-size:1.3em;
+		table {
+		    border-spacing:0;
+		    border-collapse:collapse;
+        }
 		td {
 			padding:5px;
 			vertical-align:top;
@@ -108,7 +113,7 @@
 		position:relative;
 		#btnLiveTvBufferBrowse {
 			position:absolute;
-			top:-3px;
+			top:7px;
 			left:325px;
 		}
 	}
@@ -152,6 +157,15 @@
 	#configuration-tab-about {
 		padding-left:60px;
 	}
+	p.buttons 
+	{
+	    text-align:center;
+	}
+	th 
+	{
+	    border-bottom:solid 1px @general_border_color;
+	    padding-bottom:5px;
+	}
 }
 	
 #ChannelGroups-Channels
@@ -180,37 +194,132 @@
 	}
 }
 
-	#channels-table {
-		width:100%;
-		td, th {
-			text-align:center;
-		}
-		td {
-			padding:0;
-		}
-		.name {
-			text-align:left;
-			input {
-				width:98%;
-			}
-		}
-		.number {
-			width:100px;
-			input {
-				text-align:right;
-				padding-right:3px;
-			}
-		}
-		.enabled {
-			width:130px;
-		}
-		.controls {
-			width:120px;
-		}
-		button {
-			font-size:0.8em;
-		}
-		.ibutton-container {
-			display:inline-block;
+#channels-table {
+	width:100%;
+	td, th {
+		text-align:center;
+	}
+	td {
+		padding:0;
+	}
+	.name {
+		text-align:left;
+		input {
+			width:98%;
 		}
 	}
+	.number {
+		width:100px;
+		input {
+			text-align:right;
+			padding-right:3px;
+		}
+	}
+	.enabled {
+		width:130px;
+	}
+	.controls {
+		width:120px;
+	}
+	button {
+		font-size:0.8em;
+	}
+	.ibutton-container {
+		display:inline-block;
+	}	
+	tbody tr:first-child td {
+		padding-top:5px;
+    }
+	tr:last-child td 
+	{
+	    padding-bottom:5px;
+	    border-bottom:solid 1px @general_border_color;
+	}
+}
+
+
+#users-table 
+{
+	width:100%;
+	td, th {
+		text-align:center;
+	}
+	td {
+		padding:3px 0;
+		margin:0;
+	}
+	.username {
+		text-align:left;
+	}
+	button {
+		font-size:0.8em;
+		postion:relative;
+		top:-2px;
+		
+	}
+	.controls {
+		width:240px;
+		padding-top:0;
+	}
+	.lastloggedin {
+	    width:250px;
+	}
+	.administrator {
+	    width:140px;
+	}
+	tbody tr:first-child td {
+		padding-top:5px;
+    }    
+	tr:last-child td 
+	{
+	    padding-bottom:5px;
+	    border-bottom:solid 1px @general_border_color;
+	}
+}
+
+#Configuration-User-Editor 
+{
+	font-size:1.3em;
+	table {		
+        width:100%;
+    }
+    td.label
+    {
+        width:160px;
+        text-align:right;
+        vertical-align:top;
+        padding-top:10px;        
+    }
+    td.value 
+    {
+        input[type=text],input[type=email],input[type=password]
+        {
+            width:100%;
+        }
+    }
+    ul
+    {
+        padding:0;
+        margin:8px 0 0;
+    }
+    li 
+    {
+        margin:0;
+        padding:0;
+        list-style:none;
+    }
+    .administrator input
+    {
+        position:relative;
+        top:5px;
+    }
+}
+
+@media only screen and (max-width: 1200px) 
+{
+    #Configuration-User-Editor .lastloggedin
+    {
+        display:none !important;
+        width:0 !important;
+    }
+}

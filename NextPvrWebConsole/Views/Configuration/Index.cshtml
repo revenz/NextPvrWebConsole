@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Configuration";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var modelRecording = (NextPvrWebConsole.Models.ConfigurationModels.RecordingConfiguration)ViewBag.RecordingModel;
+    var modelDevices = (NextPvrWebConsole.Models.ConfigurationModels.DevicesConfiguration)ViewBag.DevicesModel; 
 }
 
 @section Styles{
@@ -20,226 +22,26 @@
     </ul>
     
     <div class="vtab-content selected" id="configuration-tab-general">
-        @{
-            var modelGeneral = (NextPvrWebConsole.Models.ConfigurationModels.GeneralConfiguration)ViewBag.GeneralModel;
-        }
-        @using(Ajax.BeginForm("UpdateGeneral", "Configuration",new AjaxOptions() { OnBegin = "api.onbegin", OnComplete = "api.oncomplete", OnFailure = "api.onfailure", OnSuccess = "api.onsuccess" })) 
-        {
-            <table>
-                <tr class="livetvbuffer">
-                    <td class="label" data-lang="Live TV Buffer"></td>
-                    <td class="value">
-                        @Html.TextBoxFor(m => modelGeneral.LiveTvBufferDirectory, new { @readonly= "readonly" })
-                        <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
-                        <span class="description" data-lang="LiveTvBuffer-Description" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label" data-lang="UpdateDvbEpgDuringLiveTv"></td>
-                    <td class="value">
-                        @Html.EditorFor(m => modelGeneral.UpdateDvbEpgDuringLiveTv)
-                        <span class="description" data-lang="UpdateDvbEpgDuringLiveTv-Description" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label" data-lang="EpgUpdateHour"></td>
-                    <td class="value">
-                        @Html.EditorFor(m => modelGeneral.EpgUpdateHour, "HourPicker")
-                        @Html.ValidationMessageFor(m => modelGeneral.EpgUpdateHour)
-                        <span class="description" data-lang="EpgUpdateHour-Description" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label"></td>
-                    <td class="value">
-                        <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                            <span class="icon-save icon-large" data-lang="Save"></span>
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        }
-        
+        @Html.Partial("_General")
     </div>
     <div class="vtab-content" id="configuration-tab-devices">
-    
-        @{
-            var modelDevices = (NextPvrWebConsole.Models.ConfigurationModels.DevicesConfiguration)ViewBag.DevicesModel;
-        }
-        <table class="devices" id="device-table">
-            <thead>
-                <tr>
-                    <th class="handle"></th>
-                    <th class="type" data-lang="Type"></th>
-                    <th class="device" data-lang="Device"></th>
-                    <th class="present" data-lang="Present"></th>
-                    <th class="enabled" data-lang="Enabled"></th>
-                    <th class="channels" data-lang="Channels"></th>
-                </tr>
-            </thead>
-            <tbody data-bind="sortable: { template: 'device-template', data: devices, options: { handle: 'td:first' }, afterMove: afterMove }">
-            </tbody>
-        </table>
-
-        <script  type="text/html" id="device-template">
-            <tr>
-                <td class="handle"><i class="icon-move"></i></td>
-                <td class="type" data-bind="text: sourceType"></td>
-                <td class="device" data-bind="text: name"></td>
-                <td class="present" data-bind="text: presentString"></td>
-                <td class="enabled"><input type="checkbox" data-bind="checked: enabled, attr: { id: 'device_' + oid() + '_enabled' }" /></td>
-                <td class="channels" data-bind="text: numberOfChannels"></td>
-            </tr>            
-        </script>
-
-        <table>
-            <tr>
-                <td class="label" data-lang="UseReverseOrderForLiveTv"></td>
-                <td class="value">
-                    @Html.EditorFor(m => modelDevices.UseReverseOrderForLiveTv)
-                    <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label"></td>
-                <td class="value">
-                    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnDevicesSave">
-                        <span class="icon-save icon-large" data-lang="Save"></span>
-                    </button>
-                </td>
-            </tr>
-        </table>
+        @Html.Partial("_Devices")
+    </div>
+    <div class="vtab-content" id="configuration-tab-recording">
+        @Html.Partial("_Recording")
     </div>
     <div class="vtab-content" id="configuration-tab-channelgroups">
-        <p>Here you can configure the global channel groups for the system.  If in user mode each user will be able to use these channel groups, they will not be able to edit them however.</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th class="handle"></th>
-                    <th class="name" data-lang="Channel Group Name"></th>
-                    <th class="channels" data-lang="Channels"></th>
-                    <th class="controls"></th>
-                </tr>
-            </thead>
-            <tbody data-bind="sortable: { data: channelGroups, options: { handle: 'td:first' } }">
-                <tr>
-                    <td class="handle"><i class="icon-move"></i></td>
-                    <td class="name" data-bind="text: name"></td>
-                    <td class="channels">
-                        <a href="#" onclick="return false" data-bind="text:numberOfChannels, click: $root.selectChannels"></a>
-                    </td>
-                    <td class="controls">
-                        <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.rename">
-                            <span class="icon-edit icon-large" data-lang="Rename"></span>
-                        </button>
-                        <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
-                            <span class="icon-remove icon-large" data-lang="Remove"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p class="buttons">
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnCreateChannelGroup" data-bind="click: $root.create">
-                <span class="icon-plus icon-large" data-lang="Create Channel Group"></span>
-            </button>
-            <br />
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnChannelGroupsSave" data-bind="click: $root.save">
-                <span class="icon-save icon-large" data-lang="Save"></span>
-            </button>
-        </p>
-        
-
-        <div id="ChannelGroups-Channels" style="display:none">
-            <ul data-bind="foreach: channels">
-                <li>
-                    <input type="checkbox" class="noibutton" data-bind="checked: enabled, attr: { id: 'ChannelGroups-Channels-Channel-' + $index() }"  />
-                    <label data-bind="text: name, attr: { for: 'ChannelGroups-Channels-Channel-' + $index() }" />
-                </li>
-            </ul>
-        </div>
+        @Html.Partial("_ChannelGroups")
     </div>
     <div class="vtab-content" id="configuration-tab-channels">
         @Html.Partial("_Channels")
     </div>
-    <div class="vtab-content" id="configuration-tab-recording">
-        @{
-            var modelRecording = (NextPvrWebConsole.Models.ConfigurationModels.RecordingConfiguration)ViewBag.RecordingModel;
-        }
-        <table>
-            <tr>
-                <td class="label" data-lang="Pre-Padding"></td>
-                <td class="value">
-                    @Html.EditorFor(m => modelRecording.PrePadding)
-                    <span class="description" data-lang="PrePadding-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label" data-lang="Post-Padding"></td>
-                <td class="value">
-                    @Html.EditorFor(m => modelRecording.PostPadding)
-                    <span class="description" data-lang="PostPadding-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label" data-lang="BlockShutdownWhileRecording"></td>
-                <td class="value">
-                    @Html.EditorFor(m => modelRecording.BlockShutDownWhileRecording)
-                    <span class="description" data-lang="BlockShutdownWhileRecording-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label" data-lang="RecurringMatch"></td>
-                <td class="value">
-                    @Html.EditorFor(m => modelRecording.RecurringMatch, "Enum")
-                    <span class="description" data-lang="RecurringMatch-Description" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label" data-lang="AvoidDuplicateRecordings"></td>
-                <td class="value"> 
-                    @Html.EditorFor(m => modelRecording.AvoidDuplicateRecordings)
-                    <span class="description" data-lang="AvoidDuplicateRecordings-Description" />
-                </td>
-            </tr>
-            <tr class="recording-directories">
-                <td class="label" data-lang="Recording Directories"></td>
-                <td class="value">
-                    <ul data-bind="foreach: recordingDirectories">
-                        <li>
-                            <div class="controls">
-                                <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
-                                    <span class="icon-remove icon-large" data-lang="Remove"></span>
-                                </button>
-                            </div>
-                            <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, value:$index, checked: $root.selectedDefault" />
-                            <label data-bind="attr: { for : 'recording-directory-default-' + $index() }">
-                                <span class="name" data-bind="text: name"></span>
-                                <span class="path" data-bind="text: path"></span>
-                            </label>
-                        </li>
-                    </ul>    
-                    <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: add">
-                        <span class="icon-plus icon-large" data-lang="Add Recording Folder"></span>
-                    </button>                
-                </td>
-            </tr>
-            <tr>
-                <td class="label"></td>
-                <td class="value">
-                    <button id="btnRecordingsSave" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                        <span class="icon-save icon-large" data-lang="Save"></span>
-                    </button>
-                </td>
-            </tr>
-        </table>
+    <div class="vtab-content" id="configuration-tab-users">
+        @Html.Partial("_Users")
     </div>
-
     <div class="vtab-content" id="configuration-tab-about">
         @Html.Partial("_About")
     </div>
-
 </div>
 
 

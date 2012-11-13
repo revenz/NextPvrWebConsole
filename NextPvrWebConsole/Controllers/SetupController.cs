@@ -74,7 +74,7 @@ namespace NextPvrWebConsole.Controllers
             #endregion
 
             // create user, do this after importing folders, otherwise this users new folder with have an oid lower than the origial defaults (not a big deal, just prettier this way)
-            var user = Models.User.CreateUser(Model.Username, Model.EmailAddress, Model.Password);
+            var user = Models.User.CreateUser(Model.Username, Model.EmailAddress, Model.Password, Globals.USER_ROLE_ALL, true, DateTime.UtcNow);
             if (user == null)
                 throw new Exception("Failed to create user: " + Model.Username);
 

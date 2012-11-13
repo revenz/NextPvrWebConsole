@@ -11,6 +11,7 @@ CREATE TABLE [user] (
 	userrole				integer				NOT NULL,
 	datecreatedutc			datetime			NOT NULL,
 	lastloggedinutc			datetime			NOT NULL,
+	administrator			bit					NOT NULL,
 	[readonly]				bit					NOT NULL
 )
 GO
@@ -53,7 +54,7 @@ CREATE TABLE [userchannel]
 )
 GO
 
-CREATE TABLE [channelgroup] /** oh i can create my own channel groups... this would allow each user to create their own group, eg "Favourite" for everyone could be unique ... **/
+CREATE TABLE [channelgroup]
 (
 	oid						integer				NOT NULL			PRIMARY KEY				AUTOINCREMENT,
 	useroid					integer				NOT NULL			REFERENCES [user](oid),
@@ -69,5 +70,5 @@ CREATE TABLE [channelgroupchannel]
 )
 GO
 
-INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly]) VALUES (0, 'Shared', '', '', 0, DATETIME('now'), '1970-01-01', 1)  /* special user */
+INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly], administrator) VALUES (0, 'Shared', '', '', 0, DATETIME('now'), '1970-01-01', 1, 0)  /* special user */
 GO

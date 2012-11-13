@@ -1,0 +1,46 @@
+﻿@{
+    var modelDevices = (NextPvrWebConsole.Models.ConfigurationModels.DevicesConfiguration)ViewBag.DevicesModel;
+}
+<table class="devices" id="device-table">
+    <thead>
+        <tr>
+            <th class="handle"></th>
+            <th class="type" data-lang="Type"></th>
+            <th class="device" data-lang="Device"></th>
+            <th class="present" data-lang="Present"></th>
+            <th class="enabled" data-lang="Enabled"></th>
+            <th class="channels" data-lang="Channels"></th>
+        </tr>
+    </thead>
+    <tbody data-bind="sortable: { template: 'device-template', data: devices, options: { handle: 'td:first' }, afterMove: afterMove }">
+    </tbody>
+</table>
+
+<script  type="text/html" id="device-template">
+    <tr>
+        <td class="handle"><i class="icon-move"></i></td>
+        <td class="type" data-bind="text: sourceType"></td>
+        <td class="device" data-bind="text: name"></td>
+        <td class="present" data-bind="text: presentString"></td>
+        <td class="enabled"><input type="checkbox" data-bind="checked: enabled, attr: { id: 'device_' + oid() + '_enabled' }" /></td>
+        <td class="channels" data-bind="text: numberOfChannels"></td>
+    </tr>            
+</script>
+
+<table>
+    <tr>
+        <td class="label" data-lang="UseReverseOrderForLiveTv"></td>
+        <td class="value">
+            @Html.EditorFor(m => modelDevices.UseReverseOrderForLiveTv)
+            <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
+        </td>
+    </tr>
+    <tr>
+        <td class="label"></td>
+        <td class="value">
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnDevicesSave">
+                <span class="icon-save icon-large" data-lang="Save"></span>
+            </button>
+        </td>
+    </tr>
+</table>

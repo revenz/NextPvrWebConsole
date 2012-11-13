@@ -1,0 +1,70 @@
+﻿@{
+    var modelRecording = (NextPvrWebConsole.Models.ConfigurationModels.RecordingConfiguration)ViewBag.RecordingModel;
+}
+<table>
+    <tr>
+        <td class="label" data-lang="Pre-Padding"></td>
+        <td class="value">
+            @Html.EditorFor(m => modelRecording.PrePadding)
+            <span class="description" data-lang="PrePadding-Description" />
+        </td>
+    </tr>
+    <tr>
+        <td class="label" data-lang="Post-Padding"></td>
+        <td class="value">
+            @Html.EditorFor(m => modelRecording.PostPadding)
+            <span class="description" data-lang="PostPadding-Description" />
+        </td>
+    </tr>
+    <tr>
+        <td class="label" data-lang="BlockShutdownWhileRecording"></td>
+        <td class="value">
+            @Html.EditorFor(m => modelRecording.BlockShutDownWhileRecording)
+            <span class="description" data-lang="BlockShutdownWhileRecording-Description" />
+        </td>
+    </tr>
+    <tr>
+        <td class="label" data-lang="RecurringMatch"></td>
+        <td class="value">
+            @Html.EditorFor(m => modelRecording.RecurringMatch, "Enum")
+            <span class="description" data-lang="RecurringMatch-Description" />
+        </td>
+    </tr>
+    <tr>
+        <td class="label" data-lang="AvoidDuplicateRecordings"></td>
+        <td class="value"> 
+            @Html.EditorFor(m => modelRecording.AvoidDuplicateRecordings)
+            <span class="description" data-lang="AvoidDuplicateRecordings-Description" />
+        </td>
+    </tr>
+    <tr class="recording-directories">
+        <td class="label" data-lang="Recording Directories"></td>
+        <td class="value">
+            <ul data-bind="foreach: recordingDirectories">
+                <li>
+                    <div class="controls">
+                        <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
+                            <span class="icon-remove icon-large" data-lang="Remove"></span>
+                        </button>
+                    </div>
+                    <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, value:$index, checked: $root.selectedDefault" />
+                    <label data-bind="attr: { for : 'recording-directory-default-' + $index() }">
+                        <span class="name" data-bind="text: name"></span>
+                        <span class="path" data-bind="text: path"></span>
+                    </label>
+                </li>
+            </ul>    
+            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: add">
+                <span class="icon-plus icon-large" data-lang="Add Recording Folder"></span>
+            </button>                
+        </td>
+    </tr>
+    <tr>
+        <td class="label"></td>
+        <td class="value">
+            <button id="btnRecordingsSave" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                <span class="icon-save icon-large" data-lang="Save"></span>
+            </button>
+        </td>
+    </tr>
+</table>

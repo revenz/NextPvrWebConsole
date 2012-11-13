@@ -1,0 +1,40 @@
+﻿@{
+    var modelGeneral = (NextPvrWebConsole.Models.ConfigurationModels.GeneralConfiguration)ViewBag.GeneralModel;
+}
+@using(Ajax.BeginForm("UpdateGeneral", "Configuration",new AjaxOptions() { OnBegin = "api.onbegin", OnComplete = "api.oncomplete", OnFailure = "api.onfailure", OnSuccess = "api.onsuccess" })) 
+{
+    <table>
+        <tr class="livetvbuffer">
+            <td class="label" data-lang="Live TV Buffer"></td>
+            <td class="value">
+                @Html.TextBoxFor(m => modelGeneral.LiveTvBufferDirectory, new { @readonly= "readonly" })
+                <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
+                <span class="description" data-lang="LiveTvBuffer-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="UpdateDvbEpgDuringLiveTv"></td>
+            <td class="value">
+                @Html.EditorFor(m => modelGeneral.UpdateDvbEpgDuringLiveTv)
+                <span class="description" data-lang="UpdateDvbEpgDuringLiveTv-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="EpgUpdateHour"></td>
+            <td class="value">
+                @Html.EditorFor(m => modelGeneral.EpgUpdateHour, "HourPicker")
+                @Html.ValidationMessageFor(m => modelGeneral.EpgUpdateHour)
+                <span class="description" data-lang="EpgUpdateHour-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="value">
+                <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <span class="icon-save icon-large" data-lang="Save"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+}
+    

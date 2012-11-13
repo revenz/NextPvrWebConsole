@@ -89,12 +89,4 @@ $(function () {
         console.log('saving channel group');
         api.getJSON('ChannelGroups/SaveChannelGroup', channelGroup, callBack);
     }
-    
-
-    $("#channelgrouplist").sortable( { stop:function()
-    {
-        // push update to server 
-        // use this to fix the knockoutjs + jqueryui sortable issue: http://stackoverflow.com/questions/4146751/knockoutjs-with-jquery-ui-sortable
-    });
-    $("#channelgrouplist").disableSelection();
 });
