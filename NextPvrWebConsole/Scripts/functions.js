@@ -55,7 +55,7 @@ var gui = new function () {
         else
             doWorkCount = 0; // make sure this doesnt drop below 0
     };
-    window.onbeforeunload = function (e) {
+    var unloadFunction = function (e) {
         if (doWorkCount > 0) {
             var message = $.i18n._("This page is currently procesing a request.");
             e = e || window.event;
@@ -67,6 +67,10 @@ var gui = new function () {
             return message;
         }
     };
+    if (window.addEventListener)
+        window.addEventListener('unload', unloadFunction, false);
+    else if (window.attachEvent)
+        window.attachEvent('unload', unloadFunction);
 
     this.confirmMessage = function (settings) {
         settings = $.extend({

@@ -59,7 +59,9 @@ CREATE TABLE [channelgroup]
 	oid						integer				NOT NULL			PRIMARY KEY				AUTOINCREMENT,
 	useroid					integer				NOT NULL			REFERENCES [user](oid),
 	name					varchar(50)			NOT NULL,
-	orderoid				integer				NOT NULL
+	orderoid				integer				NOT NULL,
+	parentoid				integer				NOT NULL			REFERENCES [channelgroup](oid), /* used to reference a shared user group maintained globally */
+	[enabled]				bit					NOT NULL /* only used if parenoid is > 0, where a shared channel group might have been disabled */
 )
 GO
 

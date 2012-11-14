@@ -89,6 +89,89 @@
         display: none;
         padding: 25px;
 		overflow-y:auto;
+		
+		font-size:1.3em;
+		table {
+		    border-spacing:0;
+		    border-collapse:collapse;
+        }
+		td {
+			padding:5px;
+			vertical-align:top;
+		}
+		td.label {
+			width:300px;
+			text-align:right;
+			color:#666;
+			padding-top:9px;
+		}
+		select, input[type=number], input[type=text] {
+			font-size:1em;			
+		}
+		input[type=number] {
+			width:100px;
+		}
+		select, input[type=text] {
+			width:305px;
+		}
+		button {
+			font-size:0.8em;
+			padding-left:15px;
+			padding-right:15px;
+		}
+		.description {
+			display:block;
+			font-size:0.7em;
+			color:#777;
+			max-width:600px;
+		}
+		.ibutton-container {
+			margin-top:2px;
+			margin-bottom:2px;
+		}
+		.ui-spinner {
+			width:120px;
+		}	
+	    a 
+	    {
+	        text-decoration:none;
+	    }
+	    p.buttons 
+	    { 
+	        text-align:center;
+	        button 
+	        {
+	            margin-bottom:10px;
+	        }
+	    }
+	    .handle 
+	    {
+	        cursor: pointer;
+		    width:20px;
+		    border:none;
+	    }
+	    th 
+	    {
+	        border-bottom:solid 1px @general_border_color;
+	        padding-bottom:5px;
+	    }
+	    li
+	    {
+	        padding-top:2px;
+	        padding-bottom:2px;
+	        .handle 
+	        {
+                float:left;
+                i 
+                {
+                    position:relative;
+                    top:5px;
+	            }
+	        }
+	    }
+	    .controls {
+			text-align:center;
+	    }
     }
     .vtab-content.selected 
     {

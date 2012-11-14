@@ -1,48 +1,45 @@
-﻿<div class="channel-groups container">
+﻿<p data-lang="UserSettings-ChannelGroups-Summary"></p>
 
-    <div class="container-title">
-        <span data-lang="Channel Groups"></span>
-
+<ul data-bind="sortable:  { data: channelgroups, options: { handle: '.handle' }, afterMove: afterMove }" id="channelgrouplist" style="display:none">
+    <li data-bind="attr: { class: shared() ? 'shared' : 'personal' }">
+        <span class="handle"><i class="icon-move"></i></span>
+        <span class="name" data-bind="text: name"></span>
         <div class="controls">
-            <button onclick="return false" class="ui-button" data-bind="click: $root.add">
-                <span class="icon-plus icon-large" data-lang="Add"></span>
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select, visible: personal">
+                <span class="icon-edit icon-large" data-lang="Edit"></span>
             </button>
+            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove, visible: personal">
+                <span class="icon-remove icon-large" data-lang="Remove"></span>
+            </button>
+            <input type="checkbox" class="noibutton" data-bind="checked: enabled, visible: shared" />
         </div>
-    </div>
+    </li>
+</ul>
 
-    <div class="description" data-lang="ChannelGroupsDescription">        
-    </div>
+<p class="buttons">
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.add">
+        <span class="icon-plus icon-large" data-lang="Create Channel Group"></span>
+    </button>
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
+        <span class="icon-save icon-large" data-lang="Save"></span>
+    </button>
+</p>
 
-    <ul data-bind="sortable: channelgroups" id="channelgrouplist">
-        <li>
-            <span data-bind="text: name"></span>
-            <div class="controls">
-                <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select">
-                    <span class="icon-edit icon-large" data-lang="Edit"></span>
-                </button>
-                <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
-                    <span class="icon-trash icon-large" data-lang="Delete"></span>
-                </button>
-            </div>
-        </li>
-    </ul>
-
-    <div id="channel-group-editor" style="display:none">
-        <div data-bind="with: selectedChannelGroup">
-            <div class="input-group name">
-                <div class="label" data-lang="Name"></div>
-                <div class="value"><input type="text" data-bind="value: name" /></div>
-            </div>
-            <div class="input-group channels">
-                <div class="label" data-lang="Channels"></div>
-                <div class="value">
-                    <ul data-bind="foreach: channels">
-                        <li>
-                            <input type="checkbox" data-bind="attr : { 'data-oid': oid, id: 'channel_' + $index(), value: oid, checked: enabled }" />
-                            <label data-bind="text: name, attr: { for: 'channel_' + $index()}"></label>
-                        </li>
-                    </ul>
-                </div>
+<div id="channel-group-editor" style="display:none">
+    <div data-bind="with: selectedChannelGroup">
+        <div class="input-group name">
+            <div class="label" data-lang="Name"></div>
+            <div class="value"><input type="text" data-bind="value: name" /></div>
+        </div>
+        <div class="input-group channels">
+            <div class="label" data-lang="Channels"></div>
+            <div class="value">
+                <ul data-bind="foreach: $root.channels">
+                    <li>
+                        <input class="noibutton" type="checkbox" data-bind="attr : { 'data-oid': oid, id: 'channel_' + $index(), value: oid, checked: enabled }" />
+                        <label data-bind="text: name, attr: { for: 'channel_' + $index()}"></label>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

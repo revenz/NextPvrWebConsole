@@ -12,8 +12,12 @@ namespace NextPvrWebConsole.Models
         public string Name { get; set; }
         public int OrderOid { get; set; }
         public int UserOid { get; set; }
+        public bool Enabled { get; set; }
+        public int ParentOid { get; set; }
         [PetaPoco.Ignore]
         public int[] ChannelOids { get; set; }
+        [PetaPoco.Ignore]
+        public bool IsShared { get { return this.ParentOid > 0; } }
 
         public static ChannelGroup GetById(int Oid)
         {
@@ -24,7 +28,15 @@ namespace NextPvrWebConsole.Models
         public static List<ChannelGroup> LoadAll(int UserOid, bool LoadChannelOids = false)
         {
             var db = DbHelper.GetDatabase();
-            var results = db.Fetch<ChannelGroup>("select * from channelgroup where useroid = @0 order by orderoid", UserOid);
+            var results = db.Fetch<ChannelGroup>(@"
+select
+    cg1.oid, cg1.orderoid, cg1.enabled, cg1.parentoid,
+    case when cg1.parentoid > 0 then cg2.name else cg1.name end as name
+from channelgroup cg1
+left outer join channelgroup cg2
+on cg1.parentoid = cg2.oid and cg2.useroid = 1
+where cg1.useroid = @0 order by cg1.orderoid
+", UserOid);            
             if (LoadChannelOids)
             {
                 foreach (var r in results)
@@ -72,27 +84,36 @@ namespace NextPvrWebConsole.Models
 
         private void Save(PetaPoco.Database db, int[] ChannelOids = null)
         {
-            this.Name = this.Name.Trim();
-            // sanity checks
-            if (String.IsNullOrWhiteSpace(this.Name))
-                throw new ArgumentException("Name must not be blank.");
-            if (db.FirstOrDefault<int>("select count(*) from channelgroup where useroid = @0 and name = @1 and oid <> @2", this.UserOid, this.Name, this.Oid) > 0)
-                throw new ArgumentException("A group with the name '{0}' already exists.".FormatStr(this.Name));
+            if (!IsShared)
+            {
+                this.Name = this.Name.Trim();
+                // sanity checks
+                if (String.IsNullOrWhiteSpace(this.Name))
+                    throw new ArgumentException("Name must not be blank.");
+                if (db.FirstOrDefault<int>("select count(*) from channelgroup where useroid = @0 and name = @1 and oid <> @2", this.UserOid, this.Name, this.Oid) > 0)
+                    throw new ArgumentException("A group with the name '{0}' already exists.".FormatStr(this.Name));
+            }
+
+            if (IsShared && this.Oid == 0)
+                throw new ArgumentException("Cannot insert a shared channel group."); // need to check how shared groups will be inserted...
 
             if (this.Oid == 0) // new group
             {
                 this.OrderOid = db.FirstOrDefault<int>("select ifnull(max(orderoid),0) + 1 from channelgroup where useroid = @0", this.UserOid);
                 db.Insert("channelgroup", "oid", true, this);
                 if (this.Oid < 1)
-                    throw new Exception("Failed to inert channel group.");
+                    throw new Exception("Failed to insert channel group.");
             }
             else // update
             {
                 // only allow updating of the name here.. maybe add order too?
-                db.Update(this, this.Oid, new string[] { "name", "orderoid" });
+                if(IsShared)
+                    db.Update(this, this.Oid, new string[] { "orderoid", "enabled" });
+                else
+                    db.Update(this, this.Oid, new string[] { "name", "orderoid" });
             }
 
-            if (ChannelOids != null)
+            if (ChannelOids != null && !IsShared)
             {
                 // insert the channels
                 db.Execute("delete from channelgroupchannel where channelgroupoid = @0", this.Oid);
@@ -131,17 +152,20 @@ namespace NextPvrWebConsole.Models
 
         internal static bool SaveForUser(int UserOid, List<ChannelGroup> ChannelGroups)
         {
-            if (ChannelGroups.DuplicatesBy(x => x.Name.ToLower()).Count() > 0)
-                throw new Exception("Channel group names must be unique.");
+            if (ChannelGroups.Where(x => !x.IsShared || UserOid == Globals.SHARED_USER_OID).DuplicatesBy(x => x.Name.ToLower()).Count() > 0)
+                throw new ArgumentException("Channel group names must be unique.");
 
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();
             try
             {
                 db.Execute("delete from channelgroupchannel where channelgroupoid in (select oid from channelgroup where useroid = {0} and channelgroupoid not in ({1}))".FormatStr(UserOid, String.Join(",", ChannelGroups.Where(x => x.Oid > 0).Select(x => x.Oid.ToString()))));
-                db.Execute("delete from channelgroup where useroid = {0} and oid not in ({1})".FormatStr(UserOid, String.Join(",", ChannelGroups.Where(x => x.Oid > 0).Select(x => x.Oid.ToString()))));
+                db.Execute("delete from channelgroup where useroid = {0} and parentoid < 1 and oid not in ({1})".FormatStr(UserOid, String.Join(",", ChannelGroups.Where(x => x.Oid > 0).Select(x => x.Oid.ToString()))));
+                int orderOid = 0;
                 foreach (var cg in ChannelGroups)
                 {
+                    cg.UserOid = UserOid;
+                    cg.OrderOid = orderOid++;
                     cg.Save(db, cg.ChannelOids ?? new int[] { });
                 }
 

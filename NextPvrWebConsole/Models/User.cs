@@ -179,17 +179,17 @@ namespace NextPvrWebConsole.Models
                 db.Execute("insert into [userchannel](useroid, channeloid,[enabled],number) select @0, oid, [enabled], number from channel", user.Oid);
 
                 // insert default groups
-                var channelGroups = ChannelGroup.LoadAll(0);
+                var channelGroups = ChannelGroup.LoadAll(Globals.SHARED_USER_OID);
                 foreach(var cg in channelGroups)
                 {
-                    int originalOid = cg.Oid;
-                    cg.UserOid = user.Oid;
-                    cg.Oid = 0;
-                    db.Insert("channelgroup", "oid", true, cg);
-                    
-                    // insert default channels into default groups
-                    foreach(var c in db.Fetch<int>("select channeloid from [channelgroupchannel] where channelgroupoid = @0", originalOid))
-                        db.Execute("insert into [channelgroupchannel](channelgroupoid, channeloid) values (@0, @1)", cg.Oid, c);
+                    ChannelGroup cgNew = new ChannelGroup();
+                    cgNew.UserOid = user.Oid;
+                    cgNew.ParentOid = cg.Oid;
+                    cgNew.Enabled = true;
+                    cgNew.Name = "";
+                    cgNew.OrderOid = cg.OrderOid;
+
+                    db.Insert("channelgroup", "oid", true, cgNew);                    
                 }
 
                 // create default recording directory

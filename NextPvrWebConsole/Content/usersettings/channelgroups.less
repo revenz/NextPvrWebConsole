@@ -1,7 +1,7 @@
 ﻿@import "~/Content/mixins.less";
 @import "~/Content/globals.less";
 
-.user-settings .vtab-content > .channel-groups
+#user-settings-tab-channelgroups
 {
     ul, li
     {
@@ -10,6 +10,7 @@
     {
         position:relative;
         text-align:left;		
+        list-style:none;
 		div.controls 
 		{
 			position:absolute;
@@ -22,12 +23,15 @@
 			}
 		}
     }
-    li > span 
+    li .name
     {
         display:block;
         border-bottom: solid 1px @general_border_color;
         padding:0 10px;
         line-height:36px;
+    }
+    li.shared .name {
+        font-style:italic;
     }
 }
 
