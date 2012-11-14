@@ -141,6 +141,10 @@ var gui = new function () {
             div.dialog('close');
         };
         dialog_buttons[$.i18n._('Cancel')] = function () { div.dialog('close'); }
+        input.keypress(function (e) {
+            if (e.which == 13)
+                div.closest('.ui-dialog').find('.ui-dialog-buttonset button:first').click();
+        });
         div.dialog(
         {
             resizable: false,

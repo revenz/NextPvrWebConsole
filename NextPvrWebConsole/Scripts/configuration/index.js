@@ -4,10 +4,7 @@
 /// <reference path="../core/knockout-2.2.0.js" />
 
 $(function () {
-
-    var dirRegularExpression = '^([^"*/:?|<>\\\\.\\x00-\\x20]([^"*/:?|<>\\\\\\x00-\\x1F]*[^"*/:?|<>\\\\.\\x00-\\x20])?)$';
-    var dirErrorMessage = $.i18n._('Invalid folder name');
-
+    
     function RecordingDirectoriesViewModel() {
         // Data
         var self = this;
@@ -20,10 +17,10 @@ $(function () {
         self.add = function () {
             ShowFolderBrowser(function (dir) {
                 gui.promptMessage({
-                    title: $.i18n._('Create Recording Folder'),
-                    message: $.i18n._('Type in the name of the folder to create.'),
-                    validationMessage: dirErrorMessage,
-                    validationExpression: dirRegularExpression,
+                    title: DIRECTORY_CREATE_TITLE,
+                    message: DIRECTORY_CREATE_MESSAGE,
+                    validationMessage: DIRECTORY_ERROR_MESSAGE,
+                    validationExpression: DIRECTORY_REGULAR_EXPRSESION,
                     success: function (name) {
                         self.recordingDirectories.push(new RecordingDirectory({ Oid: 0, Name: name, Path: dir, IsDefault: false }));
                     }

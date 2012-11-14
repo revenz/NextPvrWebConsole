@@ -29,8 +29,11 @@ namespace NextPvrWebConsole.Models
                 return GetRecordingDirectoryId(Username, this.Name);
             }
         }
-        //[PetaPoco.ResultColumn]
-        //public string ShortName { get; set; }
+
+        public RecordingDirectory()
+        {
+            this.Path = "";
+        }
 
         public static List<RecordingDirectory> LoadForUser(int UserOid, bool IncludeShared = false)
         {
@@ -38,8 +41,12 @@ namespace NextPvrWebConsole.Models
             var config = new Configuration();
             if (config.EnableUserSupport)
             {
-                return SetUserPaths(db.Fetch<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join [user] u on rd.useroid = u.oid where useroid = @0 or useroid = @1", UserOid, Globals.SHARED_USER_OID));
-
+                string select = "select rd.*, username from recordingdirectory rd inner join [user] u on rd.useroid = u.oid where useroid = {0} {1}".FormatStr(UserOid, IncludeShared ? " or useroid = {0}".FormatStr(Globals.SHARED_USER_OID) : "");
+                return SetUserPaths(db.Fetch<RecordingDirectory>(select));
+            }
+            else if (!IncludeShared)
+            {
+                return new List<RecordingDirectory>(); // nothing to return then
             }
             else
             {
@@ -64,18 +71,23 @@ namespace NextPvrWebConsole.Models
             return Directories;
         }
 
-        public static RecordingDirectory LoadByShortName(string ShortName)
+        public static RecordingDirectory LoadByName(int UserOid, string Name)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username, username || '\' || rd.name as shortname from recordingdirectory rd inner join user u on rd.useroid = u.oid where shortname = @0", ShortName);
+            return db.FirstOrDefault<RecordingDirectory>("select * from recordingdirectory where useroid = @0 and name = @1", UserOid, Name);
         }
 
         public static RecordingDirectory Create(int UserOid, string Name)
         {
             var db = DbHelper.GetDatabase();
+            // check if exists
+            if (db.ExecuteScalar<int>("select count(*) from recordingdirectory where useroid = @0 and lower(name) = @1", UserOid, Name.Trim().ToLower()) > 0)
+                throw new ArgumentException("A Recording Directory with the name '{0}' already exists.".FormatStr(Name));
+
             string username = User.GetUsername(UserOid);
-            RecordingDirectory directory = new RecordingDirectory() { UserOid = UserOid, Name = Name, Username = username };
+            RecordingDirectory directory = new RecordingDirectory() { UserOid = UserOid, Name = Name.Trim(), Username = username };
             db.Insert(directory);
+            Configuration.Write();
             return directory;
         }
 
@@ -89,7 +101,14 @@ namespace NextPvrWebConsole.Models
         {
             var db = DbHelper.GetDatabase();
             if (this.Oid == 0)
+            {
                 db.Insert("recordingdirectory", "oid", true, this);
+            }
+            else
+            {
+                db.Update("recordingdirectory", "oid", this, this.Oid, new string[] { "Name" });
+            }
+            Configuration.Write();
         }
 
         /// <summary>
@@ -117,6 +136,7 @@ namespace NextPvrWebConsole.Models
                 }
 
                 db.CompleteTransaction();
+                Configuration.Write();
                 return true;
             }
             catch (Exception ex)
@@ -124,6 +144,25 @@ namespace NextPvrWebConsole.Models
                 db.AbortTransaction();
                 return false;
             }
+        }
+
+        public static bool IsValidRecordingDirectoryName(string Name)
+        {
+            Regex rgx = new Regex(@"^([^""*/:?|<>\\.\x00-\x20]([^""*/:?|<>\\\x00-\x1F]*[^""*/:?|<>\\.\x00-\x20])?)$");
+            return rgx.IsMatch(Name);
+        }
+
+        internal static void Delete(int UserOid, int Oid)
+        {
+            var db = DbHelper.GetDatabase();
+            db.Execute("delete from recordingdirectory where useroid = @0 and oid = @1", UserOid, Oid);
+            Configuration.Write();
+        }
+
+        internal static RecordingDirectory Load(int Oid)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.FirstOrDefault<RecordingDirectory>("select * from recordingdirectory where oid = @0", Oid);
         }
     }
 }

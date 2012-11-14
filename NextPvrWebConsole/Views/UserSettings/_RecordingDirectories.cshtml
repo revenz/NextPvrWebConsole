@@ -1,31 +1,22 @@
-﻿<div class="recording-directories container">
-    <div class="container-title">    
-        <span data-lang="Recording Directories"></span>
+﻿<p data-lang="UserSettings-RecordingDirectories-Summary"></p>
 
+<ul data-bind="foreach: recordingdirectories" style="display:none">
+    <li>
+        <span data-bind="text: name"></span>
         <div class="controls">
-            <button onclick="return false" class="ui-button" data-bind="click: $root.add">
-                <span class="icon-plus icon-large" data-lang="Add"></span>
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.edit">
+                <span class="icon-edit icon-large" data-lang="Edit"></span>
+            </button>
+            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
+                <span class="icon-trash icon-large" data-lang="Delete"></span>
             </button>
         </div>
-    </div>
-    
-    <div class="description" data-lang="RecordingDirectoriesDescription">
-        
-    </div>
+    </li>
+</ul>
 
-    <ul data-bind="foreach: recordingdirectories">
-        <li>
-            <span data-bind="text: name"></span>
-            <div class="controls">
-                <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select">
-                    <span class="icon-edit icon-large" data-lang="Edit"></span>
-                </button>
-                <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
-                    <span class="icon-trash icon-large" data-lang="Delete"></span>
-                </button>
-            </div>
-        </li>
-    </ul>
-</div>
-
+<p class="buttons">
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.add">
+        <span class="icon-plus icon-large" data-lang="Create Recording Directory"></span>
+    </button>
+</p>
 

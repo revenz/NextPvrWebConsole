@@ -94,8 +94,6 @@ namespace NextPvrWebConsole.Models
                 else if (prop.PropertyType == typeof(DateTime))
                     prop.SetValue(this, d.datetimevalue, null);
             }
-            if(!found)
-                Save();
         }
 
         public void Save()
@@ -203,6 +201,11 @@ namespace NextPvrWebConsole.Models
             {
                 db.AbortTransaction();
             }
+        }
+
+        internal static void Write()
+        {
+            new Configuration().Save();
         }
     }
 }

@@ -26,12 +26,12 @@ namespace NextPvrWebConsole
             );
              * */
             config.Routes.MapHttpRoute("ApiServiceRoute", "service", new { controller = "service" });
-            config.Routes.MapHttpRoute("ApiLiveRoute", "live", new { controller = "service", action = "live" });
             config.Routes.MapHttpRoute("DefaultApiWithOId", "api/{controller}/{oid}", new { oid = RouteParameter.Optional }, new { oid = @"^\d+$" });
             config.Routes.MapHttpRoute("DefaultApiWithActionAndOId", "api/{controller}/{action}/{oid}", new { oid = RouteParameter.Optional }, new { oid = @"^\d+$" });
             config.Routes.MapHttpRoute("DefaultApiWithAction", "api/{controller}/{action}");
             config.Routes.MapHttpRoute("DefaultApiGet", "api/{controller}", new { action = "Get" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
             config.Routes.MapHttpRoute("DefaultApiPost", "api/{controller}", new { action = "Post" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
+            config.Routes.MapHttpRoute("DefaultApiPut", "api/{controller}", new { action = "Put" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Put) });
 
             //config.MessageHandlers.Add(new BasicAuthMessageHandler());
 

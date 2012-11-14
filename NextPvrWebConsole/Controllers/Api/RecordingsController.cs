@@ -27,17 +27,7 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             return NUtility.ScheduledRecording.LoadAll().Where(x => x.EventOID == id).FirstOrDefault();
         }
-
-        // POST api/recordings
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/recordings/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
+        
         // DELETE api/recordings/5
         public void Delete(int Oid)
         {

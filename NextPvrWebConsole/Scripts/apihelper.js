@@ -61,6 +61,12 @@ var ajax = new function () {
 var api = new function()
 {
     var _json = function (type, url, data, callback, errorCallback) {
+        if (type != 'GET' && data) {
+            if (typeof (input) == 'string') // simple objects are read using [FromBody] in webapi and require to be "={the value}"
+                data = '=' + data;
+            else
+                data = JSON.stringify(data);
+        }
         gui.doWork();
         $.ajax(
         {
@@ -69,7 +75,7 @@ var api = new function()
             accepts: 'application/json',
             contentType: 'application/json',
             dataType: 'json',
-            data: data != null && type != 'GET' ? JSON.stringify(data) : data,
+            data: data,
             statusCode:
             {
                 200: function(data)
@@ -108,6 +114,10 @@ var api = new function()
 
     this.postJSON = function (url, data, callback, errorCallback) {
         _json('POST', url, data, callback, errorCallback);
+    }
+
+    this.putJSON = function (url, data, callback, errorCallback) {
+        _json('PUT', url, data, callback, errorCallback);
     }
 
     this.deleteJSON = function (url, data, callback, errorCallback) {
