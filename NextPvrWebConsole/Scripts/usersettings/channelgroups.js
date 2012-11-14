@@ -6,9 +6,9 @@
 
 $(function () {
     function ChannelGroupsViewModel() {
+        var self = this;
         var pendingChanges = false;
 
-        var self = this;
         self.channelgroups = ko.observableArray([]);
         self.selectedChannelGroup = ko.observable();
 

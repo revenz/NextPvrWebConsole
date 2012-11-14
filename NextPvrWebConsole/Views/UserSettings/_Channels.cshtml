@@ -1,38 +1,24 @@
-﻿<div class="channels container">
-    <div class="container-title">
-        <span data-lang="Channels"></span>
+﻿<p data-lang="UserSettings-Channels-Summary"></p>
 
-        <div class="controls">
-            <button id="user-settings-channels-edit" onclick="return false" class="ui-button" data-bind="click: $root.edit">
-                <span class="icon-edit icon-large" data-lang="Edit"></span>
-            </button>
-            <button id="user-settings-channels-save" onclick="return false" class="ui-button" data-bind="click: $root.save" style="display:none">
-                <span class="icon-save icon-large" data-lang="Save></span>
-            </button>
-            <button id="user-settings-channels-cancel" onclick="return false" class="ui-button" data-bind="click: $root.cancel" style="display:none">
-                <span class="icon-cancel icon-large" data-lang="Cancel"></span>
-            </button>
-        </div>
-    </div>
+<table id="usersettings-channels" style="display:none">
+    <thead>
+        <tr>
+            <th class="name" data-lang="Name"></th>
+            <th class="number" data-lang="Number"></th>
+            <th class="enabled" data-lang="Enabled"></th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: channels">
+        <tr>        
+            <td class="name" data-bind="text: name"></td>
+            <td class="number"><input type="number" data-bind="value:number" min="0" max="9999" /></td>
+            <td class="enabled"><input type="checkbox" data-bind="checked: enabled" class="noibutton" /></td>
+        </tr>
+    </tbody>
+</table>
 
-    <div class="description" data-lang="ChannelsDescription">
-        
-    </div>
-
-    <table class="readonly" id="usersettings-channels">
-        <thead>
-            <tr>
-                <th class="name" data-lang="Name"></th>
-                <th class="number" data-lang="Number"></th>
-                <th class="enabled" data-lang="Enabled"></th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: channels">
-            <tr>        
-                <td class="name" data-bind="text: name"></td>
-                <td class="number"><input type="number" data-bind="value:number" readonly disabled min="0" max="9999" /></td>
-                <td class="enabled"><input type="checkbox" data-bind="checked: enabled" readonly disabled /></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<p class="buttons">
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: save">
+        <span class="icon-save icon-large" data-lang="Save"></span>
+    </button>
+</p>
