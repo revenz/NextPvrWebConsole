@@ -26,23 +26,40 @@ function updateTimeIndicator() {
     var sameday = guideStart.getDate() == date.getDate() && guideStart.getMonth() == date.getMonth();
     $('#epg-time-indicator').css({ left: mins * minuteWidth + 'px', height: $('.epg-listings-channel').height(), display: sameday ? '' : 'none' });
 }
-
+var epgGridInitDone = false;
 var epgScroller = null;
-$(function () {
+function initEpgGrid() {
+    // called once page is loaded
+
     epgScroller = $(".epg-container").niceScroll();
 
-    guideStart = new Date(new Date().setHours(0, 0, 0, 0));
-    setInterval(updateTimeIndicator, 15 * 1000);
+    $('#epg-groups').addClass('epg-groups');
 
     var epgtime = $('.epg-time');
     var epgchannels = $('.epg-channels');
-    var groupWidth = $('.epg-groups').width();
+    var groupWidth = $('#epg-groups').width();
     $('.epg-container').scroll(function () {
         var top = $(this).scrollTop();
         epgtime.css('top', top);
         var left = $(this).scrollLeft();
         epgchannels.css('left', left + groupWidth);
     });
+
+
+    var pageResize = function () {
+        var epgGroupsHeight = $('#epg-groups').height();
+        $('#epg-groups li').css({ width: epgGroupsHeight, left: -epgGroupsHeight });
+    }
+    pageResize();
+    $(window).resize(pageResize);
+
+    epgGridInitDone = true;
+}
+
+$(function () {
+
+    guideStart = new Date(new Date().setHours(0, 0, 0, 0));
+    setInterval(updateTimeIndicator, 15 * 1000);
 
     // set scroll pos.
     $('.epg-container').scrollLeft(getMinutesFromStartOfGuide(new Date()) * minuteWidth);
@@ -84,7 +101,7 @@ $(function () {
         self.channelClass = function (channel, _class) {
             if (_class) _class += ' ';
             else _class = '';
-            if (channel.iconVisible())
+            if (channel.hasIcon())
                 _class += 'logo-available ';
             return _class;
         }
@@ -114,12 +131,14 @@ $(function () {
             guideStart = date;
             self.channels.removeAll();
             $('#epg-time-indicator').css({ display: 'none' });
-            api.getJSON('guide?group=' + $('.epg-groups .selected').text() + '&date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), null, function (allData) {
+            api.getJSON('guide?group=' + $('#epg-groups .selected').text() + '&date=' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new Channel(item) });
                 self.channels(mapped);
                 guideData = allData;
                 updateTimeIndicator();
-                epgScroller.resize();
+                if (!epgGridInitDone) {
+                    initEpgGrid();
+                }
             });
         }
 
@@ -149,10 +168,10 @@ $(function () {
             dialog_buttons[$.i18n._('Record')] = function () {
                 showRecordingOptions(listing);
                 $('#show-info').dialog('close');
-            };            
+            };
             dialog_buttons[$.i18n._('Find All')] = function () {
                 $('#show-info').dialog('close');
-            };        
+            };
             dialog_buttons[$.i18n._('Close')] = function () {
                 $('#show-info').dialog('close');
             };
@@ -172,23 +191,17 @@ $(function () {
     ko.applyBindings(viewModel);
     $('.epg-days li:eq(0)').addClass('selected');
 
-    var pageResize = function () {
-        var epgGroupsHeight = $('.epg-groups').height();
-        $('.epg-groups li').css({ width: epgGroupsHeight, left: -epgGroupsHeight });
-    }
-    pageResize();
-    $(window).resize(pageResize);
 
     $('.epg-groups-button.next').click(function () {
-        $('.epg-groups .selected').removeClass('selected').next().addClass('selected');
-        if ($('.epg-groups .selected').length == 0)
-            $('.epg-groups li:first-child').addClass('selected');
+        $('#epg-groups .selected').removeClass('selected').next().addClass('selected');
+        if ($('#epg-groups .selected').length == 0)
+            $('#epg-groups li:first-child').addClass('selected');
         viewModel.loadEpgData(guideStart);
     });
     $('.epg-groups-button.previous').click(function () {
-        $('.epg-groups .selected').removeClass('selected').prev().addClass('selected');
-        if ($('.epg-groups .selected').length == 0)
-            $('.epg-groups li:last-child').addClass('selected');
+        $('#epg-groups .selected').removeClass('selected').prev().addClass('selected');
+        if ($('#epg-groups .selected').length == 0)
+            $('#epg-groups li:last-child').addClass('selected');
         viewModel.loadEpgData(guideStart);
     });
 

@@ -11,7 +11,7 @@
                 <td class="typeicon live" data-bind="visible: type() == 1"><span data-lang="IndicatorLive"></span></td>
                 <td class="typeicon recording" data-bind="visible: type() == 2"><span data-lang="IndicatorRecording"></span></td>
                 <td class="channelNumber" data-bind="text: channelNumber"></td>
-                <td class="channelLogo"><img data-bind="visible: channelLogoAvailable, attr: { src: channelLogoData }" /></td>
+                <td class="channelLogo"><img data-bind="visible: channelHasIcon, attr: { src: channelIconUrl()  }" /></td>
                 <td class="channelName" data-bind="text: channelName"></td>
                 <td class="title" data-bind="text: title"></td>
                 <td class="subtitle" data-bind="text: subtitle"></td>

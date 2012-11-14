@@ -51,10 +51,31 @@ where cg1.useroid = @0 order by cg1.orderoid
             return db.Fetch<int>("select channeloid from channelgroupchannel where channelgroupoid = @0", this.Oid).ToArray();
         }
 
-        public static int[] LoadChannelOids(int UserOid, string GroupName)
+        public static ChannelGroup GetByName(int UserOid, string GroupName)
         {
             var db = DbHelper.GetDatabase();
-            return db.Fetch<int>("select channeloid from channelgroupchannel cgc inner join channelgroup cg on cgc.channelgroupoid = cg.oid where cg.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray();
+            var channelGroup = db.FirstOrDefault<ChannelGroup>("select * from channelgroup where useroid = @0 and name = @1", UserOid, GroupName);
+            if (channelGroup != null)
+                return channelGroup;
+            // check for a shared group with that name
+            return db.FirstOrDefault<ChannelGroup>("select cg1.* from channelgroup cg1 inner join channelgroup cg2 on cg1.oid = cg2.parentoid where cg2.useroid = @0 and cg1.name = @1", UserOid, GroupName);
+        }
+
+        public static int[] LoadChannelOids(int UserOid, string GroupName)
+        {
+            var channelGroup = GetByName(UserOid, GroupName);
+            if (channelGroup == null)
+                return new int[] { };
+
+            var db = DbHelper.GetDatabase();
+            bool userSupport = new Configuration().EnableUserSupport;
+            string sql = "select cgc.channeloid from channelgroupchannel cgc inner join channel c on cgc.channeloid = c.oid where c.enabled = 1 and channelgroupoid = @0";
+            if (userSupport)
+            {
+                // need to filter out their disabled channels
+                sql = "select cgc.channeloid from channelgroupchannel cgc inner join channel c on cgc.channeloid = c.oid inner join userchannel uc on cgc.channeloid = uc.channeloid where c.enabled = 1 and uc.enabled = 1 and channelgroupoid = @0";
+            }
+            return db.Fetch<int>(sql, channelGroup.Oid).ToArray();
         }
 
         public static int[] LoadChannelOids(int UserOid, int Oid)

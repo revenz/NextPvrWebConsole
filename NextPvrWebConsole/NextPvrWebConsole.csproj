@@ -208,6 +208,7 @@
     <Compile Include="Controllers\Api\ServiceController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
+    <Compile Include="Controllers\ChannelIconController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -221,6 +222,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Globals.cs" />
+    <Compile Include="Handlers\CompressionHandler.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
     <Content Include="Content\images\jquery.filetree\application.png" />

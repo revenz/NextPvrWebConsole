@@ -10,11 +10,6 @@ $(function () {
         var self = this;
 
         self.devices = ko.observableArray([]);
-        // Operations
-        //self.deleteRecording = function (recording) { self.recordings.remove(recording) };
-
-        // Load initial state from server, convert it to Task instances, then populate self.tasks
-        
 
         var refreshDevices = function () {
             api.getJSON("devices", null, function (allData) {
@@ -61,13 +56,13 @@ function Stream(owner, data) {
     self.title = ko.observable(data.Title);
     self.subtitle = ko.observable(data.Subtitle);
     self.description = ko.observable(data.Description);
-    self.channelLogoAvailable = ko.computed(function () { return data.ChannelIcon != null && data.ChannelIcon.length > 0; });
-    self.channelLogoData = ko.computed(function () {
-        if (self.channelLogoAvailable()) {
-            return 'data:image/png;base64,' + data.ChannelIcon;
-        }
-        return '';
+    self.channelHasIcon = ko.observable(data.ChannelHasIcon);
+    self.channelIconUrl = ko.computed(function () {
+        if (!self.channelHasIcon())
+            return '';
+        return '/channelicon/' + self.oid();
     });
+    self.channelOid = ko.observable(data.ChannelOid);
     self.startTimeString = ko.computed(function () { return gui.formatTime(data.StartTime); });
     self.endTimeString = ko.computed(function () { return gui.formatTime(data.EndTime); });
     self.stop = function () {

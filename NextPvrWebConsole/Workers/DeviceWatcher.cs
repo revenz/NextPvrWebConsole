@@ -127,7 +127,7 @@ namespace NextPvrWebConsole.Workers
                     {
                         foreach (var s in d.Streams)
                         {
-                            if (oldD.Streams.Where(x => x.Filename == s.Filename).Count() == 0)
+                            if (oldD.Streams == null || oldD.Streams.Where(x => x.Filename == s.Filename).Count() == 0)
                                 events.Add(new DeviceUpdateEvent() { Code = s.Type == Models.Stream.StreamType.LiveTV ? DeviceUpdateEventCode.LiveStream_Started : DeviceUpdateEventCode.Recording_Started });
                         }
                     }

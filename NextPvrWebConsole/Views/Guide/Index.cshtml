@@ -16,7 +16,7 @@
         </ul>
     </div>
     
-    <div class="epg-groups">
+    <div id="epg-groups">
         <ul>
         @{
             bool first = true;
@@ -37,7 +37,7 @@
             <div class="epg-channels">
                 <ul data-bind="foreach: channels, visible: channels().length > 0">
                     <li data-bind="attr: { class: $root.channelClass($data, 'epg-channel') }">
-                        <div class="logo"><img class="logo" data-bind="visible: iconVisible, attr: { src: icon } "  /></div>
+                        <div class="logo"><img class="logo" data-bind="visible: hasIcon, attr: { src: iconSrc()  } "  /></div>
                         <span class="name" data-bind="text: name"></span>
                         <span class="number" data-bind="text: number"></span>      
                     </li>

@@ -23,8 +23,7 @@ namespace NextPvrWebConsole.Models
         public bool Enabled { get; set; }
         [DataMember]
         [PetaPoco.Ignore]
-        public string Icon { get; set; }
-        //public List<ChannelMapping> Mappings { get; }
+        public bool HasIcon { get; set; }
 
         [PetaPoco.Ignore]
         [DataMember]
@@ -49,7 +48,7 @@ namespace NextPvrWebConsole.Models
                     Name = key.Name,
                     Number = key.Number,
                     Oid = key.OID,
-                    Icon = key.Icon != null ? key.Icon.ToBase64String() : null,
+                    HasIcon = key.Icon != null,
 
                     Listings = data[key].Where(x => x.EndTime > Start).ToList()
                 });
@@ -158,6 +157,14 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
                 db.AbortTransaction();
                 throw ex;
             }
+        }
+
+        internal static System.Drawing.Image LoadIcon(int Oid)
+        {
+            var channel = NUtility.Channel.LoadByOID(Oid);
+            if (channel == null)
+                return null;
+            return channel.Icon.ToIconSize();
         }
     }
 }

@@ -13,6 +13,8 @@ namespace NextPvrWebConsole
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute("DefaultWithOId", "{controller}/{oid}", new { oid = UrlParameter.Optional, action = "Index" }, new { oid = @"^\d+$" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

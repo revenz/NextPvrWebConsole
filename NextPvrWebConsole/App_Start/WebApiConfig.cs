@@ -33,9 +33,12 @@ namespace NextPvrWebConsole
             config.Routes.MapHttpRoute("DefaultApiPost", "api/{controller}", new { action = "Post" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
             config.Routes.MapHttpRoute("DefaultApiPut", "api/{controller}", new { action = "Put" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Put) });
 
+            // first handler runs last, so set encoding/compression as first (which will be last :))
+            config.MessageHandlers.Add(new Handlers.EncodingDelegateHandler());
             //config.MessageHandlers.Add(new BasicAuthMessageHandler());
 
             config.Filters.Add(new UnhandledExceptionFilter());
+
 
         }
     }

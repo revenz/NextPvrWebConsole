@@ -10,12 +10,12 @@ function Channel(data) {
 	self.name = ko.observable(data.Name);
 	self.number = ko.observable(data.Number);
 	self.enabled = ko.observable(data.Enabled);
-	self.icon = ko.computed(function () {
-	    if (data.Icon && data.Icon.length > 0)
-	        return 'data:image/png;base64,' + data.Icon;
-	    return '';
+	self.hasIcon = ko.observable(data.HasIcon);
+	self.iconSrc = ko.computed(function () {
+	    if (!self.hasIcon())
+	        return '';
+	    return '/channelicon/' + self.oid();
 	});
-	self.iconVisible = ko.computed(function () { return data.Icon && data.Icon.length > 0; });
 	self.listings = ko.observableArray([]);
 	if (data.Listings) {
         var mapped = $.map(data.Listings, function (item) { return new Listing(data, item) });
@@ -27,6 +27,7 @@ function Channel(data) {
 	    data.Name = self.name();
 	    data.Number = self.number();
 	    data.Enabled = self.enabled();
+	    data.HasIcon = self.hasIcon();
 	    return data;
 	};
 }

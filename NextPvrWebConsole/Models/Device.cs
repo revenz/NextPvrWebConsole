@@ -187,7 +187,7 @@ namespace NextPvrWebConsole.Models
                     var channel = NUtility.Channel.LoadAll().Where(x => GetChannelLookupName(x.Name) == lookupName).FirstOrDefault();
                     if (channel != null)
                     {
-                        this.ChannelIcon = channel.Icon != null ? channel.Icon.ToBase64String() : null;
+                        this.ChannelHasIcon = channel.Icon != null;
                         this.ChannelName = channel.Name;
                         this.ChannelNumber = channel.Number;
                         this.ChannelOid = channel.OID;
@@ -216,7 +216,7 @@ namespace NextPvrWebConsole.Models
                     if (channel != null)
                     {
                         this.ChannelNumber = channel.Number;
-                        this.ChannelIcon = channel.Icon != null ? channel.Icon.ToBase64String() : null;
+                        this.ChannelHasIcon = channel.Icon != null;
                     }
                     NUtility.EPGEvent epg = NUtility.EPGEvent.LoadByOID(recording.EventOID);
                     if (epg != null)
@@ -247,7 +247,7 @@ namespace NextPvrWebConsole.Models
         public int ChannelNumber { get; set; }
         public int ChannelOid { get; set; }
         public string ChannelName { get; set; }
-        public string ChannelIcon { get; set; }
+        public bool ChannelHasIcon { get; set; }
 
         public string Title { get; set; }
         public string Subtitle { get; set; }
