@@ -34,8 +34,9 @@ namespace NextPvrWebConsole.Controllers.Api
             var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
             if(recording == null)
                 throw new Exception("Failed to locate recording");
-
-            NUtility.ScheduleHelperFactory.GetScheduleHelper().DeleteRecording(recording);
+            
+            var instance = NShared.RecordingServiceProxy.GetInstance();
+            instance.DeleteRecording(recording);
             Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Deleted recording: " + recording.Name, "Recording Deleted");
             return true;
         }

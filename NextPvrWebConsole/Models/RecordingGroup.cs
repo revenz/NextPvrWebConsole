@@ -23,6 +23,55 @@ namespace NextPvrWebConsole.Models
 
         public static RecordingGroup[] GetAll(int UserOid)
         {
+            // get their recording directories
+            Dictionary<string, RecordingDirectory> rds = RecordingDirectory.LoadForUser(UserOid, true).ToDictionary(x => x.Path.ToLower());
+            List<NUtility.ScheduledRecording> scheduledRecordings = NUtility.ScheduledRecording.LoadAll(); // get in memory
+            Dictionary<int, NUtility.RecurringRecording> recurringRecordings = NUtility.RecurringRecording.LoadAll().ToDictionary(x => x.OID); // need this for future recordings which dont have a filename yet\
+
+            SortedDictionary<string, RecordingGroup> results = new SortedDictionary<string, RecordingGroup>();       
+
+            foreach (var sr in scheduledRecordings)
+            {
+                try
+                {
+                    RecordingDirectory rd = null;
+                    if (!String.IsNullOrEmpty(sr.Filename))
+                    {
+                        // recordings are in {Directory}\{Show Name}\{Showname}.{ext} so we need the parent directory of the recordign
+                        string path = new System.IO.FileInfo(sr.Filename).Directory.Parent.FullName.ToLower();
+                        if (!rds.ContainsKey(path))
+                            continue; // they dont have access to this recording
+                        rd = rds[path];
+                    }
+                    else if (sr.RecurrenceOID > 0 && recurringRecordings.ContainsKey(sr.RecurrenceOID))
+                    {
+                        string directoryId = recurringRecordings[sr.RecurrenceOID].RecordingDirectoryID;
+                        rd = rds.Values.Where(x => x.RecordingDirectoryId == directoryId).FirstOrDefault();
+                        if (rd == null)
+                            continue;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (!results.ContainsKey(sr.Name))
+                        results.Add(sr.Name, new RecordingGroup(sr.Name));
+
+                    results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectoryId = rd.RecordingDirectoryId });
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+            }
+
+            return results.Values.ToArray();
+
+        }
+
+        public static RecordingGroup[] GetAll2(int UserOid)
+        {
             Dictionary<int, NUtility.RecurringRecording> recurringRecordings = NUtility.RecurringRecording.LoadAll().ToDictionary(x => x.OID); // get in memory
             List<NUtility.ScheduledRecording> data = NUtility.ScheduledRecording.LoadAll(); // get in memory
             Dictionary<string, Models.RecordingDirectory> recordingDirectories = Models.RecordingDirectory.LoadAll().ToDictionary(x => x.Path.ToLower()); // get in memory
@@ -134,8 +183,8 @@ namespace NextPvrWebConsole.Models
         public string ChannelIcon { get; set; }
         [DataMember]
         public int ChannelNumber { get; set; }
-
-        public string RecordingDirectory { get; set; }
+        [DataMember]
+        public string RecordingDirectoryId { get; set; }
 
         public Recording(NUtility.ScheduledRecording BaseRecording, int UserOid)
         {
@@ -153,16 +202,7 @@ namespace NextPvrWebConsole.Models
             this.PrePadding = BaseRecording.PrePadding;
             this.StartTime = BaseRecording.StartTime;
             this.Status = BaseRecording.Status;
-
-            //NUtility.Channel channel = NUtility.Channel.LoadByOID(this.ChannelOID);
-            //if (channel != null) // can be null if channel is deleted? (i got a null exception here....)
-            //{
-                // this is too slow for every recording... need to make a url for channel icons /channels/icon/oid={channeloid} or something
-                // if (channel.Icon != null)
-                //    this.ChannelIcon = channel.Icon.ToBase64String();
-                // this.ChannelNumber = channel.Number;
-            //}
-
+            
             NUtility.EPGEvent epgevent = NUtility.EPGEvent.LoadByOID(BaseRecording.OID);
 
             if (epgevent != null)

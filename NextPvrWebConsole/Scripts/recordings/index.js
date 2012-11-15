@@ -4,15 +4,6 @@
 /// <reference path="../core/jquery-ui-1.9.0.js" />
 /// <reference path="../core/knockout-2.2.0.js" />
 /// <reference path="../core/jquery.dateFormat-1.0.js" />
-/*
-STATUS_PENDING = 0,
-STATUS_IN_PROGRESS = 1,
-STATUS_COMPLETED = 2,
-STATUS_COMPLETED_WITH_ERROR = 3,
-STATUS_PLACE_HOLDER = 4,
-STATUS_CONFLICT = 5,
-STATUS_DELETED = 6,
-*/
 
 $(function () {
 
@@ -34,7 +25,9 @@ $(function () {
     }
     var viewModel = new RecordingsViewModel();
     ko.applyBindings(viewModel);
-    
+
+    $('.recording-groups, .recordings-list').removeAttr('style');
+
     function RecordingGroup(data, index) {
         var self = this;
         self.name = ko.observable(data.Name);
@@ -60,6 +53,7 @@ $(function () {
         self.endTimeStr = ko.computed(function () { return gui.formatDateLong(data.EndTime); });
         self.channelName = ko.observable(data.ChannelName);
         self.channelOid = ko.observable(data.ChannelOID);
+        self.recordingDirectoryId = ko.observable(data.RecordingDirectoryId);
         self.status = ko.observable(data.Status);
         self.status_pending = ko.computed(function () { return data.Status == 0 });
         self.status_inProgress = ko.computed(function () { return data.Status == 1 });
@@ -88,7 +82,8 @@ $(function () {
         });
         self.remove = function () {
             gui.confirmMessage({
-                message: 'Are you sure you want to delete this recording?', yes: function () {
+                message: $.i18n._("Are you sure you want to delete the recording '%s'?", [self.displayName()]),
+                yes: function () {
                     api.deleteJSON('recordings/' + data.OID, null, function (result) {
                         group.recordings.remove(self);
                         if (group.recordings().length == 0) {

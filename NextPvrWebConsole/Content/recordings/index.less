@@ -5,38 +5,52 @@
 @import "~/Content/mixins.less";
 @import "~/Content/globals.less";
 
-@recordings-groups-container-width:360px;
+@recordings-groups-container-width:300px;
+
+#RecordingsPage 
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
 
 .recordings-groups-container
 {
 	position:absolute;
 	top:@header-height + 80px;
 	bottom:20px;
-	left:20px;
+	left:0;
     width:@recordings-groups-container-width;
-	.container;
+	border-right:1px solid #d3d3d3;
+	.inner-shadow(-5px, -4px, 7px, 0.1);
+    top: 0;
+	bottom:-10px;
+    padding:50px 0 0; 
 }
 
 .recordings-list-container
 {
 	position:absolute;
-	top:@header-height + 80px;
-	bottom:20px;
-	left:@recordings-groups-container-width  + 40px;
+	top:@header-height + 20px;
+	bottom:40px;
+	left:@recordings-groups-container-width  + 20px;
 	right:20px;
-	.container;
+	overflow-y:auto;
 }
 
 .recording-groups
 {
 	position:absolute;
-	top:6px;
+	top:140px;
 	left:6px;
-	right:6px;
+	right:0px;
 	bottom:6px;
 	overflow:auto;
     margin:0;
-    padding:2px 0;
+    padding:20px 0 10px;
     list-style:none;
 }
 .recording-group
@@ -45,7 +59,7 @@
     padding:5px 5px;
 	margin:0 5px 0 2px;
 	cursor:pointer;
-	border:solid 2px transparent;
+	border:solid 1px transparent;
     > .name
     {
         position:absolute;
@@ -67,10 +81,10 @@
     }
 }
 .recording-group.selected {
-	.gradient(#9DCCFF, #9DCCFF, #ECF5FF);
-	.rounded(10px);
-	.drop-shadow(0, 1px, 5px, 0.6);
-	border:solid 2px #318AC5;
+	.gradient(#C8DFF8, #9DCCFF, #ECF5FF);
+	.rounded(5px);
+	.drop-shadow(0, 0px, 5px, 0.5);
+	border:solid 1px #318AC5;
 }
 .recording-group-recordings
 {
@@ -135,7 +149,7 @@
 		text-align:right;
 	}
 }
-.recordings-list-container {
+#RecordingsPage {
 	.recording-status .status,
 	.recordings-list-statuskey .status {
 		.rounded(8px);
@@ -155,9 +169,9 @@
 		margin:0;
 		padding:0;
 		position:absolute;
-		left:0;
 		right:0;
-		bottom:3px;
+	    left:@recordings-groups-container-width  + 20px;
+		bottom:13px;
 		text-align:center;
 		display:block;
 		li {
