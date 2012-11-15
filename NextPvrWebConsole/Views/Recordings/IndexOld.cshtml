@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Recordings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    @Styles.Render("~/Content/recordings/css")
+}
+<div id="RecordingsPage">
+    <div class="recordings-groups-container">
+        <ul class="recording-groups" data-bind="foreach: recordingGroups, visible: recordingGroups().length > 0" style="display:none">
+            <li class="recording-group" data-bind="visible:recordings().length > 0, click: select, attr: { id: 'rg-' + index}">
+                <span class="name" data-bind="text: name"></span>
+                <span class="number-of-recordings" data-bind="text: numberOfRecordings"></span>
+            </li> 
+        </ul>
+    </div>
+
+    <div class="recordings-list-container">
+        <table class="recordings-list" data-bind="with: selectedRecordingGroup" style="display:none">
+            <thead>
+                <tr>
+                    <th class="recording-status"></th>
+                    <th class="recording-name" data-lang="Name"></th>
+                    <th class="recording-directory" data-lang="Directory"></th>
+                    <th class="recording-starttime" data-lang="Start"></th>
+                    <th class="recording-endtime" data-lang="End"></th>
+                    <th class="recording-controls"></th>
+                </tr>
+            </thead>
+            <tbody class="recordings-list" data-bind="foreach: recordings">
+                <tr data-bind="attr: { class : cssClass }">
+                    <td class="recording-status"><span data-bind="attr: { class: 'status status_' + status() }"></span></td>
+                    <td class="recording-name" data-bind="text: displayName"></td>
+                    <td class="recording-directory" data-bind="text: recordingDirectoryId"></td>
+                    <td class="recording-starttime" data-bind="text:startTimeStr"></td>
+                    <td class="recording-endtime" data-bind="text:endTimeStr"></td>
+                    <td class="recording-controls">
+                        <button href="#" onclick="return false" class="ui-button-error ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: remove">
+                            <span class="icon-trash icon-large" data-lang="Delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <ul class="recordings-list-statuskey">
+        <li><span class="status status_0"></span><span data-lang="Pending" /></li>
+        <li><span class="status status_1"></span><span data-lang="In Progress" /></li>
+        <li><span class="status status_2"></span><span data-lang="Completed" /></li>
+        <li><span class="status status_3"></span><span data-lang="Completed With Errors" /></li>
+        <li><span class="status status_4"></span><span data-lang="Place Holder" /></li>
+        <li><span class="status status_5"></span><span data-lang="Conflict" /></li>
+    </ul>
+</div>
+@section Scripts{
+    @Scripts.Render("~/Scripts/recordings/js")
+
+    <script>
+        $(function () {
+            var resize = function () {
+                $('.body-wrapper').height($(window).height() - 40);
+            };
+            resize();
+            $(window).resize(resize);
+        });
+    </script>
+}

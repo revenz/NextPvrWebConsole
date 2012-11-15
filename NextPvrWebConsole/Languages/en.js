@@ -88,5 +88,6 @@
     'Configuration-Channels-Summary'    :               'Here you can configure the global channels for the system.  If in user mode each user will be able to use these channels.',
     'Configuration-ChannelGroups-Summary':              'Here you can configure the global channel groups for the system.  If in user mode each user will be able to use these channel groups, they will not be able to edit them however.',
     'EnableUserSupport'                 :               'Enable User Support',
-    'EnableUserSupport-Description'     :               'When enabled, users will be able to create their own Channel Groups, managed their own Channels, create their own Recording Directories and schedule personal recordings.\nNote XBMC is currently the only front-end that truly supports this feature.'
+    'EnableUserSupport-Description'     :               'When enabled, users will be able to create their own Channel Groups, managed their own Channels, create their own Recording Directories and schedule personal recordings.\nNote XBMC is currently the only front-end that truly supports this feature.',
+    'Time-Range'                        :               ' %s to %s'
 };

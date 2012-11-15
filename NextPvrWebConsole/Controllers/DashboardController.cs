@@ -13,5 +13,11 @@ namespace NextPvrWebConsole.Controllers
         {
             return View();
         }
+
+        public ActionResult StreamTest()
+        {
+            return View();
+        }
+
     }
 }

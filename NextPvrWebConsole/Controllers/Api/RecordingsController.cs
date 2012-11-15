@@ -14,7 +14,19 @@ namespace NextPvrWebConsole.Controllers.Api
         // GET api/recordings
         public IEnumerable<Models.RecordingGroup> Get()
         {
-            return Models.RecordingGroup.GetAll(this.GetUser().Oid);
+            return Models.RecordingGroup.Get(this.GetUser().Oid, IncludeAll: true);
+        }
+
+        [HttpGet]
+        public IEnumerable<Models.RecordingGroup> Available()
+        {
+            return Models.RecordingGroup.Get(this.GetUser().Oid, IncludeAvailable: true);
+        }
+
+        [HttpGet]
+        public IEnumerable<Models.RecordingGroup> Pending()
+        {
+            return Models.RecordingGroup.Get(this.GetUser().Oid, IncludePending: true);
         }
 
         public IEnumerable<Models.Recording> GetUpcoming()

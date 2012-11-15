@@ -224,6 +224,7 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Handlers\CompressionHandler.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
+    <Content Include="ClientBin\VideoPlayer.xap" />
     <Content Include="Content\images\ibutton-slider-default.png" />
     <Content Include="Content\images\jquery.filetree\application.png" />
     <Content Include="Content\images\jquery.filetree\code.png" />
@@ -334,6 +335,9 @@
     <Content Include="Scripts\core\knockout-sortable.js" />
     <Content Include="Scripts\dashboard\upcomingrecordings.js" />
     <Content Include="Scripts\jquery.filetree.js" />
+    <Content Include="Scripts\recordings\available.js" />
+    <Content Include="Scripts\recordings\pending.js" />
+    <Content Include="Scripts\recordings\recurring.js" />
     <Content Include="Scripts\setup\index.js" />
     <Content Include="Scripts\startup.js" />
     <Content Include="Scripts\translator.js" />
@@ -432,6 +436,7 @@
     <Content Include="Content\themes\bootstrap\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\bootstrap\images\ui-icons_f6cf3b_256x240.png" />
     <Content Include="Content\setup\index.less" />
+    <Content Include="Content\recordings\available.less" />
     <None Include="Content\themes\bootstrap\icons.less" />
     <Content Include="Content\themes\bootstrap\inputs.less" />
     <None Include="Content\themes\bootstrap\jquery.accordion.less" />
@@ -487,6 +492,11 @@
     <Content Include="Views\Configuration\_Recording.cshtml" />
     <Content Include="Views\Configuration\_Devices.cshtml" />
     <Content Include="Views\Configuration\_General.cshtml" />
+    <Content Include="Views\Recordings\Index.cshtml" />
+    <Content Include="Views\Recordings\_Available.cshtml" />
+    <Content Include="Views\Recordings\_Pending.cshtml" />
+    <Content Include="Views\Recordings\_Recurring.cshtml" />
+    <Content Include="Views\Dashboard\StreamTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />
@@ -556,7 +566,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Recordings\Index.cshtml" />
+    <Content Include="Views\Recordings\IndexOld.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Guide\Index.cshtml" />

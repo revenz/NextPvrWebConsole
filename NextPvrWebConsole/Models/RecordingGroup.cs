@@ -20,11 +20,11 @@ namespace NextPvrWebConsole.Models
             this.Name = Name;
             this.Recordings = new List<Recording>();
         }
-
-        public static RecordingGroup[] GetAll(int UserOid)
+        
+        public static RecordingGroup[] Get(int UserOid, bool IncludePending = false, bool IncludeAvailable = false, bool IncludeFailed = false, bool IncludeAll = false)
         {
             // get their recording directories
-            Dictionary<string, RecordingDirectory> rds = RecordingDirectory.LoadForUser(UserOid, true).ToDictionary(x => x.Path.ToLower());
+            Dictionary<string, RecordingDirectory> rds = RecordingDirectory.LoadForUser(UserOid, true).ToDictionary(x => x.Path.EndsWith(@"\") ? x.Path.Substring(0, x.Path.Length - 1).ToLower() : x.Path.ToLower());
             List<NUtility.ScheduledRecording> scheduledRecordings = NUtility.ScheduledRecording.LoadAll(); // get in memory
             Dictionary<int, NUtility.RecurringRecording> recurringRecordings = NUtility.RecurringRecording.LoadAll().ToDictionary(x => x.OID); // need this for future recordings which dont have a filename yet\
 
@@ -34,6 +34,19 @@ namespace NextPvrWebConsole.Models
             {
                 try
                 {
+                    if (!IncludeAll)
+                    {
+                        if (!IncludeAvailable && (sr.Status == RecordingStatus.STATUS_COMPLETED || sr.Status == RecordingStatus.STATUS_COMPLETED_WITH_ERROR))
+                            continue;
+                        if (!IncludePending && (sr.Status == RecordingStatus.STATUS_PENDING))
+                            continue;
+                        if (!IncludeFailed && !String.IsNullOrEmpty(sr.FailureReason))
+                            continue;
+                    }
+                    if (sr.Status == RecordingStatus.STATUS_DELETED)
+                        continue; // no point showing deleted...
+
+
                     RecordingDirectory rd = null;
                     if (!String.IsNullOrEmpty(sr.Filename))
                     {
@@ -64,56 +77,6 @@ namespace NextPvrWebConsole.Models
                 {
                     continue;
                 }
-            }
-
-            return results.Values.ToArray();
-
-        }
-
-        public static RecordingGroup[] GetAll2(int UserOid)
-        {
-            Dictionary<int, NUtility.RecurringRecording> recurringRecordings = NUtility.RecurringRecording.LoadAll().ToDictionary(x => x.OID); // get in memory
-            List<NUtility.ScheduledRecording> data = NUtility.ScheduledRecording.LoadAll(); // get in memory
-            Dictionary<string, Models.RecordingDirectory> recordingDirectories = Models.RecordingDirectory.LoadAll().ToDictionary(x => x.Path.ToLower()); // get in memory
-            Dictionary<string, Models.RecordingDirectory> recordingDirectoriesNpvrIdIndex = Models.RecordingDirectory.LoadAll().ToDictionary(x => x.RecordingDirectoryId); // get in memory
-            SortedDictionary<string, RecordingGroup> results = new SortedDictionary<string, RecordingGroup>();       
-
-            foreach (var sr in data)
-            {
-                // get recording folder
-                RecordingDirectory recordingDirectory = null;
-                if (!String.IsNullOrWhiteSpace(sr.Filename))
-                {
-                    // get from filename
-                    System.IO.DirectoryInfo dir = new System.IO.FileInfo(sr.Filename).Directory.Parent;
-                    if (dir != null && recordingDirectories.ContainsKey(dir.FullName.ToLower()))
-                    {
-                        recordingDirectory = recordingDirectories[dir.FullName.ToLower()];
-                    }
-                }
-                if (recordingDirectory == null && sr.RecurrenceOID > 0 && recurringRecordings.ContainsKey(sr.RecurrenceOID))
-                {
-                    // try get it from the reoccurence oid
-                    if (!String.IsNullOrWhiteSpace(recurringRecordings[sr.RecurrenceOID].RecordingDirectoryID) && recordingDirectoriesNpvrIdIndex.ContainsKey(recurringRecordings[sr.RecurrenceOID].RecordingDirectoryID))
-                        recordingDirectory = recordingDirectoriesNpvrIdIndex[recurringRecordings[sr.RecurrenceOID].RecordingDirectoryID];
-                }
-
-                // check they have accesss ot this shizzle.
-                if (new Configuration().EnableUserSupport)
-                {
-                    if(recordingDirectory == null)
-                        continue; // the end game
-                    if (recordingDirectory.UserOid != Globals.SHARED_USER_OID && recordingDirectory.UserOid != UserOid)
-                        continue; // not allowed this folder
-                }
-
-                // ok add it.
-
-                if (!results.ContainsKey(sr.Name))
-                    results.Add(sr.Name, new RecordingGroup(sr.Name));
-
-                throw new Exception("Have to fix this, removed recordingDirectory.ShortName.");
-                //results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectory = recordingDirectory == null ? "" : recordingDirectory.ShortName });
             }
 
             return results.Values.ToArray();
@@ -180,7 +143,7 @@ namespace NextPvrWebConsole.Models
         #endregion
 
         [DataMember]
-        public string ChannelIcon { get; set; }
+        public bool ChannelHasIcon { get; set; }
         [DataMember]
         public int ChannelNumber { get; set; }
         [DataMember]
@@ -204,6 +167,9 @@ namespace NextPvrWebConsole.Models
             this.Status = BaseRecording.Status;
             
             NUtility.EPGEvent epgevent = NUtility.EPGEvent.LoadByOID(BaseRecording.OID);
+
+            var channel = NUtility.Channel.LoadByOID(BaseRecording.ChannelOID);
+            this.ChannelHasIcon = channel != null && channel.Icon != null;
 
             if (epgevent != null)
             {
