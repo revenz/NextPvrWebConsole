@@ -15,10 +15,5 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             return new Models.Configuration();
         }
-
-        // POST api/configuration
-        public void Post(Models.Configuration Configuration)
-        {
-        }
     }
 }

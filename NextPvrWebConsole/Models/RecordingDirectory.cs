@@ -25,7 +25,7 @@ namespace NextPvrWebConsole.Models
             get
             {
                 if (String.IsNullOrWhiteSpace(Username))
-                    throw new Exception("No username set for recording directory.");
+                    return null;
                 return GetRecordingDirectoryId(Username, this.Name);
             }
         }
@@ -118,6 +118,9 @@ namespace NextPvrWebConsole.Models
         /// <param name="RecordingDirectories">the list of recording directories to save</param>
         internal static bool SaveForUser(int UserOid, List<RecordingDirectory> RecordingDirectories)
         {
+            if (RecordingDirectories.DuplicatesBy(x => x.Name.ToLower().Trim()).Count() > 0)
+                throw new ArgumentException("Recording Directory names must be unique.");
+            string username = User.GetUsername(UserOid);
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();
             try
@@ -129,6 +132,8 @@ namespace NextPvrWebConsole.Models
                 // save the rest
                 foreach (var rd in RecordingDirectories)
                 {
+                    rd.UserOid = UserOid;
+                    rd.Username = username;
                     if (rd.Oid < 1) // new one
                         db.Insert("recordingdirectory", "oid", true, rd);
                     else // update an old one

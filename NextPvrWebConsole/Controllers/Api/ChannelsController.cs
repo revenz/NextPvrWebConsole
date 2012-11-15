@@ -16,9 +16,10 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.Channel.LoadAll(this.GetUser().Oid, IncludeDisabled);
         }
 
-        public void Update(Models.Channel[] Channels)
+        public bool Update(Models.Channel[] Channels)
         {
             Models.Channel.Update(this.GetUser().Oid, Channels);
+            return true;
         }
 
         public IEnumerable<Models.Channel> GetMissingChannels()

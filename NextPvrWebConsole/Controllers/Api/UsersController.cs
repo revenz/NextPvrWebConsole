@@ -39,15 +39,16 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         // DELETE api/delete/5
-        public void Delete(int Oid)
+        public bool Delete(int Oid)
         {
             var user = this.GetUser();
             if (user == null)
                 throw new UnauthorizedAccessException();
             if (user.Oid == Oid)
-                throw new Exception("You cannot delete yourself.");
+                throw new ArgumentException("You cannot delete yourself.");
 
             Models.User.Delete(Oid);
+            return true;
         }
     }
 }

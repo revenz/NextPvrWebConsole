@@ -42,10 +42,8 @@ $(function () {
 
         $('#btnRecordingsSave').click(function () {
             var recordings = new Array();
-            console.log('default: ' + self.selectedDefault());
             $.each(self.recordingDirectories(), function (i, ele) {
                 ele.isDefault(i == self.selectedDefault());
-                console.log(ele.toApiObject());
                 recordings.push(ele.toApiObject());
             });
             if (recordings.length == 0) {

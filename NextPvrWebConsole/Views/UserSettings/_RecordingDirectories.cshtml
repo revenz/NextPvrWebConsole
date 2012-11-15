@@ -2,7 +2,8 @@
 
 <ul data-bind="foreach: recordingdirectories" style="display:none">
     <li>
-        <span data-bind="text: name"></span>
+        <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, value:$index, checked: $root.selectedDefault" title="Is Default" />
+        <label data-bind="text: name, attr: { for : 'recording-directory-default-' + $index() }"></label>
         <div class="controls">
             <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.edit">
                 <span class="icon-edit icon-large" data-lang="Edit"></span>
@@ -17,6 +18,9 @@
 <p class="buttons">
     <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.add">
         <span class="icon-plus icon-large" data-lang="Create Recording Directory"></span>
+    </button>
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
+        <span class="icon-save icon-large" data-lang="Save"></span>
     </button>
 </p>
 

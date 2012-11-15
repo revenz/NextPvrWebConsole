@@ -11,13 +11,17 @@ $(function () {
 
         self.selectedChannelGroup = ko.observable();
 
+        self.selectedDefault = ko.observable();
+
+        $('#user-settings-tab-recordingdirectories').on('click.recordingdirectories', 'input[type=radio]', function () {
+            self.selectedDefault(parseInt($(this).val(), 10));
+        });
+
         self.delete = function (directory) {
             gui.confirmMessage({
                 message: $.i18n._("Are you sure you want to delete the Recording Directory '%s'?", [directory.name()]),
                 yes: function () {
-                    api.deleteJSON("recordingdirectories/" + directory.oid(), null, function () {
-                        self.recordingdirectories.remove(directory);
-                    });
+                    self.recordingdirectories.remove(directory);
                 }
             });
         };
@@ -30,9 +34,17 @@ $(function () {
                 validationExpression: DIRECTORY_REGULAR_EXPRSESION,
                 initialValue: directory.name(),
                 success: function (name) {
-                    api.putJSON('recordingdirectories/' + directory.oid(), name, function () {
-                        directory.name(name);
+                    var duplicate = false;
+                    $.each(self.recordingdirectories(), function(i, ele){
+                        if(directory == ele)
+                            return;
+                        if(ele.name().trim().toLowerCase() == name.trim().toLowerCase())
+                            duplicate = true;
                     });
+                    if(duplicate)
+                        gui.showError( $.i18n._('Recording Directory names must be unique.') );
+                    else
+                        directory.name(name);
                 }
             });
         };
@@ -44,18 +56,45 @@ $(function () {
                 validationMessage: DIRECTORY_ERROR_MESSAGE,
                 validationExpression: DIRECTORY_REGULAR_EXPRSESION,
                 success: function (name) {
-                    api.postJSON('recordingdirectories', name, function (item) {
-                        var directory = new RecordingDirectory(item);
-                        self.recordingdirectories.push(directory);
+                    var duplicate = false;
+                    $.each(self.recordingdirectories(), function(i, ele){
+                        if(ele.name().trim().toLowerCase() == name.trim().toLowerCase())
+                            duplicate = true;
                     });
+                    if(duplicate)
+                        gui.showError( $.i18n._('Recording Directory names must be unique.') );
+                    else {
+                        var rd = new RecordingDirectory();
+                        rd.name(name);
+                        self.recordingdirectories.push(rd);
+                    }
                 }
             });
+        };
+
+        self.save = function(){        
+            var directories = new Array();
+            $.each(self.recordingdirectories(), function (i, ele) {
+                ele.isDefault(i == self.selectedDefault());
+                console.log(ele.toApiObject());
+                directories.push(ele.toApiObject());
+            });
+            if (directories.length == 0) {
+                gui.showError($.i18n._('At least one recording directory is required.'));
+            } else {
+                api.postJSON('recordingdirectories', directories);
+            }
         };
 
         var refreshRecordingDirectories = function () {
             api.getJSON("recordingdirectories", null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new RecordingDirectory(item) });
                 self.recordingdirectories(mapped);
+                
+                for (var i = 0; i < mapped.length; i++) {
+                    if (mapped[i].isDefault())
+                        self.selectedDefault(i);
+                }
             });
         };
         refreshRecordingDirectories();

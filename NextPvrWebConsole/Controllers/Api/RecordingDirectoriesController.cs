@@ -16,8 +16,9 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.RecordingDirectory.LoadForUser(this.GetUser().Oid, IncludeShared);
         }
 
-        // POST api/recordingdirectories
-        public Models.RecordingDirectory Post([FromBody] string RecordingDirectoryName)
+        // POST api/recordingdirectories/updatename
+        [HttpPost]
+        public Models.RecordingDirectory UpdateName([FromBody] string RecordingDirectoryName)
         {
             var user = this.GetUser();
             if (String.IsNullOrWhiteSpace(RecordingDirectoryName) || !Models.RecordingDirectory.IsValidRecordingDirectoryName(RecordingDirectoryName))
@@ -26,8 +27,17 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.RecordingDirectory.Create(user.Oid, RecordingDirectoryName);
         }
 
+        
+        public bool Post(List<Models.RecordingDirectory> RecordingDirectories)
+        {
+            if (RecordingDirectories == null || RecordingDirectories.Count == 0)
+                throw new ArgumentException("At least one Recording Directory is required.");
+            var user = this.GetUser();
+            return Models.RecordingDirectory.SaveForUser(user.Oid, RecordingDirectories);
+        }
+
         // PUT api/recordingdirectories
-        public void Put(int Oid, [FromBody] string RecordingDirectoryName)
+        public bool Put(int Oid, [FromBody] string RecordingDirectoryName)
         {
             var user = this.GetUser();
             Models.RecordingDirectory original = Models.RecordingDirectory.Load(Oid);
@@ -49,14 +59,18 @@ namespace NextPvrWebConsole.Controllers.Api
             original.Name = RecordingDirectoryName;
 
             original.Save();
+
+            return true;
         }
 
         // DELETE api/recordingdirectories/5
-        public void Delete(int Oid)
+        public bool Delete(int Oid)
         {
             var user = this.GetUser();
 
             Models.RecordingDirectory.Delete(user.Oid, Oid);
+
+            return true;
         }
     }
 }

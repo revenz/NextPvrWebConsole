@@ -44,16 +44,20 @@ namespace NextPvrWebConsole.Workers
             if (TunerStatusUpdated == null)
                 return; // no need running if nothing is watching.
 
-            if(!mutex.WaitOne(1))
+            if (!mutex.WaitOne(1))
                 return;
-
-            List<DeviceUpdateEvent> events = Updated();
-            if (events.Count > 0 && TunerStatusUpdated != null) // just incase the only watcher stopped watching
+            try
             {
-                TunerStatusUpdated(events.ToArray());
+                List<DeviceUpdateEvent> events = Updated();
+                if (events.Count > 0 && TunerStatusUpdated != null) // just incase the only watcher stopped watching
+                {
+                    TunerStatusUpdated(events.ToArray());
+                }
             }
-
-            mutex.ReleaseMutex();
+            finally
+            {
+                mutex.ReleaseMutex();
+            }
         }
 
         List<DeviceUpdateEvent> Updated()

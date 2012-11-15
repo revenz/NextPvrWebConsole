@@ -29,7 +29,7 @@ namespace NextPvrWebConsole.Controllers.Api
         }
         
         // DELETE api/recordings/5
-        public void Delete(int Oid)
+        public bool Delete(int Oid)
         {
             var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
             if(recording == null)
@@ -37,6 +37,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
             NUtility.ScheduleHelperFactory.GetScheduleHelper().DeleteRecording(recording);
             Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Deleted recording: " + recording.Name, "Recording Deleted");
+            return true;
         }
     }
 }
