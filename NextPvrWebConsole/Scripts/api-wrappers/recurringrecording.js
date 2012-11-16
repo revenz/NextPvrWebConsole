@@ -19,7 +19,11 @@ function RecurringRecording(data) {
     self.onlyNewEpisodes = ko.observable(data.onlyNewEpisodes);
     self.postPadding = ko.observable(data.PostPadding);
     self.prePadding = ko.observable(data.PrePadding);
+    self.type = ko.observable(data.Type);
+    self.quality = ko.observable(data.Quality);
     self.recordingDirectoryId = ko.observable(data.RecordingDirectoryId);
+    self.advancedRules = ko.observable(data.AdvancedRules);
+    self.matchRules = ko.observable(data.MatchRules);
     self.channelOid = ko.observable(data.ChannelOid);
     self.channelName = ko.observable(data.ChannelName);
     self.channelHasIcon = ko.observable(data.ChannelHasIcon);
@@ -64,99 +68,35 @@ function RecurringRecording(data) {
         return $.i18n._('Time-Range', [gui.formatDateLong(data.StartTime), gui.formatTime(data.EndTime)]);
     });
 
-    self.type = ko.computed({
-        read: function () {
-            var daymask = self.daymask();
-            if (self.onlyNewEpisodes() && daymask == 255) return 1; // all new episodes on this channel
-            else if (daymask == 255) {
-                // todo determine if all episodes this channel 
-                // 2 == all episodes on this channel
-                // or if its daily this timeslot.
-                return 3; // daily, this timeslot
-            }
-            else if (daymask == 1 || daymask == 2 || daymask == 4 || daymask == 8 || daymask == 16 || daymask == 32 || daymask == 64)
-                return 4; // weekly, this timeslot
-            else if (daymask == 62)
-                return 5; // weekdays, mon to friday
-            else if (daymask == 65)
-                return 6; // weekends, sat/sun
-            else if (daymask == 255 && self.channelOid() == 0)
-                return 7; // all episodes all channels
-            return 0;
-        },
-        write: function (value) {
-            switch (value) {
-                case 0:  // record once
-                    {
-                    }
-                    break;
-                case 1:  // season, all new
-                    {
-                        self.daymask(255);
-                        self.onlyNewEpisodes(true);
-                    }
-                    break;
-                case 2:  // season, all
-                    {
-                        self.daymask(255);
-                        self.onlyNewEpisodes(false);
-                    }
-                    break;
-                case 3:  // season, daily
-                    {
-                        self.daymask(255);
-                        self.onlyNewEpisodes(false);
-                    }
-                    break;
-                case 4:  // season, weekly
-                    {
-                        // need to know day of week.....
-                        alert('todo');
-                        self.onlyNewEpisodes(false);
-                    }
-                    break;
-                case 5:  // season, weekdays
-                    {
-                        self.daymask(62);
-                        self.onlyNewEpisodes(false);
-                    }
-                    break;
-                case 6:  // season, weekends
-                    {
-                        self.daymask(65);
-                        self.onlyNewEpisodes(false);
-                    }
-                    break;
-                case 7:  // all episodes all channels
-                    {
-                        self.channelOid(0);
-                        self.daymask(255);
-                        self.channelName = 'All Channels';
-                        self.onlyNewEpisodes(false);
-                    }
-                    break;
-            }
-        }
-    });
-
 
     self.toApiObject = function () {
         data.Oid = self.oid();
         data.Name = self.name();
-        data.StartTime = self.startTime()
-        data.EndTime = self.endTime();
-        data.EndDate = self.endDate
-        data.Timeslot = self.timeslot;
-        data.DayMask = self.daymask;
-        data.EpgTitle = self.epgtitle;
+
         data.ChannelOid = self.channelOid();
         data.ChannelName = self.channelName();
-        data.IsManualRecording = self.isManualRecording;
-        data.Keep = self.keep;
-        data.onlyNewEpisodes = self.onlyNewEpisodes;
-        data.PostPadding = self.postPadding;
-        data.PrePadding = self.prePadding;
-        data.RecordingDirectoryId = self.recordingDirectoryId;
+        data.ChannelHasIcon = self.channelHasIcon();
+
+        data.Type = self.type();
+        data.PostPadding = self.postPadding();
+        data.PrePadding = self.prePadding();
+        data.RecordingDirectoryId = self.recordingDirectoryId();
+        data.Keep = self.keep();
+
+        data.DayMask = self.daymask();
+        data.EndTime = self.endTime();
+        data.EndDate = self.endDate();
+
+        data.AdvancedRules = self.advancedRules();
+        data.EpgTitle = self.epgtitle();
+        data.IsManualRecording = self.isManualRecording();
+        data.MatchRules = self.matchRules();
+        data.OnlyNewEpisodes = self.onlyNewEpisodes();
+        data.Quality = self.quality();
+
+        data.StartTime = self.startTime();
+        data.Timeslot = self.timeslot();
+
         return data;
     };
 }

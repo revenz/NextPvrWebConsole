@@ -86,7 +86,7 @@ namespace NextPvrWebConsole.Workers
                 foreach (var d in Devices)
                 {
                     var newD = newDevices.Where(x => x.Oid == d.Oid).FirstOrDefault();
-                    if (newD == null)
+                    if (newD == null && d.Streams != null)
                     {
                         // was removed, so all streams stopped.
                         foreach (var s in d.Streams)
@@ -113,7 +113,7 @@ namespace NextPvrWebConsole.Workers
                 foreach (var d in newDevices)
                 {
                     var oldD = Devices.Where(x => x.Oid == d.Oid).FirstOrDefault();
-                    if (oldD == null)
+                    if (oldD == null && d.Streams != null)
                     {
                         // new device, so all devices are new
                         foreach (var s in d.Streams)

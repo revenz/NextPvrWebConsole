@@ -6,62 +6,85 @@ using NUtility;
 
 namespace NextPvrWebConsole.Models
 {
+    public enum RecordingType
+    {
+        Record_Once = 1,
+        Record_Season_New_This_Channel = 2,
+        Record_Season_All_This_Channel = 3,
+        Record_Season_Daily_This_Timeslot = 4,
+        Record_Season_Weekly_This_Timeslot = 5,
+        Record_Season_Weekdays_This_Timeslot = 6,
+        Record_Season_Weekends_This_Timeslot = 7,
+        Record_Season_All_Season_All_Channels = 8
+    }
+
     public class RecurringRecording
     {
-        public string AdvancedRules { get; set; }
-        //public Channel Channel { get; set; }
+        public int Oid { get; set; }
+        public string Name { get; set; }
+
         public string ChannelName { get; set; }
         public int ChannelOid { get; set; }
         public bool ChannelHasIcon { get; set; }
+
+        public RecordingType Type { get; set; }
+        public int PostPadding { get; set; }
+        public int PrePadding { get; set; }
+        public string RecordingDirectoryId { get; set; }
+        public int Keep { get; set; }
+        
         public DayMask DayMask { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime EndTime { get; set; }
+
+        public string AdvancedRules { get; set; }
         public string EpgTitle { get; set; }
         public bool IsManualRecording { get; set; }
-        public int Keep { get; set; }
         public string MatchRules { get; set; }
-        public string Name { get; set; }
-        public int Oid { get; set; }
         public bool OnlyNewEpisodes { get; set; }
-        public int PostPadding { get; set; }
-        public int PrePadding { get; set; }
         public RecordingQuality Quality { get; set; }
-        public string RecordingDirectoryId { get; set; }
         public DateTime StartTime { get; set; }
         public bool Timeslot { get; set; }
-
-        public bool Monday { get { return (this.DayMask & NUtility.DayMask.MONDAY) == NUtility.DayMask.MONDAY; } }
-        public bool Tuesday { get { return (this.DayMask & NUtility.DayMask.TUESDAY) == NUtility.DayMask.TUESDAY; } }
-        public bool Wednesday { get { return (this.DayMask & NUtility.DayMask.WEDNESDAY) == NUtility.DayMask.WEDNESDAY; } }
-        public bool Thursday { get { return (this.DayMask & NUtility.DayMask.THURSDAY) == NUtility.DayMask.THURSDAY; } }
-        public bool Friday { get { return (this.DayMask & NUtility.DayMask.FRIDAY) == NUtility.DayMask.FRIDAY; } }
-        public bool Saturday { get { return (this.DayMask & NUtility.DayMask.SATURDAY) == NUtility.DayMask.SATURDAY; } }
-        public bool Sunday { get { return (this.DayMask & NUtility.DayMask.SUNDAY) == NUtility.DayMask.SUNDAY; } }
 
         public RecurringRecording() { }
         public RecurringRecording(NUtility.RecurringRecording BaseRecurringRecording)
         {
-            
-            this.AdvancedRules =BaseRecurringRecording.AdvancedRules;
-            this.ChannelName =BaseRecurringRecording.ChannelName;
-            this.ChannelOid =BaseRecurringRecording.ChannelOID;
-            this.DayMask  = BaseRecurringRecording.DayMask;
-            this.EndTime =BaseRecurringRecording.EndTime;
-            this.Keep =BaseRecurringRecording.Keep;
-            this.MatchRules =BaseRecurringRecording.MatchRules;
-            this.Name =BaseRecurringRecording.Name;
-            this.Oid =BaseRecurringRecording.OID;
-            this.OnlyNewEpisodes =BaseRecurringRecording.OnlyNewEpisodes;
-            this.PostPadding =BaseRecurringRecording.PostPadding;
-            this.PrePadding =BaseRecurringRecording.PrePadding;
+            this.AdvancedRules = BaseRecurringRecording.AdvancedRules;
+            this.ChannelName = BaseRecurringRecording.ChannelName;
+            this.ChannelOid = BaseRecurringRecording.ChannelOID;
+            this.DayMask = BaseRecurringRecording.DayMask;
+            this.EndTime = BaseRecurringRecording.EndTime;
+            this.Keep = BaseRecurringRecording.Keep;
+            this.MatchRules = BaseRecurringRecording.MatchRules;
+            this.Name = BaseRecurringRecording.Name;
+            this.Oid = BaseRecurringRecording.OID;
+            this.OnlyNewEpisodes = BaseRecurringRecording.OnlyNewEpisodes;
+            this.PostPadding = BaseRecurringRecording.PostPadding;
+            this.PrePadding = BaseRecurringRecording.PrePadding;
             this.Quality = BaseRecurringRecording.Quality;
-            this.RecordingDirectoryId =BaseRecurringRecording.RecordingDirectoryID;
-            this.StartTime =BaseRecurringRecording.StartTime;
+            this.RecordingDirectoryId = BaseRecurringRecording.RecordingDirectoryID;
+            this.StartTime = BaseRecurringRecording.StartTime;
             this.Timeslot = BaseRecurringRecording.Timeslot;
 
             this.EpgTitle = BaseRecurringRecording.EPGTitle;
 
             this.ChannelHasIcon = BaseRecurringRecording.ChannelName == "All Channels" || (BaseRecurringRecording.Channel != null && BaseRecurringRecording.Channel.Icon != null);
+
+            if (OnlyNewEpisodes && !this.Timeslot && DayMask == NUtility.DayMask.ANY && ChannelOid > 0)
+                this.Type = RecordingType.Record_Season_New_This_Channel;
+            else if (!OnlyNewEpisodes && !this.Timeslot && DayMask == NUtility.DayMask.ANY && ChannelOid > 0)
+                this.Type = RecordingType.Record_Season_All_This_Channel;
+            else if (this.Timeslot && DayMask == NUtility.DayMask.ANY && ChannelOid > 0)
+                this.Type = RecordingType.Record_Season_Daily_This_Timeslot;
+            else if (this.Timeslot && ChannelOid > 0 && ((int)this.DayMask & ((int)this.DayMask - 1)) == 0) // make sure only 1 day is set, by checking daymask is a power of 2
+                this.Type = RecordingType.Record_Season_Weekly_This_Timeslot;
+            else if (this.Timeslot && ChannelOid > 0 && this.DayMask == (NUtility.DayMask.MONDAY | NUtility.DayMask.TUESDAY | NUtility.DayMask.WEDNESDAY | NUtility.DayMask.THURSDAY | NUtility.DayMask.FRIDAY))
+                this.Type = RecordingType.Record_Season_Weekdays_This_Timeslot;
+            else if (this.Timeslot && ChannelOid > 0 && this.DayMask == (NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY))
+                this.Type = RecordingType.Record_Season_Weekends_This_Timeslot;
+            else if (!this.Timeslot && this.ChannelOid == 0 && this.DayMask == NUtility.DayMask.ANY && !this.OnlyNewEpisodes)
+                this.Type = RecordingType.Record_Season_All_Season_All_Channels;
+
         }
 
         public static List<RecurringRecording> LoadAll(int UserOid)
@@ -88,6 +111,77 @@ namespace NextPvrWebConsole.Models
 
 
             return results;
+        }
+
+        internal bool Save(int UserOid)
+        {
+            var original = NUtility.RecurringRecording.LoadByOID(this.Oid);
+            var recordingDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+            // make sure this user has access to the original 
+            if (!String.IsNullOrWhiteSpace(original.RecordingDirectoryID) && !recordingDirectories.ContainsKey(original.RecordingDirectoryID))
+                throw new AccessViolationException();
+
+            original.PostPadding = this.PostPadding;
+            original.PrePadding = this.PrePadding;
+            original.RecordingDirectoryID = this.RecordingDirectoryId;
+            original.Keep = this.Keep;
+            switch (this.Type)
+            {
+                case RecordingType.Record_Season_New_This_Channel:
+                    {
+                        original.OnlyNewEpisodes = true;
+                        original.Timeslot = false;
+                        original.DayMask = NUtility.DayMask.ANY;
+                    }
+                    break;
+                case RecordingType.Record_Season_All_This_Channel:
+                    {
+                        original.OnlyNewEpisodes = false;
+                        original.Timeslot = false;
+                        original.DayMask = NUtility.DayMask.ANY;
+                    }
+                    break;
+                case RecordingType.Record_Season_Daily_This_Timeslot:
+                    {
+                        original.OnlyNewEpisodes = false;
+                        original.Timeslot = true;
+                        original.DayMask = NUtility.DayMask.ANY;
+                    }
+                    break;
+                case RecordingType.Record_Season_Weekly_This_Timeslot:
+                    {
+                        original.OnlyNewEpisodes = false;
+                        original.Timeslot = true;
+                        // need to work out day its on...
+                        //original.DayMask = NUtility.DayMask.ANY;
+                    }
+                    break;
+                case RecordingType.Record_Season_Weekdays_This_Timeslot:
+                    {
+                        original.OnlyNewEpisodes = false;
+                        original.Timeslot = true;
+                        original.DayMask = NUtility.DayMask.MONDAY | NUtility.DayMask.TUESDAY | NUtility.DayMask.WEDNESDAY | NUtility.DayMask.THURSDAY | NUtility.DayMask.FRIDAY;
+                    }
+                    break;
+                case RecordingType.Record_Season_Weekends_This_Timeslot:
+                    {
+                        original.OnlyNewEpisodes = false;
+                        original.Timeslot = true;
+                        original.DayMask = NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY;
+                    }
+                    break;
+                case RecordingType.Record_Season_All_Season_All_Channels:
+                    {
+                        original.OnlyNewEpisodes = false;
+                        original.Timeslot = false;
+                        original.DayMask = NUtility.DayMask.ANY;
+                        original.Channel = null;
+                    }
+                    break;
+            }
+
+            original.Save();
+            return true;
         }
     }
 }

@@ -28,13 +28,17 @@ $(function () {
             self.selected(item);
             var dialog = $('#RecurringRecording-ScheduleEditor');
             var dialog_buttons = {};
-            dialog_buttons[$.i18n._("Save")] = function () { dialog.dialog('close'); };
+            dialog_buttons[$.i18n._("Save")] = function () {
+                api.postJSON('recordings/updaterecurring', self.selected().toApiObject(), function () {
+                    dialog.dialog('close');
+                });
+            };
             dialog_buttons[$.i18n._("Cancel")] = function () { dialog.dialog('close'); };
             dialog.dialog({
                 modal: true,
                 title: item.name(),
-                minWidth: 550,
-                minHeight:300,
+                minWidth: 670,
+                minHeight:340,
                 buttons: dialog_buttons
             });
         };

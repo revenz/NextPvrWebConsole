@@ -2,37 +2,41 @@
     ViewBag.RecordingDirectories = NextPvrWebConsole.Models.RecordingDirectory.LoadForUser(ViewBag.UserOid, true);
 }
 
-<div id="recording-options">
+<div id="recording-options" class="schedule-editor">
     <table>
         <tr>
-            <td data-lang="Recording Type"></td>
-            <td>
+            <td class="label" data-lang="Channel"></td>
+            <td class="value" data-bind="text: channelName"></td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="Recording Type"></td>
+            <td class="value">
                 <select id="recording-type" data-bind="value: type">
-                    <option value="0" data-lang="Record_Once"></option>
-                    <option value="1" data-lang="Record_Season_New"></option>
-                    <option value="2" data-lang="Record_Seaon_All"></option>
-                    <option value="3" data-lang="Record_Season_Daily"></option>
-                    <option value="4" data-lang="Record_Season_Weekly"></option>
-                    <option value="5" data-lang="Record_Season_Mon_To_Fri"></option>
-                    <option value="6" data-lang="Record_Season_Weekends"></option>
-                    <option value="7" data-lang="Record_All_Eps_All_Chs"></option>
+                    <option value="1" data-lang="Record_Once"></option>
+                    <option value="2" data-lang="Record_Season_New"></option>
+                    <option value="3" data-lang="Record_Seaon_All"></option>
+                    <option value="4" data-lang="Record_Season_Daily"></option>
+                    <option value="5" data-lang="Record_Season_Weekly"></option>
+                    <option value="6" data-lang="Record_Season_Mon_To_Fri"></option>
+                    <option value="7" data-lang="Record_Season_Weekends"></option>
+                    <option value="8" data-lang="Record_All_Eps_All_Chs"></option>
                 </select>
             </td>
         </tr>
 
         <tr>
-            <td data-lang="PrePadding"></td>
-            <td><input type="number" min="0" max="89" id="recording-prepadding" data-bind="value: prePadding" /> (<span data-lang="Minutes"></span>)</td>
+            <td class="label" data-lang="PrePadding"></td>
+            <td class="value"><input type="number" min="0" max="89" id="recording-prepadding" data-bind="value: prePadding" /> (<span data-lang="Minutes"></span>)</td>
         </tr>
 
         <tr>
-            <td data-lang="PostPadding"></td>
-            <td><input type="number" min="0" max="89" id="recording-postpadding" data-bind="value: postPadding" /> (<span data-lang="Minutes"></span>)</td>
+            <td class="label" data-lang="PostPadding"></td>
+            <td class="value"><input type="number" min="0" max="89" id="recording-postpadding" data-bind="value: postPadding" /> (<span data-lang="Minutes"></span>)</td>
         </tr>
 
         <tr>
-            <td data-lang="RecordingDirectory"></td>
-            <td>
+            <td class="label" data-lang="RecordingDirectory"></td>
+            <td class="value">
                 <select id="recording-directory" data-bind="value: recordingDirectoryId">
                     @foreach (var dir in ViewBag.RecordingDirectories)
                     {
@@ -43,8 +47,8 @@
         </tr>
 
         <tr>
-            <td data-lang="Keep"></td>
-            <td>
+            <td class="label" data-lang="Keep"></td>
+            <td class="value">
                 <select id="recording-keep" data-bind="value: keep">
                     <option value="0" data-lang="All Recordings"></option>
                     @for (int i = 1; i < 29; i++)

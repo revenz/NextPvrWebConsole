@@ -440,6 +440,7 @@
     <Content Include="Content\themes\bootstrap\images\ui-icons_f6cf3b_256x240.png" />
     <Content Include="Content\setup\index.less" />
     <Content Include="Content\recordings\available.less" />
+    <Content Include="Content\scheduleeditor.less" />
     <None Include="Content\themes\bootstrap\icons.less" />
     <Content Include="Content\themes\bootstrap\inputs.less" />
     <None Include="Content\themes\bootstrap\jquery.accordion.less" />

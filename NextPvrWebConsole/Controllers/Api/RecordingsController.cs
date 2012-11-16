@@ -45,6 +45,13 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             return NUtility.ScheduledRecording.LoadAll().Where(x => x.EventOID == id).FirstOrDefault();
         }
+
+        [HttpPost]
+        public bool UpdateRecurring(Models.RecurringRecording RecurringRecording)
+        {
+            var user = this.GetUser();
+            return RecurringRecording.Save(user.Oid);
+        }
         
         // DELETE api/recordings/5
         public bool Delete(int Oid)
