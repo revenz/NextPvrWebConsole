@@ -5,7 +5,6 @@
 /// <reference path="../core/knockout-2.2.0.js" />
 /// <reference path="../core/jquery.dateFormat-1.0.js" />
 
-var availableViewModel;
 $(function () {
 
     function AvailableRecordingsViewModel() {
@@ -47,8 +46,8 @@ $(function () {
             self.recordingGroups(mapped);
         });
     }
-    availableViewModel = new AvailableRecordingsViewModel();
-    ko.applyBindings(availableViewModel, $('#recordings-tab-available').get(0));
+    var viewModel = new AvailableRecordingsViewModel();
+    ko.applyBindings(viewModel, $('#recordings-tab-available').get(0));
 
     $('#recordings-tab-available > div').removeAttr('style');
 

@@ -11,7 +11,7 @@ function RecordingGroup(data, index) {
     self.recordings = ko.observableArray([]);
     self.numberOfRecordings = ko.computed(function () { return data.Recordings.length; });
     self.index = index;
-    var mapped = $.map(data.Recordings, function (item) { if (item.Status == 0) { return; } return new Recording(self, item) });
+    var mapped = $.map(data.Recordings, function (item) { if (item.Status == 0) { return; } return new Recording(item) });
     self.recordings(mapped);
     self.select = function (group) {
         $('.recordings-groups-container .selected').removeClass('selected'); // clear last selection
@@ -20,7 +20,7 @@ function RecordingGroup(data, index) {
     };
 }
 
-function Recording(group, data) {
+function Recording(data) {
     var self = this;
     self.filename = ko.observable(data.Filename);
     self.name = ko.observable(data.Name);

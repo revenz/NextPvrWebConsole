@@ -11,9 +11,10 @@ namespace NextPvrWebConsole.Controllers
     {
         //
         // GET: /Recordings/
-
         public ActionResult Index()
         {
+            var user = this.GetUser();
+            ViewBag.UserOid = user.Oid;
             return View();
         }
 

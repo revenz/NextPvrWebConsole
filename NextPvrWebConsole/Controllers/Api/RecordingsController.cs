@@ -24,9 +24,15 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         [HttpGet]
-        public IEnumerable<Models.RecordingGroup> Pending()
+        public IEnumerable<Models.Recording> Pending()
         {
-            return Models.RecordingGroup.Get(this.GetUser().Oid, IncludePending: true);
+            return Models.RecordingGroup.Get(this.GetUser().Oid, IncludePending: true).SelectMany(x => x.Recordings).OrderBy(x => x.StartTime);
+        }
+
+        [HttpGet]
+        public IEnumerable<Models.RecurringRecording> Recurring()
+        {
+            return Models.RecurringRecording.LoadAll(this.GetUser().Oid).OrderBy(x => x.Name);
         }
 
         public IEnumerable<Models.Recording> GetUpcoming()

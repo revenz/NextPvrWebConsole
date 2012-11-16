@@ -30,9 +30,46 @@ namespace NextPvrWebConsole.Models
             }
         }
 
+        /// <summary>
+        /// Gets if this is a shared system recording directory
+        /// </summary>
+        [PetaPoco.Ignore]
+        public bool IsShared { get { return this.UserOid == Globals.SHARED_USER_OID; } }
+
+        [PetaPoco.Ignore]
+        public string DisplayName
+        {
+            get
+            {
+                if (this.UserOid > Globals.SHARED_USER_OID)
+                    return this.Name;
+                return "[{0}] {1}".FormatStr(Globals.SHARED_USER_USERNAME, this.Name);
+            }
+        }
+
         public RecordingDirectory()
         {
             this.Path = "";
+        }
+        /// <summary>
+        /// Loads the recording directory as user has access to indexed by the full path name of the recording directory (lowercased WITHOUT a trailing \)
+        /// </summary>
+        /// <param name="UserOid">the Id of the user</param>
+        /// <param name="IncludeShared">if shared recording directories should be included</param>
+        /// <returns>the recording directory as user has access to indexed by the full path name of the recording directory (lowercased WITHOUT a trailing \)</returns>
+        public static Dictionary<string, RecordingDirectory> LoadForUserAsDictionaryIndexedByPath(int UserOid, bool IncludeShared = false)
+        {
+            return RecordingDirectory.LoadForUser(UserOid, IncludeShared).ToDictionary(x => x.Path.EndsWith(@"\") ? x.Path.Substring(0, x.Path.Length - 1).ToLower() : x.Path.ToLower());
+        }
+        /// <summary>
+        /// Loads the recording directory as user has access to indexed by the NextPVR DirectoryId
+        /// </summary>
+        /// <param name="UserOid">the Id of the user</param>
+        /// <param name="IncludeShared">if shared recording directories should be included</param>
+        /// <returns>the recording directory as user has access to indexed by the NextPVR DirectoryId</returns>
+        public static Dictionary<string, RecordingDirectory> LoadForUserAsDictionaryIndexedByDirectoryId(int UserOid, bool IncludeShared = false)
+        {
+            return RecordingDirectory.LoadForUser(UserOid, IncludeShared).ToDictionary(x => x.RecordingDirectoryId);
         }
 
         public static List<RecordingDirectory> LoadForUser(int UserOid, bool IncludeShared = false)
@@ -93,7 +130,7 @@ namespace NextPvrWebConsole.Models
 
         public static string GetRecordingDirectoryId(string Username, string RecordingDirectoryName)
         {
-            return "{0} - {1}".FormatStr(Username, RecordingDirectoryName);
+            return "[{0} - {1}]".FormatStr(Username, RecordingDirectoryName);
         }
 
 
@@ -167,7 +204,13 @@ namespace NextPvrWebConsole.Models
         internal static RecordingDirectory Load(int Oid)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<RecordingDirectory>("select * from recordingdirectory where oid = @0", Oid);
+            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where oid = @0", Oid);
+        }
+
+        internal static RecordingDirectory LoadSystemDefault()
+        {
+            var db = DbHelper.GetDatabase();
+            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where useroid = @0 and isdefault = 1", Globals.SHARED_USER_OID);
         }
     }
 }

@@ -26,6 +26,12 @@ namespace NextPvrWebConsole.Controllers
             }
             try
             {
+                if (Oid == 0)
+                {
+                    // special case for "All Channels" channel
+                    return base.File(Server.MapPath("~/Content/images/icon_channel_all.png"), "image/png");
+                }
+
                 using (var image = Models.Channel.LoadIcon(Oid))
                 {
                     var data = image.ToIconSizeBytes();

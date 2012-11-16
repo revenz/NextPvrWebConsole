@@ -24,9 +24,11 @@ namespace NextPvrWebConsole.Models
         public static RecordingGroup[] Get(int UserOid, bool IncludePending = false, bool IncludeAvailable = false, bool IncludeFailed = false, bool IncludeAll = false)
         {
             // get their recording directories
-            Dictionary<string, RecordingDirectory> rds = RecordingDirectory.LoadForUser(UserOid, true).ToDictionary(x => x.Path.EndsWith(@"\") ? x.Path.Substring(0, x.Path.Length - 1).ToLower() : x.Path.ToLower());
+            Dictionary<string, RecordingDirectory> rds = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
             List<NUtility.ScheduledRecording> scheduledRecordings = NUtility.ScheduledRecording.LoadAll(); // get in memory
             Dictionary<int, NUtility.RecurringRecording> recurringRecordings = NUtility.RecurringRecording.LoadAll().ToDictionary(x => x.OID); // need this for future recordings which dont have a filename yet\
+
+            RecordingDirectory systemDefault = RecordingDirectory.LoadSystemDefault();
 
             SortedDictionary<string, RecordingGroup> results = new SortedDictionary<string, RecordingGroup>();       
 
@@ -59,9 +61,18 @@ namespace NextPvrWebConsole.Models
                     else if (sr.RecurrenceOID > 0 && recurringRecordings.ContainsKey(sr.RecurrenceOID))
                     {
                         string directoryId = recurringRecordings[sr.RecurrenceOID].RecordingDirectoryID;
-                        rd = rds.Values.Where(x => x.RecordingDirectoryId == directoryId).FirstOrDefault();
-                        if (rd == null)
-                            continue;
+                        if (!String.IsNullOrWhiteSpace(directoryId)) // the directoryid isn't set that means its going into NextPVRs default recording directory (which is a Shared one, so we allow it).
+                        {
+                            rd = rds.Values.Where(x => x.RecordingDirectoryId == directoryId).FirstOrDefault();
+                            if (rd == null)
+                                continue;
+                        }
+                        else
+                        {
+                            rd = systemDefault;
+                            if (rd == null || rd.Path == null || !rds.ContainsKey(rd.Path.EndsWith(@"\") ? rd.Path.Substring(0, rd.Path.Length - 1).ToLower() : rd.Path.ToLower()))
+                                continue;
+                        }
                     }
                     else
                     {
@@ -71,9 +82,9 @@ namespace NextPvrWebConsole.Models
                     if (!results.ContainsKey(sr.Name))
                         results.Add(sr.Name, new RecordingGroup(sr.Name));
 
-                    results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectoryId = rd.RecordingDirectoryId });
+                    results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectoryId = rd == null ? "" :rd.RecordingDirectoryId });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     continue;
                 }

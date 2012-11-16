@@ -1,4 +1,10 @@
-﻿function ChannelGroup(data) {
+﻿/// <reference path="../core/knockout-2.2.0.js" />
+/// <reference path="../core/jquery-1.8.2.js" />
+/// <reference path="../functions.js" />
+/// <reference path="../apihelper.js" />
+/// <reference path="listing.js" />
+
+function ChannelGroup(data) {
     if (data == null)
         data = { Oid: 0, Name: '', OrderOid: -1, ParentOid: 0, IsShared: false, Enabled: true, ChannelOids: [] };
     if (!data.ChannelOids)

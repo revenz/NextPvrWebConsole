@@ -188,7 +188,7 @@ $(function () {
     }
 
     var viewModel = new GuideViewModel();
-    ko.applyBindings(viewModel);
+    ko.applyBindings(viewModel, $('#epg-viewmodel-container').get(0));
     $('.epg-days li:eq(0)').addClass('selected');
 
 

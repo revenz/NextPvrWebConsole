@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Recordings";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -19,14 +19,23 @@
         @Html.Partial("_Available")
     </div>
     
-    <div class="vtab-content" id="configuration-tab-pending">
+    <div class="vtab-content" id="recordings-tab-pending">
         @Html.Partial("_Pending")
     </div>
 
-    <div class="vtab-content" id="configuration-tab-recurring">
+    <div class="vtab-content" id="recordings-tab-recurring">
         @Html.Partial("_Recurring")
     </div>
 </div>
+
+<ul id="recordings-list-statuskey">
+    <li><span class="status status_0"></span><span data-lang="Pending" /></li>
+    <li><span class="status status_1"></span><span data-lang="In Progress" /></li>
+    <li><span class="status status_2"></span><span data-lang="Completed" /></li>
+    <li><span class="status status_3"></span><span data-lang="Completed With Errors" /></li>
+    <li><span class="status status_4"></span><span data-lang="Place Holder" /></li>
+    <li><span class="status status_5"></span><span data-lang="Conflict" /></li>
+</ul>
 
 @section Scripts{
     @Scripts.Render("~/Scripts/recordings/js")

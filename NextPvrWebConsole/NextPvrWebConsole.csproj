@@ -226,6 +226,7 @@
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="ClientBin\VideoPlayer.xap" />
     <Content Include="Content\images\ibutton-slider-default.png" />
+    <Content Include="Content\images\icon_channel_all.png" />
     <Content Include="Content\images\jquery.filetree\application.png" />
     <Content Include="Content\images\jquery.filetree\code.png" />
     <Content Include="Content\images\jquery.filetree\css.png" />
@@ -275,6 +276,7 @@
     <Compile Include="Models\RecordingDirectory.cs" />
     <Compile Include="Models\RecordingGroup.cs" />
     <Compile Include="Models\RecordingSchedule.cs" />
+    <Compile Include="Models\RecurringRecording.cs" />
     <Compile Include="Models\ScheduledRecordingModel.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\User.cs" />
@@ -320,6 +322,7 @@
     <Content Include="Scripts\api-wrappers\listing.js" />
     <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
     <Content Include="Scripts\api-wrappers\recordings.js" />
+    <Content Include="Scripts\api-wrappers\recurringrecording.js" />
     <Content Include="Scripts\api-wrappers\user.js" />
     <Content Include="Scripts\configuration\channelgroups.js" />
     <Content Include="Scripts\configuration\channels.js" />
@@ -497,6 +500,7 @@
     <Content Include="Views\Recordings\_Pending.cshtml" />
     <Content Include="Views\Recordings\_Recurring.cshtml" />
     <Content Include="Views\Dashboard\StreamTest.cshtml" />
+    <Content Include="Views\Shared\_ScheduleEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />

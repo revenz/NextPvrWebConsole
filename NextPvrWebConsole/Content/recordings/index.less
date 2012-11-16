@@ -7,6 +7,114 @@
 
 @recordings-groups-container-width:300px;
 
+.recordings.vtab-container
+{
+	table {
+		border-spacing:0;
+		border-collapse:collapse;
+		width:100%;
+		thead {
+			tr {
+				.border-radius-top(5px);
+				.drop-shadow;
+				border-bottom:solid 1px #ddd;
+				line-height:32px;
+			}
+		}
+		td, th {
+			text-align:left;
+		}
+		td {
+			padding:5px 0;
+			overflow:hidden;
+			white-space:nowrap;
+			text-overflow:ellipsis;
+		}
+		tbody 
+		{
+			font-size:0.9em;
+			line-height:30px;
+			overflow:auto;
+			tr {
+				border-bottom:solid 1px #ddd;
+			}
+			tr:nth-child(even) {
+				background: #eee;
+			}
+		}
+		.recording-status {
+			padding-left:15px;
+			width:30px;
+		}
+		.recording-name {
+			width:300px;
+		}
+		.recording-directory {
+			width:200px;
+		}
+		.recording-starttime, .recording-endtime
+		{
+			width:200px;
+		}
+		.recording-controls {
+			padding-right:10px;
+			text-align:right;
+		}
+		.recording-channel {
+			img { width:32px; height:32px; display:block; }
+		}
+	}
+}
+.recordings.vtab-container > div 
+{
+    margin-bottom:20px;
+}
+
+#recordings-list-statuskey .status,
+.recordings.vtab-container .status {
+	.rounded(8px);
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	.drop-shadow(0, 2px, 4px, 0.5);
+}
+.status_0 { background: #F1D60B; } /* STATUS_PENDING = 0 */
+.status_1 { background: #149614; } /* STATUS_IN_PROGRESS = 1 */
+.status_2 { background: #06f; } /* STATUS_COMPLETED = 2 */
+.status_3 { background: #9D0CCA; } /* STATUS_COMPLETED_WITH_ERROR = 3 */
+.status_4 { background: #8B8B8B; } /* STATUS_PLACE_HOLDER = 4 */
+.status_5 { background: #000000; } /* STATUS_CONFLICT = 5 */
+.status_6 { background: #fc2e5a; } /* STATUS_DELETED = 6 */
+	
+#recordings-list-statuskey
+{
+	margin:0;
+	padding:0;
+	position:absolute;
+	right:0;
+	left:@tab_button_width + 20px;
+	bottom:50px;
+	text-align:center;
+	display:block;
+	
+	li {
+		list-style:none;
+		padding:0;
+		margin:0 10px;
+		display:inline-table;
+		.status
+		{
+			margin-right:5px;
+			margin-bottom:-2px;
+		}
+
+	}
+}
+
+/** following code is from the old recordings page */
+
+
+/*
 #RecordingsPage 
 {
     position: absolute;
@@ -107,7 +215,6 @@
 	border-collapse:collapse;
 	width:100%;
 	thead {
-		/*display:block;*/
 		tr {
 			.border-radius-top(5px);
 			.drop-shadow;
@@ -124,7 +231,6 @@
 	}
 	tbody 
 	{
-		/*display:block;*/
 		overflow:auto;
 		tr {
 			border-bottom:solid 1px #ddd;
@@ -158,13 +264,13 @@
 		display: inline-block;
 		.drop-shadow(0, 2px, 4px, 0.5);
 	}
-	.status_0 { background: #F1D60B; } /* STATUS_PENDING = 0 */
-	.status_1 { background: #149614; } /* STATUS_IN_PROGRESS = 1 */
-	.status_2 { background: #06f; } /* STATUS_COMPLETED = 2 */
-	.status_3 { background: #9D0CCA; } /* STATUS_COMPLETED_WITH_ERROR = 3 */
-	.status_4 { background: #8B8B8B; } /* STATUS_PLACE_HOLDER = 4 */
-	.status_5 { background: #000000; } /* STATUS_CONFLICT = 5 */
-	.status_6 { background: #fc2e5a; } /* STATUS_DELETED = 6 */
+	.status_0 { background: #F1D60B; } 
+	.status_1 { background: #149614; }
+	.status_2 { background: #06f; } 
+	.status_3 { background: #9D0CCA; }
+	.status_4 { background: #8B8B8B; }
+	.status_5 { background: #000000; }
+	.status_6 { background: #fc2e5a; }
 	.recordings-list-statuskey {
 		margin:0;
 		padding:0;
@@ -188,3 +294,4 @@
 		}
 	}
 }
+*/

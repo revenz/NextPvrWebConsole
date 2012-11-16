@@ -1,4 +1,10 @@
-﻿function Device(data) {
+﻿/// <reference path="../core/knockout-2.2.0.js" />
+/// <reference path="../core/jquery-1.8.2.js" />
+/// <reference path="../functions.js" />
+/// <reference path="../apihelper.js" />
+/// <reference path="listing.js" />
+
+function Device(data) {
     var self = this;
     self.oid = ko.observable(data.Oid);
     self.name = ko.observable(data.Name);
