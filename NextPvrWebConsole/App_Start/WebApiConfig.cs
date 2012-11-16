@@ -26,6 +26,7 @@ namespace NextPvrWebConsole
             );
              * */
             config.Routes.MapHttpRoute("ApiServiceRoute", "service", new { controller = "service" });
+            config.Routes.MapHttpRoute("DefaultApiDelete", "api/{controller}/{oid}", new { action = "Delete", oid = RouteParameter.Optional }, new { oid = @"^\d+$", httpMethod = new HttpMethodConstraint(HttpMethod.Delete) });
             config.Routes.MapHttpRoute("DefaultApiWithOId", "api/{controller}/{oid}", new { oid = RouteParameter.Optional }, new { oid = @"^\d+$" });
             config.Routes.MapHttpRoute("DefaultApiWithActionAndOId", "api/{controller}/{action}/{oid}", new { oid = RouteParameter.Optional }, new { oid = @"^\d+$" });
             config.Routes.MapHttpRoute("DefaultApiWithAction", "api/{controller}/{action}");

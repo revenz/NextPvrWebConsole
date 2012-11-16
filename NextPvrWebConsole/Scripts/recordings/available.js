@@ -28,13 +28,13 @@ $(function () {
             gui.confirmMessage({
                 message: $.i18n._("Are you sure you want to delete the recording '%s'?", [item.displayName()]),
                 yes: function () {
-                    //api.deleteJSON('recordings/' + data.OID, null, function (result) {
+                    api.deleteJSON('recordings/' + item.oid(), null, function (result) {
                         var group = self.selectedRecordingGroup();
                         group.recordings.remove(item);
                         if (group.recordings().length == 0) {
                             self.recordingGroups.remove(group);
                         }
-                    //});
+                    });
                 }
             });
         };

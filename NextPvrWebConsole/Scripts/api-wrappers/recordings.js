@@ -4,29 +4,54 @@
 /// <reference path="../apihelper.js" />
 /// <reference path="listing.js" />
 
-function recording(data) {
+function Recording(data) {
     var self = this;
-    self.oid = ko.observable(data.OID);
+    if(data.OID)
+        self.oid = ko.observable(data.OID);
+    else
+        self.oid = ko.observable(data.Oid);
+    self.filename = ko.observable(data.Filename);
+    self.name = ko.observable(data.Name);
     self.startTime = ko.observable(data.StartTime);
     self.endTime = ko.observable(data.EndTime);
-    self.postPadding = ko.observable(data.PostPadding);
-    self.prePadding = ko.observable(data.PrePadding);
-    self.subtitle = ko.observable(data.Subtitle);
-    self.title = ko.observable(data.Title);
-    self.name = ko.observable(data.Name);
-    self.channelNumber = ko.observable(data.ChannelNumber);
-    self.channelName = ko.observable(data.ChannelName);
-    self.channelIconAvailable = ko.computed(function () { return data.ChannelIcon && data.ChannelIcon.length > 0; });
-    self.channelIconData = ko.computed(function () {
-        if (data.ChannelIcon && data.ChannelIcon.length > 0)
-            return 'data:image/png;base64,' + data.ChannelIcon;
-        return '';
+    self.startTimeStr = ko.computed(function () { return gui.formatDateLong(data.StartTime); });
+    self.endTimeStr = ko.computed(function () { return gui.formatDateLong(data.EndTime); });
+    self.timeStr = ko.computed(function () {
+        return $.i18n._('Time-Range', [gui.formatDateLong(data.StartTime), gui.formatTime(data.EndTime)]);
     });
-    self.startTimeString = ko.computed(function () { return gui.formatTime(data.StartTime); });
-    self.endTimeString = ko.computed(function () { return gui.formatTime(data.EndTime); });
+    self.channelName = ko.observable(data.ChannelName);
+    self.channelOid = ko.observable(data.ChannelOID);
+    self.channelHasIcon = ko.observable(data.ChannelHasIcon);
+    self.channelIconSrc = ko.computed(function () {
+        if (!self.channelHasIcon())
+            return '';
+        return '/channelicon/' + self.channelOid();
+    });
+    self.recordingDirectoryId = ko.observable(data.RecordingDirectoryId);
+    self.status = ko.observable(data.Status);
+    self.status_pending = ko.computed(function () { return data.Status == 0 });
+    self.status_inProgress = ko.computed(function () { return data.Status == 1 });
+    self.status_completed = ko.computed(function () { return data.Status == 2 });
+    self.status_completedWithError = ko.computed(function () { return data.Status == 3 });
+    self.status_placeHolder = ko.computed(function () { return data.Status == 4 });
+    self.status_conflict = ko.computed(function () { return data.Status == 5 });
+    self.status_deleted = ko.computed(function () { return data.Status == 6 });
+    self.cssClass = ko.computed(function () {
+        var _class = '';
+        if (_class) _class += ' ';
+        else _class = '';
+        if (self.status_pending()) _class += 'status-pending ';
+        else if (self.status_inProgress()) _class += 'status-inprogress ';
+        else if (self.status_completed()) _class += 'status-completed ';
+        else if (self.status_completedWithError()) _class += 'status-completed-with-error';
+        else if (self.status_placeHolder()) _class += 'status-placeholder ';
+        else if (self.status_conflict()) _class += 'status-conflict ';
+        else if (self.status_deleted()) _class += 'status-deleted ';
+        return _class;
+    });
     self.displayName = ko.computed(function () {
-        if (data.Title)
-            return data.Title;
-        return data.Name;
+        if (data.Subtitle && date.Subtitle.length > 0)
+            return data.Subtitle;
+        return $.format.date(data.StartTime, 'd MMMM h:mm a')
     });
 }

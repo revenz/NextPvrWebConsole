@@ -6,7 +6,7 @@
 
 function RecurringRecording(data) {
     var self = this;
-    self.oid = ko.observable(data.OID);
+    self.oid = ko.observable(data.Oid);
     self.name = ko.observable(data.Name);
     self.startTime = ko.observable(data.StartTime);
     self.endTime = ko.observable(data.EndTime);

@@ -56,14 +56,12 @@ namespace NextPvrWebConsole.Controllers.Api
         // DELETE api/recordings/5
         public bool Delete(int Oid)
         {
-            var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
-            if(recording == null)
-                throw new Exception("Failed to locate recording");
-            
-            var instance = NShared.RecordingServiceProxy.GetInstance();
-            instance.DeleteRecording(recording);
-            Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Deleted recording: " + recording.Name, "Recording Deleted");
-            return true;
+            return Models.Recording.DeleteByOid(this.GetUser().Oid,  Oid);
+        }
+
+        public bool DeleteRecurring(int Oid)
+        {
+            return Models.RecurringRecording.DeleteByOid(this.GetUser().Oid, Oid);
         }
     }
 }

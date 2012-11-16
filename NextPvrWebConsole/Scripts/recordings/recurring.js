@@ -17,9 +17,9 @@ $(function () {
             gui.confirmMessage({
                 message: $.i18n._("Are you sure you want to delete the recurring recording '%s'?", [item.name()]),
                 yes: function () {
-                    //api.deleteJSON('recordings/' + data.OID, null, function (result) {
-                    self.recordings.remove(item);
-                    //});
+                    api.deleteJSON('recordings/deleterecurring/' + item.oid(), null, function (result) {
+                        self.recordings.remove(item);
+                    });
                 }
             });
         };

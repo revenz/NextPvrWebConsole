@@ -206,5 +206,49 @@ namespace NextPvrWebConsole.Models
                                                         .Take(5)
                                                         .Select(x => new Recording(x, UserOid)).ToArray();
         }
+
+        public static bool DeleteByOid(int UserOid, int Oid)
+        {
+            var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
+            if (recording == null)
+                throw new Exception("Failed to locate recording.");
+
+            var config = new Models.Configuration();
+            if (config.EnableUserSupport)
+            {
+                // check they have access to delete this
+                bool canDelete = true;
+                var recordingDirectories = Models.RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+                if (!String.IsNullOrWhiteSpace(recording.Filename))
+                {
+                    string path = new System.IO.FileInfo(recording.Filename).Directory.Parent.FullName.ToLower();
+                    if (recordingDirectories.ContainsKey(path))
+                        canDelete = false;
+                }
+                else
+                {
+                    // check for a recurring instance
+                    if (recording.RecurrenceOID == 0)
+                        canDelete = false; // should this even happen???
+                    else
+                    {
+                        var recurrenceDirs = Models.RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+                        var recurrence = NUtility.RecurringRecording.LoadByOID(recording.RecurrenceOID);
+                        if (!String.IsNullOrWhiteSpace(recurrence.RecordingDirectoryID) && !recurrenceDirs.ContainsKey(recurrence.RecordingDirectoryID))
+                            canDelete = false;
+                    }
+                }
+
+                if (!canDelete)
+                    throw new AccessViolationException();
+            }
+
+
+            var instance = NShared.RecordingServiceProxy.GetInstance();
+            instance.DeleteRecording(recording);
+            Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Deleted recording: " + recording.Name, "Recording Deleted");
+
+            return true;
+        }
     }
 }

@@ -321,6 +321,7 @@
     <Content Include="Scripts\api-wrappers\device.js" />
     <Content Include="Scripts\api-wrappers\listing.js" />
     <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
+    <Content Include="Scripts\api-wrappers\recordinggroup.js" />
     <Content Include="Scripts\api-wrappers\recordings.js" />
     <Content Include="Scripts\api-wrappers\recurringrecording.js" />
     <Content Include="Scripts\api-wrappers\user.js" />
@@ -534,7 +535,6 @@
     <Content Include="Scripts\core\linq.js" />
     <Content Include="Scripts\core\linq.min.js" />
     <Content Include="Scripts\core\modernizr-2.6.2.js" />
-    <Content Include="Scripts\recordings\index.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -569,9 +569,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Recordings\IndexOld.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Guide\Index.cshtml" />

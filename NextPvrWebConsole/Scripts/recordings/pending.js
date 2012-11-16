@@ -16,9 +16,9 @@ $(function () {
             gui.confirmMessage({
                 message: $.i18n._("Are you sure you want to delete the pending recording '%s'?", [item.name()]),
                 yes: function () {
-                    //api.deleteJSON('recordings/' + data.OID, null, function (result) {
-                    self.recordings.remove(item);
-                    //});
+                    api.deleteJSON('recordings/' + item.oid(), null, function (result) {
+                        self.recordings.remove(item);
+                    });
                 }
             });
         };

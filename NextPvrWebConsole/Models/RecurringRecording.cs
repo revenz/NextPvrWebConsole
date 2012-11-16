@@ -116,10 +116,15 @@ namespace NextPvrWebConsole.Models
         internal bool Save(int UserOid)
         {
             var original = NUtility.RecurringRecording.LoadByOID(this.Oid);
-            var recordingDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
-            // make sure this user has access to the original 
-            if (!String.IsNullOrWhiteSpace(original.RecordingDirectoryID) && !recordingDirectories.ContainsKey(original.RecordingDirectoryID))
-                throw new AccessViolationException();
+            
+            var config = new Models.Configuration();
+            if (config.EnableUserSupport)
+            {
+                var recordingDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+                // make sure this user has access to the original 
+                if (!String.IsNullOrWhiteSpace(original.RecordingDirectoryID) && !recordingDirectories.ContainsKey(original.RecordingDirectoryID))
+                    throw new AccessViolationException();
+            }
 
             original.PostPadding = this.PostPadding;
             original.PrePadding = this.PrePadding;
@@ -153,7 +158,16 @@ namespace NextPvrWebConsole.Models
                         original.OnlyNewEpisodes = false;
                         original.Timeslot = true;
                         // need to work out day its on...
-                        //original.DayMask = NUtility.DayMask.ANY;
+                        switch (StartTime.DayOfWeek)
+                        {
+                            case DayOfWeek.Sunday: original.DayMask = NUtility.DayMask.SUNDAY; break;
+                            case DayOfWeek.Monday: original.DayMask = NUtility.DayMask.MONDAY; break;
+                            case DayOfWeek.Tuesday: original.DayMask = NUtility.DayMask.TUESDAY; break;
+                            case DayOfWeek.Wednesday: original.DayMask = NUtility.DayMask.WEDNESDAY; break;
+                            case DayOfWeek.Thursday: original.DayMask = NUtility.DayMask.THURSDAY; break;
+                            case DayOfWeek.Friday: original.DayMask = NUtility.DayMask.FRIDAY; break;
+                            case DayOfWeek.Saturday: original.DayMask = NUtility.DayMask.SATURDAY; break;
+                        }
                     }
                     break;
                 case RecordingType.Record_Season_Weekdays_This_Timeslot:
@@ -181,6 +195,23 @@ namespace NextPvrWebConsole.Models
             }
 
             original.Save();
+            return true;
+        }
+
+        internal static bool DeleteByOid(int UserOid, int Oid)
+        {
+            var recurrence = NUtility.RecurringRecording.LoadByOID(Oid);
+            if (recurrence == null)
+                throw new Exception("Failed to locate recurrence.");
+            var config = new Configuration();
+            if (config.EnableUserSupport && !String.IsNullOrWhiteSpace(recurrence.RecordingDirectoryID)) // if dir is null or empty then its the default shared directory
+            {
+                var recurrenceDirs = Models.RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+                if (!recurrenceDirs.ContainsKey(recurrence.RecordingDirectoryID))
+                    throw new AccessViolationException();
+            }
+
+            recurrence.Delete();
             return true;
         }
     }
