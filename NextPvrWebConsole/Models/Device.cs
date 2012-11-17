@@ -48,8 +48,8 @@ namespace NextPvrWebConsole.Models
                     Present = cs.Present,
                     Oid = cs.OID,
                     Name = cs.Name,
-                    Enabled = cs.Enabled,
-                    NumberOfChannels = NUtility.Channel.LoadForCaptureSource(cs.OID).Count
+                    Enabled = cs.Enabled//,
+                    //NumberOfChannels = NUtility.Channel.LoadForCaptureSource(cs.OID).Count
                 });
             }
             return devices;
@@ -140,8 +140,7 @@ namespace NextPvrWebConsole.Models
                     var recording = stream.LoadRecordingDetails();
                     if (recording == null)
                         throw new Exception("Failed to locate recording details.");
-                    RecordingSchedule.CancelRecording(recording.OID);
-
+                    RecordingSchedule.CancelRecording(recording.OID);                    
                 }
                 throw new Exception("Unknown stream type.");
             }

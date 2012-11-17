@@ -12,7 +12,9 @@ namespace NextPvrWebConsole.Tests.Controllers
     {
         public UsersTest()
         {
+#if(DEBUG)
             DbHelper.DbFile = System.IO.Path.GetTempFileName();
+#endif
         }
 
         [TestMethod]

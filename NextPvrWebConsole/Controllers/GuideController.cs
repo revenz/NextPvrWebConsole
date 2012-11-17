@@ -18,7 +18,7 @@ namespace NextPvrWebConsole.Controllers
             var user = this.GetUser();
             ViewBag.UserOid = user.Oid;
             ViewBag.RecordingDirectories = Models.RecordingDirectory.LoadForUser(user.Oid, true);
-            ViewBag.Groups = Models.ChannelGroup.LoadAll(user.Oid);
+            ViewBag.Groups = Models.ChannelGroup.LoadAll(user.Oid).Where(x => x.Enabled).ToList(); ;
             ViewBag.PrePadding = config.PrePadding;
             ViewBag.PostPadding = config.PostPadding;
             return View();

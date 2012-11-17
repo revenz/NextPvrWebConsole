@@ -59,7 +59,7 @@
                             <li data-bind="attr: { style: $root.listingCss($data), class: $root.listingClass($data, 'listing') }, event: { dblclick: $root.openListing }">
                                 <div>
                                     <span class="title" data-bind="text: title"></span>
-                                    <span class="start" data-bind="text: $root.formattedDate(startTime())"></span>
+                                    <span class="start" data-bind="text: startDateTimeShort"></span>
                                     <span class="subtitle" data-bind="text: subtitle"></span>
                                     <span class="description" data-bind="text: description"></span>
                                 </div>
@@ -73,20 +73,21 @@
                     </div>
                 </div>
             </div>
+            
+            <div id="show-info" style="display:none" data-bind="with: selectedshow">    
+                <img class="channellogo" data-bind="visible: channelLogoVisible, attr: { src: channelLogoData } " />
+                <span class="channelnumber" data-bind="text:channelNumber"></span>
+                <span class="channelname" data-bind="text:channelName"></span>
+                <span class="time">
+                    <text data-bind="text:startTimeLong()"></text> - <text data-bind="text:endTimeShort()"></text> (<text data-bind="text:duration()"></text>)
+                </span>
+                <span class="genres" data-bind="text:genresString()"></span>  
+                <span class="subtitle" data-bind="stext: subtitle"></span>
+                <span class="description" data-bind="text: description"></span>  
+            </div>
         </div>
     </div>
 
-    <div id="show-info" style="display:none" data-bind="with: selectedshow">    
-        <img class="channellogo" data-bind="visible: channelLogoVisible, attr: { src: channelLogoData } " />
-        <span class="channelnumber" data-bind="text:channelNumber"></span>
-        <span class="channelname" data-bind="text:channelName"></span>
-        <span class="time">
-            <text data-bind="text:startTimeLong()"></text> - <text data-bind="text:endTimeShort()"></text> (<text data-bind="text:duration()"></text>)
-        </span>
-        <span class="genres" data-bind="text:genresString()"></span>  
-        <span class="subtitle" data-bind="stext: subtitle"></span>
-        <span class="description" data-bind="text: description"></span>  
-    </div>
 </div>
 
 <div id="Guide-ScheduleEditor" style="display:none">
@@ -95,7 +96,7 @@
 
 @section Scripts{
     @Scripts.Render("~/scripts/core/jquery.nicescroll.js")
-    @Scripts.Render("~/Scripts/guide/index.js")
+    @Scripts.Render("~/Scripts/guide/js")
 
     <script>
         $(function () {

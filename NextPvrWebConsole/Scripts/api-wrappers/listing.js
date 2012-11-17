@@ -5,24 +5,27 @@
 /// <reference path="../core/jquery.i18n.js" />
 
 
-function Listing(channel, epgevent) {
+function Listing(channel, epgListing) {
     var self = this;
     self.channel = channel;
-    self.epgevent = epgevent;
-    self.oid = ko.observable(epgevent.oid);
-    self.title = ko.observable(epgevent.title);
-    self.subtitle = ko.observable(epgevent.subtitle);
-    self.description = ko.observable(epgevent.description);
+    self.epgListing = epgListing;
+    self.oid = ko.observable(epgListing.Oid);
+    self.title = ko.observable(epgListing.Title);
+    self.subtitle = ko.observable(epgListing.Subtitle);
+    self.description = ko.observable(epgListing.Description);
     self.channelName = ko.observable(channel.Name);
     self.channelNumber = ko.observable(channel.Number);
-    self.startTime = ko.observable(epgevent.startTime);
-    self.endTime = ko.observable(epgevent.endTime);
-    self.startTimeLong = ko.computed(function () { return gui.formatDateLong(Date.parse(epgevent.startTime)); });
-    self.endTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(epgevent.endTime)); });
-    self.duration = ko.computed(function () { return Math.floor((Math.abs(Date.parse(epgevent.endTime) - Date.parse(epgevent.startTime)) / 1000) / 60) + ' ' + $.i18n._('Minutes') });
+    self.startTime = ko.observable(epgListing.StartTime);
+    self.endTime = ko.observable(epgListing.EndTime);
+    self.isRecording = ko.observable(epgListing.IsRecording == true);
+    self.startDateTimeShort = ko.computed(function () { return gui.formatDateTimeShort(Date.parse(epgListing.StartTime)); });
+    self.startTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(epgListing.StartTime)); });
+    self.startTimeLong = ko.computed(function () { return gui.formatDateLong(Date.parse(epgListing.StartTime)); });
+    self.endTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(epgListing.EndTime)); });
+    self.duration = ko.computed(function () { return Math.floor((Math.abs(Date.parse(epgListing.EndTime) - Date.parse(epgListing.StartTime)) / 1000) / 60) + ' ' + $.i18n._('Minutes') });
     self.genresString = ko.computed(function () {
-        if (epgevent.genres)
-            return $.Enumerable.From(epgevent.genres).Select(function (x) {
+        if (epgListing.Genres)
+            return $.Enumerable.From(epgListing.Genres).Select(function (x) {
                 x = x.replace('/', ', ');
                 x = x.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1); });
                 return x.replace(' , ', ', ');

@@ -27,18 +27,19 @@ namespace NextPvrWebConsole.Controllers.Api
 
         // POST api/quickrecord
         [HttpPost]
-        public NUtility.ScheduledRecording QuickRecord(int Oid)
+        public bool QuickRecord(int Oid)
         {
-            return Models.ScheduledRecordingModel.Record(Oid);
+            return Models.Recording.QuickRecord(this.GetUser().Oid, Oid);
         }
 
         [HttpPost]
         public NUtility.ScheduledRecording Record(RecordingSchedule Recording)        
         {
-            NUtility.DayMask Days = NUtility.DayMask.ANY;
-            bool OnlyNewEpisodes = false;
-            bool TimeSlot = true;
-            return Models.ScheduledRecordingModel.Record(Recording.Oid, Recording.PrePadding, Recording.PostPadding, Recording.RecordingDirectoryId, Recording.NumberToKeep, Days, OnlyNewEpisodes, TimeSlot);
+            //NUtility.DayMask Days = NUtility.DayMask.ANY;
+            //bool OnlyNewEpisodes = false;
+            //bool TimeSlot = true;
+            //return Models.ScheduledRecordingModel.Record(Recording.Oid, Recording.PrePadding, Recording.PostPadding, Recording.RecordingDirectoryId, Recording.NumberToKeep, Days, OnlyNewEpisodes, TimeSlot);
+            throw new NotImplementedException();
         }
     }
 }

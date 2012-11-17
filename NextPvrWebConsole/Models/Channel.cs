@@ -27,7 +27,7 @@ namespace NextPvrWebConsole.Models
 
         [PetaPoco.Ignore]
         [DataMember]
-        public List<NUtility.EPGEvent> Listings { get; set; }
+        public List<EpgListing> Listings { get; set; }
 
         public Channel()
         {
@@ -40,6 +40,8 @@ namespace NextPvrWebConsole.Models
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
             var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End);
 
+            var recordings = NUtility.ScheduledRecording.LoadAll().Where(x => x.EndTime >= Start && x.StartTime <= End && x.EventOID > 0).ToDictionary(x => x.EventOID);
+
             List<Channel> results = new List<Channel>();
             foreach (var key in data.Keys.Where(x => channelOids.Contains(x.OID)))
             {
@@ -50,7 +52,9 @@ namespace NextPvrWebConsole.Models
                     Oid = key.OID,
                     HasIcon = key.Icon != null,
 
-                    Listings = data[key].Where(x => x.EndTime > Start).ToList()
+                    Listings = data[key].Where(x => x.EndTime > Start).Select(x => new EpgListing(x) {
+                        IsRecording = recordings.ContainsKey(x.OID)
+                    }).ToList()
                 });
             }
             return results;

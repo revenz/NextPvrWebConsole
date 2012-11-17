@@ -21,6 +21,11 @@ var gui = new function () {
             date = new Date(date);
         return $.format.date(date, 'h:mm a');
     }
+    this.formatDateTimeShort = function (date) {
+        if (!(date instanceof Date))
+            date = new Date(date);
+        return $.format.date(date, 'h:mm a') + ' (' + $.format.date(date, 'd MMM') + ')';
+    };
 
     this.showMessage = function (message, title) {
         alert(message); // for now

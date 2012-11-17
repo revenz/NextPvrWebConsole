@@ -27,19 +27,18 @@ namespace NextPvrWebConsole.Models
         [DataMember]
         public RecordingType Type { get; set; }
 
-
-        public enum RecordingType
+        public void Save()
         {
-            Once = 0,
-            Season_New_This_Channel = 1,
-            Season_All_This_Channel = 2,
-            Season_Daily_This_Timeslot = 3,
-            Season_Weekly_This_Timeslot = 4,
-            Season_Monday_To_Friday_This_Timeslot = 5,
-            Season_Weekends_This_Timeslot = 6,
-            All_Episodes_All_Channels = 7
+            if (this.Oid > 0)
+            {
+                // pre existing one
+            }
+            else
+            {
+                // new one.
+            }
         }
-
+        
         public static bool CancelRecording(int Oid)
         {
             var recording = NUtility.ScheduledRecording.LoadByOID(Oid);

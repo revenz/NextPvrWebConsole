@@ -19,7 +19,7 @@ namespace NextPvrWebConsole.Models
         static string DbFile
 #endif
         {
-            private get
+            get
             {
                 if(_DbFile == null)
                     _DbFile = HttpContext.Current.Server.MapPath("~/App_Data/NextPvrWebConsole.db");

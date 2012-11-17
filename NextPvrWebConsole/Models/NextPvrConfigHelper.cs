@@ -84,11 +84,11 @@ namespace NextPvrWebConsole.Models
         {
             get
             {
-                return NUtility.SettingsHelper.GetInstance().GetSetting("/Settings/Recording/RecordingDirectory", null);
+                return settings.GetSetting("/Settings/Recording/RecordingDirectory", null);
             }
             set
             {
-                NUtility.SettingsHelper.GetInstance().SetSetting("/Settings/Recording/RecordingDirectory", value);
+                settings.SetSetting("/Settings/Recording/RecordingDirectory", value);
             }
         }
 

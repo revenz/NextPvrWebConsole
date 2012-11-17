@@ -20,6 +20,8 @@ namespace NextPvrWebConsole
         {
             Models.DbHelper.Test();
 
+            NUtility.Logger.SetLogFileName(@"logs\reven.log");
+
             AreaRegistration.RegisterAllAreas();
 
             // Register CustomRegularExpressionValidator

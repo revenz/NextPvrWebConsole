@@ -298,7 +298,10 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             DateTime start = Time.FromUnixTime();
             DateTime end = start.AddSeconds(Duration);
-            if (Models.ScheduledRecordingModel.BasicRecord(Name, ChannelOid, start, end) == null)
+            var epgevent = NUtility.EPGEvent.LoadByNameAndTime(ChannelOid, Name, start, end);
+            if (epgevent == null)
+                return new Response() { Stat = Response.ResponseStat.failed, ErrorMessage = "Failed to locate EPG Event to schedule." };      
+            if (Models.Recording.QuickRecord(UserOid, epgevent.OID) == null)
                 return new Response() { Stat = Response.ResponseStat.failed, ErrorMessage = "Failed to schedule recording." };                     
             return new Response();
         }

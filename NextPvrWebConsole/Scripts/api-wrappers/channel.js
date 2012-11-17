@@ -18,7 +18,7 @@ function Channel(data) {
 	});
 	self.listings = ko.observableArray([]);
 	if (data.Listings) {
-        var mapped = $.map(data.Listings, function (item) { return new Listing(data, item) });
+	    var mapped = $.map(data.Listings, function (item) { return new Listing(data, item) });
         self.listings(mapped);
 	}
 

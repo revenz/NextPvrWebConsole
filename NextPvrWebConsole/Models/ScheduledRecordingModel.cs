@@ -39,6 +39,7 @@ namespace NextPvrWebConsole.Models
             return results;
         }
         
+        /*
         public static NUtility.ScheduledRecording Record(int EpgEventOid, int? PrePadding = null, int? PostPadding = null, string RecordingDirectoryId = null, int NumberToKeep = 0, NUtility.DayMask Days = NUtility.DayMask.ANY, bool OnlyNewEpisodes = false, bool TimeSlot = true)
         {
             var epgevent = NUtility.EPGEvent.LoadByOID(EpgEventOid);
@@ -67,5 +68,6 @@ namespace NextPvrWebConsole.Models
         {
             return NShared.RecordingServiceProxy.GetInstance().ScheduleRecording(Name, ChannelOId, Start, End, NextPvrConfigHelper.PrePadding, NextPvrConfigHelper.PostPadding, NUtility.RecordingQuality.QUALITY_DEFAULT);
         }
+         */
     }
 }

@@ -210,8 +210,8 @@ namespace NextPvrWebConsole.Models
                 if (!recurrenceDirs.ContainsKey(recurrence.RecordingDirectoryID))
                     throw new AccessViolationException();
             }
-
-            recurrence.Delete();
+            var instance = NShared.RecordingServiceProxy.GetInstance();
+            instance.CancelRecurring(recurrence.OID);
             return true;
         }
     }
