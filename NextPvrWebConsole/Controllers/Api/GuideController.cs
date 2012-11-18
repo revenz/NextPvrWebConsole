@@ -9,7 +9,7 @@ using NextPvrWebConsole.Models;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize]
-    public class GuideController : ApiController
+    public class GuideController : NextPvrWebConsoleApiController
     {
         // GET api/guide
         public IEnumerable<Models.Channel> Get(DateTime Date, string Group)

@@ -130,7 +130,7 @@ namespace NextPvrWebConsole.Models
         }
 
 
-        internal static Channel[] LoadAll(int UserOid, bool IncludeDisabled = false)
+        public static Channel[] LoadAll(int UserOid, bool IncludeDisabled = false)
         {
             var db = DbHelper.GetDatabase();
             List<Channel> results = null;

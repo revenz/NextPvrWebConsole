@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize]
-    public class DevicesController : ApiController
+    public class DevicesController : NextPvrWebConsoleApiController
     {
         // GET api/tuners
         public IEnumerable<Models.Device> Get()

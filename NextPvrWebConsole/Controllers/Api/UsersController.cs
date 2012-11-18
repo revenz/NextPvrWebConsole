@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize]
-    public class UsersController : ApiController
+    public class UsersController : NextPvrWebConsoleApiController
     {
         // GET api/tuners
         public IEnumerable<Models.User> Get()

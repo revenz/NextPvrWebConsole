@@ -137,10 +137,13 @@ namespace NextPvrWebConsole.Models
         public void Save()
         {
             var db = DbHelper.GetDatabase();
-            db.Update(this);
+            if (this.Oid > 0)
+                db.Update(this);
+            else
+                db.Insert("user", "oid", true, this);
         }
 
-        internal static bool ValidateUser(string UsernameOrEmailAddress, string Password)
+        public static bool ValidateUser(string UsernameOrEmailAddress, string Password)
         {
             var db = DbHelper.GetDatabase();
             var user = db.FirstOrDefault<User>("select * from [user] where username = @0 or emailaddress = @0", UsernameOrEmailAddress);
@@ -149,7 +152,7 @@ namespace NextPvrWebConsole.Models
             return BCrypt.CheckPassword(Password, user.PasswordHash);
         }
 
-        internal bool ChangePassword(string OldPassword, string NewPassword)
+        public bool ChangePassword(string OldPassword, string NewPassword)
         {
             if (!BCrypt.CheckPassword(OldPassword, this.PasswordHash))
                 return false;
@@ -158,7 +161,7 @@ namespace NextPvrWebConsole.Models
             return db.Update("[user]", "oid", new { password = this.PasswordHash }, this.Oid) > 0;
         }
 
-        internal static User CreateUser(string Username, string EmailAddress, string Password, UserRole UserRole, bool Administrator = false, DateTime? LastLoggedInUtc = null)
+        public static User CreateUser(string Username, string EmailAddress, string Password, UserRole UserRole, bool Administrator = false, DateTime? LastLoggedInUtc = null)
         {
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();
@@ -212,13 +215,13 @@ namespace NextPvrWebConsole.Models
             }
         }
 
-        internal static List<User> LoadAll()
+        public static List<User> LoadAll()
         {
             var db = DbHelper.GetDatabase();
             return db.Fetch<User>("select * from user where oid <> " + Globals.SHARED_USER_OID);
         }
 
-        internal static void Delete(int UserOid)
+        public static void Delete(int UserOid)
         {
             if (UserOid == Globals.SHARED_USER_OID)
                 throw new Exception("You cannot delete the '{0}' user.".FormatStr(Globals.SHARED_USER_USERNAME));
@@ -231,6 +234,8 @@ namespace NextPvrWebConsole.Models
                 db.Execute("delete from [channelgroup] where useroid = @0", UserOid);
                 db.Execute("delete from [recordingdirectory] where useroid = @0", UserOid);
                 db.Execute("delete from [user] where oid = @0", UserOid);
+
+                db.CompleteTransaction();
             }
             catch (Exception ex)
             {

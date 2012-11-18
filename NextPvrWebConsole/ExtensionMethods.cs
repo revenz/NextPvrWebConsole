@@ -77,15 +77,6 @@ namespace NextPvrWebConsole
             }
             return DayMask.ANY;
         }
-
-        public static NextPvrWebConsole.Models.User GetUser(this System.Web.Http.ApiController Controller)
-        {
-            var user = NextPvrWebConsole.Models.User.GetByUsername(Controller.User.Identity.Name);
-            if (user == null)
-                throw new UnauthorizedAccessException();
-            return user;
-        }
-
         public static NextPvrWebConsole.Models.User GetUser(this System.Web.Mvc.Controller Controller)
         {
             var user = NextPvrWebConsole.Models.User.GetByUsername(Controller.User.Identity.Name);

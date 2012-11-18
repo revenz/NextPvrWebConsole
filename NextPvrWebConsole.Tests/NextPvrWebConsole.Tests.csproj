@@ -97,9 +97,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ChannelGroupsTest.cs" />
     <Compile Include="Controllers\UsersTest.cs" />
     <Compile Include="Helpers\Generator.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Helpers\WordGenerator.cs" />
+    <Compile Include="NextPvrWebConsoleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ValuesControllerTest.cs" />
   </ItemGroup>

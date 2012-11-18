@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize]
-    public class ChannelGroupsController : ApiController
+    public class ChannelGroupsController : NextPvrWebConsoleApiController
     {
         // GET api/channelgroups
         public IEnumerable<Models.ChannelGroup> Get(bool LoadChannelOids = false)
@@ -18,7 +18,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         // GET api/channelgroups/getchannels
         [ActionName("Channels")]
-        public IEnumerable<dynamic> GetChannels(int Oid)
+        public IEnumerable<dynamic> GetChannels(int Oid, [FromUri]bool OnlyEnabled)
         {
             var user = this.GetUser();
             var groupChannels = Models.ChannelGroup.LoadChannelOids(user.Oid, Oid);
@@ -29,7 +29,7 @@ namespace NextPvrWebConsole.Controllers.Api
                 Oid = x.Oid,
                 Number = x.Number,
                 Enabled = groupChannels.Contains(x.Oid)
-            }).OrderBy(x => x.Number);
+            }).Where(x => x.Enabled || !OnlyEnabled).OrderBy(x => x.Number);
         }
         
         // POST api/channelgroup

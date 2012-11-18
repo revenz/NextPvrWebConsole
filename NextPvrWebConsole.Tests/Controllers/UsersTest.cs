@@ -8,15 +8,8 @@ using NextPvrWebConsole.Models;
 namespace NextPvrWebConsole.Tests.Controllers
 {
     [TestClass]
-    public class UsersTest
+    public class UsersTest : NextPvrWebConsoleTest
     {
-        public UsersTest()
-        {
-#if(DEBUG)
-            DbHelper.DbFile = System.IO.Path.GetTempFileName();
-#endif
-        }
-
         [TestMethod]
         public void UsersTest_CreateDuplicateUser()
         {
@@ -92,7 +85,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         {
             var controller = new NextPvrWebConsole.Controllers.Api.UsersController();
 
-            string username = Helpers.WordGenerator.GetSequence(10, Helpers.WordGenerator.CharacterSet.LowerCase); ;
+            string username = Helpers.WordGenerator.GetSequence(10, Helpers.WordGenerator.CharacterSet.LowerCase);
             string originalEmail = Helpers.WordGenerator.GetEmailAddress();
             Models.UserModel model = new Models.UserModel();
             model.EmailAddress = originalEmail;

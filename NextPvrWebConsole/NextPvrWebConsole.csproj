@@ -201,6 +201,7 @@
     <Compile Include="Controllers\Api\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\GuideController.cs" />
     <Compile Include="Controllers\Api\DevicesController.cs" />
+    <Compile Include="Controllers\Api\NextPvrWebConsoleApiController.cs" />
     <Compile Include="Controllers\Api\RecordingDirectoriesController.cs" />
     <Compile Include="Controllers\Api\ServiceController.cs" />
     <Compile Include="Controllers\Api\SystemController.cs" />

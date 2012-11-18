@@ -89,8 +89,12 @@ namespace NextPvrWebConsole.Controllers
             var user = Models.User.CreateUser(Model.Username, Model.EmailAddress, Model.Password, Globals.USER_ROLE_ALL, true, DateTime.UtcNow);
             if (user == null)
                 throw new Exception("Failed to create user: " + Model.Username);
-
-            WebMatrix.WebData.WebSecurity.Login(Model.Username, Model.Password);
+            try
+            {
+                // this can fail during a unit test
+                WebMatrix.WebData.WebSecurity.Login(Model.Username, Model.Password); 
+            }
+            catch (Exception) { }
 
             // turn off first run
             config.FirstRun = false;

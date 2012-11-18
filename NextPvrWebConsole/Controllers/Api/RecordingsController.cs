@@ -9,7 +9,7 @@ using NextPvrWebConsole;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize]
-    public class RecordingsController : ApiController
+    public class RecordingsController : NextPvrWebConsoleApiController
     {
         // GET api/recordings
         public IEnumerable<Models.RecordingGroup> Get()

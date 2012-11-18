@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize]
-    public class RecordingDirectoriesController : ApiController
+    public class RecordingDirectoriesController : NextPvrWebConsoleApiController
     {
         // GET api/recordingdirectories
         public IEnumerable<Models.RecordingDirectory> Get(bool IncludeShared = false)

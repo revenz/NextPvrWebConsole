@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize]
-    public class ChannelsController : ApiController
+    public class ChannelsController : NextPvrWebConsoleApiController
     {
         // GET api/channels
         public IEnumerable<Models.Channel> Get(bool IncludeDisabled = false)
