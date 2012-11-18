@@ -3,12 +3,12 @@
 <ul data-bind="foreach: recordingdirectories" style="display:none">
     <li>
         <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, value:$index, checked: $root.selectedDefault" title="Is Default" />
-        <label data-bind="text: name, attr: { for : 'recording-directory-default-' + $index() }"></label>
+        <label data-bind="text: displayName, attr: { for : 'recording-directory-default-' + $index() }"></label>
         <div class="controls">
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.edit">
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.edit, visible: !isShared()">
                 <span class="icon-edit icon-large" data-lang="Edit"></span>
             </button>
-            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete">
+            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete, visible: !isShared()">
                 <span class="icon-trash icon-large" data-lang="Delete"></span>
             </button>
         </div>

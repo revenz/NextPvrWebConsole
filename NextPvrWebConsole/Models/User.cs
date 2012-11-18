@@ -99,6 +99,7 @@ namespace NextPvrWebConsole.Models
         }
     }
 
+    [PetaPoco.PrimaryKey("oid")]
     public class User
     {
         public int Oid { get; set; }
@@ -110,6 +111,7 @@ namespace NextPvrWebConsole.Models
         public UserRole UserRole { get; set; }
         public bool ReadOnly { get; set; }
         public bool Administrator { get; set; }
+        public int DefaultRecordingDirectoryOid { get; set; }
         
         [PetaPoco.Ignore]
         public string Password { set { this.PasswordHash = BCrypt.HashPassword(value, BCrypt.GenerateSalt()); } }
@@ -193,7 +195,11 @@ namespace NextPvrWebConsole.Models
                 }
 
                 // create default recording directory
-                db.Execute("insert into [recordingdirectory](useroid, name, isdefault, path) values (@0, @1, 1, '')", user.Oid, "Default");
+                RecordingDirectory dir = new RecordingDirectory() { UserOid = user.Oid, Username = user.Username, IsDefault = true, Name = "Default", Path = "" };
+                db.Insert("recordingdirectory", "oid", true, dir);
+
+                user.DefaultRecordingDirectoryOid = dir.Oid;
+                db.Save(user);
 
                 db.CompleteTransaction();
 

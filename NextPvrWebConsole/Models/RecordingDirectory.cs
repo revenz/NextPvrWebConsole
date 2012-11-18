@@ -78,8 +78,12 @@ namespace NextPvrWebConsole.Models
             var config = new Configuration();
             if (config.EnableUserSupport)
             {
+                int userDefault = db.ExecuteScalar<int>("select defaultrecordingdirectoryoid from[user] where oid = @0", UserOid);
                 string select = "select rd.*, username from recordingdirectory rd inner join [user] u on rd.useroid = u.oid where useroid = {0} {1}".FormatStr(UserOid, IncludeShared ? " or useroid = {0}".FormatStr(Globals.SHARED_USER_OID) : "");
-                return SetUserPaths(db.Fetch<RecordingDirectory>(select));
+                List<RecordingDirectory> results = db.Fetch<RecordingDirectory>(select);
+                foreach (var r in results)
+                    r.IsDefault = r.Oid == userDefault;
+                return SetUserPaths(results);
             }
             else if (!IncludeShared)
             {
@@ -155,7 +159,7 @@ namespace NextPvrWebConsole.Models
         /// <param name="RecordingDirectories">the list of recording directories to save</param>
         internal static bool SaveForUser(int UserOid, List<RecordingDirectory> RecordingDirectories)
         {
-            if (RecordingDirectories.DuplicatesBy(x => x.Name.ToLower().Trim()).Count() > 0)
+            if (RecordingDirectories.Where(x => x.UserOid == UserOid).DuplicatesBy(x => x.Name.ToLower().Trim()).Count() > 0)
                 throw new ArgumentException("Recording Directory names must be unique.");
             string username = User.GetUsername(UserOid);
             var db = DbHelper.GetDatabase();
@@ -166,9 +170,14 @@ namespace NextPvrWebConsole.Models
                 string rdOids = String.Join(",", (from rd in RecordingDirectories where rd.Oid > 0 select rd.Oid.ToString()).ToArray());
                 db.Execute("delete from recordingdirectory where useroid = {0} {1}".FormatStr(UserOid, String.IsNullOrWhiteSpace(rdOids) ? "" : "and oid not in ({0})".FormatStr(rdOids)));
 
+                int defaultRecordingDirectoryOid = 0;
                 // save the rest
                 foreach (var rd in RecordingDirectories)
                 {
+                    if (rd.IsDefault)
+                        defaultRecordingDirectoryOid = rd.Oid;
+                    if (UserOid != Globals.SHARED_USER_OID && rd.IsShared) // dont let users update the shared directory
+                        continue;
                     rd.UserOid = UserOid;
                     rd.Username = username;
                     if (rd.Oid < 1) // new one
@@ -176,6 +185,15 @@ namespace NextPvrWebConsole.Models
                     else // update an old one
                         db.Update(rd);
                 }
+
+                if (UserOid != Globals.SHARED_USER_OID)
+                {
+                    if (defaultRecordingDirectoryOid == 0 && RecordingDirectories.Count > 0)
+                        defaultRecordingDirectoryOid = RecordingDirectories[0].Oid;
+                    if (defaultRecordingDirectoryOid > 0)
+                        db.Execute("update [user] set [defaultrecordingdirectoryoid] = @0 where oid = @1", defaultRecordingDirectoryOid, UserOid);
+                }
+
 
                 db.CompleteTransaction();
                 Configuration.Write();
@@ -216,7 +234,8 @@ namespace NextPvrWebConsole.Models
         internal static RecordingDirectory LoadUserDefault(int UserOid)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where useroid = @0 and isdefault = 1 order by useroid desc", UserOid);
+            int dirOid = db.ExecuteScalar<int>("select defaultrecordingdirectoryoid from [user] where oid = @0", UserOid);
+            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where (useroid = @0 or useroid = @1) and rd.oid = @2", UserOid, Globals.SHARED_USER_OID, dirOid);
         }
     }
 }

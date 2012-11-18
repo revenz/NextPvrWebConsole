@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -41,11 +42,22 @@ namespace NextPvrWebConsole.Controllers
             #region import recording directories
             string defaultRecordingDirectory = Models.NextPvrConfigHelper.DefaultRecordingDirectory;
             KeyValuePair<string, string>[] extras = Models.NextPvrConfigHelper.ExtraRecordingDirectories;
+            
 
             if (!String.IsNullOrWhiteSpace(defaultRecordingDirectory))
                 new Models.RecordingDirectory() { Name = "Default", UserOid = Globals.SHARED_USER_OID, Path = defaultRecordingDirectory, Username = Globals.SHARED_USER_USERNAME, IsDefault = true }.Save();
             foreach (var extra in extras)
-                new Models.RecordingDirectory() { Name = extra.Key, UserOid = Globals.SHARED_USER_OID, Path = extra.Value, Username = Globals.SHARED_USER_USERNAME }.Save();
+            {
+                // make sure there aren't any directories from NextPVRWebConsole
+                string name = extra.Key;
+                if (name.StartsWith("[Shared - "))
+                    name = "[" + name.Substring("[Shared - ".Length);
+                if (Regex.IsMatch(name, @"^\[[^\]\-]+\-[^\]]+\]$"))
+                    continue; // must be a user directory, so skip it
+                if (name.StartsWith("[") && name.EndsWith("]"))
+                    name = name.Substring(1, name.Length - 2);
+                new Models.RecordingDirectory() { Name = name, UserOid = Globals.SHARED_USER_OID, Path = extra.Value, Username = Globals.SHARED_USER_USERNAME }.Save();
+            }
             #endregion
 
             var db = DbHelper.GetDatabase();

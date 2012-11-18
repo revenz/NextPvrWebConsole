@@ -12,7 +12,8 @@ CREATE TABLE [user] (
 	datecreatedutc			datetime			NOT NULL,
 	lastloggedinutc			datetime			NOT NULL,
 	administrator			bit					NOT NULL,
-	[readonly]				bit					NOT NULL
+	[readonly]				bit					NOT NULL,	
+	defaultrecordingdirectoryoid	integer		NOT NULL
 )
 GO
 
@@ -72,5 +73,5 @@ CREATE TABLE [channelgroupchannel]
 )
 GO
 
-INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly], administrator) VALUES (1, 'Shared', '', '', 0, DATETIME('now'), '1970-01-01', 1, 0)  /* special user */
+INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly], administrator, defaultrecordingdirectoryoid) VALUES (1, 'Shared', '', '', 0, DATETIME('now'), '1970-01-01', 1, 0, 0)  /* special user */
 GO

@@ -76,7 +76,6 @@ $(function () {
             var directories = new Array();
             $.each(self.recordingdirectories(), function (i, ele) {
                 ele.isDefault(i == self.selectedDefault());
-                console.log(ele.toApiObject());
                 directories.push(ele.toApiObject());
             });
             if (directories.length == 0) {
@@ -87,7 +86,7 @@ $(function () {
         };
 
         var refreshRecordingDirectories = function () {
-            api.getJSON("recordingdirectories", null, function (allData) {
+            api.getJSON("recordingdirectories?IncludeShared=true", null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new RecordingDirectory(item) });
                 self.recordingdirectories(mapped);
                 

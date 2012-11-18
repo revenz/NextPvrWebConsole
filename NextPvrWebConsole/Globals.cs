@@ -7,7 +7,7 @@ namespace NextPvrWebConsole
 {
     public class Globals
     {
-        public const int DB_VERSION = 108;
+        public const int DB_VERSION = 111;
         public const int SHARED_USER_OID = 1;
         public const string SHARED_USER_USERNAME = "Shared";
 
