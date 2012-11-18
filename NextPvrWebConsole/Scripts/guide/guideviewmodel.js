@@ -71,6 +71,10 @@ $(function () {
         // Load initial state from server, convert it to Task instances, then populate self.tasks
         self.loadEpgData(guideStart);
 
+        self.liveStream = function (channel) {
+            window.open('/streaming/' + channel.oid(), 'livestream', 'width=820,height=480,status=1,resizable=0');
+        };
+
         self.selectedshow = ko.observable();
 
         self.openListing = function (listing) {

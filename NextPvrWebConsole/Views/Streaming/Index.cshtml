@@ -1,0 +1,18 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.ChannelName Live</title>
+</head>
+<body>
+    <embed type="application/x-vlc-plugin"
+         name="video1"
+         autoplay="yes" loop="yes" width="800" height="450"
+         target="http://localhost:8866/live?channeloid=@ViewBag.ChannelOid" />
+</body>
+</html>

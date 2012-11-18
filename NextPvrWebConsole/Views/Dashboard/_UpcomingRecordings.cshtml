@@ -2,10 +2,10 @@
     <ul data-bind="foreach: upcomingRecordings, visible: upcomingRecordings().length > 0">
         <li>
             <div class="channelNumber" data-bind="text: channelNumber"></div>
-            <div class="channelIcon"><img data-bind="visible: channelIconAvailable, attr: { src: channelIconData }" /></div>
+            <div class="channelIcon"><img data-bind="visible: channelHasIcon, attr: { src: channelIconSrc }" /></div>
             <div class="channelName" data-bind="text: channelName"></div>
             <div class="name" data-bind="text: name"></div>
-            <div class="time"><span data-bind="text: startTimeString"></span> <span data-lang="TimeToSeperator"></span> <span data-bind="text: endTimeString"></span></div>
+            <div class="time" data-bind="text: timeStr"></div>
             <div class="controls">
                 <button href="#" onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: stop">
                     <span class="icon-stop icon-large" data-lang="Cancel"></span>

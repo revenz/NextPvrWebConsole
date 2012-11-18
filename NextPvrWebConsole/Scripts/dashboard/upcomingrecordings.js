@@ -14,7 +14,7 @@ $(function () {
 
         var refreshUpcomingRecordings = function () {
             api.getJSON("recordings/getupcoming", null, function (allData) {
-                var mapped = $.map(allData, function (item) { return new recording(item) });
+                var mapped = $.map(allData, function (item) { return new Recording(item) });
                 self.upcomingRecordings(mapped);
             });
         };

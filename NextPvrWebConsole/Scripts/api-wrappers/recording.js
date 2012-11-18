@@ -19,6 +19,7 @@ function Recording(data) {
     self.timeStr = ko.computed(function () {
         return $.i18n._('Time-Range', [gui.formatDateLong(data.StartTime), gui.formatTime(data.EndTime)]);
     });
+    self.channelNumber = ko.observable(data.ChannelNumber);
     self.channelName = ko.observable(data.ChannelName);
     self.channelOid = ko.observable(data.ChannelOID);
     self.channelHasIcon = ko.observable(data.ChannelHasIcon);

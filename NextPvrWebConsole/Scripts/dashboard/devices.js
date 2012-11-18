@@ -56,13 +56,13 @@ function Stream(owner, data) {
     self.title = ko.observable(data.Title);
     self.subtitle = ko.observable(data.Subtitle);
     self.description = ko.observable(data.Description);
+    self.channelOid = ko.observable(data.ChannelOid);
     self.channelHasIcon = ko.observable(data.ChannelHasIcon);
     self.channelIconUrl = ko.computed(function () {
         if (!self.channelHasIcon())
             return '';
-        return '/channelicon/' + self.oid();
+        return '/channelicon/' + self.channelOid();
     });
-    self.channelOid = ko.observable(data.ChannelOid);
     self.startTimeString = ko.computed(function () { return gui.formatTime(data.StartTime); });
     self.endTimeString = ko.computed(function () { return gui.formatTime(data.EndTime); });
     self.stop = function () {

@@ -212,6 +212,7 @@
     <Compile Include="Controllers\Api\RecordingsController.cs" />
     <Compile Include="Controllers\RecordingsController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
+    <Compile Include="Controllers\StreamingController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -221,7 +222,6 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Handlers\CompressionHandler.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
-    <Content Include="ClientBin\VideoPlayer.xap" />
     <Content Include="Content\images\ibutton-slider-default.png" />
     <Content Include="Content\images\icon_channel_all.png" />
     <Content Include="Content\images\jquery.filetree\application.png" />
@@ -321,7 +321,7 @@
     <Content Include="Scripts\api-wrappers\listing.js" />
     <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
     <Content Include="Scripts\api-wrappers\recordinggroup.js" />
-    <Content Include="Scripts\api-wrappers\recordings.js" />
+    <Content Include="Scripts\api-wrappers\recording.js" />
     <Content Include="Scripts\api-wrappers\recurringrecording.js" />
     <Content Include="Scripts\api-wrappers\user.js" />
     <Content Include="Scripts\configuration\channelgroups.js" />
@@ -500,7 +500,7 @@
     <Content Include="Views\Recordings\_Available.cshtml" />
     <Content Include="Views\Recordings\_Pending.cshtml" />
     <Content Include="Views\Recordings\_Recurring.cshtml" />
-    <Content Include="Views\Dashboard\StreamTest.cshtml" />
+    <Content Include="Views\Streaming\Index.cshtml" />
     <Content Include="Views\Shared\_ScheduleEditor.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
   </ItemGroup>
@@ -565,6 +565,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ClientBin\" />
     <Folder Include="Scripts\accounts\" />
   </ItemGroup>
   <ItemGroup>
