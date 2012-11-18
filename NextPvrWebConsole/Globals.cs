@@ -12,5 +12,6 @@ namespace NextPvrWebConsole
         public const string SHARED_USER_USERNAME = "Shared";
 
         public const NextPvrWebConsole.Models.UserRole USER_ROLE_ALL = Models.UserRole.Dashboard | Models.UserRole.Guide | Models.UserRole.Recordings | Models.UserRole.Configuration;
+
     }
 }

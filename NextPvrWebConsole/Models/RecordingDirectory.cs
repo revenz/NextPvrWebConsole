@@ -212,5 +212,11 @@ namespace NextPvrWebConsole.Models
             var db = DbHelper.GetDatabase();
             return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where useroid = @0 and isdefault = 1", Globals.SHARED_USER_OID);
         }
+
+        internal static RecordingDirectory LoadUserDefault(int UserOid)
+        {
+            var db = DbHelper.GetDatabase();
+            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where useroid = @0 and isdefault = 1 order by useroid desc", UserOid);
+        }
     }
 }

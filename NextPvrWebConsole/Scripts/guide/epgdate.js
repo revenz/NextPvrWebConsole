@@ -9,7 +9,7 @@
             var tDate = new Date();
             tDate.setDate(tDate.getDate() + i);
             tDate.setHours(0, 0, 0, 0);
-            days.push(new epgDate(tDate, i == 0, $.i18n._(daysOfWeekString[currentDayOfWeek]) + " (" + tDate.getDate() + '/' + (tDate.getMonth() + 1) + ')'));
+            days.push(new epgDate(tDate, i == 0, $.i18n._(daysOfWeekString[currentDayOfWeek]) + " (" + $.format.date(tDate, 'd MMM') + ')'));
             if (++currentDayOfWeek >= 7)
                 currentDayOfWeek = 0;
         }

@@ -14,6 +14,7 @@ var guideData = null;
 var epgGridInitDone = false;
 var epgScroller = null;
 var guideViewModel = null;
+var scheduleEditorViewModel = null;
 
 function getMinutesFromStartOfGuide(time) {
     var diff = time - guideStart;
@@ -52,29 +53,38 @@ function initEpgGrid() {
 }
 
 function showRecordingOptions(listing) {
+    listing.type = ko.computed({
+        read: function () { return listing.recordingType(); },
+        write: function (value) { listing.recordingType(value); }
+    });
+    scheduleEditorViewModel.selectedListing(listing);
+
+    var dialog = $('#recording-options');
     var dialog_buttons = {};
     dialog_buttons[$.i18n._("OK")] = function () {
-        var type = $('#recording-type').val();
-        var prepadding = $('#recording-prepadding').val();
-        var postpadding = $('#recording-postpadding').val();
-        var directory = $('#recording-directory').val();
-        var keep = $('#recording-keep').val();
-
-        api.postJSON('guide/record', { oid: listing.oid(), prepadding: prepadding, postpadding: postpadding, recordingdirectoryid: directory, numbertokeep: keep, type: type }, function (result) {
-            console.log(result);
+        api.postJSON('guide/record', 
+            { 
+                oid: listing.oid(), 
+                prePadding: listing.prePadding(), 
+                postPadding: listing.postPadding(),
+                recordingdirectoryid: listing.recordingDirectoryId(),
+                numbertokeep: listing.keep(),
+                type: listing.type()
+            }, function (result) {
+            if (result)
+                listing.isRecording(true);
         });
 
-        $('#recording-options').dialog('close');
+        dialog.dialog('close');
     };
     dialog_buttons[$.i18n._("Cancel")] = function () {
-        $('#recording-options').dialog('close');
+        dialog.dialog('close');
     }
-
-    $('#recording-options').dialog({
+    dialog.dialog({
         modal: true,
         title: listing.title(),
-        width: 600,
-        height: 300,
+        minWidth: 650,
+        minHeight: 350,
         buttons: dialog_buttons
     });
 }
@@ -88,6 +98,7 @@ function epgDate(date, selected, displayText) {
         return 'epg-day ' + (self.selected() ? 'selected' : '');
     });
 }
+
 
 $(function () {
 
@@ -107,4 +118,10 @@ $(function () {
         guideViewModel.loadEpgData(guideStart);
     });
 
+    function ScheduleEditorViewModel() {
+        var self = this;
+        self.selectedListing = ko.observable();
+    };
+    scheduleEditorViewModel = new ScheduleEditorViewModel();
+    ko.applyBindings(scheduleEditorViewModel, $('#Guide-ScheduleEditor').get(0));
 });

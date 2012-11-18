@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Drawing;
 using System.IO;
+using NUtility;
 
 namespace NextPvrWebConsole
 {
@@ -60,6 +61,21 @@ namespace NextPvrWebConsole
                     yield return element;
                 }
             }
+        }
+
+        public static DayMask ToDayMask(this DayOfWeek Day)
+        {
+            switch (Day)
+            {
+                case DayOfWeek.Sunday: return NUtility.DayMask.SUNDAY;
+                case DayOfWeek.Monday: return NUtility.DayMask.MONDAY;
+                case DayOfWeek.Tuesday: return NUtility.DayMask.TUESDAY;
+                case DayOfWeek.Wednesday: return NUtility.DayMask.WEDNESDAY;
+                case DayOfWeek.Thursday: return NUtility.DayMask.THURSDAY;
+                case DayOfWeek.Friday: return NUtility.DayMask.FRIDAY;
+                case DayOfWeek.Saturday: return NUtility.DayMask.SATURDAY;
+            }
+            return DayMask.ANY;
         }
 
         public static NextPvrWebConsole.Models.User GetUser(this System.Web.Http.ApiController Controller)

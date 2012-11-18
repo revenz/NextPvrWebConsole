@@ -75,19 +75,34 @@ $(function () {
 
         self.openListing = function (listing) {
             self.selectedshow(listing);
-
             var dialog_buttons = {};
-            dialog_buttons[$.i18n._("Quick Record")] = function () {
-                api.postJSON('guide/quickrecord?oid=' + listing.oid(), null, function (data) {
-                    console.log('data...');
-                    console.log(data);
-                });
-                $('#show-info').dialog('close');
-            };
-            dialog_buttons[$.i18n._('Record')] = function () {
-                showRecordingOptions(listing);
-                $('#show-info').dialog('close');
-            };
+
+            if (listing.isRecording()) {
+                dialog_buttons[$.i18n._("Cancel")] = function () {
+                    gui.confirmMessage({
+                        message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [listing.title()]),
+                        yes: function () {
+                            api.deleteJSON('recordings/' + listing.recordingOid(), null, function (data) {
+                                if (data)
+                                    listing.isRecording(false);
+                                $('#show-info').dialog('close');
+                            });
+                        }
+                    });
+                };
+            } else {
+                dialog_buttons[$.i18n._("Quick Record")] = function () {
+                    api.postJSON('guide/quickrecord?oid=' + listing.oid(), null, function (data) {
+                        if (data)
+                            listing.isRecording(true);
+                    });
+                    $('#show-info').dialog('close');
+                };
+                dialog_buttons[$.i18n._('Record')] = function () {
+                    showRecordingOptions(listing);
+                    $('#show-info').dialog('close');
+                };
+            }
             dialog_buttons[$.i18n._('Find All')] = function () {
                 $('#show-info').dialog('close');
             };

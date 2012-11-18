@@ -17,7 +17,6 @@ function Listing(channel, epgListing) {
     self.channelNumber = ko.observable(channel.Number);
     self.startTime = ko.observable(epgListing.StartTime);
     self.endTime = ko.observable(epgListing.EndTime);
-    self.isRecording = ko.observable(epgListing.IsRecording == true);
     self.startDateTimeShort = ko.computed(function () { return gui.formatDateTimeShort(Date.parse(epgListing.StartTime)); });
     self.startTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(epgListing.StartTime)); });
     self.startTimeLong = ko.computed(function () { return gui.formatDateLong(Date.parse(epgListing.StartTime)); });
@@ -38,4 +37,13 @@ function Listing(channel, epgListing) {
             return 'data:image/png;base64,' + channel.Icon;
         return '';
     });
+
+    self.isRecording = ko.observable(epgListing.IsRecording);
+    self.isRecurring = ko.observable(epgListing.IsRecurring);
+    self.prePadding = ko.observable(epgListing.PrePadding);
+    self.postPadding = ko.observable(epgListing.PostPadding);
+    self.keep = ko.observable(epgListing.Keep);
+    self.recordingType = ko.observable(epgListing.RecordingType);
+    self.recordingDirectoryId = ko.observable(epgListing.RecordingDirectoryId);
+    self.recordingOid = ko.observable(epgListing.RecordingOid);
 }

@@ -38,7 +38,7 @@ namespace NextPvrWebConsole
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("json", "true", "application/json"));
 
             Workers.DeviceWatcher watcherDevice = new Workers.DeviceWatcher();
-            //watcherDevice.Start(); // getting silly sqlite lock issues with this... i hate sqlite....
+            watcherDevice.Start();
             watcherDevice.TunerStatusUpdated += delegate(Workers.DeviceUpdateEvent[] Events)
             {
                 Hubs.NextPvrEventHub.Clients_DeviceStatusUpdated(Events);

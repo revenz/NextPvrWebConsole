@@ -27,6 +27,13 @@ namespace NextPvrWebConsole.Models
 
         public bool IsRecording { get; set; }
         public bool IsRecurring { get; set; }
+        public int PrePadding { get; set; }
+        public int PostPadding { get; set; }
+        public int Keep { get; set; }
+        public string RecordingDirectoryId { get; set; }
+        public RecordingType RecordingType { get; set; }
+        public int RecordingOid { get; set; }
+
 
         public EpgListing(NUtility.EPGEvent EpgEvent)
         {

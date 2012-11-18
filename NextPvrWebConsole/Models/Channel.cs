@@ -35,12 +35,62 @@ namespace NextPvrWebConsole.Models
 
         public static List<Channel> LoadForTimePeriod(int UserOid, string GroupName, DateTime Start, DateTime End)
         {
+            var config = new Configuration();
             int[] channelOids = ChannelGroup.LoadChannelOids(UserOid, GroupName);
-
+            var userRdDefault = RecordingDirectory.LoadUserDefault(UserOid);
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
             var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End);
-
-            var recordings = NUtility.ScheduledRecording.LoadAll().Where(x => x.EndTime >= Start && x.StartTime <= End && x.EventOID > 0).ToDictionary(x => x.EventOID);
+            var allowedDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+            var allowedDirectoriesPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
+            var recordings = NUtility.ScheduledRecording.LoadAll().Where(x => x.EndTime >= Start && x.StartTime <= End && x.EventOID > 0);
+            Dictionary<int, dynamic> allowedRecordings = new Dictionary<int, dynamic>();
+            foreach (var r in recordings)
+            {
+                dynamic d = null;
+                if (r.RecurrenceOID > 0)
+                {
+                    var recurrence = NUtility.RecurringRecording.LoadByOID(r.RecurrenceOID);
+                    d = new
+                    {
+                        Keep = recurrence.Keep,
+                        PrePadding = recurrence.PrePadding,
+                        PostPadding = recurrence.PostPadding,
+                        RecordingDirectoryId = recurrence.RecordingDirectoryID,
+                        IsRecurring = true,
+                        RecordingType = RecurringRecording.GetRecordingType(recurrence),
+                        RecordingOid = r.OID
+                    };
+                }
+                else
+                {
+                    d = new
+                    {
+                        Keep = 0, // once off recording,
+                        PrePadding = r.PrePadding,
+                        PostPadding = r.PostPadding,
+                        IsRecurring = false,
+                        RecordingDirectoryId = r.Filename,
+                        RecordingType = RecordingType.Record_Once,
+                        RecordingOid = r.OID
+                    };
+                }
+                if (d == null || (!String.IsNullOrWhiteSpace(d.RecordingDirectoryId) && !allowedDirectories.ContainsKey(d.RecordingDirectoryId)))
+                {
+                    // check to see if recording and has fullname in directoryid
+                    try
+                    {
+                        System.IO.FileInfo fi = new FileInfo(r.Filename);
+                        if (!allowedDirectoriesPath.ContainsKey(fi.Directory.Parent.FullName.ToLower()))
+                            continue; // not allowed for the current user
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+                if(!allowedRecordings.ContainsKey(r.EventOID))
+                    allowedRecordings.Add(r.EventOID, d);
+            }
 
             List<Channel> results = new List<Channel>();
             foreach (var key in data.Keys.Where(x => channelOids.Contains(x.OID)))
@@ -52,9 +102,28 @@ namespace NextPvrWebConsole.Models
                     Oid = key.OID,
                     HasIcon = key.Icon != null,
 
-                    Listings = data[key].Where(x => x.EndTime > Start).Select(x => new EpgListing(x) {
-                        IsRecording = recordings.ContainsKey(x.OID)
-                    }).ToList()
+                    Listings = data[key].Where(x => x.EndTime > Start).Select(x => {
+                        var listing = new EpgListing(x);
+                        if (allowedRecordings.ContainsKey(x.OID))
+                        {
+                            listing.PrePadding = allowedRecordings[x.OID].PrePadding;
+                            listing.PostPadding = allowedRecordings[x.OID].PostPadding;
+                            listing.RecordingDirectoryId = allowedRecordings[x.OID].RecordingDirectoryId;
+                            listing.Keep = allowedRecordings[x.OID].Keep;
+                            listing.IsRecurring = allowedRecordings[x.OID].IsRecurring;
+                            listing.RecordingType = allowedRecordings[x.OID].RecordingType;
+                            listing.RecordingOid = allowedRecordings[x.OID].RecordingOid;
+                            listing.IsRecording = true;
+                        }
+                        else
+                        {
+                            listing.PrePadding = config.PrePadding;
+                            listing.PostPadding = config.PostPadding;
+                            listing.RecordingDirectoryId = userRdDefault == null ? null : userRdDefault.RecordingDirectoryId;
+                        }
+                        return listing;
+                        }
+                    ).ToList()
                 });
             }
             return results;

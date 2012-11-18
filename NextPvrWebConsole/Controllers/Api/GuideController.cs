@@ -33,13 +33,9 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         [HttpPost]
-        public NUtility.ScheduledRecording Record(RecordingSchedule Recording)        
+        public bool Record(RecordingSchedule RecordingSchedule)        
         {
-            //NUtility.DayMask Days = NUtility.DayMask.ANY;
-            //bool OnlyNewEpisodes = false;
-            //bool TimeSlot = true;
-            //return Models.ScheduledRecordingModel.Record(Recording.Oid, Recording.PrePadding, Recording.PostPadding, Recording.RecordingDirectoryId, Recording.NumberToKeep, Days, OnlyNewEpisodes, TimeSlot);
-            throw new NotImplementedException();
+            return Models.Recording.Record(this.GetUser().Oid, RecordingSchedule);
         }
     }
 }

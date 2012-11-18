@@ -4,7 +4,7 @@
 
 <div id="recording-options" class="schedule-editor">
     <table>
-        <tr>
+        <tr class="channelName">
             <td class="label" data-lang="Channel"></td>
             <td class="value" data-bind="text: channelName"></td>
         </tr>
@@ -39,7 +39,7 @@
             <td class="value">
                 <select id="recording-directory" data-bind="value: recordingDirectoryId">
                     @foreach (var dir in ViewBag.RecordingDirectories)
-                    {
+                    {                        
                         <option value="@dir.RecordingDirectoryId">@dir.DisplayName</option>
                     }
                 </select>

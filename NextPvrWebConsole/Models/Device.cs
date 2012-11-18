@@ -48,8 +48,8 @@ namespace NextPvrWebConsole.Models
                     Present = cs.Present,
                     Oid = cs.OID,
                     Name = cs.Name,
-                    Enabled = cs.Enabled//,
-                    //NumberOfChannels = NUtility.Channel.LoadForCaptureSource(cs.OID).Count
+                    Enabled = cs.Enabled,
+                    NumberOfChannels = NUtility.Channel.LoadForCaptureSource(cs.OID).Count
                 });
             }
             return devices;

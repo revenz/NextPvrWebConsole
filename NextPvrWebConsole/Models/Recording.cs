@@ -120,23 +120,6 @@ namespace NextPvrWebConsole.Models
                                                         .Select(x => new Recording(x, UserOid)).ToArray();
         }
 
-        // this code is from NEWA, didnt help.
-        private static IScheduleHelper scheduleHelper
-        {
-            get
-            {
-                if (ScheduleHelperFactory.GetScheduleHelper() == null)
-                {
-                    //ScheduleHelperFactory.SetScheduleHelper(RecordingServiceProxy.GetServiceInstance());
-
-                    NShared.RecordingServiceProxy.ForceRemote();
-                    ScheduleHelperFactory.SetScheduleHelper(NShared.RecordingServiceProxy.GetInstance());
-                }
-                IScheduleHelper helper = ScheduleHelperFactory.GetScheduleHelper();
-                return helper;
-            }
-        }
-
         public static bool QuickRecord(int UserOid, int Oid)
         {
             var config = new Configuration();
@@ -149,11 +132,81 @@ namespace NextPvrWebConsole.Models
             }
 
             var epgevent = NUtility.EPGEvent.LoadByOID(Oid);
+            if (epgevent == null)
+                throw new Exception("Failed to locate EPG Event to record.");
 
-            ScheduleHelperFactory.SetScheduleHelper(NShared.RecordingServiceProxy.GetInstance());
-            ScheduledRecording recording = ScheduleHelperFactory.GetScheduleHelper().ScheduleRecording(epgevent, config.PrePadding, config.PostPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId);
-            //return scheduleHelper.ScheduleRecording(epgevent, config.PrePadding, config.PostPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId) != null;
+            var instance = NShared.RecordingServiceProxy.GetInstance();
+            ScheduledRecording recording = instance.ScheduleRecording(epgevent, config.PrePadding, config.PostPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId);
             return recording != null;
+        }
+
+        public static bool Record(int UserOid, Models.RecordingSchedule Schedule)
+        {
+            var config = new Configuration();
+            string recordingDirectoryId = Schedule.RecordingDirectoryId ?? ""; // default
+            // make sure they have access to the recording directory
+            if (!String.IsNullOrEmpty(recordingDirectoryId))
+            {
+                if (!RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true).ContainsKey(recordingDirectoryId))
+                    throw new UnauthorizedAccessException();
+            }
+            
+
+            var epgevent = NUtility.EPGEvent.LoadByOID(Schedule.Oid);
+            if (epgevent == null)
+                throw new Exception("Failed to locate EPG Event to record.");
+
+            var instance = NShared.RecordingServiceProxy.GetInstance();
+
+            int prePadding = (Schedule.PrePadding ?? (int?)config.PrePadding).Value;
+            int postPadding = (Schedule.PostPadding ?? (int?)config.PostPadding).Value;
+
+            bool onlyNew = false;
+            DayMask dayMask = DayMask.ANY;
+            bool timeslot = true;
+            switch (Schedule.Type)
+            {
+                case RecordingType.Record_Once: // special cast, effectively a "Quick Record" but with a couple more options
+                    return instance.ScheduleRecording(epgevent, prePadding, postPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId) != null;
+                case RecordingType.Record_Season_New_This_Channel:
+                    onlyNew = true;
+                    dayMask = DayMask.ANY;
+                    timeslot = false;
+                    break;
+                case RecordingType.Record_Season_All_This_Channel:
+                    onlyNew = false;
+                    dayMask = DayMask.ANY;
+                    timeslot = false;
+                    break;
+                case RecordingType.Record_Season_Daily_This_Timeslot:
+                    onlyNew = false;
+                    dayMask = DayMask.ANY;
+                    timeslot = true;
+                    break;
+                case RecordingType.Record_Season_Weekly_This_Timeslot:
+                    onlyNew = false;
+                    dayMask = dayMask = (DayMask)(1 << ((int)epgevent.StartTime.ToLocalTime().DayOfWeek));
+                    timeslot = true;
+                    break;
+                case RecordingType.Record_Season_Weekdays_This_Timeslot:
+                    onlyNew = false;
+                    dayMask = DayMask.MONDAY | DayMask.TUESDAY | DayMask.WEDNESDAY | DayMask.THURSDAY | DayMask.FRIDAY;
+                    timeslot = true;
+                    break;
+                case RecordingType.Record_Season_Weekends_This_Timeslot:
+                    onlyNew = false;
+                    dayMask = DayMask.SATURDAY | DayMask.SUNDAY;
+                    timeslot = true;
+                    break;
+                case RecordingType.Record_Season_All_Season_All_Channels: // another special case
+                    {
+                        string advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "%'";
+                        if (config.RecurringMatch == RecurringMatchType.Exact)
+                            advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "'";
+                        return instance.ScheduleRecording(epgevent.Title, 0 /* all channels */, epgevent.StartTime, epgevent.EndTime, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, advancedRules, recordingDirectoryId) != null;
+                    }     
+            }
+            return instance.ScheduleRecording(epgevent, onlyNew, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, timeslot, recordingDirectoryId) != null;
         }
 
         public static bool DeleteByOid(int UserOid, int Oid)
@@ -189,7 +242,7 @@ namespace NextPvrWebConsole.Models
                 }
 
                 if (!canDelete)
-                    throw new AccessViolationException();
+                    throw new UnauthorizedAccessException();
             }
 
 

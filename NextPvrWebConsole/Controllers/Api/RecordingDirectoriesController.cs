@@ -45,7 +45,7 @@ namespace NextPvrWebConsole.Controllers.Api
                 throw new ArgumentException("Recording Directory not found.");
 
             if (original.UserOid != user.Oid)
-                throw new AccessViolationException();
+                throw new UnauthorizedAccessException();
 
             RecordingDirectoryName = RecordingDirectoryName.Trim();
 
