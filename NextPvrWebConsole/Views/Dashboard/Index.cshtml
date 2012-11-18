@@ -7,15 +7,24 @@
 }
 
 <div class="portlets">
-    <div class="portlet container">
-        <div class="container-title" data-lang="Device Status">
+    <div class="portlets-large">
+        <div class="portlet container">
+            <div class="container-title" data-lang="Device Status">
+            </div>
+            @Html.Partial("_Tuners")
         </div>
-        @Html.Partial("_Tuners")
     </div>
-    <div class="portlet small container">
-        <div class="container-title" data-lang="Upcoming Recordings">
+    <div class="portlets-small">
+        <div class="portlet small container">
+            <div class="container-title" data-lang="Upcoming Recordings">
+            </div>
+            @Html.Partial("_UpcomingRecordings")
         </div>
-        @Html.Partial("_UpcomingRecordings")
+        <div class="portlet small container">
+            <div class="container-title" data-lang="Disk Usage">
+            </div>
+            @Html.Partial("_DiskUsage")
+        </div>
     </div>
 
 </div>
@@ -24,4 +33,5 @@
 @section Scripts{
     @Scripts.Render("~/Scripts/dashboard/devices.js")
     @Scripts.Render("~/Scripts/dashboard/upcomingrecordings.js")
+    @Scripts.Render("~/bundles/charting")
 }

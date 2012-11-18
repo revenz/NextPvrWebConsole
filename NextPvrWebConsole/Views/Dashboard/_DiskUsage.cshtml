@@ -1,0 +1,52 @@
+﻿<div id="editor-render-0" style="width:500px;height:260px">
+
+</div>
+
+<script>
+    var loadChart = function () {
+        (function basic_pie(container) {
+
+            var total = @ViewBag.Total;
+            var free = @ViewBag.Free;
+            var recordings = @ViewBag.Recordings;
+            var used = @ViewBag.Used;
+
+            var 
+              d1 = [[0, used / (1024 * 1024)]],
+              d2 = [[0, recordings / (1024 * 1024)]],
+              d3 = [[0, used / (1024 * 1024)]],
+              graph;
+
+            graph = Flotr.draw(container, [
+              { data: d1, label: 'Used', color: '#CB4B4B' },
+              { data: d2, label: 'Recordings', color: '#00A8F0' },
+              { data: d3, label: 'Free', color: '#4DA74D' }
+            ], {
+                HtmlText: false,
+                grid: {
+                    verticalLines: false,
+                    horizontalLines: false,
+                    outlineWidth: 0
+                },
+                xaxis: { showLabels: false },
+                yaxis: { showLabels: false },
+                pie: {
+                    show: true,
+                    explode: 0,
+                    sizeRatio: 0.8
+                },
+                legend: {
+                    position: 'ce',
+                    backgroundColor: '#fff',
+                    outline: ''
+                }
+            });
+        })(document.getElementById("editor-render-0"));
+    };
+
+    if (window.addEventListener)
+        window.addEventListener('load', loadChart, false);
+    else if (window.attachEvent)
+        window.attachEvent('onload', loadChart);
+
+</script>

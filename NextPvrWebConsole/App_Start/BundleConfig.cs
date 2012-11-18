@@ -53,6 +53,8 @@ namespace NextPvrWebConsole
 
             bundles.Add(new ScriptBundle("~/bundles/api.js").IncludeDirectory("~/Scripts/api-wrappers", "*.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/charting").IncludeDirectory("~/Scripts/charting", "*.js"));
+
             var cssBundle = new Bundle("~/Content/css").Include(
                                                         "~/Content/site.less", 
                                                         "~/Content/custom.css",
