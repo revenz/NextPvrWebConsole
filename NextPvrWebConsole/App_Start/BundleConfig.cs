@@ -39,6 +39,19 @@ namespace NextPvrWebConsole
                         "~/Scripts/apihelper.js",
                         "~/Scripts/global.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/loginjs").Include(
+                        "~/Scripts/core/jquery-{version}.js",
+                        "~/Scripts/core/jquery-ui-{version}.js",
+                        "~/Scripts/core/jquery.unobtrusive-ajax",
+                        "~/Scripts/core/jquery.validate*",
+                        "~/Scripts/core/jquery.unobtrusive*",
+                        "~/Scripts/core/jquery.validate.unobtrusive",
+                        "~/Scripts/core/jquery.i18n.js",
+                        "~/Scripts/core/jquery.ibutton.js",
+                        "~/Scripts/translator.js",
+                        "~/Scripts/functions.js",
+                        "~/Scripts/global.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/setup").Include(
                         "~/Scripts/core/jquery-{version}.js",
                         "~/Scripts/core/jquery-ui-{version}.js",
@@ -77,7 +90,7 @@ namespace NextPvrWebConsole
             PageBundle(bundles, "Recordings");
             PageBundle(bundles, "UserSettings");
             PageBundle(bundles, "Configuration");
-            PageBundle(bundles, "Accounts");
+            PageBundle(bundles, "Account");
             PageBundle(bundles, "Setup");
 
             // this allows bundling when in debug mode

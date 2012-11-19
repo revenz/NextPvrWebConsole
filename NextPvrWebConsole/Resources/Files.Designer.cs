@@ -75,16 +75,27 @@ namespace NextPvrWebConsole.Resources {
         ///	datecreatedutc			datetime			NOT NULL,
         ///	lastloggedinutc			datetime			NOT NULL,
         ///	administrator			bit					NOT NULL,
-        ///	[readonly]				bit					NOT NULL
-        ///)
-        ///GO
-        ///
-        ///CREATE TABLE [setting] (
-        ///	name					v [rest of string was truncated]&quot;;.
+        ///	[readonly]				bit					NOT NULL,	
+        ///	defaultrecordingdirectoryoid	integer		NOT N [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CreateDatabase_sql {
             get {
                 return ResourceManager.GetString("CreateDatabase_sql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A password reset request was made for this account for NextPVR Webconsole.
+        ///
+        ///If you did not make this request, delete this email.
+        ///
+        ///If you did make this request and would like to continue, copy the following link into your web browser and follow the instructions.
+        ///
+        ///{Url}.
+        /// </summary>
+        internal static string ResetPasswordBody {
+            get {
+                return ResourceManager.GetString("ResetPasswordBody", resourceCulture);
             }
         }
     }

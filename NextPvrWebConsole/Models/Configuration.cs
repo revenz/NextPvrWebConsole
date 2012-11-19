@@ -22,6 +22,16 @@ namespace NextPvrWebConsole.Models
         public string DefaultRecordingDirectoryRoot { get; set; }
         public bool EnableUserSupport { get; set; }
 
+        /// <summary>
+        /// Gets or sets the website address of this web application, used when sending links via emails to users (forgot password etc)
+        /// </summary>
+        public string WebsiteAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the private secret used when encrypting data sent to the user as plain text (forgot password code links etc)
+        /// </summary>
+        public string PrivateSecret { get; set; }
+
         #region general
         [Range(0, 23)]
         public int EpgUpdateHour { get; set; }
@@ -41,6 +51,15 @@ namespace NextPvrWebConsole.Models
 
         #region devices
         public bool UseReverseOrderForLiveTv { get; set; }
+        #endregion
+
+        #region SmtpSettings
+        public string SmtpServer { get; set; }
+        public int SmtpPort { get; set; }
+        public string SmtpUsername { get; set; }
+        public string SmtpPassword { get; set; }
+        public bool SmtpUseSsl { get; set; }
+        public string SmtpSender { get; set; }
         #endregion
 
         public Configuration()
@@ -69,14 +88,23 @@ namespace NextPvrWebConsole.Models
             this.AvoidDuplicateRecordings = NextPvrConfigHelper.AvoidDuplicateRecordings;
             #endregion
 
+            #region smtp
+            this.SmtpServer = "localhost";
+            this.SmtpPort = 21;
+            this.SmtpUsername = "";
+            this.SmtpPassword = "";
+            this.SmtpUseSsl = false;
+            this.SmtpSender = "";
+            #endregion
+
+            this.WebsiteAddress = "http://localhost";
+            this.PrivateSecret = Guid.NewGuid().ToString("N");
             #endregion
 
             var db = DbHelper.GetDatabase();
             var type = this.GetType();
-            bool found = false;
             foreach (var d in db.Fetch<dynamic>("select * from setting"))
             {
-                found = true;
                 string name = d.name as string;
                 var prop = type.GetProperty(name);
                 if (prop == null)
@@ -152,6 +180,9 @@ namespace NextPvrWebConsole.Models
         private void SaveToDatabase()
         {
             var db = DbHelper.GetDatabase();
+
+            if (this.WebsiteAddress.EndsWith("/"))
+                this.WebsiteAddress = this.WebsiteAddress.Substring(0, this.WebsiteAddress.Length - 1);
 
             db.BeginTransaction(); // wrap this up in a transaction to improve the speed of saving these settings
             try

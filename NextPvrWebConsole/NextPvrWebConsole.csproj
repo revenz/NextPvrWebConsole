@@ -223,6 +223,8 @@
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Handlers\CompressionHandler.cs" />
+    <Compile Include="Helpers\Emailer.cs" />
+    <Compile Include="Helpers\Encrypter.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
     <Content Include="Content\images\icon_channel_all.png" />
@@ -297,7 +299,7 @@
     <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\addons\toastr.css" />
     <Content Include="Content\buttons.css" />
-    <Content Include="Content\accounts\index.less" />
+    <Content Include="Content\account\index.less" />
     <Content Include="Content\configuration\index.less" />
     <None Include="Content\dashboard\upcomingrecordings.less" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
@@ -318,6 +320,8 @@
     <Content Include="Content\mixins.less" />
     <Content Include="Content\dashboard\devices.less" />
     <Content Include="Resources\Files\CreateDatabase.sql" />
+    <Content Include="Resources\Files\ResetPasswordBody.txt" />
+    <Content Include="Scripts\account\index.js" />
     <Content Include="Scripts\api-wrappers\channelgroup.js" />
     <Content Include="Scripts\api-wrappers\device.js" />
     <Content Include="Scripts\api-wrappers\listing.js" />
@@ -572,7 +576,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ClientBin\" />
-    <Folder Include="Scripts\accounts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

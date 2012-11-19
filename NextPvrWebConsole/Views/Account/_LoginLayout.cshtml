@@ -7,7 +7,7 @@
     
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/bootstrap/css")         
-    @Styles.Render("~/Content/accounts/css")         
+    @Styles.Render("~/Content/account/css")         
     @RenderSection("styles", required: false)
 
     @Scripts.Render("~/bundles/modernizr")
@@ -25,9 +25,9 @@
     </div>
 
 
-    @Scripts.Render("~/bundles/jscore")
+    @Scripts.Render("~/bundles/loginjs")
     @Scripts.Render("~/bundles/api.js")
-    @Scripts.Render("~/bundles/accounts/js")
+    @Scripts.Render("~/scripts/account/js")
 
     @RenderSection("scripts", required: false)
 </body>

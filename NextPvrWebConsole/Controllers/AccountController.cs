@@ -45,6 +45,23 @@ namespace NextPvrWebConsole.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ForgotPassword(string Username)
+        {
+            try
+            {
+                ViewBag.PasswordReset = true;
+                Models.User.SendPasswordResetRequest(Username);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.PasswordReset = false;
+                ViewBag.Error = ex.Message;
+            }
+            return View("Login");
+        }
         //
         // POST: /Account/LogOff
 
@@ -65,6 +82,11 @@ namespace NextPvrWebConsole.Controllers
 
             bool success = this.GetUser().ChangePassword(Model.OldPassword, Model.NewPassword);
             return Json(new { success = success });
+        }
+
+        public ActionResult ResetPassword(string Username, string Code)
+        {
+            throw new NotImplementedException();
         }
 
         #region Helpers
