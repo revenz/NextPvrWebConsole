@@ -158,7 +158,7 @@ namespace NextPvrWebConsole.Models
                 return false;
             this.Password = NewPassword;
             var db = DbHelper.GetDatabase();
-            return db.Update("[user]", "oid", new { password = this.PasswordHash }, this.Oid) > 0;
+            return db.Update("user", "oid", new { passwordhash = this.PasswordHash }, this.Oid) > 0;
         }
 
         public static User CreateUser(string Username, string EmailAddress, string Password, UserRole UserRole, bool Administrator = false, DateTime? LastLoggedInUtc = null)

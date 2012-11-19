@@ -37,7 +37,7 @@ namespace NextPvrWebConsole
                         "~/Scripts/vtabs.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js",
-                        "~/Scripts/startup.js"));
+                        "~/Scripts/global.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/setup").Include(
                         "~/Scripts/core/jquery-{version}.js",

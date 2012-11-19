@@ -57,6 +57,16 @@ namespace NextPvrWebConsole.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [HttpPost]
+        public ActionResult ChangePassword(LocalPasswordModel Model)
+        {
+            if (!ModelState.IsValid)
+                throw new ArgumentException();
+
+            bool success = this.GetUser().ChangePassword(Model.OldPassword, Model.NewPassword);
+            return Json(new { success = success });
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
