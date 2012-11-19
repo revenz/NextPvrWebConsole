@@ -10,11 +10,22 @@ namespace NextPvrWebConsole.Validators
 {
     public class DirectoryAttribute : RegularExpressionAttribute
     {
-        internal static readonly string _Pattern = @"^[A-Za-z]:\\([^""*/:?|<>\\.\x00-\x20]([^""*/:?|<>\\\x00-\x1F]*[^""*/:?|<>\\.\x00-\x20])?\\?)*$";
-        
-        public DirectoryAttribute()
-            : base(_Pattern)
+        public enum DirectoryNameMode
         {
+            FullPath,
+            ShortStrict
+        }
+
+        internal static readonly string _PatternFull = @"^[A-Za-z]:\\([^""*/:?|<>\\.\x00-\x20]([^""*/:?|<>\\\x00-\x1F]*[^""*/:?|<>\\.\x00-\x20])?\\?)*$";
+        internal static readonly string _PatternShortStrict = @"^([^\[\]""*/:?|<>\\.\x00-\x20]([^\[\]""*/:?|<>\\\x00-\x1F]*[^\[\]""*/:?|<>\\.\x00-\x20])?)*$";
+
+
+        public DirectoryNameMode Mode { get; set; }
+
+        public DirectoryAttribute(DirectoryNameMode Mode = DirectoryNameMode.FullPath)
+            : base(Mode == DirectoryNameMode.FullPath ? _PatternFull : _PatternShortStrict)
+        {
+            this.Mode = Mode;
             this.ErrorMessage = "Must be a valid directory.";
         }
 
@@ -22,6 +33,9 @@ namespace NextPvrWebConsole.Validators
         {
             if (!base.IsValid(value))
                 return false;
+
+            if (this.Mode != DirectoryNameMode.FullPath)
+                return true;
 
             // check the path exists
             bool exists = Directory.Exists(value as string);
@@ -45,7 +59,10 @@ namespace NextPvrWebConsole.Validators
                 ValidationType = "regex"
             };
 
-            rule.ValidationParameters.Add("pattern", DirectoryAttribute._Pattern);
+            if(Attribute.Mode == DirectoryAttribute.DirectoryNameMode.FullPath)
+                rule.ValidationParameters.Add("pattern", DirectoryAttribute._PatternFull);
+            else if (Attribute.Mode == DirectoryAttribute.DirectoryNameMode.ShortStrict)
+                rule.ValidationParameters.Add("pattern", DirectoryAttribute._PatternShortStrict);
 
             return new[] { rule };
         }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
+using NextPvrWebConsole.Validators;
 
 namespace NextPvrWebConsole.Models
 {
     [PetaPoco.PrimaryKey("Oid")]
     public class RecordingDirectory
     {
+        [Directory(DirectoryAttribute.DirectoryNameMode.ShortStrict)]
         public string Name { get; set; }
         public int Oid { get; set; }
         public int UserOid { get; set; }
@@ -159,8 +161,17 @@ namespace NextPvrWebConsole.Models
         /// <param name="RecordingDirectories">the list of recording directories to save</param>
         internal static bool SaveForUser(int UserOid, List<RecordingDirectory> RecordingDirectories)
         {
+            RecordingDirectories.ForEach(x => { if (x.UserOid == 0) x.UserOid = UserOid; });
             if (RecordingDirectories.Where(x => x.UserOid == UserOid).DuplicatesBy(x => x.Name.ToLower().Trim()).Count() > 0)
                 throw new ArgumentException("Recording Directory names must be unique.");
+
+            // validate path names
+            foreach (var rd in RecordingDirectories.Where(x => x.UserOid == UserOid))
+            {
+                if (!Validators.Validator.IsValid(rd))
+                    throw new ArgumentException("Invalid parameters");
+            }
+
             string username = User.GetUsername(UserOid);
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();

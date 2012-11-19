@@ -27,15 +27,17 @@ namespace NextPvrWebConsole.Tests.Controllers
 
             // now try and recreate the user
             model.Oid = 0;
+            bool failed = false;
             try
             {
                 controller.Post(model);
-                Assert.Fail();
             }
             catch (Exception ex)
             {
+                failed = true;
                 Assert.IsTrue(ex.Message.Contains("already exists"));
             }
+            Assert.IsTrue(failed);
         }
 
         [TestMethod]
@@ -48,15 +50,17 @@ namespace NextPvrWebConsole.Tests.Controllers
             model.Username = "Shared";
             model.Password = Helpers.WordGenerator.GetSequence(12);
             model.ConfirmPassword = model.Password;
+            bool failed = false;
             try
             {
                 controller.Post(model);
-                Assert.Fail();
             }
             catch (Exception ex)
             {
+                failed = true;
                 Assert.IsTrue(ex.Message.Contains("already exists"));
             }
+            Assert.IsTrue(failed);
         }
 
         [TestMethod]
@@ -69,15 +73,17 @@ namespace NextPvrWebConsole.Tests.Controllers
             model.Username = Helpers.WordGenerator.GetSequence(10, Helpers.WordGenerator.CharacterSet.LowerCase);
             model.Password = Helpers.WordGenerator.GetSequence(12);
             model.ConfirmPassword = model.Password;
+            bool failed = false;
             try
             {
                 var user = controller.Post(model);
-                Assert.Fail();
             }
             catch (Exception ex)
             {
+                failed = true;
                 Assert.IsTrue(ex.Message == "Value does not fall within the expected range.");
             }
+            Assert.IsTrue(failed);
         }
 
         [TestMethod]

@@ -50,15 +50,17 @@ namespace NextPvrWebConsole.Tests.Controllers
                 groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
                 groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
 
+                bool failed = false;
                 try
                 {
                     Assert.IsFalse(controller.Update(groups));
-                    Assert.Fail();
                 }
                 catch (Exception ex)
                 {
+                    failed = true;
                     Assert.IsTrue(ex.Message == "Channel Group names must be unique.");
                 }
+                Assert.IsTrue(failed);
 
                 // test we can't create a duplicate of an existing group
                 groups = controller.Get().ToList();
@@ -66,15 +68,17 @@ namespace NextPvrWebConsole.Tests.Controllers
                 controller.Update(groups);
 
                 groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
+                failed = false;
                 try
                 {
                     Assert.IsFalse(controller.Update(groups));
-                    Assert.Fail();
                 }
                 catch (Exception ex)
                 {
+                    failed = true;
                     Assert.IsTrue(ex.Message == "Channel Group names must be unique.");
                 }
+                Assert.IsTrue(failed);
 
                 // test if we can create a duplicate once we renamed the original with same name
                 groups = controller.Get().ToList();
@@ -89,7 +93,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ChannelGroupsTest_GetAnotherUsersGroups()
+        public void ChannelGroupsTest_GetAnotherUsersChannelGroups()
         {
             var userA = Helpers.UserHelper.CreateTestUser();
             var userB = Helpers.UserHelper.CreateTestUser();
