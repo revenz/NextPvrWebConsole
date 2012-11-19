@@ -9,6 +9,17 @@ namespace NextPvrWebConsole.Helpers
 {
     public class Encrypter
     {
+        public static string GetCpuId()
+        {
+            string cpuInfo = string.Empty;
+            System.Management.ManagementClass mc = new System.Management.ManagementClass("win32_processor");
+            foreach (System.Management.ManagementObject mo in mc.GetInstances())
+            {
+                return mo.Properties["processorID"].Value.ToString();
+            }
+            throw new Exception("Failed to locate CPU ID.");
+        }
+
         public static string Encrypt(string Text, string EncryptionKey = null)
         {
             if (EncryptionKey == null)

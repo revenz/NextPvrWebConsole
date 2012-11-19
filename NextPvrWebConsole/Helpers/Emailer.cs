@@ -19,7 +19,8 @@ namespace NextPvrWebConsole.Helpers
             client.Port = config.SmtpPort;
             if (!String.IsNullOrEmpty(config.SmtpUsername))
             {
-                client.Credentials = new NetworkCredential(config.SmtpUsername, config.SmtpPassword);
+                // password is encrypted using cpu id as secret so unique to the machine it was installed on
+                client.Credentials = new NetworkCredential(config.SmtpUsername, Encrypter.Decrypt(config.SmtpPassword, Encrypter.GetCpuId())); 
             }
 
             client.EnableSsl = config.SmtpUseSsl;
@@ -35,7 +36,6 @@ namespace NextPvrWebConsole.Helpers
             AlternateView plainView = AlternateView.CreateAlternateViewFromString(Message, null, "text/plain");
             message.AlternateViews.Add(plainView);
 
-            object userstate = message;
             //client.SendCompleted += new SendCompletedEventHandler(smtpClient_SendCompleted);
             // Send SMTP mail
             //client.SendAsync(message, userstate);

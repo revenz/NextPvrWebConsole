@@ -23,14 +23,12 @@ $(function () {
                 ele.enabled($('#device_' + ele.oid() + '_enabled:checked').length > 0);
                 devices.push(ele.toApiObject());
             });
-            console.log(devices);
             ajax.postJSON('Configuration/UpdateDevices',
                 {
                     UseReverseOrderForLiveTv: $('#modelDevices_UseReverseOrderForLiveTv:checked').length > 0,
                     Devices: devices
                 },
                 function () {
-                    console.log('success');
                 }
             );
         });

@@ -89,5 +89,12 @@
     'Configuration-ChannelGroups-Summary':              'Here you can configure the global channel groups for the system.  If in user mode each user will be able to use these channel groups, they will not be able to edit them however.',
     'EnableUserSupport'                 :               'Enable User Support',
     'EnableUserSupport-Description'     :               'When enabled, users will be able to create their own Channel Groups, managed their own Channels, create their own Recording Directories and schedule personal recordings.\nNote XBMC is currently the only front-end that truly supports this feature.',
-    'Time-Range'                        :               ' %s to %s'
+    'Time-Range'                        :               ' %s to %s',
+    'Smtp-Server-Description'           :               'The mail server used when sending emails.',
+    'Smtp-Port-Description'             :               'The port to use when sending emails.',
+    'Smtp-Username-Description'         :               'Optional, only used if your mail server requires authentication.',
+    'Smtp-Password-Description'         :               ' ',
+    'Smtp-UseSsl-Description'           :               'If your mail server connects via an secure connection',
+    'Smtp-Summary'                      :               'Here you can configure the mail server settings used by the NextPVR Webconsole when sending emails. NextPVR Webconsole will send an email when a user requests a password reset.  If these settings are not correct, a user will not be able to reset their password.',
+    'Smtp-Sender-Description'          :               'Optional, the email address used as the sender address of all outgoing emails.'
 };

@@ -1,44 +1,67 @@
 ﻿@{
-    var model = (NextPvrWebConsole.Models.ConfigurationModels.SmtpConfiguration)ViewBag.SmtpModel;
+    var smtpModel = (NextPvrWebConsole.Models.ConfigurationModels.SmtpConfiguration)ViewBag.SmtpModel;
 }
-<table>
-    <tr>
-        <td class="label" data-lang="Server"></td>
-        <td class="value">
-            @Html.EditorFor(m => model.Server)
-            @Html.ValidationMessageFor(m => model.Server)
-            <span class="description" data-lang="Smtp-Server-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="Port"></td>
-        <td class="value">
-            @Html.EditorFor(m => model.Port)
-            @Html.ValidationMessageFor(m => model.Port)
-            <span class="description" data-lang="Smtp-Server-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="Username"></td>
-        <td class="value">
-            @Html.EditorFor(m => model.Username)
-            @Html.ValidationMessageFor(m => model.Username)
-            <span class="description" data-lang="Smtp-Username-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="Password"></td>
-        <td class="value">
-            @Html.EditorFor(m => model.Password)
-            @Html.ValidationMessageFor(m => model.Password)
-            <span class="description" data-lang="Smtp-Password-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="Use SSL"></td>
-        <td class="value">
-            @Html.EditorFor(m => model.UseSsl)
-            <span class="description" data-lang="Smtp-UseSsl-Description" />
-        </td>
-    </tr>
-</table>
+
+<p data-lang="Smtp-Summary"></p>
+
+@using (Ajax.BeginForm("UpdateSmtpSettings", null, null, new { id = "updateSmtpSettingsForm" }))
+{
+    <table>
+        <tr>
+            <td class="label" data-lang="Server"></td>
+            <td class="value">
+                @Html.EditorFor(m => smtpModel.Server)
+                @Html.ValidationMessageFor(m => smtpModel.Server)
+                <span class="description" data-lang="Smtp-Server-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="Port"></td>
+            <td class="value">
+                @Html.EditorFor(m => smtpModel.Port)
+                @Html.ValidationMessageFor(m => smtpModel.Port)
+                <span class="description" data-lang="Smtp-Port-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="Sender"></td>
+            <td class="value">
+                @Html.EditorFor(m => smtpModel.Sender)
+                @Html.ValidationMessageFor(m => smtpModel.Sender)
+                <span class="description" data-lang="Smtp-Sender-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="Username"></td>
+            <td class="value">
+                @Html.EditorFor(m => smtpModel.Username)
+                @Html.ValidationMessageFor(m => smtpModel.Username)
+                <span class="description" data-lang="Smtp-Username-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="Password"></td>
+            <td class="value">
+                @Html.EditorFor(m => smtpModel.Password)
+                @Html.ValidationMessageFor(m => smtpModel.Password)
+                <span class="description" data-lang="Smtp-Password-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label" data-lang="Use SSL"></td>
+            <td class="value">
+                @Html.EditorFor(m => smtpModel.UseSsl)
+                <span class="description" data-lang="Smtp-UseSsl-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="value">
+                <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnSmtpSettingsSave">
+                    <span class="icon-save icon-large" data-lang="Save"></span>
+                </button>
+            </td>
+
+        </tr>
+    </table>
+}

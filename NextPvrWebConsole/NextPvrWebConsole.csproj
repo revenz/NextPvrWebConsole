@@ -105,6 +105,7 @@
       <HintPath>..\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Entity" />
@@ -357,6 +358,7 @@
     <Content Include="Scripts\setup\index.js" />
     <Content Include="Scripts\global.js" />
     <Content Include="Scripts\system\index.js" />
+    <Content Include="Scripts\system\smtpsettings.js" />
     <Content Include="Scripts\translator.js" />
     <Content Include="Scripts\usersettings\channelgroups.js" />
     <Content Include="Scripts\usersettings\channels.js" />

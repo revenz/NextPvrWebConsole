@@ -92,6 +92,7 @@ namespace NextPvrWebConsole
             PageBundle(bundles, "Configuration");
             PageBundle(bundles, "Account");
             PageBundle(bundles, "Setup");
+            PageBundle(bundles, "System");
 
             // this allows bundling when in debug mode
             //BundleTable.EnableOptimizations = true;   
