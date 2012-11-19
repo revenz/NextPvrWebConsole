@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "System";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    @Styles.Render("~/Content/system/css")
+}
+
+
+<div class="system vtab-container">
+
+    <ul class="vtab-buttons">
+        <li data-tab="system-tab-general" class="first selected"><i class="icon icon-wrench"></i><span data-lang="General" /></li>
+        <li data-tab="system-tab-smtp"><i class="icon icon-envelope"></i><span data-lang="SMTP Settings" /></li>
+        <li data-tab="system-tab-about" class="last"><i class="icon icon-info-sign"></i><span data-lang="About" /></li>
+    </ul>
+    
+    <div class="vtab-content selected" id="system-tab-general">
+        todo
+    </div>
+
+    <div class="vtab-content" id="system-tab-smtp">
+        @Html.Partial("_SmtpSettings")
+    </div>
+
+    <div class="vtab-content" id="system-tab-about">
+        @Html.Partial("_About")
+    </div>
+
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/system/js")
+}

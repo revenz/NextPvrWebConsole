@@ -215,6 +215,7 @@
     <Compile Include="Controllers\RecordingsController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
     <Compile Include="Controllers\StreamingController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="Models\ConfigurationModels\DevicesConfiguration.cs" />
     <Compile Include="Models\ConfigurationModels\GeneralConfiguration.cs" />
     <Compile Include="Models\ConfigurationModels\RecordingConfiguration.cs" />
+    <Compile Include="Models\ConfigurationModels\SmtpConfiguration.cs" />
     <Compile Include="Models\DbHelper.cs" />
     <Compile Include="Models\EpgListing.cs" />
     <Compile Include="Models\Generated\Database.cs">
@@ -354,6 +356,7 @@
     <Content Include="Scripts\recordings\recurring.js" />
     <Content Include="Scripts\setup\index.js" />
     <Content Include="Scripts\global.js" />
+    <Content Include="Scripts\system\index.js" />
     <Content Include="Scripts\translator.js" />
     <Content Include="Scripts\usersettings\channelgroups.js" />
     <Content Include="Scripts\usersettings\channels.js" />
@@ -449,6 +452,7 @@
     <Content Include="Content\setup\index.less" />
     <Content Include="Content\recordings\available.less" />
     <Content Include="Content\scheduleeditor.less" />
+    <Content Include="Content\system\index.less" />
     <None Include="Content\themes\bootstrap\icons.less" />
     <Content Include="Content\themes\bootstrap\inputs.less" />
     <None Include="Content\themes\bootstrap\jquery.accordion.less" />
@@ -497,7 +501,7 @@
     <Content Include="Views\Shared\FileTree.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Enum.cshtml" />
     <Content Include="Views\Setup\Index.cshtml" />
-    <Content Include="Views\Configuration\_About.cshtml" />
+    <Content Include="Views\System\_About.cshtml" />
     <Content Include="Views\Configuration\_Channels.cshtml" />
     <Content Include="Views\Configuration\_Users.cshtml" />
     <Content Include="Views\Configuration\_ChannelGroups.cshtml" />
@@ -513,6 +517,8 @@
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <Content Include="Views\Dashboard\_DiskUsage.cshtml" />
     <Content Include="Views\Shared\_ChangePassword.cshtml" />
+    <Content Include="Views\System\Index.cshtml" />
+    <Content Include="Views\System\_SmtpSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />

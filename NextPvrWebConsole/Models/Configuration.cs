@@ -90,7 +90,7 @@ namespace NextPvrWebConsole.Models
 
             #region smtp
             this.SmtpServer = "localhost";
-            this.SmtpPort = 21;
+            this.SmtpPort = 25;
             this.SmtpUsername = "";
             this.SmtpPassword = "";
             this.SmtpUseSsl = false;
