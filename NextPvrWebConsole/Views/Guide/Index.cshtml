@@ -36,7 +36,7 @@
 
                 <div class="epg-channels">
                     <ul data-bind="foreach: channels, visible: channels().length > 0">
-                        <li data-bind="attr: { class: $root.channelClass($data, 'epg-channel') }, event: { dblclick: $root.liveStream }" title="Start Live TV">
+                        <li data-bind="attr: { class: $root.channelClass($data, 'epg-channel') }, event: { click: $root.liveStream }" title="Start Live TV">
                             <div class="logo"><img class="logo" data-bind="visible: hasIcon, attr: { src: iconSrc()  } "  /></div>
                             <span class="name" data-bind="text: name"></span>
                             <span class="number" data-bind="text: number"></span>      

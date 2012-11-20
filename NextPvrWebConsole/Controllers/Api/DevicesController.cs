@@ -16,6 +16,7 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.Device.GetDevices();
         }
         
+        [HttpDelete]
         public bool DeleteStream(int Handle)
         {
             if (!Models.Device.StopStream(Handle))

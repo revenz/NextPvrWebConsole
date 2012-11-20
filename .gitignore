@@ -7,3 +7,4 @@
 /NextPvrWebConsole/bin
 /NextPvrWebConsole/App_Data/NextPvrWebConsole.db
 /TestResults
+/NextPvrWebConsole/Logging/*.log

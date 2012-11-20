@@ -30,6 +30,10 @@ namespace NextPvrWebConsole.Models
 
         static void CreateDatabase(string DbFile)
         {
+            string path = new System.IO.FileInfo(DbFile).DirectoryName;
+            if (!System.IO.Directory.Exists(path))
+                System.IO.Directory.CreateDirectory(path);
+
             SQLiteConnection.CreateFile(DbFile);
             
             using(SQLiteConnection conn = new SQLiteConnection(@"Data Source={0};Version=3;".FormatStr(DbFile))){

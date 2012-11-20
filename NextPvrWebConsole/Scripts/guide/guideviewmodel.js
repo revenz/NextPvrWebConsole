@@ -72,7 +72,7 @@ $(function () {
         self.loadEpgData(guideStart);
 
         self.liveStream = function (channel) {
-            window.open('/streaming/' + channel.oid(), 'livestream', 'width=820,height=480,status=1,resizable=0');
+            window.open('/streaming/' + channel.oid(), 'livestream', 'width=830,height=480,status=1,resizable=0');
         };
 
         self.selectedshow = ko.observable();

@@ -78,7 +78,10 @@ namespace NextPvrWebConsole
             cssBundle.Transforms.Add(new CssMinify());
             bundles.Add(cssBundle);
 
-            bundles.Add(new StyleBundle("~/Content/themes/bootstrap/css").Include("~/Content/themes/bootstrap/theme.less"));
+            var cssBootstrap = new Bundle("~/Content/themes/bootstrap/css").Include("~/Content/themes/bootstrap/theme.less");
+            cssBootstrap.Transforms.Add(new LessTransform());
+            cssBootstrap.Transforms.Add(new CssMinify());
+            bundles.Add(cssBootstrap);
 
             bundles.Add(new StyleBundle("~/Content/jquery.mobile/css").Include(
                         "~/Content/jquery.mobile-{version}.css",
@@ -95,7 +98,7 @@ namespace NextPvrWebConsole
             PageBundle(bundles, "System");
 
             // this allows bundling when in debug mode
-            //BundleTable.EnableOptimizations = true;   
+            // BundleTable.EnableOptimizations = true;   
         }
 
         private static void PageBundle(BundleCollection bundles, string Name)

@@ -69,7 +69,7 @@ namespace NextPvrWebConsole.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            FormsAuthentication.SignOut();
 
             return RedirectToAction("Login", "Account");
         }

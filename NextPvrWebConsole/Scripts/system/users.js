@@ -109,5 +109,5 @@ $(function () {
 
         };
     }
-    ko.applyBindings(new UsersViewModel(), $('#configuration-tab-users').get(0));
+    ko.applyBindings(new UsersViewModel(), $('#system-tab-users').get(0));
 });
