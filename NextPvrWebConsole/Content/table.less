@@ -1,0 +1,40 @@
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.data-table
+{
+	border-spacing:0;
+	border-collapse:collapse;
+	width:100%;
+	thead {
+		tr {
+			.border-radius-top(5px);
+			.drop-shadow;
+			border-bottom:solid 1px #ddd;
+			line-height:32px;
+			font-weight:bold;
+		}
+	}	
+	td, th {
+		text-align:left;
+	}
+	td {
+		padding:5px 0;
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+	}
+	tbody 
+	{
+		font-size:0.9em;
+		line-height:30px;
+		overflow:auto;
+		tr {
+			border-bottom:solid 1px #ddd;
+		}
+		tr:nth-child(even) {
+			background: #eee;
+		}
+	}
+   
+}

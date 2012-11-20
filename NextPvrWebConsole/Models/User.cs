@@ -144,7 +144,7 @@ namespace NextPvrWebConsole.Models
             var config = new Configuration();
             string url = "{0}/ResetPassword?code={1}".FormatStr(config.WebsiteAddress, Helpers.Encrypter.Encrypt("{0}:{1}:{2}".FormatStr(user.Username, user.EmailAddress, DateTime.UtcNow.Ticks)));
 
-            Helpers.Emailer.Send(user.EmailAddress, "NextPVR Webconsole Password Reset Request", Resources.Files.ResetPasswordBody.Replace("{Url}", url));
+            Helpers.Emailer.Send(user.EmailAddress, "NextPVR Webconsole Password Reset Request", Resources.Files.PasswordResetRequestBody.Replace("{Url}", url));
         }
 
         public void Save()
@@ -169,6 +169,11 @@ namespace NextPvrWebConsole.Models
         {
             if (!BCrypt.CheckPassword(OldPassword, this.PasswordHash))
                 return false;
+            return ChangePassword(NewPassword);
+        }
+
+        private bool ChangePassword(string NewPassword)
+        {
             this.Password = NewPassword;
             var db = DbHelper.GetDatabase();
             return db.Update("user", "oid", new { passwordhash = this.PasswordHash }, this.Oid) > 0;
@@ -223,6 +228,7 @@ namespace NextPvrWebConsole.Models
             }
             catch (Exception ex)
             {
+                Logger.Log("Failed to create user: " + ex.Message + Environment.NewLine + ex.StackTrace);
                 db.AbortTransaction();
                 return null;
             }
@@ -256,6 +262,39 @@ namespace NextPvrWebConsole.Models
                 throw ex;
             }
 
+        }
+
+        internal static User ValidateResetCode(string Code)
+        {
+            var config = new Configuration();
+            string decrypted = Helpers.Encrypter.Decrypt(Code);
+            string[] parts = decrypted.Split(':');
+            if(parts.Length != 3)
+                throw new Exception("Invalid code.");
+
+            string username = parts[0];
+            string email = parts[1];
+            long dateticks = 0;
+            if(!long.TryParse(parts[2], out dateticks))
+                throw new Exception("Invalid code.");
+
+            var user = GetByUsername(username);
+            if (user == null || user.EmailAddress != email)
+                throw new Exception("Invalid code.");
+
+            DateTime code = new DateTime(dateticks);
+            if (code > DateTime.UtcNow) // should never be greater than now, since THIS server must have generated this code in the past.
+                throw new Exception("Invalid code.");
+            if (code < DateTime.UtcNow.AddDays(-1))
+                throw new Exception("Expired code.");
+                
+            // generate new password and send it to them
+            string newPassword = Membership.GeneratePassword(12, 2);
+            user.ChangePassword(newPassword);
+
+            Helpers.Emailer.Send(user.EmailAddress, "NextPVR Webconsole Password Reset", Resources.Files.PasswordResetBody.Replace("{Username}", user.Username).Replace("{Password}", newPassword).Replace("{Url}", config.WebsiteAddress));
+
+            return user;
         }
     }
 }

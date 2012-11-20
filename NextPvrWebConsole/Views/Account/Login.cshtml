@@ -34,7 +34,7 @@
     }
 </div>
 <div class="forgotpasswordForm-container" style="display:none">
-    @using (Html.BeginForm("ForgotPassword", "Account"))
+    @using (Ajax.BeginForm("ForgotPassword", "Account", new AjaxOptions { OnComplete = "ForgotPassword_Complete", OnBegin = "ForgotPassword_Begin" }, new { id = "formForgotPassword" }))
     {
         <h1 data-lang="Forgot Password"></h1>
         <p data-lang="Please fill in your username or email address and a password reset request will be email to you."></p>

@@ -85,6 +85,22 @@ namespace NextPvrWebConsole.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your password for NextPVR Webconsole has been reset for the following Website.
+        ///
+        ///{Url}
+        ///
+        ///You can login using the following credientials
+        ///
+        ///Username: {Username}
+        ///Password: {Password}.
+        /// </summary>
+        internal static string PasswordResetBody {
+            get {
+                return ResourceManager.GetString("PasswordResetBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A password reset request was made for this account for NextPVR Webconsole.
         ///
         ///If you did not make this request, delete this email.
@@ -93,9 +109,9 @@ namespace NextPvrWebConsole.Resources {
         ///
         ///{Url}.
         /// </summary>
-        internal static string ResetPasswordBody {
+        internal static string PasswordResetRequestBody {
             get {
-                return ResourceManager.GetString("ResetPasswordBody", resourceCulture);
+                return ResourceManager.GetString("PasswordResetRequestBody", resourceCulture);
             }
         }
     }

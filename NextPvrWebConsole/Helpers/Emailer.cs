@@ -12,6 +12,7 @@ namespace NextPvrWebConsole.Helpers
     {
         public static void Send(string To, string Subject, string Message)
         {
+            Logger.Log("Sending Email\r\nTo: {0}\r\nSubject: {1}\r\n\r\n{2}", To, Subject, Message);
             var config = new Configuration();
             // setup the client
             SmtpClient client = new SmtpClient();

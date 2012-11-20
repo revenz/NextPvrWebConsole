@@ -202,6 +202,7 @@
     <Compile Include="Controllers\Api\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\GuideController.cs" />
     <Compile Include="Controllers\Api\DevicesController.cs" />
+    <Compile Include="Controllers\Api\LogsController.cs" />
     <Compile Include="Controllers\Api\NextPvrWebConsoleApiController.cs" />
     <Compile Include="Controllers\Api\RecordingDirectoriesController.cs" />
     <Compile Include="Controllers\Api\ServiceController.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="Handlers\CompressionHandler.cs" />
     <Compile Include="Helpers\Emailer.cs" />
     <Compile Include="Helpers\Encrypter.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
     <Content Include="Content\images\icon_channel_all.png" />
@@ -275,6 +277,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Log.cs" />
     <Compile Include="Models\NextPvrConfigHelper.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\Property.cs" />
@@ -323,11 +326,13 @@
     <Content Include="Content\mixins.less" />
     <Content Include="Content\dashboard\devices.less" />
     <Content Include="Resources\Files\CreateDatabase.sql" />
-    <Content Include="Resources\Files\ResetPasswordBody.txt" />
+    <Content Include="Resources\Files\PasswordResetBody.txt" />
+    <Content Include="Resources\Files\PasswordResetRequestBody.txt" />
     <Content Include="Scripts\account\index.js" />
     <Content Include="Scripts\api-wrappers\channelgroup.js" />
     <Content Include="Scripts\api-wrappers\device.js" />
     <Content Include="Scripts\api-wrappers\listing.js" />
+    <Content Include="Scripts\api-wrappers\log.js" />
     <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
     <Content Include="Scripts\api-wrappers\recordinggroup.js" />
     <Content Include="Scripts\api-wrappers\recording.js" />
@@ -358,6 +363,7 @@
     <Content Include="Scripts\setup\index.js" />
     <Content Include="Scripts\global.js" />
     <Content Include="Scripts\system\index.js" />
+    <Content Include="Scripts\system\logs.js" />
     <Content Include="Scripts\system\smtpsettings.js" />
     <Content Include="Scripts\translator.js" />
     <Content Include="Scripts\usersettings\channelgroups.js" />
@@ -455,6 +461,7 @@
     <Content Include="Content\recordings\available.less" />
     <Content Include="Content\scheduleeditor.less" />
     <Content Include="Content\system\index.less" />
+    <None Include="Content\table.less" />
     <None Include="Content\themes\bootstrap\icons.less" />
     <Content Include="Content\themes\bootstrap\inputs.less" />
     <None Include="Content\themes\bootstrap\jquery.accordion.less" />
@@ -521,6 +528,7 @@
     <Content Include="Views\Shared\_ChangePassword.cshtml" />
     <Content Include="Views\System\Index.cshtml" />
     <Content Include="Views\System\_SmtpSettings.cshtml" />
+    <Content Include="Views\System\_Logs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />
@@ -584,6 +592,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ClientBin\" />
+    <Folder Include="Logging\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

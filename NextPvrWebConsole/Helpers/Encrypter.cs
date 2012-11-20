@@ -26,7 +26,8 @@ namespace NextPvrWebConsole.Helpers
                 EncryptionKey = new Configuration().PrivateSecret;
             Encoding unicode = Encoding.Unicode;
 
-            return Convert.ToBase64String(Encrypt(unicode.GetBytes(EncryptionKey), unicode.GetBytes(Text)));
+            string result = Convert.ToBase64String(Encrypt(unicode.GetBytes(EncryptionKey), unicode.GetBytes(Text)));
+            return result.Replace("/", "_").Replace("+", "-"); // replace these characters for URLs
         }
 
         public static string Decrypt(string Text, string EncryptionKey = null)
@@ -34,6 +35,7 @@ namespace NextPvrWebConsole.Helpers
             if (EncryptionKey == null)
                 EncryptionKey = new Configuration().PrivateSecret;
             Encoding unicode = Encoding.Unicode;
+            Text = Text.Replace("_", "/").Replace("-", "+"); // replace the characters used for URLs
 
             return unicode.GetString(Encrypt(unicode.GetBytes(EncryptionKey), Convert.FromBase64String(Text)));
         }

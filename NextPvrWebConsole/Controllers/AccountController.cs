@@ -54,13 +54,12 @@ namespace NextPvrWebConsole.Controllers
             {
                 ViewBag.PasswordReset = true;
                 Models.User.SendPasswordResetRequest(Username);
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                ViewBag.PasswordReset = false;
-                ViewBag.Error = ex.Message;
+                return Json(new { success = false, message = ex.Message });
             }
-            return View("Login");
         }
         //
         // POST: /Account/LogOff
@@ -84,9 +83,20 @@ namespace NextPvrWebConsole.Controllers
             return Json(new { success = success });
         }
 
-        public ActionResult ResetPassword(string Username, string Code)
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string Code)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Models.User user = Models.User.ValidateResetCode(Code);
+                ViewBag.PasswordReset = true;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.PasswordReset = false;
+                ViewBag.Error = ex.Message;
+            }
+            return View();
         }
 
         #region Helpers

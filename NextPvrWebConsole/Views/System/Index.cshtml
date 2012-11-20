@@ -13,6 +13,7 @@
     <ul class="vtab-buttons">
         <li data-tab="system-tab-general" class="first selected"><i class="icon icon-wrench"></i><span data-lang="General" /></li>
         <li data-tab="system-tab-smtp"><i class="icon icon-envelope"></i><span data-lang="SMTP Settings" /></li>
+        <li data-tab="system-tab-logs"><i class="icon icon-file"></i><span data-lang="Logs" /></li>
         <li data-tab="system-tab-about" class="last"><i class="icon icon-info-sign"></i><span data-lang="About" /></li>
     </ul>
     
@@ -22,6 +23,10 @@
 
     <div class="vtab-content" id="system-tab-smtp">
         @Html.Partial("_SmtpSettings")
+    </div>
+    
+    <div class="vtab-content" id="system-tab-logs">
+        @Html.Partial("_Logs")
     </div>
 
     <div class="vtab-content" id="system-tab-about">

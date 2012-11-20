@@ -18,9 +18,12 @@ namespace NextPvrWebConsole
     {
         protected void Application_Start()
         {
+            Globals.WebConsolePhysicalPath = Server.MapPath("~/");
+            Globals.WebConsoleLoggingDirectory = Server.MapPath("~/Logging");
+
             Models.DbHelper.Test();
 
-            NUtility.Logger.SetLogFileName(@"logs\reven.log");
+            //NUtility.Logger.SetLogFileName(@"logs\reven.log");
 
             AreaRegistration.RegisterAllAreas();
 

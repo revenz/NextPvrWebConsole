@@ -111,6 +111,11 @@ button.ui-button-icons-only { width: 3.7em; }
     }
 }
 
+.ui-button[disabled],.ui-button[disabled]:hover
+{
+  .gradient(@button_disabled_background, @button_disabled_graident_start, @button_disabled_graident_end);    
+  color:@button_disabled_color;
+}
 /* workarounds */
 button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra padding in Firefox */
 

@@ -13,5 +13,9 @@ namespace NextPvrWebConsole
 
         public const NextPvrWebConsole.Models.UserRole USER_ROLE_ALL = Models.UserRole.Dashboard | Models.UserRole.Guide | Models.UserRole.Recordings | Models.UserRole.Configuration;
 
+        public static Version NextPvrWebConsoleVersion = new Version("1.0.0.0"); // todo get version
+        public static Version NextPvrVersion = new Version("1.0.0.0"); // todo get NextPVR version
+        public static string WebConsolePhysicalPath = null;
+        public static string WebConsoleLoggingDirectory = null;
     }
 }

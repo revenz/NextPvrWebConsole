@@ -27,8 +27,19 @@ var gui = new function () {
         return $.format.date(date, 'h:mm a') + ' (' + $.format.date(date, 'd MMM') + ')';
     };
 
-    this.showMessage = function (message, title) {
-        alert(message); // for now
+    this.showMessageBox = function (message, title) {
+        var div = $('<div><span></span></div>');
+        div.find('span').text(message);
+        var dialog_buttons = {};
+        dialog_buttons[$.i18n._("OK")] = function () { div.dialog('close'); };        
+        div.dialog(
+        {
+            modal: true,
+            title: title ? title : $.i18n._("Message"),
+            minWidth: 350,
+            minHeight: 200,
+            buttons: dialog_buttons
+        });
     };
 
     this.showSuccess = function (message, title) {
@@ -82,7 +93,7 @@ var gui = new function () {
             title: $.i18n._('Confirm'),
             message: $.i18n._('Are you sure?'),
             yesText: $.i18n._('Yes'),
-                noText: $.i18n._('No'),
+            noText: $.i18n._('No'),
             yes: null,
             no: null,
             minWidth: 400,
@@ -113,7 +124,7 @@ var gui = new function () {
             validationMessage: $.i18n._('Input is required.'),
             initialValue: '',
             success: null,
-            maxLength:100
+            maxLength: 100
         }, settings);
 
         var div = $('<div><span class="message"></span><input type="text" style="width: 99%;padding: 0;margin: 15px 0 5px;" /><span class="field-validation-error errormessage" /> </div>');
@@ -122,7 +133,7 @@ var gui = new function () {
         div.find('.errormessage').text(settings.validationMessage).css('display', 'none');
         var dialog_buttons = {};
         var input = div.find('input');
-        if(settings.maxLength > 0)
+        if (settings.maxLength > 0)
             input.attr('maxlength', settings.maxLength);
         input.val(settings.initialValue);
         var errorMessage = div.find('.errormessage');
@@ -134,11 +145,10 @@ var gui = new function () {
                 errorMessage.css('display', rgxValidate.test(value) ? 'none' : '');
             });
         }
-        dialog_buttons[$.i18n._('OK')] = function ()
-        {
+        dialog_buttons[$.i18n._('OK')] = function () {
             var value = input.val();
             // validate
-            if (rgxValidate && !rgxValidate.test(value)) 
+            if (rgxValidate && !rgxValidate.test(value))
                 return; // its invalid
 
             if (settings.success) { settings.success(value); }
