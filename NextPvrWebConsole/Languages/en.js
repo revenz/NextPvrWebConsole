@@ -96,5 +96,8 @@
     'Smtp-Password-Description'         :               ' ',
     'Smtp-UseSsl-Description'           :               'If your mail server connects via an secure connection',
     'Smtp-Summary'                      :               'Here you can configure the mail server settings used by the NextPVR Webconsole when sending emails. NextPVR Webconsole will send an email when a user requests a password reset.  If these settings are not correct, a user will not be able to reset their password.',
-    'Smtp-Sender-Description'          :               'Optional, the email address used as the sender address of all outgoing emails.'
+    'Smtp-Sender-Description'           :               'Optional, the email address used as the sender address of all outgoing emails.',
+    'UserBaseRecordingDirectory-Description':           'Required to enable custom Recording Directories for users.  This is the base path where user sub directories will be created for their custom Recording Directories.  This cannot be a Shared Recording Directory and must be unique.',
+    'System-General-WebsiteAddress-Description':        'Specifies the website address used to access the NextPVR Webconsole.  This is used for streaming and in emails sent from the system.',
+    'System-General-Summary'            :               'Here you can configure the general system settings.'
 };

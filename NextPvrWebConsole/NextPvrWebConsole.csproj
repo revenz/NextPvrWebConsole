@@ -268,6 +268,7 @@
     <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\ConfigurationModels\DevicesConfiguration.cs" />
     <Compile Include="Models\ConfigurationModels\GeneralConfiguration.cs" />
+    <Compile Include="Models\ConfigurationModels\GeneralSystem.cs" />
     <Compile Include="Models\ConfigurationModels\RecordingConfiguration.cs" />
     <Compile Include="Models\ConfigurationModels\SmtpConfiguration.cs" />
     <Compile Include="Models\DbHelper.cs" />
@@ -301,6 +302,7 @@
     <Compile Include="Models\SetupModel.cs" />
     <Compile Include="Validators\UsernameAttribute.cs" />
     <Compile Include="Validators\Validator.cs" />
+    <Compile Include="Validators\WebsiteAddressAttribute.cs" />
     <Compile Include="Workers\DeviceWatcher.cs" />
     <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\addons\toastr.css" />
@@ -470,6 +472,7 @@
     <Content Include="Views\System\Index.cshtml" />
     <Content Include="Views\System\_SmtpSettings.cshtml" />
     <Content Include="Views\System\_Logs.cshtml" />
+    <Content Include="Views\System\_General.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />

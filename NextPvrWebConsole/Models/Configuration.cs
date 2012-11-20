@@ -19,7 +19,6 @@ namespace NextPvrWebConsole.Models
         /// </summary>
         public bool FirstRun { get; set; }
 
-        public string DefaultRecordingDirectoryRoot { get; set; }
         public bool EnableUserSupport { get; set; }
 
         /// <summary>
@@ -32,6 +31,17 @@ namespace NextPvrWebConsole.Models
         /// </summary>
         public string PrivateSecret { get; set; }
 
+        /// <summary>
+        /// Gets if user recording directories are enabled or not
+        /// </summary>
+        public bool UserRecordingDirectoriesEnabled
+        {
+            get
+            {
+                return !String.IsNullOrWhiteSpace(this.UserBaseRecordingDirectory);
+            }
+        }
+
         #region general
         [Range(0, 23)]
         public int EpgUpdateHour { get; set; }
@@ -39,6 +49,9 @@ namespace NextPvrWebConsole.Models
         [Required]
         [Directory]
         public string LiveTvBufferDirectory { get; set; }
+
+        [Directory(Required=false)]
+        public string UserBaseRecordingDirectory { get; set; }
         #endregion
 
         #region recordings
@@ -68,7 +81,6 @@ namespace NextPvrWebConsole.Models
             this.FirstRun = true;
 
             this.EnableUserSupport = true;
-            this.DefaultRecordingDirectoryRoot = NextPvrConfigHelper.DefaultRecordingDirectory;
 
             #region general
             this.EpgUpdateHour = NextPvrConfigHelper.EpgUpdateHour;
@@ -97,7 +109,7 @@ namespace NextPvrWebConsole.Models
             this.SmtpSender = "";
             #endregion
 
-            this.WebsiteAddress = "http://localhost";
+            this.WebsiteAddress = "http://{0}/".FormatStr(Environment.MachineName);
             this.PrivateSecret = Guid.NewGuid().ToString("N");
             #endregion
 
@@ -161,7 +173,7 @@ namespace NextPvrWebConsole.Models
             List<KeyValuePair<string, string>> extraRecordingDirs = sharedRecordingDirectories.Select(x => new KeyValuePair<string, string>(x.RecordingDirectoryId, x.Path)).ToList();
 
             // if user support is turned on, write out user directories
-            if (this.EnableUserSupport)
+            if (this.EnableUserSupport && this.UserRecordingDirectoriesEnabled)
             {
                 extraRecordingDirs.AddRange(RecordingDirectory.LoadAll().Where(x => x.UserOid != Globals.SHARED_USER_OID).Select(x => new KeyValuePair<string, string>(x.RecordingDirectoryId, x.Path)));
             }
@@ -181,8 +193,8 @@ namespace NextPvrWebConsole.Models
         {
             var db = DbHelper.GetDatabase();
 
-            if (this.WebsiteAddress.EndsWith("/"))
-                this.WebsiteAddress = this.WebsiteAddress.Substring(0, this.WebsiteAddress.Length - 1);
+            if (!this.WebsiteAddress.EndsWith("/"))
+                this.WebsiteAddress += "/";
 
             db.BeginTransaction(); // wrap this up in a transaction to improve the speed of saving these settings
             try
@@ -194,6 +206,8 @@ namespace NextPvrWebConsole.Models
                 };
                 foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.SetProperty | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                 {
+                    if (!prop.CanRead || !prop.CanWrite)
+                        continue;
                     var proptype = prop.PropertyType;
                     if (proptype == typeof(int))
                     {

@@ -144,7 +144,7 @@ namespace NextPvrWebConsole.Models
                 throw new Exception("User not found.");
 
             var config = new Configuration();
-            string url = "{0}/ResetPassword?code={1}".FormatStr(config.WebsiteAddress, Helpers.Encrypter.Encrypt("{0}:{1}:{2}".FormatStr(user.Username, user.EmailAddress, DateTime.UtcNow.Ticks)));
+            string url = "{0}ResetPassword?code={1}".FormatStr(config.WebsiteAddress, Helpers.Encrypter.Encrypt("{0}:{1}:{2}".FormatStr(user.Username, user.EmailAddress, DateTime.UtcNow.Ticks)));
 
             Helpers.Emailer.Send(user.EmailAddress, "NextPVR Webconsole Password Reset Request", Resources.Files.PasswordResetRequestBody.Replace("{Url}", url));
         }

@@ -136,7 +136,7 @@ namespace NextPvrWebConsole.Models
                     {
                         try
                         {
-                            if (System.IO.Directory.Exists(dir.Value))
+                            if (!System.IO.Directory.Exists(dir.Value))
                             {
                                 if (!System.IO.Directory.CreateDirectory(dir.Value).Exists)
                                     throw new Exception("Failed to create directory: " + dir.Value);

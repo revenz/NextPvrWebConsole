@@ -14,6 +14,8 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult Index()
         {
+            var config = new Models.Configuration();
+            ViewBag.UserRecordingDirectoriesEnabled = config.UserRecordingDirectoriesEnabled;
             return View();
         }
 

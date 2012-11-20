@@ -3,7 +3,6 @@
 /// <reference path="jquery.signalR-0.5.3.js" />
 
 var ajax = new function () {
-
     var _json = function (type, url, data, callback, errorCallback) {
         gui.doWork();
         $.ajax(
@@ -55,6 +54,23 @@ var ajax = new function () {
     }
     this.postJSON = function (url, data, callback, errorCallback) {
         _json('POST', url, data, callback, errorCallback);
+    }
+    this.oncomplete = function () {
+        gui.finishWork();
+    }
+    this.onbegin = function () {
+        gui.doWork();
+    }
+    this.onsuccess = function (data) {
+        if(data != null && data.get_response)
+            data = data.get_response(); // from Ajax.BeginForm
+        if(data != null && data._error == true)
+        {                         
+            var msg = data.message ? data.message : 'An unexpected server error occurred.';
+            gui.showError(msg);
+        }
+    }
+    this.onfailure = function () {
     }
 }
 
@@ -131,10 +147,8 @@ var api = new function()
         gui.doWork();
     }
     this.onsuccess = function () {
-        console.log('success');
     }
     this.onfailure = function () {
-        console.log('failure');
     }
 }
 

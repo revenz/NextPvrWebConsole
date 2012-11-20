@@ -13,16 +13,29 @@ namespace NextPvrWebConsole.Controllers.Api
         public dynamic GetDriveStatistics()
         {
             var config = new Models.Configuration();
-            System.IO.DirectoryInfo dirInfo = new System.IO.DirectoryInfo(config.DefaultRecordingDirectoryRoot);            
-            System.IO.DriveInfo drive = new System.IO.DriveInfo(dirInfo.FullName[0].ToString());
-            long usedByRecordings = Size(dirInfo);
-            return new 
+            try
             {
-                Total = drive.TotalSize - usedByRecordings,
-                Free = drive.TotalFreeSpace,
-                Recordings = usedByRecordings,
-                Used = drive.TotalSize - drive.TotalFreeSpace
-            };
+                System.IO.DirectoryInfo dirInfo = new System.IO.DirectoryInfo(config.UserBaseRecordingDirectory ?? Models.RecordingDirectory.LoadSystemDefault().Path);
+                System.IO.DriveInfo drive = new System.IO.DriveInfo(dirInfo.FullName[0].ToString());
+                long usedByRecordings = Size(dirInfo);
+                return new
+                {
+                    Total = drive.TotalSize - usedByRecordings,
+                    Free = drive.TotalFreeSpace,
+                    Recordings = usedByRecordings,
+                    Used = drive.TotalSize - drive.TotalFreeSpace
+                };
+            }
+            catch (Exception)
+            {
+                return new
+                {
+                    Total = 0,
+                    Free = 0,
+                    Recordings = 0,
+                    Used = 0
+                };
+            }
         }
 
         private long Size(System.IO.DirectoryInfo Dir)

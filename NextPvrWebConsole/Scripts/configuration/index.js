@@ -59,7 +59,6 @@ $(function () {
                     RecordingDirectories: recordings
                 },
                 function () {
-                    console.log('success');
                 });
             }
         });
@@ -79,6 +78,12 @@ $(function () {
     $('#btnLiveTvBufferBrowse').click(function () {
         ShowFolderBrowser(function (dir) {
             $('[id$=LiveTvBufferDirectory]').val(dir);
+        });
+    });
+
+    $('#btnUserBaseRecordingDirectoryBrowse').click(function () {
+        ShowFolderBrowser(function (dir) {
+            $('[id$=UserBaseRecordingDirectory]').val(dir);
         });
     });
 

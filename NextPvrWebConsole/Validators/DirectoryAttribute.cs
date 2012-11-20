@@ -21,16 +21,21 @@ namespace NextPvrWebConsole.Validators
 
 
         public DirectoryNameMode Mode { get; set; }
+        public bool Required { get; set; }
 
-        public DirectoryAttribute(DirectoryNameMode Mode = DirectoryNameMode.FullPath)
+        public DirectoryAttribute(DirectoryNameMode Mode = DirectoryNameMode.FullPath, bool Required = true)
             : base(Mode == DirectoryNameMode.FullPath ? _PatternFull : _PatternShortStrict)
         {
             this.Mode = Mode;
             this.ErrorMessage = "Must be a valid directory.";
+            this.Required = Required;
         }
 
         public override bool IsValid(object value)
         {
+            if (!Required && String.IsNullOrEmpty(value as string))
+                return true;
+
             if (!base.IsValid(value))
                 return false;
 

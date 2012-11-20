@@ -48,14 +48,8 @@
 		    }
 	    }
 	}
-	.livetvbuffer .value {
+	.livetvbuffer .value, .userrecordingdirectory .value {
 		position:relative;
-		#btnLiveTvBufferBrowse {
-			position:absolute;
-			top:7px;
-			left:325px;
-			height:29px;
-		}
 	}
 	.recording-directories ul {
 		margin:0 0 10px;
@@ -94,6 +88,22 @@
 	#configuration-tab-about {
 		padding-left:60px;
 	}
+}
+
+.browse-button 
+{
+	position:relative;
+	position:absolute;
+	top:9px;
+	left:325px;
+	height:29px;
+}
+@media only screen and (max-width: 1540px) 
+{
+    .browse-button 
+    {
+        top:7px;
+    }
 }
 	
 #ChannelGroups-Channels

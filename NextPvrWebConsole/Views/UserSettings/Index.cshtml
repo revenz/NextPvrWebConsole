@@ -11,8 +11,15 @@
 
     <ul class="vtab-buttons">
         <li data-tab="user-settings-tab-channelgroups" class="first selected"><i class="icon icon-sitemap"></i><span data-lang="Channel Groups" /></li>
-        <li data-tab="user-settings-tab-channels"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
-        <li data-tab="user-settings-tab-recordingdirectories" class="last"><i class="icon icon-folder-close"></i><span data-lang="Recording Directories" /></li>
+        @if (ViewBag.UserRecordingDirectoriesEnabled)
+        {
+            <li data-tab="user-settings-tab-channels"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
+            <li data-tab="user-settings-tab-recordingdirectories" class="last"><i class="icon icon-folder-close"></i><span data-lang="Recording Directories" /></li>
+        }
+        else
+        {
+            <li data-tab="user-settings-tab-channels" class="last"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
+        }
     </ul>
 
     <div class="vtab-content selected" id="user-settings-tab-channelgroups">
@@ -21,9 +28,12 @@
     <div class="vtab-content" id="user-settings-tab-channels">
         @Html.Partial("_Channels")
     </div>
-    <div class="vtab-content" id="user-settings-tab-recordingdirectories">
-        @Html.Partial("_RecordingDirectories")
-    </div>
+    @if (ViewBag.UserRecordingDirectoriesEnabled)
+    {
+        <div class="vtab-content" id="user-settings-tab-recordingdirectories">
+            @Html.Partial("_RecordingDirectories")
+        </div>
+    }
 
 </div>
 

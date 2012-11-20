@@ -14,7 +14,7 @@ namespace NextPvrWebConsole.Models.ConfigurationModels
     {
         [Required]
         [DisplayName("Live TV Buffer")]
-        [DirectoryAttribute]
+        [Directory]
         public string LiveTvBufferDirectory { get; set; }
 
         public bool UpdateDvbEpgDuringLiveTv { get; set; }
@@ -24,6 +24,10 @@ namespace NextPvrWebConsole.Models.ConfigurationModels
         public int EpgUpdateHour { get; set; }
 
         public bool EnableUserSupport { get; set; }
+
+        [DisplayName("User Recording Directory")]
+        [Directory(Required = false)]
+        public string UserBaseRecordingDirectory { get; set; }
 
     }
 }

@@ -92,9 +92,12 @@ namespace NextPvrWebConsole.Controllers
             try
             {
                 // this can fail during a unit test
-                WebMatrix.WebData.WebSecurity.Login(Model.Username, Model.Password); 
+                System.Web.Security.FormsAuthentication.SetAuthCookie(Model.Username, false);
             }
             catch (Exception) { }
+
+            if (HttpContext != null && HttpContext.Request != null)
+                config.WebsiteAddress = HttpContext.Request.Url.ToString().Substring(0, HttpContext.Request.Url.ToString().LastIndexOf("/") + 1);
 
             // turn off first run
             config.FirstRun = false;

@@ -22,6 +22,11 @@ namespace NextPvrWebConsole.Controllers
             SmtpModel.UseSsl = config.SmtpUseSsl;
             SmtpModel.Sender = config.SmtpSender;
             ViewBag.SmtpModel = SmtpModel;
+
+            var GeneralModel = new Models.ConfigurationModels.GeneralSystem();
+            GeneralModel.WebsiteAddress = config.WebsiteAddress;
+            ViewBag.GeneralModel = GeneralModel;
+
             return View();
         }
 
@@ -41,6 +46,24 @@ namespace NextPvrWebConsole.Controllers
             config.Save();
 
             return Json(new { success = true });
+        }
+
+        public ActionResult UpdateGeneralSettings(Models.ConfigurationModels.GeneralSystem GeneralModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    throw new ArgumentException();
+
+                var config = new Models.Configuration();
+                config.WebsiteAddress = GeneralModel.WebsiteAddress;
+                config.Save();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { _error = true, message = ex.Message });
+            }
         }
 
         public ActionResult Log(string Oid)

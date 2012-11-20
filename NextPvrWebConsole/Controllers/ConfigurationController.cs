@@ -21,6 +21,7 @@ namespace NextPvrWebConsole.Controllers
             GeneralModel.UpdateDvbEpgDuringLiveTv = config.UpdateDvbEpgDuringLiveTv;
             GeneralModel.LiveTvBufferDirectory = config.LiveTvBufferDirectory;
             GeneralModel.EnableUserSupport = config.EnableUserSupport;
+            GeneralModel.UserBaseRecordingDirectory = config.UserBaseRecordingDirectory;
 
             var RecordingModel = new Models.ConfigurationModels.RecordingConfiguration();
             RecordingModel.AvoidDuplicateRecordings = config.AvoidDuplicateRecordings;
@@ -43,11 +44,36 @@ namespace NextPvrWebConsole.Controllers
             ViewBag.Channels = Models.Channel.LoadAll(Globals.SHARED_USER_OID, true);
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult UpdateGeneral(Models.ConfigurationModels.GeneralConfiguration ModelGeneral)
         {
-            return SaveConfig(ModelGeneral);
+            try
+            {
+                // check if user recording base recording directory is a shared recording directory
+                if (!String.IsNullOrWhiteSpace(ModelGeneral.UserBaseRecordingDirectory))
+                {
+                    string basePath = ModelGeneral.UserBaseRecordingDirectory.ToLower();
+                    if (basePath.EndsWith(@"\"))
+                        basePath = basePath.Substring(0, basePath.Length - 1);
+                    var rds = Models.RecordingDirectory.LoadForUser(Globals.SHARED_USER_OID);
+                    foreach (var rd in rds)
+                    {
+                        string rdPath = rd.Path.ToLower();
+                        if (rdPath.EndsWith(@"\"))
+                            rdPath = rdPath.Substring(0, rdPath.Length - 1);
+
+                        if (basePath.StartsWith(rdPath))
+                            throw new Exception("User Recording Directory must not be in a Shared Recording Directory.");
+                    }
+                }
+
+                return SaveConfig(ModelGeneral);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { _error = true, message = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -65,12 +91,38 @@ namespace NextPvrWebConsole.Controllers
         [HttpPost]
         public ActionResult UpdateRecording(Models.ConfigurationModels.RecordingConfiguration ModelRecording)
         {
-            // save recording directories
-            if (ModelRecording.RecordingDirectories == null || ModelRecording.RecordingDirectories.Count == 0)
-                return Json(new { _error = true, message = "At least one recording directory is required." });
-            if (ModelState.IsValid && !Models.RecordingDirectory.SaveForUser(Globals.SHARED_USER_OID, ModelRecording.RecordingDirectories))
-                return Json(new { _error = true, message = "Failed to save recording directories." });
-            return SaveConfig(ModelRecording);
+            try
+            {
+                // save recording directories
+                if (ModelRecording.RecordingDirectories == null || ModelRecording.RecordingDirectories.Count == 0)
+                    throw new Exception("At least one recording directory is required.");
+
+                // check base user recording directory isnt in a shared directory
+                var config = new Models.Configuration();
+                if (!String.IsNullOrWhiteSpace(config.UserBaseRecordingDirectory))
+                {
+                    string basePath = config.UserBaseRecordingDirectory.ToLower();
+                    if (basePath.EndsWith(@"\"))
+                        basePath = basePath.Substring(0, basePath.Length - 1);
+                    foreach (var rd in ModelRecording.RecordingDirectories)
+                    {
+                        string rdPath = rd.Path.ToLower();
+                        if (rdPath.EndsWith(@"\"))
+                            rdPath = rdPath.Substring(0, rdPath.Length - 1);
+
+                        if (basePath.StartsWith(rdPath))
+                            throw new Exception("Cannot crete a Shared Recording Directory that contains the User Recording Directory.");
+                    }
+                }
+
+                if (ModelState.IsValid && !Models.RecordingDirectory.SaveForUser(Globals.SHARED_USER_OID, ModelRecording.RecordingDirectories))
+                    throw new Exception("Failed to save recording directories.");
+                return SaveConfig(ModelRecording);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { _error = true, message = ex.Message });
+            }
         }
 
         [HttpPost]

@@ -27,7 +27,6 @@ $(function () {
                     ChannelGroups: groups
                 },
                 function () {
-                    console.log('success');
                 }
             );
         };

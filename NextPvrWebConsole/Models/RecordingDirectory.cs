@@ -78,7 +78,7 @@ namespace NextPvrWebConsole.Models
         {
             var db = DbHelper.GetDatabase();
             var config = new Configuration();
-            if (config.EnableUserSupport)
+            if (config.EnableUserSupport && config.UserRecordingDirectoriesEnabled)
             {
                 int userDefault = db.ExecuteScalar<int>("select defaultrecordingdirectoryoid from[user] where oid = @0", UserOid);
                 string select = "select rd.*, username from recordingdirectory rd inner join [user] u on rd.useroid = u.oid where useroid = {0} {1}".FormatStr(UserOid, IncludeShared ? " or useroid = {0}".FormatStr(Globals.SHARED_USER_OID) : "");
@@ -87,7 +87,7 @@ namespace NextPvrWebConsole.Models
                     r.IsDefault = r.Oid == userDefault;
                 return SetUserPaths(results);
             }
-            else if (!IncludeShared)
+            else if (!IncludeShared && UserOid != Globals.SHARED_USER_OID)
             {
                 return new List<RecordingDirectory>(); // nothing to return then
             }
@@ -109,7 +109,7 @@ namespace NextPvrWebConsole.Models
             foreach (var dir in Directories)
             {
                 if (dir.UserOid != Globals.SHARED_USER_OID)
-                    dir.Path = System.IO.Path.Combine(config.DefaultRecordingDirectoryRoot, dir.Username, dir.Name);
+                    dir.Path = config.UserBaseRecordingDirectory == null ? null : System.IO.Path.Combine(config.UserBaseRecordingDirectory, dir.Username, dir.Name);
             }
             return Directories;
         }

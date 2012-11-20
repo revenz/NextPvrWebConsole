@@ -1,0 +1,28 @@
+﻿@{
+    var generalModel = (NextPvrWebConsole.Models.ConfigurationModels.GeneralSystem)ViewBag.GeneralModel;
+}
+
+<p data-lang="System-General-Summary"></p>
+
+@using (Ajax.BeginForm("UpdateGeneralSettings", "System", new AjaxOptions() { OnBegin = "ajax.onbegin", OnComplete = "ajax.oncomplete", OnFailure = "ajax.onfailure", OnSuccess = "ajax.onsuccess" }, new { id = "updateGeneralSettingsForm" }))
+{
+    <table>
+        <tr>
+            <td class="label" data-lang="Website Address"></td>
+            <td class="value">
+                @Html.EditorFor(m => generalModel.WebsiteAddress)
+                @Html.ValidationMessageFor(m => generalModel.WebsiteAddress)
+                <span class="description" data-lang="System-General-WebsiteAddress-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="value">
+                <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                    <span class="icon-save icon-large" data-lang="Save"></span>
+                </button>
+            </td>
+
+        </tr>
+    </table>
+}

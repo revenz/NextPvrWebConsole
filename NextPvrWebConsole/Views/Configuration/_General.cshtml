@@ -1,14 +1,14 @@
 ﻿@{
     var modelGeneral = (NextPvrWebConsole.Models.ConfigurationModels.GeneralConfiguration)ViewBag.GeneralModel;
 }
-@using(Ajax.BeginForm("UpdateGeneral", "Configuration",new AjaxOptions() { OnBegin = "api.onbegin", OnComplete = "api.oncomplete", OnFailure = "api.onfailure", OnSuccess = "api.onsuccess" })) 
+@using (Ajax.BeginForm("UpdateGeneral", "Configuration", new AjaxOptions() { OnBegin = "ajax.onbegin", OnComplete = "ajax.oncomplete", OnFailure = "ajax.onfailure", OnSuccess = "ajax.onsuccess" })) 
 {
     <table>
         <tr class="livetvbuffer">
             <td class="label" data-lang="Live TV Buffer"></td>
             <td class="value">
                 @Html.TextBoxFor(m => modelGeneral.LiveTvBufferDirectory, new { @readonly= "readonly" })
-                <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
+                <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
                 <span class="description" data-lang="LiveTvBuffer-Description" />
             </td>
         </tr>
@@ -32,6 +32,14 @@
             <td class="value">
                 @Html.EditorFor(m => modelGeneral.EnableUserSupport)
                 <span class="description" data-lang="EnableUserSupport-Description" />
+            </td>
+        </tr>
+        <tr class="userrecordingdirectory">
+            <td class="label" data-lang="User Recording Directory"></td>
+            <td class="value">
+                @Html.TextBoxFor(m => modelGeneral.UserBaseRecordingDirectory, new { @readonly = "readonly" })
+                <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnUserBaseRecordingDirectoryBrowse" onclick="return false">...</button>
+                <span class="description" data-lang="UserBaseRecordingDirectory-Description" />
             </td>
         </tr>
         <tr>

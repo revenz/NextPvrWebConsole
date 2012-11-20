@@ -36,6 +36,7 @@ namespace NextPvrWebConsole
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.DirectoryAttribute), typeof(Validators.DirectoryValidator));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.EmailAttribute), typeof(Validators.EmailValidator));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.UsernameAttribute), typeof(Validators.UsernameValidator));
+            DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.WebsiteAddressAttribute), typeof(Validators.WebsiteAddressValidator));
             
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
