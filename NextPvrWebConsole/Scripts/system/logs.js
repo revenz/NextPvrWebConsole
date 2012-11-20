@@ -13,21 +13,11 @@ $(function () {
         self.logs = ko.observableArray([]);
 
         self.open = function (item) {
-            var dialog = $('#logFileWindow');
-            dialog.find('iframe').attr('src', '/system/log?oid=' + encodeURIComponent(item.oid()));
-
-            var width = $('.body-wrapper').width() - 200;
-            var height = $('.body-wrapper').height() - 200;
-            var dialog_buttons = {};
-            dialog_buttons[$.i18n._("Close")] = function () { dialog.dialog('close'); }
-
-            dialog.dialog({
-                modal: true,
-                title: item.name(),
-                width: width,
-                height: height,
-                buttons: dialog_buttons
-            });
+            $('#logFileWindow .name').text(item.name());
+            $('#logFileWindow pre').text($.i18n._('Loading please wait...'));
+            $('#logFileWindow pre').load('/system/log?oid=' + encodeURIComponent(item.oid()));
+            $('#system-tab-logs table').css('display', 'none');
+            $('#logFileWindow').removeAttr('style');
         };
 
         // Load initial state from server
@@ -40,5 +30,10 @@ $(function () {
     ko.applyBindings(viewModel, $('#system-tab-logs').get(0));
 
     $('#system-tab-logs > table').removeAttr('style');
+
+    $('#btnLogClose').click(function () {
+        $('#system-tab-logs table').removeAttr('style');
+        $('#logFileWindow').css('display', 'none');
+    });
 
 });

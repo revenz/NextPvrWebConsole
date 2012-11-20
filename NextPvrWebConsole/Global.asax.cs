@@ -8,6 +8,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Net.Http.Formatting;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace NextPvrWebConsole
 {
@@ -16,10 +17,14 @@ namespace NextPvrWebConsole
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        System.Timers.Timer timer;
+
         protected void Application_Start()
         {
             Globals.WebConsolePhysicalPath = Server.MapPath("~/");
             Globals.WebConsoleLoggingDirectory = Server.MapPath("~/Logging");
+            Globals.NextPvrWebConsoleVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            Globals.NextPvrVersion = new Version(NUtility.SettingsHelper.GetInstance().GetSetting("/Settings/Version/CurrentVersion", "0.0.0") + ".0");
 
             Models.DbHelper.Test();
 
@@ -31,8 +36,7 @@ namespace NextPvrWebConsole
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.DirectoryAttribute), typeof(Validators.DirectoryValidator));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.EmailAttribute), typeof(Validators.EmailValidator));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.UsernameAttribute), typeof(Validators.UsernameValidator));
-
-
+            
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -48,6 +52,30 @@ namespace NextPvrWebConsole
             };
 
             Models.Configuration config = new Models.Configuration();
+            Logger.Log("Application started.");
+
+            timer_Elapsed(null, null); // it on startup
+            timer = new System.Timers.Timer(60 * 60 * 1000);
+            timer.AutoReset = true;
+            timer.Elapsed += timer_Elapsed;
+            timer.Start();
+
+        }
+
+        protected void Application_End()
+        {
+            Logger.Log("Application stopped.");
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Dispose();
+                timer = null;
+            }
+        }
+
+        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Logger.DeleteOldLogFiles();
         }
 
         public void Application_BeginRequest()

@@ -7,12 +7,24 @@
 #logFileWindow
 {
 }
-#logFileWindow iframe
+#logFileWindow
 {
-    border:none;
-    position:absolute;
-    top:0;
-    right:0;
-    bottom:0;
-    left:0;
+	.name {
+		font-weight:bold;
+		position:relative;
+		top:-10px;
+	}
+	button {
+		position: absolute;
+		right: 0;
+		top: 5px;
+	}
+	pre {
+		position: absolute;
+		top: 30px;
+		left: 15px;
+		right: 0;
+		bottom: -10px;
+		overflow: auto;
+	}
 }

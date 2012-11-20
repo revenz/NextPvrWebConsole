@@ -7,7 +7,9 @@
     </thead>
     <tbody data-bind="foreach: logs">
         <tr>
-            <td data-bind="text: name, click: $root.open"></td>
+            <td>
+                <a href="#" data-bind="text: name, click: $root.open"></a>
+            </td>
             <td data-bind="text: dateModifiedString"></td>
             <td data-bind="text: sizeString"></td>
         </tr>
@@ -15,5 +17,11 @@
 </table>
 
 <div id="logFileWindow" style="display:none">
-    <iframe></iframe>
+    <span class="name"></span>
+    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLogClose">
+        <span class="icon-remove icon-large" data-lang="Close"></span>
+    </button>
+    <pre>
+
+    </pre>
 </div>

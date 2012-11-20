@@ -171,3 +171,9 @@ If you did not make this request, delete this email.
 If you did make this request and would like to continue, copy the following link into your web browser and follow the instructions.
 
 http://localhost/ResetPassword?code=4OUcVg6v0AaA_wTeapNfZ1W1Am3BtuNTRVw5ypbol2QuXx8T12vYtN6VJk-dGpriGuiz6UH93Mk2MaSOxITknbso5xX3DWJX5HlgkHimCD_RMg==
+2012-11-20 20:24:58.210 [9]: Application started.
+2012-11-20 20:25:23.011 [27]: Application stopped.
+2012-11-20 20:25:25.519 [23]: Application started.
+2012-11-20 20:30:29.109 [6]: Application stopped.
+2012-11-20 20:30:32.243 [16]: Application started.
+2012-11-20 20:30:32.246 [16]: Deleting old log files
