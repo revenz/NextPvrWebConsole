@@ -7,8 +7,8 @@
 function Log(data) {
     var self = this;
     self.name = ko.observable(data.Name);
-    self.fullName = ko.observable(data.FullName);
     self.size = ko.observable(data.Size);
+    self.oid = ko.observable(data.Oid);
     self.dateModified = ko.observable(data.DateModified);
     self.dateModifiedString = ko.computed(function () {
         return gui.formatDateLong(self.dateModified());

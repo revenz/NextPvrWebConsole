@@ -42,5 +42,20 @@ namespace NextPvrWebConsole.Controllers
 
             return Json(new { success = true });
         }
+
+        public ActionResult Log(string Oid)
+        {
+            // security, make sure the filename is in the list of log files
+            var log = new Api.LogsController().Get().Where(x => x.Oid == Oid).FirstOrDefault();
+            if (log == null)
+                return new HttpNotFoundResult();
+            ViewBag.LogName = log.Name;
+            using(var stream = new System.IO.FileStream(log.FullName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
+            {
+                using(System.IO.StreamReader reader = new System.IO.StreamReader(stream))
+                        ViewBag.Content = reader.ReadToEnd();
+            }
+            return View();
+        }
     }
 }

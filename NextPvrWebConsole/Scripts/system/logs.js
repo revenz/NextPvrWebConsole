@@ -13,7 +13,21 @@ $(function () {
         self.logs = ko.observableArray([]);
 
         self.open = function (item) {
-            window.open('/api/logs/getcontent?filename=' + encodeURIComponent(item.fullName()));
+            var dialog = $('#logFileWindow');
+            dialog.find('iframe').attr('src', '/system/log?oid=' + encodeURIComponent(item.oid()));
+
+            var width = $('.body-wrapper').width() - 200;
+            var height = $('.body-wrapper').height() - 200;
+            var dialog_buttons = {};
+            dialog_buttons[$.i18n._("Close")] = function () { dialog.dialog('close'); }
+
+            dialog.dialog({
+                modal: true,
+                title: item.name(),
+                width: width,
+                height: height,
+                buttons: dialog_buttons
+            });
         };
 
         // Load initial state from server

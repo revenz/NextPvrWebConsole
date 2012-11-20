@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.IO;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
@@ -14,18 +15,6 @@ namespace NextPvrWebConsole.Controllers.Api
         public IEnumerable<Models.Log> Get()
         {
             return Models.Log.LoadAll();
-        }
-
-        public string GetContent(string Filename)
-        {
-            // security, make sure the filename is in the list of log files
-            if (Get().Where(x => x.FullName.ToLower() == Filename.ToLower()).Count() < 1)
-                return "Not found.";
-
-            var file = new System.IO.FileInfo(Filename);
-            if(!file.Exists)
-                return "Not found.";
-            return System.IO.File.ReadAllText(Filename);
         }
     }
 }
