@@ -8,7 +8,7 @@ using NextPvrWebConsole.Models;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
-    [Authorize]
+    [Authorize(Roles="Guide")]
     public class GuideController : NextPvrWebConsoleApiController
     {
         // GET api/guide

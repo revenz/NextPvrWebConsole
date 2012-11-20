@@ -17,7 +17,9 @@ namespace NextPvrWebConsole.Models
         Dashboard = 1,
         Guide = 2,
         Recordings = 4,
-        Configuration = 8
+        UserSettings = 8,
+        Configuration = 16,
+        System = 32
     }
 
 

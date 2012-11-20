@@ -8,7 +8,7 @@ using NextPvrWebConsole;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
-    [Authorize]
+    [Authorize(Roles = "Recordings")]
     public class RecordingsController : NextPvrWebConsoleApiController
     {
         // GET api/recordings

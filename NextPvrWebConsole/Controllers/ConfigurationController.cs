@@ -8,12 +8,11 @@ using System.Web.Mvc;
 
 namespace NextPvrWebConsole.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="Configuration")]
     public class ConfigurationController : Controller
     {
         //
-        // GET: /Configuration/
-
+        // GET: /Configuration/        
         public ActionResult Index()
         {
             var config = new Models.Configuration();

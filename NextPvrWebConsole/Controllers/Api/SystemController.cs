@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
-    [Authorize]
+    [Authorize(Roles="System")]
     public class SystemController : NextPvrWebConsoleApiController
     {
         public dynamic GetDriveStatistics()

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace NextPvrWebConsole.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="Configuration")]
     public class FileController : Controller
     {
         public ActionResult CreateDirectory(string Path, string Name)

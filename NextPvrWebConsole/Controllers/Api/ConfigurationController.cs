@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
-    [Authorize]
+    [Authorize(Roles="Configuration")]
     public class ConfigurationController : NextPvrWebConsoleApiController
     {
         // GET api/configuration

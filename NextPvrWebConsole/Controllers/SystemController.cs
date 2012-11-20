@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace NextPvrWebConsole.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="System")]
     public class SystemController : Controller
     {
         private const string DummyPassword = "********";

@@ -7,7 +7,7 @@ using WebMatrix.WebData;
 
 namespace NextPvrWebConsole
 {
-    public class MyMembershipProvider:ExtendedMembershipProvider
+    public class MyMembershipProvider:MembershipProvider
     {
 
         public override string ApplicationName
@@ -43,12 +43,6 @@ namespace NextPvrWebConsole
             if (result != null)
                 status = MembershipCreateStatus.Success;
             return result;
-        }
-
-        public override string CreateUserAndAccount(string UserName, string password, bool requireConfirmation, IDictionary<string, object> values)
-        {
-            var user = MyMembershipUser.CreateUser(UserName, password);
-            return user != null ? user.UserName : null;
         }
 
         #region not implemented yet
@@ -164,71 +158,6 @@ namespace NextPvrWebConsole
         }
 
         #endregion
-
-        public override bool ConfirmAccount(string accountConfirmationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool ConfirmAccount(string userName, string accountConfirmationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string CreateAccount(string userName, string password, bool requireConfirmationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool DeleteAccount(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string GeneratePasswordResetToken(string userName, int tokenExpirationInMinutesFromNow)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ICollection<OAuthAccountData> GetAccountsForUser(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override DateTime GetCreateDate(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override DateTime GetLastPasswordFailureDate(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override DateTime GetPasswordChangedDate(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int GetPasswordFailuresSinceLastSuccess(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int GetUserIdFromPasswordResetToken(string token)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsConfirmed(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool ResetPasswordWithToken(string token, string newPassword)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class MyMembershipUser : MembershipUser
@@ -262,4 +191,66 @@ namespace NextPvrWebConsole
             throw new NotImplementedException(); // cant implement because we require a email address, could make username email and substring user part of that to get username....
         }
     }
+
+    public class MyRoleProvider : RoleProvider
+    {
+        public override void AddUsersToRoles(string[] usernames, string[] roleNames)
+        {
+        }
+
+        public override string ApplicationName
+        {
+            get { return "NextPvrWebConsole"; }
+            set{ }
+        }
+
+        public override void CreateRole(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string[] FindUsersInRole(string roleName, string usernameToMatch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string[] GetAllRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string[] GetRolesForUser(string username)
+        {
+            var user = Models.User.GetByUsername(username);
+            if (user == null)
+                return new string[] { };
+            return user.UserRole.ToString().Split(new[] { ", " }, StringSplitOptions.None);
+        }
+
+        public override string[] GetUsersInRole(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsUserInRole(string username, string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool RoleExists(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }

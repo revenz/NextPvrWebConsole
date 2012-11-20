@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
-    [Authorize]
+    [Authorize(Roles="Guide")]
     public class ChannelsController : NextPvrWebConsoleApiController
     {
         // GET api/channels

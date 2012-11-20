@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace NextPvrWebConsole.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="Recordings")]
     public class RecordingsController : Controller
     {
         //

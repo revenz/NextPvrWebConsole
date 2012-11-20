@@ -8,7 +8,7 @@ using System.IO;
 
 namespace NextPvrWebConsole.Controllers.Api
 {
-    [Authorize]
+    [Authorize(Roles="System")]
     public class LogsController : ApiController
     {
         // GET api/logs

@@ -343,7 +343,7 @@
     <Content Include="Scripts\configuration\channels.js" />
     <Content Include="Scripts\configuration\devices.js" />
     <Content Include="Scripts\configuration\index.js" />
-    <Content Include="Scripts\configuration\users.js" />
+    <Content Include="Scripts\system\users.js" />
     <Content Include="Scripts\charting\flotr2.js" />
     <Content Include="Scripts\core\jquery.easing.1.3.js" />
     <Content Include="Scripts\core\jquery.i18n.js" />
@@ -461,6 +461,7 @@
     <Content Include="Content\recordings\available.less" />
     <Content Include="Content\scheduleeditor.less" />
     <Content Include="Content\system\index.less" />
+    <Content Include="Content\system\users.less" />
     <None Include="Content\table.less" />
     <None Include="Content\themes\bootstrap\icons.less" />
     <Content Include="Content\themes\bootstrap\inputs.less" />
@@ -512,7 +513,7 @@
     <Content Include="Views\Setup\Index.cshtml" />
     <Content Include="Views\System\_About.cshtml" />
     <Content Include="Views\Configuration\_Channels.cshtml" />
-    <Content Include="Views\Configuration\_Users.cshtml" />
+    <Content Include="Views\System\_Users.cshtml" />
     <Content Include="Views\Configuration\_ChannelGroups.cshtml" />
     <Content Include="Views\Configuration\_Recording.cshtml" />
     <Content Include="Views\Configuration\_Devices.cshtml" />
