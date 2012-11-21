@@ -1,0 +1,7 @@
+﻿@using (Html.BeginForm("Index", "Search", FormMethod.Post, new { id = "formSearch" }))
+{
+<input id="searchText" name="searchText" type="text" placeholder="Search..." onblur="$('#search').removeClass('focus')" onfocus="$('#search').addClass('focus')" onkeydown="if(e.which == 13) { $('#formSearch').submit(); }" />
+<button type="submit">
+    <i class="icon-search"></i>
+</button>
+}

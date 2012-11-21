@@ -3,7 +3,7 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th class="recording-channel"></th>
+                    <th class="channel"></th>
                     <th class="recording-name" data-lang="Name"></th>                    
                     <th class="recording-directory" data-lang="Directory"></th>
                     <th class="recording-time" data-lang="Time"></th>
@@ -13,7 +13,7 @@
             </thead>
             <tbody data-bind="foreach: recordings">
                 <tr>
-                    <td class="recording-channel">
+                    <td class="channel">
                         <img data-bind="visible: channelHasIcon, attr: { src: channelIconSrc }" />
                         <span data-bind="visible: !channelHasIcon(), text: channelName"></span>
                     </td>

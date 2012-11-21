@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace NextPvrWebConsole.Models
 {
@@ -53,6 +55,41 @@ namespace NextPvrWebConsole.Models
             this.StartTime = EpgEvent.StartTime;
             this.Subtitle = EpgEvent.Subtitle;
             this.Title = EpgEvent.Title;
+        }
+
+        internal static List<SearchResult> Search(int UserOid, string SearchText)
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            try
+            {
+                List<SearchResult> results = new List<SearchResult>();
+                DateTime start = DateTime.Now;
+                start = new DateTime(start.Year, start.Month, start.Day, 0, 0, 0).ToUniversalTime();
+                DateTime end = start.AddDays(30);
+                // get channels available for user
+                var channels = Channel.LoadAll(UserOid).ToDictionary(x => x.Oid);
+                // get listings, filtered out by the channels they have access to.
+                var listings = NUtility.EPGEvent.GetListingsForTimePeriod(start, end).Where(x => channels.ContainsKey(x.Key.OID));
+
+                Regex searchPattern = new Regex(Regex.Replace(Regex.Replace(SearchText, @"[^\w\d *]", ""), @"[\s]+", @"[\s]+").Replace("*", "(.*?)"), RegexOptions.IgnoreCase);
+                foreach (var listing in listings.SelectMany(x => x.Value))
+                {
+                    if (searchPattern.IsMatch(Regex.Replace(listing.Title, @"[^\w\d\s*]", "")))
+                        results.Add(new SearchResult(channels[listing.ChannelOID], new EpgListing(listing), 1));
+                    else if (searchPattern.IsMatch(Regex.Replace(listing.Subtitle, @"[^\w\d\s*]", "")))
+                        results.Add(new SearchResult(channels[listing.ChannelOID], new EpgListing(listing), 2));
+                    else if (searchPattern.IsMatch(Regex.Replace(listing.Description, @"[^\w\d\s*]", "")))
+                        results.Add(new SearchResult(channels[listing.ChannelOID], new EpgListing(listing), 3));
+                }
+                return results.OrderBy(x => x.Weighting).ThenBy(x => x.Listing.StartTime).ToList();
+            }
+            finally
+            {
+                timer.Stop();
+                // dont log the search text, keep that private, but do log how long it took
+                Logger.Log("Search took {0}", timer.Elapsed);
+            }
         }
     }
 }

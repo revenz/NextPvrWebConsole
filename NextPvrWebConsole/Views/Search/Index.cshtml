@@ -1,0 +1,46 @@
+﻿@model List<NextPvrWebConsole.Models.SearchResult>
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th class="channel></th>
+            <th data-lang="Title"></th>
+            <th data-lang="Time"></th>
+            <td class="controls"></td>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var listing in Model)
+    {
+        <tr>
+            <td class="channel">
+                @if (listing.Channel.HasIcon)
+                {
+                    <img src="@Url.Action("channelicon", "index", new { oid = listing.Channel.Oid})" />
+                }
+                else
+                {
+                    <span>@listing.Channel.Name</span>
+                }
+            @listing.Listing.Title
+            </td>
+            <td>@listing.Listing.Title</td>
+            <td>@listing.Listing.StartTime.ToLocalTime().ToString("d MM yy H:mm tt") to @listing.Listing.EndTime.ToLocalTime().ToString("h:mm tt")</td>
+            <td class="controls">
+
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+
+@section scripts
+{
+
+}
