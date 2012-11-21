@@ -7,10 +7,10 @@
 <table class="data-table">
     <thead>
         <tr>
-            <th class="channel></th>
+            <th class="channel"></th>
             <th data-lang="Title"></th>
             <th data-lang="Time"></th>
-            <td class="controls"></td>
+            <th class="controls"></th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +31,14 @@
             <td>@listing.Listing.Title</td>
             <td>@listing.Listing.StartTime.ToLocalTime().ToString("d MM yy H:mm tt") to @listing.Listing.EndTime.ToLocalTime().ToString("h:mm tt")</td>
             <td class="controls">
-
+                @if (listing.Listing.IsRecording)
+                {
+                    <text>cancel recording</text>
+                }
+                else
+                {
+                    <text>record it?</text>
+                }
             </td>
         </tr>
     }

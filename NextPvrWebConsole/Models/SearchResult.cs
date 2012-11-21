@@ -9,13 +9,11 @@ namespace NextPvrWebConsole.Models
     {
         public Channel Channel { get; set; }
         public EpgListing Listing { get; set; }
-        public int Weighting { get; set; }
 
-        public SearchResult(Channel Channel, EpgListing Listing, int Weighting)
+        public SearchResult(Channel Channel, EpgListing Listing)
         {
             this.Channel = Channel;
             this.Listing = Listing;
-            this.Weighting = Weighting;
         }
     }
 }
