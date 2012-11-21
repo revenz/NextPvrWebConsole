@@ -115,8 +115,8 @@ $(function () {
                     gui.promptMessage({
                         title: $.i18n._('Create Folder'),
                         message: $.i18n._('Type in the name of the folder to create.'),
-                        validationMessage: dirErrorMessage,
-                        validationExpression: dirRegularExpression,
+                        validationMessage: DIRECTORY_ERROR_MESSAGE,
+                        validationExpression: DIRECTORY_REGULAR_EXPRSESION,
                         success: function (name) {
                             ajax.postJSON('File/CreateDirectory', { path: path, name: name }, function (result) {
                                 if (result.success) {

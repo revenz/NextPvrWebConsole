@@ -13,8 +13,13 @@ function Listing(channel, epgListing) {
     self.title = ko.observable(epgListing.Title);
     self.subtitle = ko.observable(epgListing.Subtitle);
     self.description = ko.observable(epgListing.Description);
-    self.channelName = ko.observable(channel.Name);
-    self.channelNumber = ko.observable(channel.Number);
+    if (channel) {
+        self.channelName = ko.observable(channel.Name);
+        self.channelNumber = ko.observable(channel.Number);
+    } else {
+        self.channelName = ko.observable(epgListing.ChannelName);
+        self.channelNumber = ko.observable(epgListing.ChannelNumber);
+    }
     self.startTime = ko.observable(epgListing.StartTime);
     self.endTime = ko.observable(epgListing.EndTime);
     self.startDateTimeShort = ko.computed(function () { return gui.formatDateTimeShort(Date.parse(epgListing.StartTime)); });
@@ -31,9 +36,9 @@ function Listing(channel, epgListing) {
             }).ToString(', ');
         return '';
     });
-    self.channelLogoVisible = ko.computed(function () { return channel.Icon && channel.Icon.length > 0; });
+    self.channelLogoVisible = ko.computed(function () { return channel != null && channel.Icon && channel.Icon.length > 0; });
     self.channelLogoData = ko.computed(function () {
-        if (channel.Icon && channel.Icon.length > 0)
+        if (channel != null && channel.Icon && channel.Icon.length > 0)
             return 'data:image/png;base64,' + channel.Icon;
         return '';
     });

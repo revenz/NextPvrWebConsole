@@ -3,41 +3,50 @@
     ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
+    @Styles.Render("~/Content/search/css")
+}
 
-<table class="data-table">
+<input type="hidden" id="PrePadding" value="@ViewBag.PrePadding" />
+<input type="hidden" id="PostPadding" value="@ViewBag.PostPadding" />
+
+<table id="search-results" class="data-table">
     <thead>
         <tr>
             <th class="channel"></th>
-            <th data-lang="Title"></th>
-            <th data-lang="Time"></th>
+            <th class="title" data-lang="Title"></th>
+            <th class="time" data-lang="Time"></th>
             <th class="controls"></th>
         </tr>
     </thead>
     <tbody>
     @foreach (var listing in Model)
     {
-        <tr>
+        <tr data-oid="@listing.Listing.Oid" data-recordingoid="@listing.Listing.RecordingOid">
             <td class="channel">
                 @if (listing.Channel.HasIcon)
                 {
-                    <img src="@Url.Action("channelicon", "index", new { oid = listing.Channel.Oid})" />
+                    <img src="@Url.Action("index", "channelicon", new { oid = listing.Channel.Oid})" />
                 }
                 else
                 {
                     <span>@listing.Channel.Name</span>
                 }
-            @listing.Listing.Title
             </td>
-            <td>@listing.Listing.Title</td>
-            <td>@listing.Listing.StartTime.ToLocalTime().ToString("d MM yy H:mm tt") to @listing.Listing.EndTime.ToLocalTime().ToString("h:mm tt")</td>
+            <td class="title">@listing.Listing.Title</td>
+            <td class="time">@listing.Listing.StartTime.ToLocalTime().ToString("d MMMM yyyy H:mm tt").Replace("a.m.", "AM").Replace("p.m.", "PM") to @listing.Listing.EndTime.ToLocalTime().ToString("h:mm tt").Replace("a.m.", "AM").Replace("p.m.", "PM")</td>
             <td class="controls">
                 @if (listing.Listing.IsRecording)
                 {
-                    <text>cancel recording</text>
+                    <button class="btnCancelRecording ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="return false">
+                        <span class="icon-remove icon-large" data-lang="Cancel Recording"></span>
+                    </button>     
                 }
                 else
                 {
-                    <text>record it?</text>
+                    <button class="btnRecord ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="return false">
+                        <span class="icon-adjust icon-large" data-lang="Record"></span>
+                    </button>            
                 }
             </td>
         </tr>
@@ -45,9 +54,12 @@
     </tbody>
 </table>
 
+<div id="Search-ScheduleEditor" style="display:none" data-bind="with: selectedListing">
+    @Html.Partial("_ScheduleEditor")
+</div>
 
 
 @section scripts
 {
-
+    @Scripts.Render("~/Scripts/search/js")
 }

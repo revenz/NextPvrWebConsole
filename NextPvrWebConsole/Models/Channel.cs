@@ -102,7 +102,6 @@ namespace NextPvrWebConsole.Models
                     Number = key.Number,
                     Oid = key.OID,
                     HasIcon = key.Icon != null,
-
                     Listings = EpgListing.LoadEpgListings(UserOid, channelOids, data[key].Where(x => x.EndTime > Start))
                 });
             }
@@ -127,33 +126,42 @@ inner join channel c on uc.channeloid = c.oid and c.enabled = 1 and uc.useroid =
 order by uc.number", UserOid);
             }
             if (IncludeDisabled)
-                return results.ToArray();
-            return results.Where(x => x.Enabled).ToArray();
+                return LoadHasIcon(results.ToArray());
+            return LoadHasIcon(results.Where(x => x.Enabled).ToArray());
         }
 
         internal static Channel[] LoadChannelsForGroup(int UserOid, string GroupName)
         {
             var db = DbHelper.GetDatabase();
-            return db.Fetch<Channel>(@"
+            return LoadHasIcon(db.Fetch<Channel>(@"
 select c.oid, c.name, uc.*
 from channelgroup cg
 inner join channelgroupchannel cgc on cg.oid = cgc.channelgroupoid
 inner join channel c on cgc.channeloid = c.oid
 inner join userchannel uc on c.oid = uc.channeloid
-where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray();
+where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", UserOid, GroupName).ToArray());
         }
 
         internal static Channel Load(int ChannelOid, int UserOid)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<Channel>("select c.oid, c.name, uc.* from channel c inner join userchannel uc on c.oid = uc.channeloid where c.oid = @0 and uc.useroid = @1 and c.enabled = 1", ChannelOid, UserOid);
+            var channel = db.FirstOrDefault<Channel>("select c.oid, c.name, uc.* from channel c inner join userchannel uc on c.oid = uc.channeloid where c.oid = @0 and uc.useroid = @1 and c.enabled = 1", ChannelOid, UserOid);
+            return channel == null ? null : LoadHasIcon(new Channel[] { channel })[0];
         }
 
         internal static Channel Load(int ChannelOid)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<Channel>("select * from channel c where oid = @0", ChannelOid);
+            var channel = db.FirstOrDefault<Channel>("select * from channel c where oid = @0", ChannelOid);
+            return channel == null ? null : LoadHasIcon(new Channel[] { channel })[0];
+        }
 
+        private static Channel[] LoadHasIcon(Channel[] Channels)
+        {
+            var temp = NUtility.Channel.LoadAll().ToDictionary(x => x.OID);
+            foreach (var channel in Channels)
+                channel.HasIcon = temp.ContainsKey(channel.Oid) && temp[channel.Oid].Icon != null;
+            return Channels;
         }
 
         internal static void Update(int UserOid, Channel[] Channels)

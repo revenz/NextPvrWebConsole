@@ -13,6 +13,8 @@ namespace NextPvrWebConsole.Models
         public string Aspect { get; set; }
         public string Audio { get; set; }
         public int ChannelOid { get; set; }
+        public string ChannelName { get; set; }
+        public int ChannelNumber { get; set; }
         public string Description { get; set; }
         public DateTime EndTime { get; set; }
         public int Episode { get; set; }
@@ -35,7 +37,6 @@ namespace NextPvrWebConsole.Models
         public string RecordingDirectoryId { get; set; }
         public RecordingType RecordingType { get; set; }
         public int RecordingOid { get; set; }
-
 
         public EpgListing(NUtility.EPGEvent EpgEvent)
         {

@@ -37,6 +37,14 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             return Models.Recording.Record(this.GetUser().Oid, RecordingSchedule);
         }
+
+        [HttpGet]
+        public Models.EpgListing EpgListing(int Oid)
+        {
+            var epgEvent = NUtility.EPGEvent.LoadByOID(Oid);
+            var channel = Models.Channel.Load(epgEvent.ChannelOID, this.GetUser().Oid);
+            return new Models.EpgListing(epgEvent) { ChannelName = channel.Name, ChannelNumber = channel.Number };
+        }
     }
 }
 

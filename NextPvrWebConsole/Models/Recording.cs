@@ -93,7 +93,11 @@ namespace NextPvrWebConsole.Models
             NUtility.EPGEvent epgevent = NUtility.EPGEvent.LoadByOID(BaseRecording.OID);
 
             var channel = NUtility.Channel.LoadByOID(BaseRecording.ChannelOID);
-            this.ChannelHasIcon = channel != null && channel.Icon != null;
+            if (channel != null)
+            {
+                this.ChannelHasIcon = channel.Icon != null;
+                this.ChannelNumber = channel.Number;
+            }
 
             if (epgevent != null)
             {

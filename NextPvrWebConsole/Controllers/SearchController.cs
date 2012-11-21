@@ -11,7 +11,12 @@ namespace NextPvrWebConsole.Controllers
     {
         public ActionResult Index(string SearchText)
         {
-            List<Models.SearchResult> results = Models.EpgListing.Search(this.GetUser().Oid, SearchText);
+            var config = new Models.Configuration();
+            var user = this.GetUser();
+            ViewBag.UserOid = user.Oid;
+            ViewBag.PrePadding = config.PrePadding;
+            ViewBag.PostPadding = config.PostPadding;
+            List<Models.SearchResult> results = Models.EpgListing.Search(user.Oid, SearchText);
             return View(results);
         }
     }
