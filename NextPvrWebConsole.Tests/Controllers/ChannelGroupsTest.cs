@@ -12,96 +12,79 @@ namespace NextPvrWebConsole.Tests.Controllers
         [TestMethod]
         public void ChannelGroupsTest_CreateChannelGroup()
         {
-            var user = Helpers.UserHelper.CreateTestUser();
-            try
-            {
-                var controller = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(user);
+            var controller = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(User);
 
-                var groups = controller.Get().ToList();
-                int originalCount = groups.Count;
-                string name = "a new one" + Helpers.WordGenerator.GetSequence(5, 12);
-                groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
+            var groups = controller.Get().ToList();
+            int originalCount = groups.Count;
+            string name = "a new one" + Helpers.WordGenerator.GetSequence(5, 12);
+            groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
 
-                Assert.IsTrue(controller.Update(groups));
+            Assert.IsTrue(controller.Update(groups));
 
-                var groups2 = controller.Get().ToList();
+            var groups2 = controller.Get().ToList();
 
-                Assert.IsTrue(groups2.Count == originalCount + 1);
+            Assert.IsTrue(groups2.Count == originalCount + 1);
 
-                Assert.IsTrue(groups2.Last().Name == name);
-            }
-            finally
-            {
-                Helpers.UserHelper.DeleteUser(user);
-            };            
+            Assert.IsTrue(groups2.Last().Name == name);
         }
 
         [TestMethod]
         public void ChannelGroupsTest_CreateDuplicateChannelGroup()
         {
-            var user = Helpers.UserHelper.CreateTestUser();
+            var controller = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(User);
+
+            // test we cant create 2 items with the same name
+            var groups = controller.Get().ToList();
+            string name = "a new one" + Helpers.WordGenerator.GetSequence(5, 12);
+            groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
+            groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
+
+            bool failed = false;
             try
             {
-                var controller = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(user);
-
-                // test we cant create 2 items with the same name
-                var groups = controller.Get().ToList();
-                string name = "a new one" + Helpers.WordGenerator.GetSequence(5, 12);
-                groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
-                groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
-
-                bool failed = false;
-                try
-                {
-                    Assert.IsFalse(controller.Update(groups));
-                }
-                catch (Exception ex)
-                {
-                    failed = true;
-                    Assert.IsTrue(ex.Message == "Channel Group names must be unique.");
-                }
-                Assert.IsTrue(failed);
-
-                // test we can't create a duplicate of an existing group
-                groups = controller.Get().ToList();
-                groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
-                controller.Update(groups);
-
-                groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
-                failed = false;
-                try
-                {
-                    Assert.IsFalse(controller.Update(groups));
-                }
-                catch (Exception ex)
-                {
-                    failed = true;
-                    Assert.IsTrue(ex.Message == "Channel Group names must be unique.");
-                }
-                Assert.IsTrue(failed);
-
-                // test if we can create a duplicate once we renamed the original with same name
-                groups = controller.Get().ToList();
-                groups.Last().Name = "updated_" + groups.Last().Name;
-                groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
-                controller.Update(groups);
+                Assert.IsFalse(controller.Update(groups));
             }
-            finally
+            catch (Exception ex)
             {
-                Helpers.UserHelper.DeleteUser(user);
-            };
+                failed = true;
+                Assert.IsTrue(ex.Message == "Channel Group names must be unique.");
+            }
+            Assert.IsTrue(failed);
+
+            // test we can't create a duplicate of an existing group
+            groups = controller.Get().ToList();
+            groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
+            controller.Update(groups);
+
+            groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
+            failed = false;
+            try
+            {
+                Assert.IsFalse(controller.Update(groups));
+            }
+            catch (Exception ex)
+            {
+                failed = true;
+                Assert.IsTrue(ex.Message == "Channel Group names must be unique.");
+            }
+            Assert.IsTrue(failed);
+
+            // test if we can create a duplicate once we renamed the original with same name
+            groups = controller.Get().ToList();
+            groups.Last().Name = "updated_" + groups.Last().Name;
+            groups.Add(new Models.ChannelGroup() { Name = name, Enabled = true });
+            controller.Update(groups);
         }
 
         [TestMethod]
         public void ChannelGroupsTest_GetAnotherUsersChannelGroups()
         {
-            var userA = Helpers.UserHelper.CreateTestUser();
             var userB = Helpers.UserHelper.CreateTestUser();
             try
             {
                 string suffix = Helpers.WordGenerator.GetSequence(5, 12);
-                var controllerA = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(userA);
-                var channelsController = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelsController>(userA);
+                var controllerA = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(User);
+                var channelsController = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelsController>(User);
                 int[] channelOids = channelsController.Get().Take(5).Select(x => x.Oid).ToArray();
                 Assert.IsTrue(channelOids.Length > 0); // this must be true, otherwise the test wont work
                 
@@ -121,7 +104,6 @@ namespace NextPvrWebConsole.Tests.Controllers
             }
             finally
             {
-                Helpers.UserHelper.DeleteUser(userA);
                 Helpers.UserHelper.DeleteUser(userB);
             };
         }

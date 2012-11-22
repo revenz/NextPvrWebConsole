@@ -37,6 +37,8 @@ namespace NextPvrWebConsole.Models
         public DateTime StartTime { get; set; }
         [DataMember]
         public RecordingStatus Status { get; set; }
+        [DataMember]
+        public int RecurrenceOid { get; set; }
         #endregion
 
         #region from EPGEvent
@@ -64,6 +66,8 @@ namespace NextPvrWebConsole.Models
         public string Audio { get; set; }
         [DataMember]
         public string StarRating { get; set; }
+        [DataMember]
+        public int EventOid { get; set; }
         #endregion
 
         [DataMember]
@@ -89,6 +93,8 @@ namespace NextPvrWebConsole.Models
             this.PrePadding = BaseRecording.PrePadding;
             this.StartTime = BaseRecording.StartTime;
             this.Status = BaseRecording.Status;
+            this.EventOid = BaseRecording.EventOID;
+            this.RecurrenceOid = BaseRecording.RecurrenceOID;
 
             NUtility.EPGEvent epgevent = NUtility.EPGEvent.LoadByOID(BaseRecording.OID);
 
@@ -202,7 +208,7 @@ namespace NextPvrWebConsole.Models
                     dayMask = DayMask.SATURDAY | DayMask.SUNDAY;
                     timeslot = true;
                     break;
-                case RecordingType.Record_Season_All_Season_All_Channels: // another special case
+                case RecordingType.Record_Season_All_Episodes_All_Channels: // another special case
                     {
                         string advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "%'";
                         if (config.RecurringMatch == RecurringMatchType.Exact)
@@ -235,7 +241,7 @@ namespace NextPvrWebConsole.Models
                 {
                     // check for a recurring instance
                     if (recording.RecurrenceOID == 0)
-                        canDelete = false; // should this even happen???
+                        canDelete = true; // this means a future recording that will be in the default directory (i.e. the master shared directory everyone can access)
                     else
                     {
                         var recurrenceDirs = Models.RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);

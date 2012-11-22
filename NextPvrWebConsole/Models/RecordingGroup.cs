@@ -48,7 +48,6 @@ namespace NextPvrWebConsole.Models
                     if (sr.Status == RecordingStatus.STATUS_DELETED)
                         continue; // no point showing deleted...
 
-
                     RecordingDirectory rd = null;
                     if (!String.IsNullOrEmpty(sr.Filename))
                     {
@@ -72,6 +71,15 @@ namespace NextPvrWebConsole.Models
                             rd = systemDefault;
                             if (rd == null || rd.Path == null || !rds.ContainsKey(rd.Path.EndsWith(@"\") ? rd.Path.Substring(0, rd.Path.Length - 1).ToLower() : rd.Path.ToLower()))
                                 continue;
+                        }
+                    }
+                    else if (sr.RecurrenceOID == 0) // one off recording in the future
+                    {
+                        if (!String.IsNullOrEmpty(sr.Filename)) // if this isnt set it will be saved in the default path
+                        {
+                            // is set for a recording path, so check the security
+                            if (rds.Values.Where(x => x.RecordingDirectoryId == sr.Filename).Count() == 0)
+                                continue; // a once off recording they dont have access to.
                         }
                     }
                     else

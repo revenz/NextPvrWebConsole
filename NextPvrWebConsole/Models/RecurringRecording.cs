@@ -15,7 +15,7 @@ namespace NextPvrWebConsole.Models
         Record_Season_Weekly_This_Timeslot = 5,
         Record_Season_Weekdays_This_Timeslot = 6,
         Record_Season_Weekends_This_Timeslot = 7,
-        Record_Season_All_Season_All_Channels = 8
+        Record_Season_All_Episodes_All_Channels = 8
     }
 
     public class RecurringRecording
@@ -83,7 +83,7 @@ namespace NextPvrWebConsole.Models
             else if (this.Timeslot && ChannelOid > 0 && this.DayMask == (NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY))
                 this.Type = RecordingType.Record_Season_Weekends_This_Timeslot;
             else if (!this.Timeslot && this.ChannelOid == 0 && this.DayMask == NUtility.DayMask.ANY && !this.OnlyNewEpisodes)
-                this.Type = RecordingType.Record_Season_All_Season_All_Channels;
+                this.Type = RecordingType.Record_Season_All_Episodes_All_Channels;
 
         }
 
@@ -184,7 +184,7 @@ namespace NextPvrWebConsole.Models
                         original.DayMask = NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY;
                     }
                     break;
-                case RecordingType.Record_Season_All_Season_All_Channels:
+                case RecordingType.Record_Season_All_Episodes_All_Channels:
                     {
                         original.OnlyNewEpisodes = false;
                         original.Timeslot = false;
@@ -228,7 +228,7 @@ namespace NextPvrWebConsole.Models
                 return RecordingType.Record_Season_Weekly_This_Timeslot;
 
             if (RecurringRecording.OnlyNewEpisodes && RecurringRecording.Timeslot == false && RecurringRecording.DayMask == DayMask.ANY && RecurringRecording.ChannelOID == 0)
-                return RecordingType.Record_Season_All_Season_All_Channels;
+                return RecordingType.Record_Season_All_Episodes_All_Channels;
 
             if (RecurringRecording.OnlyNewEpisodes && RecurringRecording.Timeslot == false && RecurringRecording.DayMask == NUtility.DayMask.ANY)
                 return RecordingType.Record_Season_New_This_Channel;

@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using NextPvrWebConsole.Models;
 using System.Web;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NextPvrWebConsole.Tests
 {
+    [TestClass]
     public class NextPvrWebConsoleTest
     {
         public NextPvrWebConsoleTest()
         {
-#if(DEBUG)
+#if(!DEBUG)
+            throw new Exception("Must be run in debug mode!");
+#endif
             DbHelper.DbFile = System.IO.Path.GetTempFileName();
 
             new NextPvrWebConsole.Controllers.SetupController().Index(new SetupModel()
@@ -21,8 +25,52 @@ namespace NextPvrWebConsole.Tests
                 Password = "setupuser",
                 ConfirmPassword = "setupuser"
             });
-#endif
         }
+
+        protected Models.User User;
+
+        [TestInitialize()]
+        public void BaseStartup()
+        {
+            // setup, delete all scheduled recordings, please backup your database before running unit tests!
+            var settingsHelper = NUtility.SettingsHelper.GetInstance();
+            string npvrDir = settingsHelper.GetDataDirectory();
+            string backupDb = System.IO.Path.Combine(npvrDir, "npvr.unittest_backup.db3");
+            // backup the db file
+            System.IO.File.Copy(System.IO.Path.Combine(npvrDir, settingsHelper.GetDatabaseFilename()), backupDb, true);
+
+            var db = NUtility.DatabaseHelper.GetInstance();
+            var conn = db.GetConnection();
+            db.CreateCommand(conn, "DELETE FROM RECENTLY_DELETED").ExecuteNonQuery();
+            db.CreateCommand(conn, "DELETE FROM SCHEDULED_RECORDING").ExecuteNonQuery();
+            db.CreateCommand(conn, "DELETE FROM RECURRING_RECORDING").ExecuteNonQuery();
+
+            db.FreeConnection(conn);
+
+
+            User = Helpers.UserHelper.CreateTestUser();
+
+            Startup();
+        }
+        [TestCleanup()]
+        public void BaseCleanup()
+        {
+            Cleanup();
+
+            if(User != null)
+                Helpers.UserHelper.DeleteUser(User);
+
+            var settingsHelper = NUtility.SettingsHelper.GetInstance();
+            string npvrDir = settingsHelper.GetDataDirectory();
+            string backupDb = System.IO.Path.Combine(npvrDir, "npvr.unittest_backup.db3");
+            string nextPvrDbFile = System.IO.Path.Combine(npvrDir, settingsHelper.GetDatabaseFilename());
+            // restore the db file
+            System.IO.File.Copy(backupDb, nextPvrDbFile, true);
+            System.IO.File.Delete(backupDb);
+        }
+
+        public virtual void Startup() { }
+        public virtual void Cleanup() { }
 
         protected T LoadController<T>(User User)
         {
