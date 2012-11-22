@@ -64,7 +64,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Once }));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Once }));
                 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
@@ -82,7 +82,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_New_This_Channel }));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_New_This_Channel }));
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
@@ -100,7 +100,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_All_This_Channel }));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_All_This_Channel }));
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
@@ -118,7 +118,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Daily_This_Timeslot}));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Daily_This_Timeslot }));
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
@@ -136,7 +136,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord(NUtility.DayMask.MONDAY | NUtility.DayMask.TUESDAY | NUtility.DayMask.WEDNESDAY | NUtility.DayMask.THURSDAY | NUtility.DayMask.FRIDAY);
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekdays_This_Timeslot}));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekdays_This_Timeslot }));
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
@@ -154,7 +154,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord(NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY);
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekends_This_Timeslot }));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekends_This_Timeslot }));
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
@@ -172,7 +172,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekly_This_Timeslot}));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekly_This_Timeslot }));
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
@@ -190,7 +190,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_All_Episodes_All_Channels }));
+            Assert.IsNotNull(guide.Record(new Models.RecordingSchedule() { Oid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_All_Episodes_All_Channels }));
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);

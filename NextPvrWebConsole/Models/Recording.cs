@@ -150,7 +150,7 @@ namespace NextPvrWebConsole.Models
             return recording != null;
         }
 
-        public static bool Record(int UserOid, Models.RecordingSchedule Schedule)
+        public static ScheduledRecording Record(int UserOid, Models.RecordingSchedule Schedule)
         {
             var config = new Configuration();
             string recordingDirectoryId = Schedule.RecordingDirectoryId ?? ""; // default
@@ -177,7 +177,7 @@ namespace NextPvrWebConsole.Models
             switch (Schedule.Type)
             {
                 case RecordingType.Record_Once: // special cast, effectively a "Quick Record" but with a couple more options
-                    return instance.ScheduleRecording(epgevent, prePadding, postPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId) != null;
+                    return instance.ScheduleRecording(epgevent, prePadding, postPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId);
                 case RecordingType.Record_Season_New_This_Channel:
                     onlyNew = true;
                     dayMask = DayMask.ANY;
@@ -213,10 +213,10 @@ namespace NextPvrWebConsole.Models
                         string advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "%'";
                         if (config.RecurringMatch == RecurringMatchType.Exact)
                             advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "'";
-                        return instance.ScheduleRecording(epgevent.Title, 0 /* all channels */, epgevent.StartTime, epgevent.EndTime, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, advancedRules, recordingDirectoryId) != null;
+                        return instance.ScheduleRecording(epgevent.Title, 0 /* all channels */, epgevent.StartTime, epgevent.EndTime, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, advancedRules, recordingDirectoryId);
                     }     
             }
-            return instance.ScheduleRecording(epgevent, onlyNew, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, timeslot, recordingDirectoryId) != null;
+            return instance.ScheduleRecording(epgevent, onlyNew, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, timeslot, recordingDirectoryId);
         }
 
         public static bool DeleteByOid(int UserOid, int Oid)

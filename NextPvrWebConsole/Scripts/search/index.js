@@ -22,7 +22,12 @@ $(function () {
             gui.confirmMessage({
                 message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [title]),
                 yes: function () {
-                    console.log('deleting...');
+                    api.deleteJSON('recording/' + recordingOid, null, function (result) {
+                        if (result) {
+                            tr.find('.btnRecord').removeAttr('style');
+                            tr.find('.btnCancelRecording').attr('style', 'display:none');
+                        }
+                    });
                 }
             });
         });
@@ -30,16 +35,33 @@ $(function () {
             var tr = $(this).closest('tr');
             var oid = parseInt(tr.attr('data-oid'), 10);
             api.getJSON('guide/epglisting/' + oid, null, function (result) {
-                result.PrePadding = prePadding;
-                result.PostPadding = postPadding;
-                result.Type = 1;
-                var recording = new RecurringRecording(result);
-                self.selectedListing(recording);
+                console.log(result);
+                var listing = new Listing(null, result);
+                listing.prePadding(prePadding);
+                listing.postPadding(postPadding);
+                listing.type = ko.computed({
+                    read: function () { return listing.recordingType(); },
+                    write: function (value) { listing.recordingType(value); }
+                });
+                self.selectedListing(listing);
                 var dialog = $('#Search-ScheduleEditor');
                 var dialog_buttons = {};
                 dialog_buttons[$.i18n._("Record")] = function () {
-                    api.postJSON('recordings/updaterecurring', self.selectedListing().toApiObject(), function () {
-                        dialog.dialog('close');
+                    dialog.dialog('close');
+                    api.postJSON('guide/record',
+                    {
+                        oid: listing.oid(),
+                        prePadding: listing.prePadding(),
+                        postPadding: listing.postPadding(),
+                        recordingdirectoryid: listing.recordingDirectoryId(),
+                        numbertokeep: listing.keep(),
+                        type: listing.type()
+                    }, function (result) {
+                        console.log(result);
+                        if (result) {
+                            tr.find('.btnCancelRecording').removeAttr('style');
+                            tr.find('.btnRecord').attr('style', 'display:none');
+                        }
                     });
                 };
                 dialog_buttons[$.i18n._("Close")] = function () { dialog.dialog('close'); };

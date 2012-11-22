@@ -33,7 +33,7 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         [HttpPost]
-        public bool Record(RecordingSchedule RecordingSchedule)        
+        public NUtility.ScheduledRecording Record(RecordingSchedule RecordingSchedule)        
         {
             return Models.Recording.Record(this.GetUser().Oid, RecordingSchedule);
         }

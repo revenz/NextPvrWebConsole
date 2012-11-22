@@ -18,6 +18,8 @@ namespace NextPvrWebConsole
             routes.MapRoute("Login", "Login", new { action = "Login", controller = "Account" });
             routes.MapRoute("ResetPassword", "ResetPassword", new { action = "ResetPassword", controller = "Account" });
 
+            routes.MapRoute("SearchRoute", "search/{searchText}", new { action = "Index", controller = "Search" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
