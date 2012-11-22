@@ -12,7 +12,7 @@ namespace NextPvrWebConsole.Controllers.Api
     public class GuideController : NextPvrWebConsoleApiController
     {
         // GET api/guide
-        public IEnumerable<Models.Channel> Get(DateTime Date, string Group)
+        public IEnumerable<dynamic> Get(DateTime Date, string Group)
         {
             var userOid = this.GetUser().Oid;
             var config = new Configuration();
@@ -22,7 +22,24 @@ namespace NextPvrWebConsole.Controllers.Api
             // round start to midnight today.
             DateTime start = new DateTime(Date.Year, Date.Month, Date.Day, 0, 0, 0);
             start = TimeZone.CurrentTimeZone.ToUniversalTime(start); // convert to utc            
-            return Models.Channel.LoadForTimePeriod(userOid, Group, start, start.AddDays(1));
+            var data = Models.Channel.LoadForTimePeriod(userOid, Group, start, start.AddDays(1));
+            return data.Select(x => new
+            {
+                Oid = x.Oid,
+                Name = x.Name,
+                Number = x.Number,
+                Enabled = x.Enabled,
+                HasIcon = x.HasIcon,
+                Listings = x.Listings.Select(y => new {
+                    EndTime = y.EndTime,
+                    IsRecording = y.IsRecording,
+                    IsRecurring = y.IsRecurring,
+                    Oid = y.Oid,
+                    RecordingOid = y.RecordingOid,
+                    StartTime = y.StartTime,
+                    Title = y.Title
+                })
+            });
         }
 
         // POST api/quickrecord

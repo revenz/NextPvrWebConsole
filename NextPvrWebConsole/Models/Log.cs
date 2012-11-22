@@ -34,7 +34,7 @@ namespace NextPvrWebConsole.Models
                 var dirInfo = new DirectoryInfo(dir);
                 if (!dirInfo.Exists)
                     continue;
-                foreach (FileInfo file in dirInfo.GetFiles("*.log"))
+                foreach (FileInfo file in dirInfo.GetFiles("*.log*"))
                 {
                     results.Add(new Log()
                     {

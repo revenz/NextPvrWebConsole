@@ -16,7 +16,7 @@
             </ul>
         </div>
     
-        <div id="epg-groups">
+        <div id="epg-groups" style="display:none">
             <ul>
             @{
                 bool first = true;
@@ -75,7 +75,7 @@
             </div>
             
             <div id="show-info" style="display:none" data-bind="with: selectedshow">    
-                <img class="channellogo" data-bind="visible: channelLogoVisible, attr: { src: channelLogoData } " />
+                <img class="channellogo" data-bind="visible: channelHasIcon, attr: { src: channelIconSrc } " />
                 <span class="channelnumber" data-bind="text:channelNumber"></span>
                 <span class="channelname" data-bind="text:channelName"></span>
                 <span class="time">

@@ -78,49 +78,60 @@ $(function () {
         self.selectedshow = ko.observable();
 
         self.openListing = function (listing) {
-            self.selectedshow(listing);
-            var dialog_buttons = {};
+            // load the entire listing from the api.
+            api.getJSON('guide/epglisting/' + listing.oid(), null, function (result) {
+                listing.description(result.Description);
+                listing.recordingDirectoryId(result.RecordingDirectoryId);
+                listing.subtitle(result.Subtitle);
+                listing.prePadding(result.prePadding);
+                listing.postPadding(result.postPadding);
+                listing.recordingType(result.RecordingType);
+                listing.rating(result.Rating);
+                listing.genres(result.Genres);
+                self.selectedshow(listing);
+                var dialog_buttons = {};
 
-            if (listing.isRecording()) {
-                dialog_buttons[$.i18n._("Cancel")] = function () {
-                    gui.confirmMessage({
-                        message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [listing.title()]),
-                        yes: function () {
-                            api.deleteJSON('recordings/' + listing.recordingOid(), null, function (data) {
-                                if (data)
-                                    listing.isRecording(false);
-                                $('#show-info').dialog('close');
-                            });
-                        }
-                    });
-                };
-            } else {
-                dialog_buttons[$.i18n._("Quick Record")] = function () {
-                    api.postJSON('guide/quickrecord?oid=' + listing.oid(), null, function (data) {
-                        if (data)
-                            listing.isRecording(true);
-                    });
+                if (listing.isRecording()) {
+                    dialog_buttons[$.i18n._("Cancel")] = function () {
+                        gui.confirmMessage({
+                            message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [listing.title()]),
+                            yes: function () {
+                                api.deleteJSON('recordings/' + listing.recordingOid(), null, function (data) {
+                                    if (data)
+                                        listing.isRecording(false);
+                                    $('#show-info').dialog('close');
+                                });
+                            }
+                        });
+                    };
+                } else {
+                    dialog_buttons[$.i18n._("Quick Record")] = function () {
+                        api.postJSON('guide/quickrecord?oid=' + listing.oid(), null, function (data) {
+                            if (data)
+                                listing.isRecording(true);
+                        });
+                        $('#show-info').dialog('close');
+                    };
+                    dialog_buttons[$.i18n._('Record')] = function () {
+                        showRecordingOptions(listing);
+                        $('#show-info').dialog('close');
+                    };
+                }
+                dialog_buttons[$.i18n._('Find All')] = function () {
                     $('#show-info').dialog('close');
                 };
-                dialog_buttons[$.i18n._('Record')] = function () {
-                    showRecordingOptions(listing);
+                dialog_buttons[$.i18n._('Close')] = function () {
                     $('#show-info').dialog('close');
                 };
-            }
-            dialog_buttons[$.i18n._('Find All')] = function () {
-                $('#show-info').dialog('close');
-            };
-            dialog_buttons[$.i18n._('Close')] = function () {
-                $('#show-info').dialog('close');
-            };
-            $('#show-info').dialog({
-                modal: true,
-                title: listing.title(),
-                minWidth: 600,
-                beforeClose: function (event, ui) {
-                    self.selectedshow(null);
-                },
-                buttons: dialog_buttons
+                $('#show-info').dialog({
+                    modal: true,
+                    title: listing.title(),
+                    minWidth: 600,
+                    beforeClose: function (event, ui) {
+                        self.selectedshow(null);
+                    },
+                    buttons: dialog_buttons
+                });
             });
         };
     }

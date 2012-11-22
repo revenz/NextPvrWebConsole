@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace NextPvrWebConsole.Models
 {
@@ -35,64 +36,39 @@ namespace NextPvrWebConsole.Models
 
         public static List<Channel> LoadForTimePeriod(int UserOid, string GroupName, DateTime Start, DateTime End)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            Logger.Log("Channel load for time period.");
             int[] channelOids = ChannelGroup.LoadChannelOids(UserOid, GroupName);
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
             var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End);
+            var listingData = data.Where(x => channelOids.Contains(x.Key.OID)).SelectMany(x => x.Value);
+            Logger.Log("Time[0]: " + timer.Elapsed.ToString());
+            
 
-            //var config = new Configuration();
-            //var userRdDefault = RecordingDirectory.LoadUserDefault(UserOid);
-            //var allowedDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
-            //var allowedDirectoriesPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
-            //var recordings = NUtility.ScheduledRecording.LoadAll().Where(x => x.EndTime >= Start && x.StartTime <= End && x.EventOID > 0);
-            //Dictionary<int, dynamic> allowedRecordings = new Dictionary<int, dynamic>();
-            //foreach (var r in recordings)
-            //{
-            //    dynamic d = null;
-            //    if (r.RecurrenceOID > 0)
-            //    {
-            //        var recurrence = NUtility.RecurringRecording.LoadByOID(r.RecurrenceOID);
-            //        d = new
-            //        {
-            //            Keep = recurrence.Keep,
-            //            PrePadding = recurrence.PrePadding,
-            //            PostPadding = recurrence.PostPadding,
-            //            RecordingDirectoryId = recurrence.RecordingDirectoryID,
-            //            IsRecurring = true,
-            //            RecordingType = RecurringRecording.GetRecordingType(recurrence),
-            //            RecordingOid = r.OID
-            //        };
-            //    }
-            //    else
-            //    {
-            //        d = new
-            //        {
-            //            Keep = 0, // once off recording,
-            //            PrePadding = r.PrePadding,
-            //            PostPadding = r.PostPadding,
-            //            IsRecurring = false,
-            //            RecordingDirectoryId = r.Filename,
-            //            RecordingType = RecordingType.Record_Once,
-            //            RecordingOid = r.OID
-            //        };
-            //    }
-            //    if (d == null || (!String.IsNullOrWhiteSpace(d.RecordingDirectoryId) && !allowedDirectories.ContainsKey(d.RecordingDirectoryId)))
-            //    {
-            //        // check to see if recording and has fullname in directoryid
-            //        try
-            //        {
-            //            System.IO.FileInfo fi = new FileInfo(r.Filename);
-            //            if (!allowedDirectoriesPath.ContainsKey(fi.Directory.Parent.FullName.ToLower()))
-            //                continue; // not allowed for the current user
-            //        }
-            //        catch (Exception)
-            //        {
-            //            continue;
-            //        }
-            //    }
-            //    if(!allowedRecordings.ContainsKey(r.EventOID))
-            //        allowedRecordings.Add(r.EventOID, d);
-            //}
+            // load here to pass into loadepglisting            
 
+            var userRdDefault = RecordingDirectory.LoadUserDefault(UserOid);
+            Logger.Log("Time[1]: " + timer.Elapsed.ToString());
+            var RecurringRecordings = NUtility.RecurringRecording.LoadAll();
+            Logger.Log("Time[2]: " + timer.Elapsed.ToString());
+            var allowedDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+            Logger.Log("Time[3]: " + timer.Elapsed.ToString());
+            var allowedDirectoriesPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
+            Logger.Log("Time[4]: " + timer.Elapsed.ToString());
+            var recordings = NUtility.ScheduledRecording.LoadAll();
+            Logger.Log("Time[5]: " + timer.Elapsed.ToString());
+            var listings = EpgListing.LoadEpgListings(UserOid, channelOids, listingData, userRdDefault, allowedDirectories, allowedDirectoriesPath, recordings, RecurringRecordings);
+            Logger.Log("Time[6]: " + timer.Elapsed.ToString());
+            Dictionary<int, List<EpgListing>> listingResults = new Dictionary<int, List<EpgListing>>();
+            foreach (var listing in listings)
+            {
+                if (!listingResults.ContainsKey(listing.ChannelOid))
+                    listingResults[listing.ChannelOid] = new List<EpgListing>();
+                listingResults[listing.ChannelOid].Add(listing);
+            }
+            Logger.Log("Time[7]: " + timer.Elapsed.ToString());
+            
             List<Channel> results = new List<Channel>();
             foreach (var key in data.Keys.Where(x => channelOids.Contains(x.OID)))
             {
@@ -102,9 +78,11 @@ namespace NextPvrWebConsole.Models
                     Number = key.Number,
                     Oid = key.OID,
                     HasIcon = key.Icon != null,
-                    Listings = EpgListing.LoadEpgListings(UserOid, channelOids, data[key].Where(x => x.EndTime > Start))
+                    Listings = listingResults.ContainsKey(key.OID) ? listingResults[key.OID] : null
                 });
             }
+            Logger.Log("Time[8]: " + timer.Elapsed.ToString());
+            timer.Stop();
             return results;
         }
 

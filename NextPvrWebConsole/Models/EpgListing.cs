@@ -5,38 +5,41 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace NextPvrWebConsole.Models
 {
     public class EpgListing
     {
+        public int Oid { get; set; }
+        public string Title { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int ChannelOid { get; set; }
+        public int RecordingOid { get; set; }
+        public bool IsRecording { get; set; }
+        public bool IsRecurring { get; set; }
+
+        public int ChannelNumber { get; set; }
+        public string ChannelName { get; set; }
+
         public string Aspect { get; set; }
         public string Audio { get; set; }
-        public int ChannelOid { get; set; }
-        public string ChannelName { get; set; }
-        public int ChannelNumber { get; set; }
         public string Description { get; set; }
-        public DateTime EndTime { get; set; }
         public int Episode { get; set; }
         public bool FirstRun { get; set; }
         public List<string> Genres { get; set; }
-        public int Oid { get; set; }
         public DateTime OriginalAirDate { get; set; }
         public string Rating { get; set; }
         public int Season { get; set; }
         public string StarRating { get; set; }
-        public DateTime StartTime { get; set; }
         public string Subtitle { get; set; }
-        public string Title { get; set; }
 
-        public bool IsRecording { get; set; }
-        public bool IsRecurring { get; set; }
         public int PrePadding { get; set; }
         public int PostPadding { get; set; }
         public int Keep { get; set; }
         public string RecordingDirectoryId { get; set; }
         public RecordingType RecordingType { get; set; }
-        public int RecordingOid { get; set; }
 
         public EpgListing(NUtility.EPGEvent EpgEvent)
         {
@@ -58,17 +61,31 @@ namespace NextPvrWebConsole.Models
             this.Title = EpgEvent.Title;
         }
 
-        public static List<EpgListing> LoadEpgListings(int UserOid, int[] ChannelOids, IEnumerable<NUtility.EPGEvent> Data)
+        public static List<EpgListing> LoadEpgListings(int UserOid, int[] ChannelOids, IEnumerable<NUtility.EPGEvent> Data, RecordingDirectory UserDefault = null,
+            Dictionary<string, RecordingDirectory> AllowedRecordingDirectoriesIndexedByDirectoryId = null,
+            Dictionary<string, RecordingDirectory> AllowedRecordingDirectoriesIndexedByPath = null,
+            List<NUtility.ScheduledRecording> Recordings = null,
+            List<NUtility.RecurringRecording> RecurringRecordings = null)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            Logger.Log("Loading EPG Listings [0]: " + timer.Elapsed);
             var config = new Configuration();
-            var userRdDefault = RecordingDirectory.LoadUserDefault(UserOid);
+            if(UserDefault == null)
+                UserDefault = RecordingDirectory.LoadUserDefault(UserOid);
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start            
-            var allowedDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
-            var allowedDirectoriesPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
-            var recordings = NUtility.ScheduledRecording.LoadAll();
+            if(AllowedRecordingDirectoriesIndexedByDirectoryId == null)
+               AllowedRecordingDirectoriesIndexedByDirectoryId = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
+            if(AllowedRecordingDirectoriesIndexedByPath == null)
+                AllowedRecordingDirectoriesIndexedByPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
+            if(Recordings == null)
+                Recordings = NUtility.ScheduledRecording.LoadAll();
+            if(RecurringRecordings == null)
+                RecurringRecordings = NUtility.RecurringRecording.LoadAll();
             Dictionary<int, dynamic> allowedRecordings = new Dictionary<int, dynamic>();
+            Logger.Log("Loading EPG Listings [1]: " + timer.Elapsed);
             #region get a list of allowed recordings for this user
-            foreach (var r in recordings)
+            foreach (var r in Recordings)
             {
                 dynamic d = null;
                 if (r.RecurrenceOID > 0)
@@ -98,13 +115,13 @@ namespace NextPvrWebConsole.Models
                         RecordingOid = r.OID
                     };
                 }
-                if (d == null || (!String.IsNullOrWhiteSpace(d.RecordingDirectoryId) && !allowedDirectories.ContainsKey(d.RecordingDirectoryId)))
+                if (d == null || (!String.IsNullOrWhiteSpace(d.RecordingDirectoryId) && !AllowedRecordingDirectoriesIndexedByDirectoryId.ContainsKey(d.RecordingDirectoryId)))
                 {
                     // check to see if recording and has fullname in directoryid
                     try
                     {
                         System.IO.FileInfo fi = new System.IO.FileInfo(r.Filename);
-                        if (!allowedDirectoriesPath.ContainsKey(fi.Directory.Parent.FullName.ToLower()))
+                        if (!AllowedRecordingDirectoriesIndexedByPath.ContainsKey(fi.Directory.Parent.FullName.ToLower()))
                             continue; // not allowed for the current user
                     }
                     catch (Exception)
@@ -116,7 +133,9 @@ namespace NextPvrWebConsole.Models
                     allowedRecordings.Add(r.EventOID, d);
             }
             #endregion
+            Logger.Log("Loading EPG Listings [2]: " + timer.Elapsed);
 
+            timer.Stop();
             return Data.Select(x =>
             {
                 var listing = new EpgListing(x);
@@ -135,7 +154,7 @@ namespace NextPvrWebConsole.Models
                 {
                     listing.PrePadding = config.PrePadding;
                     listing.PostPadding = config.PostPadding;
-                    listing.RecordingDirectoryId = userRdDefault == null ? null : userRdDefault.RecordingDirectoryId;
+                    listing.RecordingDirectoryId = UserDefault == null ? null : UserDefault.RecordingDirectoryId;
                 }
                 return listing;
             }).ToList();

@@ -20,6 +20,7 @@ function Listing(channel, epgListing) {
         self.channelName = ko.observable(epgListing.ChannelName);
         self.channelNumber = ko.observable(epgListing.ChannelNumber);
     }
+    self.channelOid = ko.observable(channel ? channel.Oid : '');
     self.startTime = ko.observable(epgListing.StartTime);
     self.endTime = ko.observable(epgListing.EndTime);
     self.startDateTimeShort = ko.computed(function () { return gui.formatDateTimeShort(Date.parse(epgListing.StartTime)); });
@@ -27,21 +28,24 @@ function Listing(channel, epgListing) {
     self.startTimeLong = ko.computed(function () { return gui.formatDateLong(Date.parse(epgListing.StartTime)); });
     self.endTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(epgListing.EndTime)); });
     self.duration = ko.computed(function () { return Math.floor((Math.abs(Date.parse(epgListing.EndTime) - Date.parse(epgListing.StartTime)) / 1000) / 60) + ' ' + $.i18n._('Minutes') });
+    self.genres = ko.observableArray(epgListing.Genres ? epgListing.Genres : []);
     self.genresString = ko.computed(function () {
-        if (epgListing.Genres)
-            return $.Enumerable.From(epgListing.Genres).Select(function (x) {
+        if (self.genres())
+            return $.Enumerable.From(self.genres()).Select(function (x) {
                 x = x.replace('/', ', ');
                 x = x.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1); });
                 return x.replace(' , ', ', ');
             }).ToString(', ');
         return '';
     });
-    self.channelLogoVisible = ko.computed(function () { return channel != null && channel.Icon && channel.Icon.length > 0; });
-    self.channelLogoData = ko.computed(function () {
-        if (channel != null && channel.Icon && channel.Icon.length > 0)
-            return 'data:image/png;base64,' + channel.Icon;
-        return '';
+    self.channelHasIcon = ko.observable(channel.HasIcon ? channel.HasIcon : false);
+    self.channelIconSrc = ko.computed(function () {
+        if (!self.channelHasIcon())
+            return '';
+        return '/channelicon/' + self.channelOid();
     });
+
+    self.rating = ko.observable(epgListing.rating ? epgListing.rating : '');
 
     self.isRecording = ko.observable(epgListing.IsRecording);
     self.isRecurring = ko.observable(epgListing.IsRecurring);

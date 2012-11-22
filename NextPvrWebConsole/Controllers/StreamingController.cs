@@ -16,7 +16,17 @@ namespace NextPvrWebConsole.Controllers
                 return new HttpNotFoundResult();
             ViewBag.ChannelName = channel.Name;
             ViewBag.ChannelOid = channel.Oid;
+            ViewBag.IsRecording = false;
             return View();
+        }
+
+        public ActionResult Recording(int Oid)
+        {
+            var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
+            ViewBag.Title = recording.Name;
+            ViewBag.Oid = recording.OID;
+            ViewBag.IsRecording = true;
+            return View("Index");
         }
     }
 }

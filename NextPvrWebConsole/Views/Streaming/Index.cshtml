@@ -2,6 +2,16 @@
     Layout = null;
 
     string hostname = Environment.MachineName; // TODO get this from a setting
+    
+    string url = "http://" + hostname + ":8866/";
+    if(ViewBag.IsRecording)
+    {
+        url += "live?recording=" + ViewBag.Oid;
+    }
+    else
+    {
+        url += "live?channeloid=" + ViewBag.ChannelOid;
+    }
 }
 
 <!DOCTYPE html>
@@ -15,6 +25,6 @@
     <embed type="application/x-vlc-plugin"
          name="video1"
          autoplay="yes" loop="yes" width="800" height="450"
-         target="http://@hostname:8866/live?channeloid=@ViewBag.ChannelOid" />
+         target="@url" />
 </body>
 </html>

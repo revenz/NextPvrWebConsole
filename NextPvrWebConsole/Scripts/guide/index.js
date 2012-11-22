@@ -24,9 +24,9 @@ function getMinutesFromStartOfGuide(time) {
 
 function initEpgGrid() {
     // called once page is loaded
-    epgScroller = $(".epg-container").niceScroll();
+    //epgScroller = $(".epg-container").niceScroll();
 
-    $('#epg-groups').addClass('epg-groups');
+    $('#epg-groups').addClass('epg-groups').removeAttr('style');
     
     var pageResize = function () {
         var epgGroupsHeight = $('#epg-groups').height();
@@ -62,18 +62,18 @@ function showRecordingOptions(listing) {
     var dialog = $('#recording-options');
     var dialog_buttons = {};
     dialog_buttons[$.i18n._("OK")] = function () {
-        api.postJSON('guide/record', 
-            { 
-                oid: listing.oid(), 
-                prePadding: listing.prePadding(), 
+        api.postJSON('guide/record',
+            {
+                oid: listing.oid(),
+                prePadding: listing.prePadding(),
                 postPadding: listing.postPadding(),
                 recordingdirectoryid: listing.recordingDirectoryId(),
                 numbertokeep: listing.keep(),
                 type: listing.type()
             }, function (result) {
-            if (result)
-                listing.isRecording(true);
-        });
+                if (result)
+                    listing.isRecording(true);
+            });
 
         dialog.dialog('close');
     };
