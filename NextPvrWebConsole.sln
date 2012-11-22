@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextPvrWebConsole", "NextPv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextPvrWebConsole.Tests", "NextPvrWebConsole.Tests\NextPvrWebConsole.Tests.csproj", "{31D047C9-2FA6-4B16-B7AC-36D8ECD483EE}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NextPvrWebConsole.Setup", "NextPvrWebConsole.Setup\NextPvrWebConsole.Setup.vdproj", "{AD04CED8-1C03-4C52-AF9D-DF261E2084D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,9 @@ Global
 		{31D047C9-2FA6-4B16-B7AC-36D8ECD483EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D047C9-2FA6-4B16-B7AC-36D8ECD483EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D047C9-2FA6-4B16-B7AC-36D8ECD483EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD04CED8-1C03-4C52-AF9D-DF261E2084D9}.Debug|Any CPU.ActiveCfg = Debug
+		{AD04CED8-1C03-4C52-AF9D-DF261E2084D9}.Release|Any CPU.ActiveCfg = Release
+		{AD04CED8-1C03-4C52-AF9D-DF261E2084D9}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
