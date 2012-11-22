@@ -878,6 +878,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -2346,7 +2354,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NextPVR Web Console"
         "ProductCode" = "8:{F346D666-1073-4293-B61D-3EF2B63B60D8}"
-        "PackageCode" = "8:{4B521977-36DF-4774-9E90-804A4B9FBA65}"
+        "PackageCode" = "8:{6EA40535-B37A-4FB1-8BD8-D2E7163612A7}"
         "UpgradeCode" = "8:{F4788E93-330A-4A64-9E11-D0A61EF84401}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2867,7 +2875,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_895D7961DF604791BB7E9B72371FFD45"
             {
-            "SourcePath" = "8:..\\NextPvrWebConsole\\obj\\Release\\NextPvrWebConsole.dll"
+            "SourcePath" = "8:..\\NextPvrWebConsole\\obj\\Debug\\NextPvrWebConsole.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5331DF9CBAD6465E93326EA6C50C9B76"

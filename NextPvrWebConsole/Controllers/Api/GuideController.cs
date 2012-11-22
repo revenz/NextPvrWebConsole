@@ -30,7 +30,7 @@ namespace NextPvrWebConsole.Controllers.Api
                 Number = x.Number,
                 Enabled = x.Enabled,
                 HasIcon = x.HasIcon,
-                Listings = x.Listings.Select(y => new {
+                Listings = x.Listings == null ? null : x.Listings.Select(y => new {
                     EndTime = y.EndTime,
                     IsRecording = y.IsRecording,
                     IsRecurring = y.IsRecurring,

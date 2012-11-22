@@ -346,6 +346,7 @@
     <Content Include="Scripts\configuration\channels.js" />
     <Content Include="Scripts\configuration\devices.js" />
     <Content Include="Scripts\configuration\index.js" />
+    <Content Include="Scripts\core\jquery.address.js" />
     <Content Include="Scripts\search\index.js" />
     <Content Include="Scripts\system\users.js" />
     <Content Include="Scripts\charting\flotr2.js" />

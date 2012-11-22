@@ -33,6 +33,7 @@ namespace NextPvrWebConsole
                         "~/Scripts/core/jquery.metadata.js",
                         "~/Scripts/core/jquery.ibutton.js",
                         "~/Scripts/core/jquery.timespinner.js",
+                        "~/Scripts/core/jquery.address.js",
                         "~/Scripts/addons/toastr.js",
                         "~/Scripts/vtabs.js",
                         "~/Scripts/functions.js",

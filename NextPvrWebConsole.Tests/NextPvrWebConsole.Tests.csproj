@@ -106,8 +106,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ChannelGroupsTest.cs" />
+    <Compile Include="Controllers\GuideTest.cs" />
     <Compile Include="Controllers\RecordingDirectoriesTest.cs" />
-    <Compile Include="Controllers\ScheduleTests.cs" />
+    <Compile Include="Controllers\ScheduleTest.cs" />
     <Compile Include="Controllers\SecurityTest.cs" />
     <Compile Include="Controllers\UsersTest.cs" />
     <Compile Include="ExtensionMethods.cs" />

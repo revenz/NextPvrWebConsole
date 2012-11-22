@@ -7,9 +7,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace NextPvrWebConsole.Tests.Controllers
 {
     [TestClass]
-    public class ScheduleTests : NextPvrWebConsoleTest
+    public class ScheduleTest : NextPvrWebConsoleTest
     {
-        public ScheduleTests()
+        public ScheduleTest()
         {              
         }
 
@@ -33,15 +33,16 @@ namespace NextPvrWebConsole.Tests.Controllers
             }
 
             var listings = controller.Get(date, groupName);
-            var listing = listings.Where(x => x.Listings.Count > 0).SelectMany(x => x.Listings)
-                                  .Where(x => x.StartTime > DateTime.UtcNow.AddMinutes(15))
-                                  .OrderBy(x => Guid.NewGuid()) // random order
-                                  .FirstOrDefault();
-            return listing;
+            //var listing = listings.Where(x => x.Listings.Count > 0).SelectMany(x => x.Listings)
+            //                      .Where(x => x.StartTime > DateTime.UtcNow.AddMinutes(15))
+            //                      .OrderBy(x => Guid.NewGuid()) // random order
+            //                      .FirstOrDefault();
+            //return listing;
+            throw new Exception("I've broken this temporarily.");
         }
 
         [TestMethod]
-        public void ScheduleTests_QuickRecord()
+        public void ScheduleTest_QuickRecord()
         {
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -59,7 +60,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordOnce()
+        public void ScheduleTest_RecordOnce()
         {
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -77,7 +78,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordSeasonNewThisChannel()
+        public void ScheduleTest_RecordSeasonNewThisChannel()
         {
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -95,7 +96,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordSeasonAllThisChannel()
+        public void ScheduleTest_RecordSeasonAllThisChannel()
         {
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -113,7 +114,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordSeasonDailyThisTimeslot()
+        public void ScheduleTest_RecordSeasonDailyThisTimeslot()
         {
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -131,7 +132,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordSeasonWeekdaysThisTimeslot()
+        public void ScheduleTest_RecordSeasonWeekdaysThisTimeslot()
         {
             var listing = GetListingToRecord(NUtility.DayMask.MONDAY | NUtility.DayMask.TUESDAY | NUtility.DayMask.WEDNESDAY | NUtility.DayMask.THURSDAY | NUtility.DayMask.FRIDAY);
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -149,7 +150,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordSeasonWeekendsThisTimeslot()
+        public void ScheduleTest_RecordSeasonWeekendsThisTimeslot()
         {
             var listing = GetListingToRecord(NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY);
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -167,7 +168,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordSeasonWeeklyThisTimeslot()
+        public void ScheduleTest_RecordSeasonWeeklyThisTimeslot()
         {
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
@@ -185,7 +186,7 @@ namespace NextPvrWebConsole.Tests.Controllers
         }
 
         [TestMethod]
-        public void ScheduleTests_RecordSeasonAllEpisodesAllChannels()
+        public void ScheduleTest_RecordSeasonAllEpisodesAllChannels()
         {
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);

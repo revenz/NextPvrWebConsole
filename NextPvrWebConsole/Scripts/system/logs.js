@@ -13,11 +13,7 @@ $(function () {
         self.logs = ko.observableArray([]);
 
         self.open = function (item) {
-            $('#logFileWindow .name').text(item.name());
-            $('#logFileWindow pre').text($.i18n._('Loading please wait...'));
-            $('#logFileWindow pre').load('/system/log?oid=' + encodeURIComponent(item.oid()));
-            $('#system-tab-logs table').css('display', 'none');
-            $('#logFileWindow').removeAttr('style');
+            $.address.value("log/" + item.name());
         };
 
         // Load initial state from server
@@ -35,5 +31,33 @@ $(function () {
         $('#system-tab-logs table').removeAttr('style');
         $('#logFileWindow').css('display', 'none');
     });
-
 });
+
+$.address.change(function (event) {
+    console.log(event);
+    console.log(event.value.substr(0, 5));
+    if (event.value.substr(0, 5) == '/log/') {
+        var logName = event.value.substr(5);
+        console.log('logname: ' + logName);
+
+        $('.system .vtab-buttons .selected').removeClass('selected');
+        $('.system .vtab-content .selected').removeClass('selected');
+        $('#system-tab-logs').addClass('selected');
+        $('.system .vtab-buttons .logs').addClass('selected');
+
+
+        var tr = $('#system-tab-logs tr[data-name="' + logName + '"]');
+        var oid = tr.attr('data-oid');
+        var name = tr.attr('data-name');
+        $('#logFileWindow .name').text(name);
+        $('#logFileWindow pre').text($.i18n._('Loading please wait...'));
+        $('#logFileWindow pre').load('/system/log?oid=' + encodeURIComponent(oid));
+        $('#system-tab-logs table').css('display', 'none');
+        $('#logFileWindow').removeAttr('style');
+    }
+    else if (event.value == '/') {
+        $('#system-tab-logs table').removeAttr('style');
+        $('#logFileWindow').css('display', 'none');        
+    }
+});
+
