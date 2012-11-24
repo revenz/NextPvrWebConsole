@@ -50,8 +50,8 @@ namespace NextPvrWebConsole
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // check if already signed in
-            if (WebMatrix.WebData.WebSecurity.IsAuthenticated)
-                return base.SendAsync(request, cancellationToken);
+            //if (WebMatrix.WebData.WebSecurity.IsAuthenticated)
+            //    return base.SendAsync(request, cancellationToken);
 
             if (request.Headers.Authorization == null || request.Headers.Authorization.Scheme != "Basic")
             {
