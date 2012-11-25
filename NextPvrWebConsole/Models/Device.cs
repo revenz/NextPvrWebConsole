@@ -36,23 +36,27 @@ namespace NextPvrWebConsole.Models
 
         public static List<Device> LoadAll()
         {
-            List<Device> devices = new List<Device>();
+            return Helpers.Cacher.RetrieveOrStore<List<Device>>("Devices", new TimeSpan(1, 0, 0), new Func<List<Device>>(delegate
+            {
+                List<Device> devices = new List<Device>();
 
-            var captureSources = NShared.Visible.CaptureSource.LoadAll().OrderBy(x => x.Priority);
-            foreach (var cs in captureSources)
-            {                
-                devices.Add(new Device()
-                {
-                    SourceType = cs.SourceType,
-                    Priority = cs.Priority,
-                    Present = cs.Present,
-                    Oid = cs.OID,
-                    Name = cs.Name,
-                    Enabled = cs.Enabled,
-                    NumberOfChannels = NUtility.Channel.LoadForCaptureSource(cs.OID).Count
-                });
-            }
-            return devices;
+                var captureSources = NShared.Visible.CaptureSource.LoadAll().OrderBy(x => x.Priority);
+                foreach (var cs in captureSources)
+                {                
+                    devices.Add(new Device()
+                    {
+                        SourceType = cs.SourceType,
+                        Priority = cs.Priority,
+                        Present = cs.Present,
+                        Oid = cs.OID,
+                        Name = cs.Name,
+                        Enabled = cs.Enabled,
+                        NumberOfChannels = NUtility.Channel.LoadForCaptureSource(cs.OID).Count
+                    });
+                }
+                return devices;
+            }));
+
         }
 
         public static List<Device> GetDevicesBasic()
@@ -61,36 +65,8 @@ namespace NextPvrWebConsole.Models
 
             try
             {
-                string xml = "";
-#if(DEBUG)
-                try
-                {
-#endif
-                    var instance = NShared.RecordingServiceProxy.GetInstance();
-                    xml = instance.GetServerStatus();
-#if(DEBUG)
-                }
-                catch (Exception) { }
-#endif
-#if(DEBUG)
-                if (String.IsNullOrEmpty(xml))
-                {
-                    xml = @"<Status>
-      <Device oid=""20"" identifier=""TBS 6984 Quad DVBS/S2 Tuner A:1"">
-        <Recording handle=""140010"">D:\Videos\NPVR Recordings\TV Shows\Movie Clash Of The Titans\Movie Clash Of The Titans_20121104_20302235.ts</Recording>
-        <Recording handle=""140011"">D:\Videos\NPVR Recordings\TV Shows\MGM Premiere Dune\MGM Premiere Dune_20121104_20302245.ts</Recording>
-      </Device>
-      <Device oid=""29"" identifier=""TBS 6984 Quad DVBS/S2 Tuner B:1"">
-      </Device>
-      <Device oid=""30"" identifier=""TBS 6984 Quad DVBS/S2 Tuner C:1"">
-        <LiveTV handle=""1E0023"">LIVE&amp;R:\LiveTV\live-PRIME-2772-22.ts</LiveTV>
-      </Device>
-      <Device oid=""31"" identifier=""TBS 6984 Quad DVBS/S2 Tuner D:1"">
-        <LiveTV handle=""1F002B"">LIVE&amp;R:\LiveTV\live-TCM-10752.ts</LiveTV>
-      </Device>
-    </Status>";
-                }
-#endif
+                var instance = NShared.RecordingServiceProxy.GetInstance();
+                string xml = instance.GetServerStatus();
                 XDocument doc = XDocument.Parse(xml);
                 foreach (var element in doc.Element("Status").Elements("Device"))
                 {

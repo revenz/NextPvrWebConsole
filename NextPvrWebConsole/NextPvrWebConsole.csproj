@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Handlers\CompressionHandler.cs" />
+    <Compile Include="Helpers\Cacher.cs" />
     <Compile Include="Helpers\Emailer.cs" />
     <Compile Include="Helpers\Encrypter.cs" />
     <Compile Include="Logger.cs" />

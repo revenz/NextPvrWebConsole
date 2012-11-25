@@ -175,7 +175,10 @@ namespace NextPvrWebConsole.Controllers.Api
             var channel = Models.Channel.Load(ChannelOid, UserOid);
             if(channel == null)
                 throw new ChannelNotFoundException();
-            var epgdata = NUtility.EPGEvent.GetListingsForTimePeriod(Start.FromUnixTime(), End.FromUnixTime()).Where(x => x.Key.OID == ChannelOid).Select(x => x.Value).FirstOrDefault().ToList();
+            var epgdata = Helpers.Cacher.RetrieveOrStore<Dictionary<NUtility.Channel, List<NUtility.EPGEvent>>>("NUtility.EPGEvent.GetListingsForTimePeriod(" + Start.ToString() +")", new TimeSpan(1,0,0), 
+                delegate {
+                    return NUtility.EPGEvent.GetListingsForTimePeriod(Start.FromUnixTime(), End.FromUnixTime());
+                }).Where(x => x.Key.OID == ChannelOid).Select(x => x.Value).FirstOrDefault().ToList();
             return new Response()
             {
                 ChannelOid = ChannelOid,

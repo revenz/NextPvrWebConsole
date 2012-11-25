@@ -78,7 +78,7 @@ namespace NextPvrWebConsole
 
         private static void GrantDirectoryAccess(string Path, string User = "NETWORK SERVICE")
         {
-
+            
             DirectorySecurity dirSecurity = Directory.GetAccessControl(Path);
             dirSecurity.AddAccessRule(new FileSystemAccessRule(User,
                                                                 FileSystemRights.FullControl,

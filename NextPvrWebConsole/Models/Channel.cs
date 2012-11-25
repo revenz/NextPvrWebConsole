@@ -41,7 +41,10 @@ namespace NextPvrWebConsole.Models
             Logger.Log("Channel load for time period.");
             int[] channelOids = ChannelGroup.LoadChannelOids(UserOid, GroupName);
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
-            var data = NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End);
+            var data = Helpers.Cacher.RetrieveOrStore<Dictionary<NUtility.Channel, List<NUtility.EPGEvent>>>("NUtility.EPGEvent.GetListingsForTimePeriod_" + Start.ToString(), 
+                                                                                                            new TimeSpan(1, 0, 0), delegate { 
+                                                                                                                return NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End); 
+                                                                                                            });
             var listingData = data.Where(x => channelOids.Contains(x.Key.OID)).SelectMany(x => x.Value);
             Logger.Log("Time[0]: " + timer.Elapsed.ToString());
             
@@ -50,13 +53,13 @@ namespace NextPvrWebConsole.Models
 
             var userRdDefault = RecordingDirectory.LoadUserDefault(UserOid);
             Logger.Log("Time[1]: " + timer.Elapsed.ToString());
-            var RecurringRecordings = NUtility.RecurringRecording.LoadAll();
+            var RecurringRecordings = Helpers.Cacher.RetrieveOrStore<List<NUtility.RecurringRecording>>("NUtility.RecurringRecording.LoadAll", new TimeSpan(0, 0, 30), delegate { return NUtility.RecurringRecording.LoadAll(); });
             Logger.Log("Time[2]: " + timer.Elapsed.ToString());
             var allowedDirectories = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
             Logger.Log("Time[3]: " + timer.Elapsed.ToString());
             var allowedDirectoriesPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
             Logger.Log("Time[4]: " + timer.Elapsed.ToString());
-            var recordings = NUtility.ScheduledRecording.LoadAll();
+            var recordings = Helpers.Cacher.RetrieveOrStore<List<NUtility.ScheduledRecording>>("NUtility.ScheduledRecording.LoadAll", new TimeSpan(0, 0, 30), delegate { return NUtility.ScheduledRecording.LoadAll(); });
             Logger.Log("Time[5]: " + timer.Elapsed.ToString());
             var listings = EpgListing.LoadEpgListings(UserOid, channelOids, listingData, userRdDefault, allowedDirectories, allowedDirectoriesPath, recordings, RecurringRecordings);
             Logger.Log("Time[6]: " + timer.Elapsed.ToString());
@@ -89,23 +92,26 @@ namespace NextPvrWebConsole.Models
 
         public static Channel[] LoadAll(int UserOid, bool IncludeDisabled = false)
         {
-            var db = DbHelper.GetDatabase();
-            List<Channel> results = null;
-            if (UserOid == Globals.SHARED_USER_OID)
+            return Helpers.Cacher.RetrieveOrStore<Channel[]>("Channel.LoadAll(" + UserOid + "," + IncludeDisabled  +")", new TimeSpan(0, 1, 0), delegate
             {
-                results = db.Fetch<Channel>(@"select * from channel order by number");
-            }
-            else
-            {
-                results = db.Fetch<Channel>(@"
+                var db = DbHelper.GetDatabase();
+                List<Channel> results = null;
+                if (UserOid == Globals.SHARED_USER_OID)
+                {
+                    results = db.Fetch<Channel>(@"select * from channel order by number");
+                }
+                else
+                {
+                    results = db.Fetch<Channel>(@"
 select c.oid, c.name, uc.*
 from userchannel uc
 inner join channel c on uc.channeloid = c.oid and c.enabled = 1 and uc.useroid = @0
 order by uc.number", UserOid);
-            }
-            if (IncludeDisabled)
-                return LoadHasIcon(results.ToArray());
-            return LoadHasIcon(results.Where(x => x.Enabled).ToArray());
+                }
+                if (IncludeDisabled)
+                    return LoadHasIcon(results.ToArray());
+                return LoadHasIcon(results.Where(x => x.Enabled).ToArray());
+            });
         }
 
         internal static Channel[] LoadChannelsForGroup(int UserOid, string GroupName)
@@ -136,7 +142,7 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
 
         private static Channel[] LoadHasIcon(Channel[] Channels)
         {
-            var temp = NUtility.Channel.LoadAll().ToDictionary(x => x.OID);
+            var temp = Helpers.Cacher.RetrieveOrStore<Dictionary<int, NUtility.Channel>>("NUtility.Channel.LoadAll.ToDictionary", new TimeSpan(1, 0, 0), delegate { return NUtility.Channel.LoadAll().ToDictionary(x => x.OID); });
             foreach (var channel in Channels)
                 channel.HasIcon = temp.ContainsKey(channel.Oid) && temp[channel.Oid].Icon != null;
             return Channels;
