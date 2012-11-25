@@ -56,7 +56,7 @@ namespace NextPvrWebConsole.Models
             Logger.Log("Time[3]: " + timer.Elapsed.ToString());
             var allowedDirectoriesPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
             Logger.Log("Time[4]: " + timer.Elapsed.ToString());
-            var recordings = Helpers.Cacher.RetrieveOrStore<List<NUtility.ScheduledRecording>>("NUtility.ScheduledRecording.LoadAll", new TimeSpan(0, 0, 30), delegate { return NUtility.ScheduledRecording.LoadAll(); });
+            var recordings = Helpers.NpvrCoreHelper.ScheduledRecordingLoadAll();
             Logger.Log("Time[5]: " + timer.Elapsed.ToString());
             var listings = EpgListing.LoadEpgListings(UserOid, channelOids, listingData, userRdDefault, allowedDirectories, allowedDirectoriesPath, recordings, RecurringRecordings);
             Logger.Log("Time[6]: " + timer.Elapsed.ToString());

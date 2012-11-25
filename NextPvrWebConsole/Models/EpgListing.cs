@@ -78,8 +78,8 @@ namespace NextPvrWebConsole.Models
                AllowedRecordingDirectoriesIndexedByDirectoryId = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
             if(AllowedRecordingDirectoriesIndexedByPath == null)
                 AllowedRecordingDirectoriesIndexedByPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
-            if(Recordings == null)
-                Recordings = NUtility.ScheduledRecording.LoadAll();
+            if (Recordings == null)
+                Recordings = Helpers.NpvrCoreHelper.ScheduledRecordingLoadAll();
             if(RecurringRecordings == null)
                 RecurringRecordings = NUtility.RecurringRecording.LoadAll();
             Dictionary<int, dynamic> allowedRecordings = new Dictionary<int, dynamic>();

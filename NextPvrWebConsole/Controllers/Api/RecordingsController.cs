@@ -43,7 +43,7 @@ namespace NextPvrWebConsole.Controllers.Api
         // GET api/recordings/5
         public NUtility.ScheduledRecording Get(int id)
         {
-            return NUtility.ScheduledRecording.LoadAll().Where(x => x.EventOID == id).FirstOrDefault();
+            return Helpers.NpvrCoreHelper.ScheduledRecordingLoadAll().Where(x => x.EventOID == id).FirstOrDefault();
         }
 
         [HttpPost]

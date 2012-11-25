@@ -65,9 +65,7 @@ namespace NextPvrWebConsole.Models
 
             try
             {
-                var instance = NShared.RecordingServiceProxy.GetInstance();
-                string xml = instance.GetServerStatus();
-                XDocument doc = XDocument.Parse(xml);
+                XDocument doc = Helpers.NpvrCoreHelper.GetServerStatus();
                 foreach (var element in doc.Element("Status").Elements("Device"))
                 {
                     int oid = int.Parse(element.Attribute("oid").Value);
@@ -95,8 +93,6 @@ namespace NextPvrWebConsole.Models
         {
             try
             {
-                var instance = NShared.RecordingServiceProxy.GetInstance();
-
                 var stream = (from s in GetDevices().SelectMany(x => x.Streams)
                               where s.Handle == Handle
                               select s).FirstOrDefault();
@@ -105,7 +101,7 @@ namespace NextPvrWebConsole.Models
 
                 if (stream.Type == Stream.StreamType.LiveTV)
                 {
-                    instance.StopStream(Handle);
+                    Helpers.NpvrCoreHelper.StopStream(Handle);
                     System.Threading.Thread.Sleep(1000);
                     // check if handle exists
                     return !(GetDevices().Where(x => x.Streams.Where(y => y.Handle == Handle).Count() > 0).Count() > 0);
@@ -125,7 +121,7 @@ namespace NextPvrWebConsole.Models
 
         internal bool Save()
         {
-            NShared.Visible.CaptureSource cs = NShared.Visible.CaptureSource.LoadAll().Where(x => x.OID == this.Oid).FirstOrDefault();
+            NShared.Visible.CaptureSource cs = Helpers.NpvrCoreHelper.CaptureSourceLoadAll().Where(x => x.OID == this.Oid).FirstOrDefault();
             if (cs == null)
                 return false;
 
@@ -159,7 +155,7 @@ namespace NextPvrWebConsole.Models
                 if (!String.IsNullOrEmpty(channelName))
                 {
                     string lookupName = GetChannelLookupName(channelName);
-                    var channel = NUtility.Channel.LoadAll().Where(x => GetChannelLookupName(x.Name) == lookupName).FirstOrDefault();
+                    var channel = Helpers.NpvrCoreHelper.ChannelLoadAll().Where(x => GetChannelLookupName(x.Name) == lookupName).FirstOrDefault();
                     if (channel != null)
                     {
                         this.ChannelHasIcon = channel.Icon != null;
@@ -187,13 +183,13 @@ namespace NextPvrWebConsole.Models
                 {
                     this.ChannelName = recording.ChannelName;
                     this.ChannelOid = recording.ChannelOID;
-                    var channel = NUtility.Channel.LoadByOID(recording.ChannelOID);
+                    var channel = Helpers.NpvrCoreHelper.ChannelLoadByOID(recording.ChannelOID);
                     if (channel != null)
                     {
                         this.ChannelNumber = channel.Number;
                         this.ChannelHasIcon = channel.Icon != null;
                     }
-                    NUtility.EPGEvent epg = NUtility.EPGEvent.LoadByOID(recording.EventOID);
+                    NUtility.EPGEvent epg = Helpers.NpvrCoreHelper.EPGEventLoadByOID(recording.EventOID);
                     if (epg != null)
                     {
                         this.Title = epg.Title;
@@ -202,14 +198,13 @@ namespace NextPvrWebConsole.Models
                         this.StartTime = epg.StartTime;
                         this.EndTime = epg.EndTime;
                     }
-                }
-                
+                }                
             }
         }
 
         public NUtility.ScheduledRecording LoadRecordingDetails()
         {
-            return NUtility.ScheduledRecording.LoadAll().Where(x => x.Filename == this.Filename).FirstOrDefault();
+            return Helpers.NpvrCoreHelper.ScheduledRecordingLoadAll().Where(x => x.Filename == this.Filename).FirstOrDefault();
         }
 
         public int CaptureSourceOid { get; set; }
@@ -229,9 +224,7 @@ namespace NextPvrWebConsole.Models
         public string Description { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-
-
-
+        
         public enum StreamType
         {
             LiveTV = 1,

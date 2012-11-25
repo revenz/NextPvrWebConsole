@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Text.RegularExpressions;
 
 namespace NextPvrWebConsole.Helpers
 {
@@ -9,18 +10,27 @@ namespace NextPvrWebConsole.Helpers
     {
         class CachedObject
         {
-            public DateTime CreatedUtc{get;set;}
-            public TimeSpan Expires{get;set;}
-            public object Value{get;set;}
+            public DateTime CreatedUtc { get; set; }
+            public TimeSpan Expires { get; set; }
+            public object Value { get; set; }
 
-            public bool IsExpired{
-                get{
-                    return DateTime.UtcNow >CreatedUtc.Add(Expires);
+            public bool IsExpired
+            {
+                get
+                {
+                    return DateTime.UtcNow > CreatedUtc.Add(Expires);
                 }
             }
         }
 
         private static Dictionary<string, CachedObject> _Cache = new Dictionary<string, CachedObject>();
+
+        public static void FlushCache(Regex KeyMatch)
+        {
+            var keys = _Cache.Where(x => KeyMatch.IsMatch(x.Key)).Select(x => x.Key);
+            foreach (var k in keys)
+                _Cache.Remove(k);
+        }
 
         public static void Store(string Key, object Item, TimeSpan? Expires = null)
         {

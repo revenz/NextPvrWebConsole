@@ -1,0 +1,59 @@
+﻿@model Dictionary<NextPvrWebConsole.Models.Channel, List<NextPvrWebConsole.Models.EpgListing>>
+@{
+    DateTime GuideStart = DateTime.Now;
+    DateTime GuideEnd = GuideStart.AddDays(1);
+    int minuteWidth = 5;
+    var listingCss = new Func<NextPvrWebConsole.Models.EpgListing, string>((NextPvrWebConsole.Models.EpgListing listing) =>
+    {            
+        DateTime dEnd = listing.EndTime;
+        DateTime dStart = listing.StartTime;
+
+        if (listing.EndTime > GuideEnd)
+        {
+            dEnd = GuideEnd; // ends before end of day
+        }
+
+        var start = (int)GuideStart.Subtract(dStart).TotalMinutes;
+        var end = (int)GuideStart.Subtract(dEnd).TotalMinutes;
+
+        if (start < 0)
+        {
+            start = 0; // starts the day before
+        }
+
+        return "left: " + ((minuteWidth * start)) + "px;width:"+ ((minuteWidth * (end - start)) - 1) + "px";
+    });
+    var listingClass = new Func<NextPvrWebConsole.Models.EpgListing, string>((NextPvrWebConsole.Models.EpgListing listing) =>
+    {
+        string _class = "";
+
+        if (listing.StartTime < GuideStart)
+        {
+            _class += "pre-guide-start ";
+        }
+        if (listing.EndTime > GuideEnd)
+        {
+            _class += "post-guide-end ";
+        }
+        if (listing.IsRecording)
+        {
+            _class += "recording ";
+        }
+        return _class;
+    });
+}
+@foreach (var channel in Model.Keys)
+{
+<ul class="listings" data-channeloid="@channel.Oid">
+    @foreach(var listing in channel.Listings) 
+    {
+    <li ondblclick="openListing()" style="@listingCss(listing)" class="@listingClass(listing)">
+        <div>
+            <span class="title">@listing.Title</span>
+            <span class="start">@listing.StartTime.ToString("h:mm tt").Replace("a.m.", "AM").Replace("p.m.", "PM")</span>
+            <span class="subtitle">@listing.Subtitle</span>
+        </div>
+    </li>
+    }
+</ul>
+}

@@ -25,7 +25,7 @@ namespace NextPvrWebConsole.Models
         {
             // get their recording directories
             Dictionary<string, RecordingDirectory> rds = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
-            List<NUtility.ScheduledRecording> scheduledRecordings = NUtility.ScheduledRecording.LoadAll(); // get in memory
+            List<NUtility.ScheduledRecording> scheduledRecordings = Helpers.NpvrCoreHelper.ScheduledRecordingLoadAll(); // get in memory
             Dictionary<int, NUtility.RecurringRecording> recurringRecordings = NUtility.RecurringRecording.LoadAll().ToDictionary(x => x.OID); // need this for future recordings which dont have a filename yet\
 
             RecordingDirectory systemDefault = RecordingDirectory.LoadSystemDefault();

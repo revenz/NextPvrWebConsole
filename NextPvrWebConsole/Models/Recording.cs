@@ -96,9 +96,9 @@ namespace NextPvrWebConsole.Models
             this.EventOid = BaseRecording.EventOID;
             this.RecurrenceOid = BaseRecording.RecurrenceOID;
 
-            NUtility.EPGEvent epgevent = NUtility.EPGEvent.LoadByOID(BaseRecording.OID);
+            NUtility.EPGEvent epgevent = Helpers.NpvrCoreHelper.EPGEventLoadByOID(BaseRecording.OID);
 
-            var channel = NUtility.Channel.LoadByOID(BaseRecording.ChannelOID);
+            var channel = Helpers.NpvrCoreHelper.ChannelLoadByOID(BaseRecording.ChannelOID);
             if (channel != null)
             {
                 this.ChannelHasIcon = channel.Icon != null;
@@ -124,10 +124,10 @@ namespace NextPvrWebConsole.Models
 
         internal static Recording[] GetUpcoming(int UserOid)
         {
-            return NUtility.ScheduledRecording.LoadAll().Where(x => x.Status == RecordingStatus.STATUS_PENDING)
-                                                        .OrderBy(x => x.StartTime)
-                                                        .Take(5)
-                                                        .Select(x => new Recording(x, UserOid)).ToArray();
+            return Helpers.NpvrCoreHelper.ScheduledRecordingLoadAll().Where(x => x.Status == RecordingStatus.STATUS_PENDING)
+                                                                     .OrderBy(x => x.StartTime)
+                                                                     .Take(5)
+                                                                     .Select(x => new Recording(x, UserOid)).ToArray();
         }
 
         public static bool QuickRecord(int UserOid, int Oid)
@@ -141,7 +141,7 @@ namespace NextPvrWebConsole.Models
                     recordingDirectoryId = rd.RecordingDirectoryId;
             }
 
-            var epgevent = NUtility.EPGEvent.LoadByOID(Oid);
+            var epgevent = Helpers.NpvrCoreHelper.EPGEventLoadByOID(Oid);
             if (epgevent == null)
                 throw new Exception("Failed to locate EPG Event to record.");
 
@@ -162,7 +162,7 @@ namespace NextPvrWebConsole.Models
             }
             
 
-            var epgevent = NUtility.EPGEvent.LoadByOID(Schedule.Oid);
+            var epgevent = Helpers.NpvrCoreHelper.EPGEventLoadByOID(Schedule.Oid);
             if (epgevent == null)
                 throw new Exception("Failed to locate EPG Event to record.");
 
@@ -221,7 +221,7 @@ namespace NextPvrWebConsole.Models
 
         public static bool DeleteByOid(int UserOid, int Oid)
         {
-            var recording = NUtility.ScheduledRecording.LoadByOID(Oid);
+            var recording = Helpers.NpvrCoreHelper.ScheduledRecordingLoadByOID(Oid);
             if (recording == null)
                 throw new Exception("Failed to locate recording.");
 
@@ -256,8 +256,7 @@ namespace NextPvrWebConsole.Models
             }
 
 
-            var instance = NShared.RecordingServiceProxy.GetInstance();
-            instance.DeleteRecording(recording);
+            Helpers.NpvrCoreHelper.DeleteRecording(recording);
             Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Deleted recording: " + recording.Name, "Recording Deleted");
 
             return true;
