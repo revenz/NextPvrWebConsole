@@ -11,7 +11,7 @@ Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "NextPvrWebConsole.InstallSh
 		{A9FAD5BD-6695-4566-943F-5BA317ED8D0B} = {A9FAD5BD-6695-4566-943F-5BA317ED8D0B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextPvrWebConsoleInstaller", "NextPvrWebConsoleInsaller\NextPvrWebConsoleInstaller.csproj", "{50042BC4-C5E9-4DEC-94DA-B83321B8C71A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextPvrWebConsoleInstaller", "NextPvrWebConsoleInstaller\NextPvrWebConsoleInstaller.csproj", "{50042BC4-C5E9-4DEC-94DA-B83321B8C71A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -52,6 +52,11 @@ namespace NextPvrWebConsole
                     Directory.CreateDirectory(appDataDir);
                 GrantDirectoryAccess(appDataDir);
 
+                string loggingDir = Path.Combine(installDir, "Logging");
+                if (!Directory.Exists(loggingDir))
+                    Directory.CreateDirectory(loggingDir);
+                GrantDirectoryAccess(loggingDir);
+
                 string npvrDir = @"C:\Users\Public\NPVR";
                 if(!Directory.Exists(npvrDir))
                     npvrDir = @"C:\Documents and Settings\All Users\Application Data\NPVR";

@@ -2482,8 +2482,7 @@
 		<row><td>ISProjectFolder</td><td/><td/><td>1</td></row>
 		<row><td>NextPvrWebConsole</td><td>NextPvrWebConsole\NextPvrWebConsole.csproj</td><td/><td>2</td></row>
 		<row><td>NextPvrWebConsole.Setup</td><td>NextPvrWebConsole.Setup\NextPvrWebConsole.Setup.vdproj</td><td/><td>2</td></row>
-		<row><td>NextPvrWebConsoleInsaller</td><td>NextPvrWebConsoleInsaller\NextPvrWebConsoleInsaller.csproj</td><td/><td>2</td></row>
-		<row><td>NextPvrWebConsoleInstaller</td><td>NextPvrWebConsoleInsaller\NextPvrWebConsoleInstaller.csproj</td><td/><td>2</td></row>
+		<row><td>NextPvrWebConsoleInstaller</td><td>NextPvrWebConsoleInstaller\NextPvrWebConsoleInstaller.csproj</td><td/><td>2</td></row>
 		<row><td>ProgramFilesFolder</td><td/><td/><td>1</td></row>
 		<row><td>SystemFolder</td><td/><td/><td>1</td></row>
 		<row><td>WindowsFolder</td><td/><td/><td>1</td></row>
@@ -4147,7 +4146,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{F8E53B18-136A-4678-B235-F7FE04BE3921}</td></row>
 		<row><td>ISUSSignature</td><td>{039ACEF8-7D6A-476B-AA19-EB42C73199B2}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewObjects,viewFeatureFiles,viewAppFiles,viewDependencies,viewRelease,viewCustomActions,viewISToday</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewObjects,viewFeatureFiles,viewAppFiles,viewDependencies,viewRelease,viewCustomActions,viewISToday,viewSupportFiles,viewUI,viewBillboards,viewTextMessages,viewComponentServices,viewSQLServer,viewVRoots,viewFileExtensions,viewIniFiles,viewUpgradePaths,viewRealSetupDesign,viewProject</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>

@@ -41,10 +41,7 @@ namespace NextPvrWebConsole.Models
             Logger.Log("Channel load for time period.");
             int[] channelOids = ChannelGroup.LoadChannelOids(UserOid, GroupName);
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
-            var data = Helpers.Cacher.RetrieveOrStore<Dictionary<NUtility.Channel, List<NUtility.EPGEvent>>>("NUtility.EPGEvent.GetListingsForTimePeriod_" + Start.ToString(), 
-                                                                                                            new TimeSpan(1, 0, 0), delegate { 
-                                                                                                                return NUtility.EPGEvent.GetListingsForTimePeriod(Start.AddHours(-12), End); 
-                                                                                                            });
+            var data = Helpers.NpvrCoreHelper.GetListingsForTimePeriod(Start.AddHours(-12), End); 
             var listingData = data.Where(x => channelOids.Contains(x.Key.OID)).SelectMany(x => x.Value);
             Logger.Log("Time[0]: " + timer.Elapsed.ToString());
             

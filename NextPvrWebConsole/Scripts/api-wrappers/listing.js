@@ -38,7 +38,7 @@ function Listing(channel, epgListing) {
             }).ToString(', ');
         return '';
     });
-    self.channelHasIcon = ko.observable(channel.HasIcon ? channel.HasIcon : false);
+    self.channelHasIcon = ko.observable(channel != null && channel.HasIcon ? channel.HasIcon : false);
     self.channelIconSrc = ko.computed(function () {
         if (!self.channelHasIcon())
             return '';

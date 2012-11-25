@@ -166,7 +166,7 @@ namespace NextPvrWebConsole.Models
                         this.ChannelName = channel.Name;
                         this.ChannelNumber = channel.Number;
                         this.ChannelOid = channel.OID;
-                        NUtility.EPGEvent epg = NUtility.EPGEvent.GetListingsForTimePeriod(DateTime.UtcNow.AddHours(-6), DateTime.UtcNow.AddHours(1))
+                        NUtility.EPGEvent epg = Helpers.NpvrCoreHelper.GetListingsForTimePeriod(DateTime.UtcNow.AddHours(-6), DateTime.UtcNow.AddHours(1))
                                                               .Where(x => x.Key.OID == channel.OID)
                                                               .Select(x => x.Value.Where(y => y.EndTime > DateTime.UtcNow && y.StartTime < DateTime.UtcNow).FirstOrDefault()).FirstOrDefault();
                         if (epg != null)

@@ -91,18 +91,22 @@ namespace NextPvrWebConsole.Models
                 if (r.RecurrenceOID > 0)
                 {
                     var recurrence = NUtility.RecurringRecording.LoadByOID(r.RecurrenceOID);
-                    d = new
+                    if (recurrence != null) // incase the recurrence was deleted
                     {
-                        Keep = recurrence.Keep,
-                        PrePadding = recurrence.PrePadding,
-                        PostPadding = recurrence.PostPadding,
-                        RecordingDirectoryId = recurrence.RecordingDirectoryID,
-                        IsRecurring = true,
-                        RecordingType = RecurringRecording.GetRecordingType(recurrence),
-                        RecordingOid = r.OID
+                        d = new
+                        {
+                            Keep = recurrence.Keep,
+                            PrePadding = recurrence.PrePadding,
+                            PostPadding = recurrence.PostPadding,
+                            RecordingDirectoryId = recurrence.RecordingDirectoryID,
+                            IsRecurring = true,
+                            RecordingType = RecurringRecording.GetRecordingType(recurrence),
+                            RecordingOid = r.OID
+                        };
                     };
                 }
-                else
+                
+                if(d == null)
                 {
                     d = new
                     {
@@ -173,7 +177,7 @@ namespace NextPvrWebConsole.Models
                 // get channels available for user
                 var channels = Channel.LoadAll(UserOid).ToDictionary(x => x.Oid);
                 // get listings, filtered out by the channels they have access to.
-                var listings = NUtility.EPGEvent.GetListingsForTimePeriod(start, end).Where(x => channels.ContainsKey(x.Key.OID));
+                var listings = Helpers.NpvrCoreHelper.GetListingsForTimePeriod(start, end).Where(x => channels.ContainsKey(x.Key.OID));
 
                 // create a indexed list with priority of search matches 
                 Regex searchPattern = new Regex(Regex.Replace(Regex.Replace(SearchText, @"[^\w\d *]", ""), @"[\s]+", @"[\s]+").Replace("*", "(.*?)"), RegexOptions.IgnoreCase);

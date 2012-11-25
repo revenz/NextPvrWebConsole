@@ -236,6 +236,7 @@
     <Compile Include="Helpers\Cacher.cs" />
     <Compile Include="Helpers\Emailer.cs" />
     <Compile Include="Helpers\Encrypter.cs" />
+    <Compile Include="Helpers\NpvrCoreHelper.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
@@ -518,7 +519,9 @@
     <Content Include="Scripts\core\linq.js" />
     <Content Include="Scripts\core\linq.min.js" />
     <Content Include="Scripts\core\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
