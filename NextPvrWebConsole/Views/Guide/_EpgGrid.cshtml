@@ -78,11 +78,11 @@
             <ul class="listings" data-channeloid="@channel.Oid">
                 @foreach (var listing in channel.Listings ?? new List<NextPvrWebConsole.Models.EpgListing>())
                 {
-                <li data-oid="@listing.Oid" ondblclick="guide.openListing(this)" style="@listingCss(listing)" class="listing @listingClass(listing)">
+                <li data-oid="@listing.Oid" data-recordingoid="@listing.RecordingOid" data-isrecurring="@(listing.IsRecurring ? "1" : "0")" ondblclick="guide.openListing(this)" style="@listingCss(listing)" class="listing @listingClass(listing)">
                     <div>
                         <span class="title">@listing.Title</span>
-                        <span class="start">@listing.StartTime.ToLocalTime().ToString("h:mm tt").Replace("a.m.", "AM").Replace("p.m.", "PM")</span>
                         <span class="subtitle">@listing.Subtitle</span>
+                        <span class="start">@listing.StartTime.ToLocalTime().ToString("h:mm tt").Replace("a.m.", "AM").Replace("p.m.", "PM")</span>
                     </div>
                 </li>
                 }

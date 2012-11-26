@@ -47,7 +47,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
-            Assert.IsTrue(guide.QuickRecord(listing.Oid));
+            Assert.IsNotNull(guide.QuickRecord(listing.Oid));
                 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);

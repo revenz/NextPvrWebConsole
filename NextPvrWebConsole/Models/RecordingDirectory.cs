@@ -233,7 +233,7 @@ namespace NextPvrWebConsole.Models
         internal static RecordingDirectory Load(int Oid)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where oid = @0", Oid);
+            return db.FirstOrDefault<RecordingDirectory>("select rd.*, username from recordingdirectory rd inner join user u on rd.useroid = u.oid where rd.oid = @0", Oid);
         }
 
         internal static RecordingDirectory LoadSystemDefault()

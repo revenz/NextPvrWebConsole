@@ -44,7 +44,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         // POST api/quickrecord
         [HttpPost]
-        public bool QuickRecord(int Oid)
+        public NUtility.ScheduledRecording QuickRecord(int Oid)
         {
             return Models.Recording.QuickRecord(this.GetUser().Oid, Oid);
         }
@@ -58,9 +58,24 @@ namespace NextPvrWebConsole.Controllers.Api
         [HttpGet]
         public Models.EpgListing EpgListing(int Oid)
         {
+            var user = this.GetUser();
             var epgEvent = NUtility.EPGEvent.LoadByOID(Oid);
-            var channel = Models.Channel.Load(epgEvent.ChannelOID, this.GetUser().Oid);
-            return new Models.EpgListing(epgEvent) { ChannelName = channel.Name, ChannelNumber = channel.Number };
+            var channel = Models.Channel.Load(epgEvent.ChannelOID, user.Oid);
+            var config = new Models.Configuration();
+
+            var eventEpgRecodingData = Models.EpgRecordingData.LoadForEpgEventOid(user.Oid, Oid);
+            
+            return new Models.EpgListing(epgEvent)
+            { 
+                ChannelName = channel.Name, 
+                ChannelNumber = channel.Number,
+                PrePadding = eventEpgRecodingData == null ? config.PrePadding : eventEpgRecodingData.PrePadding,
+                PostPadding = eventEpgRecodingData == null ? config.PostPadding : eventEpgRecodingData.PostPadding,
+                RecordingDirectoryId = eventEpgRecodingData == null ? user.DefaultRecordingDirectoryDirectoryId : eventEpgRecodingData.RecordingDirectoryId,
+                IsRecurring = eventEpgRecodingData != null && eventEpgRecodingData.IsRecurring,
+                IsRecording = eventEpgRecodingData != null && eventEpgRecodingData.RecordingOid > 0,
+                RecordingOid = eventEpgRecodingData != null ? eventEpgRecodingData.RecordingOid : 0
+            };
         }
     }
 }

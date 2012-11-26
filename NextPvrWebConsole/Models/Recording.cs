@@ -130,7 +130,7 @@ namespace NextPvrWebConsole.Models
                                                                      .Select(x => new Recording(x, UserOid)).ToArray();
         }
 
-        public static bool QuickRecord(int UserOid, int Oid)
+        public static NUtility.ScheduledRecording QuickRecord(int UserOid, int Oid)
         {
             var config = new Configuration();
             string recordingDirectoryId = ""; // default
@@ -147,7 +147,7 @@ namespace NextPvrWebConsole.Models
 
             var instance = NShared.RecordingServiceProxy.GetInstance();
             ScheduledRecording recording = instance.ScheduleRecording(epgevent, config.PrePadding, config.PostPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId);
-            return recording != null;
+            return recording;
         }
 
         public static ScheduledRecording Record(int UserOid, Models.RecordingSchedule Schedule)

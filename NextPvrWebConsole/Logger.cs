@@ -11,6 +11,16 @@ namespace NextPvrWebConsole
     {
         private static Mutex mutexLock = new Mutex();
 
+        public static void ELog(string Message, params object[] Parameters)
+        {
+            Log("ERROR: " + Message, Parameters);
+        }
+
+        public static void ILog(string Message, params object[] Parameters)
+        {
+            Log("INFO: " + Message, Parameters);
+        }
+
         public static void Log(string Message, params object[] Parameters)
         {
             mutexLock.WaitOne();

@@ -61,11 +61,7 @@ namespace NextPvrWebConsole.Models
             this.Title = EpgEvent.Title;
         }
 
-        public static List<EpgListing> LoadEpgListings(int UserOid, int[] ChannelOids, IEnumerable<NUtility.EPGEvent> Data, RecordingDirectory UserDefault = null,
-            Dictionary<string, RecordingDirectory> AllowedRecordingDirectoriesIndexedByDirectoryId = null,
-            Dictionary<string, RecordingDirectory> AllowedRecordingDirectoriesIndexedByPath = null,
-            List<NUtility.ScheduledRecording> Recordings = null,
-            List<NUtility.RecurringRecording> RecurringRecordings = null)
+        public static List<EpgListing> LoadEpgListings(int UserOid, int[] ChannelOids, IEnumerable<NUtility.EPGEvent> Data, RecordingDirectory UserDefault = null)
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -73,70 +69,8 @@ namespace NextPvrWebConsole.Models
             var config = new Configuration();
             if(UserDefault == null)
                 UserDefault = RecordingDirectory.LoadUserDefault(UserOid);
-            // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start            
-            if(AllowedRecordingDirectoriesIndexedByDirectoryId == null)
-               AllowedRecordingDirectoriesIndexedByDirectoryId = RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true);
-            if(AllowedRecordingDirectoriesIndexedByPath == null)
-                AllowedRecordingDirectoriesIndexedByPath = RecordingDirectory.LoadForUserAsDictionaryIndexedByPath(UserOid, true);
-            if (Recordings == null)
-                Recordings = Helpers.NpvrCoreHelper.ScheduledRecordingLoadAll();
-            if(RecurringRecordings == null)
-                RecurringRecordings = NUtility.RecurringRecording.LoadAll();
-            Dictionary<int, dynamic> allowedRecordings = new Dictionary<int, dynamic>();
-            Logger.Log("Loading EPG Listings [1]: " + timer.Elapsed);
-            #region get a list of allowed recordings for this user
-            foreach (var r in Recordings)
-            {
-                dynamic d = null;
-                if (r.RecurrenceOID > 0)
-                {
-                    var recurrence = NUtility.RecurringRecording.LoadByOID(r.RecurrenceOID);
-                    if (recurrence != null) // incase the recurrence was deleted
-                    {
-                        d = new
-                        {
-                            Keep = recurrence.Keep,
-                            PrePadding = recurrence.PrePadding,
-                            PostPadding = recurrence.PostPadding,
-                            RecordingDirectoryId = recurrence.RecordingDirectoryID,
-                            IsRecurring = true,
-                            RecordingType = RecurringRecording.GetRecordingType(recurrence),
-                            RecordingOid = r.OID
-                        };
-                    };
-                }
-                
-                if(d == null)
-                {
-                    d = new
-                    {
-                        Keep = 0, // once off recording,
-                        PrePadding = r.PrePadding,
-                        PostPadding = r.PostPadding,
-                        IsRecurring = false,
-                        RecordingDirectoryId = r.Filename,
-                        RecordingType = RecordingType.Record_Once,
-                        RecordingOid = r.OID
-                    };
-                }
-                if (d == null || (!String.IsNullOrWhiteSpace(d.RecordingDirectoryId) && !AllowedRecordingDirectoriesIndexedByDirectoryId.ContainsKey(d.RecordingDirectoryId)))
-                {
-                    // check to see if recording and has fullname in directoryid
-                    try
-                    {
-                        System.IO.FileInfo fi = new System.IO.FileInfo(r.Filename);
-                        if (!AllowedRecordingDirectoriesIndexedByPath.ContainsKey(fi.Directory.Parent.FullName.ToLower()))
-                            continue; // not allowed for the current user
-                    }
-                    catch (Exception)
-                    {
-                        continue;
-                    }
-                }
-                if (!allowedRecordings.ContainsKey(r.EventOID))
-                    allowedRecordings.Add(r.EventOID, d);
-            }
-            #endregion
+
+            var allowedRecordings = EpgRecordingData.LoadAllowedRecordings(UserOid);
             Logger.Log("Loading EPG Listings [2]: " + timer.Elapsed);
 
             timer.Stop();

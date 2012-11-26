@@ -114,6 +114,9 @@ namespace NextPvrWebConsole.Models
         public bool ReadOnly { get; set; }
         public bool Administrator { get; set; }
         public int DefaultRecordingDirectoryOid { get; set; }
+
+        [PetaPoco.Ignore]
+        public string DefaultRecordingDirectoryDirectoryId { get; set; }
         
         [PetaPoco.Ignore]
         public string Password { set { this.PasswordHash = BCrypt.HashPassword(value, BCrypt.GenerateSalt()); } }
@@ -121,7 +124,7 @@ namespace NextPvrWebConsole.Models
         public static User GetByEmailAddress(string EmailAddress)
         {            
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<User>("select * from [user] where emailaddress = @0", EmailAddress);
+            return InitUser(db.FirstOrDefault<User>("select * from [user] where emailaddress = @0", EmailAddress));
         }
 
         public static string GetUsername(int Oid)
@@ -133,7 +136,15 @@ namespace NextPvrWebConsole.Models
         public static User GetByUsername(string Username)
         {
             var db = DbHelper.GetDatabase();
-            return db.FirstOrDefault<User>("select * from [user] where username = @0", Username);
+            return InitUser(db.FirstOrDefault<User>("select * from [user] where username = @0", Username));
+        }
+
+        private static User InitUser(User User)
+        {
+            if (User == null)
+                return User;
+            User.DefaultRecordingDirectoryDirectoryId = RecordingDirectory.Load(User.DefaultRecordingDirectoryOid).RecordingDirectoryId;
+            return User;
         }
 
         public static void SendPasswordResetRequest(string UsernameOrEmailAddress)
