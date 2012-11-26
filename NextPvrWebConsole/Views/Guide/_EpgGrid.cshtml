@@ -1,12 +1,12 @@
 ﻿@model List<NextPvrWebConsole.Models.Channel>
 @{
-    DateTime GuideStart = (DateTime)ViewBag.GuideStart;
+    DateTime GuideStart = ((DateTime)ViewBag.GuideStart).ToUniversalTime();
     DateTime GuideEnd = GuideStart.AddDays(1);
     int minuteWidth = 5;
     var listingCss = new Func<NextPvrWebConsole.Models.EpgListing, string>((NextPvrWebConsole.Models.EpgListing listing) =>
     {            
-        DateTime dEnd = listing.EndTime.ToLocalTime();
-        DateTime dStart = listing.StartTime.ToLocalTime();
+        DateTime dEnd = listing.EndTime;
+        DateTime dStart = listing.StartTime;
 
         if (listing.EndTime > GuideEnd)
         {
@@ -48,7 +48,7 @@
         <ul>
             @foreach (var channel in Model)
             {
-            <li click="liveStream();" class="epg-channel @(channel.HasIcon ? "logo-available" : "")" title="Start Live TV">
+            <li click="liveStream();" class="epg-channel @(channel.HasIcon ? "logo-available" : "")" title="Start Live TV" id="epg-channel-@channel.Oid">
                 <div class="logo">
                     @if (channel.HasIcon)
                     {
