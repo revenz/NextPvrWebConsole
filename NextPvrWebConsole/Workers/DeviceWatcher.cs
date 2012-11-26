@@ -62,7 +62,7 @@ namespace NextPvrWebConsole.Workers
 
         List<DeviceUpdateEvent> Updated()
         {
-            var newDevices = Models.Device.GetDevicesBasic();
+            var newDevices = Models.Device.GetDevicesBasic().Select(x => (Models.Device)Helpers.ObjectCloner.DeepCopy(x)).ToList();
             try
             {
                 // currently can't detect a channel change, they appear as stream stop / start

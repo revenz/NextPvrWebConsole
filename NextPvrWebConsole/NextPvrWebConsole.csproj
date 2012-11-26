@@ -223,7 +223,7 @@
     <Compile Include="Controllers\RecordingsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
-    <Compile Include="Controllers\StreamingController.cs" />
+    <Compile Include="Controllers\StreamController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="ExtensionMethods.cs" />
@@ -237,6 +237,7 @@
     <Compile Include="Helpers\Emailer.cs" />
     <Compile Include="Helpers\Encrypter.cs" />
     <Compile Include="Helpers\NpvrCoreHelper.cs" />
+    <Compile Include="Helpers\ObjectCloner.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
@@ -473,7 +474,7 @@
     <Content Include="Views\Recordings\_Available.cshtml" />
     <Content Include="Views\Recordings\_Pending.cshtml" />
     <Content Include="Views\Recordings\_Recurring.cshtml" />
-    <Content Include="Views\Streaming\Index.cshtml" />
+    <Content Include="Views\Stream\Index.cshtml" />
     <Content Include="Views\Shared\_ScheduleEditor.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <Content Include="Views\Dashboard\_DiskUsage.cshtml" />

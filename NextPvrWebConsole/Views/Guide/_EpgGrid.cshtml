@@ -48,7 +48,7 @@
         <ul>
             @foreach (var channel in Model)
             {
-            <li click="liveStream();" class="epg-channel @(channel.HasIcon ? "logo-available" : "")" title="Start Live TV" id="epg-channel-@channel.Oid">
+            <li onclick="guide.liveStream(@channel.Oid);" class="epg-channel @(channel.HasIcon ? "logo-available" : "")" title="Start Live TV" id="epg-channel-@channel.Oid">
                 <div class="logo">
                     @if (channel.HasIcon)
                     {

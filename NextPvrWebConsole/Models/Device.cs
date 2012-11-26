@@ -89,7 +89,7 @@ namespace NextPvrWebConsole.Models
             return devices.Values.ToList();
         }
 
-        public static bool StopStream(int Handle)
+        public static void StopStream(int Handle)
         {
             try
             {
@@ -97,14 +97,11 @@ namespace NextPvrWebConsole.Models
                               where s.Handle == Handle
                               select s).FirstOrDefault();
                 if (stream == null)
-                    return true; // noting to stop
+                    return; // noting to stop
 
                 if (stream.Type == Stream.StreamType.LiveTV)
                 {
                     Helpers.NpvrCoreHelper.StopStream(Handle);
-                    System.Threading.Thread.Sleep(1000);
-                    // check if handle exists
-                    return !(GetDevices().Where(x => x.Streams.Where(y => y.Handle == Handle).Count() > 0).Count() > 0);
                 }
                 else if (stream.Type == Stream.StreamType.Recording)
                 {
@@ -116,7 +113,7 @@ namespace NextPvrWebConsole.Models
                 }
                 throw new Exception("Unknown stream type.");
             }
-            catch (Exception) { return false; }
+            catch (Exception) { }
         }
 
         internal bool Save()
@@ -131,9 +128,11 @@ namespace NextPvrWebConsole.Models
             return true;
         }
     }
-    
+
     public class Stream
     {
+        public Stream() { }
+
         public Stream(StreamType Type, int Handle, int CaptureSourceOid, string Filename)
         {
             this.Type = Type;

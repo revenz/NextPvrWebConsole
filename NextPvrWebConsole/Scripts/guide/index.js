@@ -46,7 +46,7 @@ var guide = new function () {
         funScrollEpgContainer(); // call it to set it up.
 
         // set scroll pos.
-        if(!epgGridInitDone)
+        if (!epgGridInitDone)
             $('.epg-container').scrollLeft(guide.getMinutesFromStartOfGuide(new Date()) * guide.minuteWidth - (30 * guide.minuteWidth));
 
         epgGridInitDone = true;
@@ -213,4 +213,8 @@ var guide = new function () {
             buttons: dialog_buttons
         });
     }
+
+    self.liveStream = function (oid) {
+        window.open('/stream/' + oid, 'livestream', 'width=830,height=480,status=1,resizable=0');
+    };
 }

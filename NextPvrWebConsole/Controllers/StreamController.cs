@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace NextPvrWebConsole.Controllers
 {
     [Authorize(Roles="Guide")]
-    public class StreamingController : Controller
+    public class StreamController : Controller
     {
         public ActionResult Index(int Oid)
         {

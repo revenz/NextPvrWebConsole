@@ -57,7 +57,6 @@ function Recording(data) {
     });
 
     self.openPlayer = function () {
-        console.log('/stream/recording/' + self.oid());
         window.open('/stream/recording/' + self.oid(), 'livestream', 'width=830,height=480,status=1,resizable=0');
     };
 }

@@ -19,10 +19,7 @@ namespace NextPvrWebConsole.Controllers.Api
         [HttpDelete]
         public bool DeleteStream(int Handle)
         {
-            if (!Models.Device.StopStream(Handle))
-                return false;
-
-            Hubs.NextPvrEventHub.Clients_ShowInfoMessage("Stopped Live Stream: " + Handle); // TODO: Get pretty info about live stream
+            Models.Device.StopStream(Handle);
             return true;
         }
     }

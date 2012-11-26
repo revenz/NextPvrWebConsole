@@ -28,6 +28,7 @@ $(function () {
     }
 
     ko.applyBindings(new DevicesViewModel(), $('.tuners').get(0));
+    $('#tuners-data').removeAttr('style');
 });
 
 function Device(data) {
@@ -66,11 +67,6 @@ function Stream(owner, data) {
     self.startTimeString = ko.computed(function () { return gui.formatTime(data.StartTime); });
     self.endTimeString = ko.computed(function () { return gui.formatTime(data.EndTime); });
     self.stop = function () {
-        api.deleteJSON('devices/deleteStream?handle=' + data.Handle, null, function (result) {
-            if (result == true)
-                owner.streams.remove(this);
-            else
-                gui.showError("Failed to stop stream", self.title());
-        });
+        api.deleteJSON('devices/deleteStream?handle=' + data.Handle);
     };
 }
