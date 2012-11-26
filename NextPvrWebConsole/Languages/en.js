@@ -51,7 +51,7 @@
     'Channel Groups'                    :               'Channel Groups',
     'Recording Directories'             :               'Recording Directories',
     'Channels'                          :               'Channels',
-    'UserSettings-ChannelGroups-Summary':               'Here you can configure your own Chanel Groups which allows you to group channels into logically groups, for example \'General Entertainment\', \'Sports\', \'Movies\' etc.',
+    'UserSettings-ChannelGroups-Summary':               'Here you can configure your own Channel Groups which allows you to group channels into logically groups, for example \'General Entertainment\', \'Sports\', \'Movies\' etc.',
     'UserSettings-Channels-Summary'     :               'Here you can configure your own personal Channels.  You can disable Channels to hide them and you can change the Channel numbers to your liking.',
     'UserSettings-RecordingDirectories-Summary':        'Here you can configure your own personal Recording Directories, you will have access to all Shared directories and your own personal Recording Directories.  Anything you record to your personal Recording Directories will not be available to any other users.',
     'Add'                               :               'Add',

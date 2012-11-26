@@ -63,6 +63,11 @@ namespace NextPvrWebConsole
             }
         }
 
+        public static void ForEach<T>(this IEnumerable<T> sequence, Action<T> action)
+        {
+            foreach (var item in sequence) action(item);
+        }
+
         public static DayMask ToDayMask(this DayOfWeek Day)
         {
             switch (Day)
