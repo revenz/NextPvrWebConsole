@@ -355,6 +355,7 @@
     <Content Include="Scripts\configuration\devices.js" />
     <Content Include="Scripts\configuration\index.js" />
     <Content Include="Scripts\core\jquery.address.js" />
+    <Content Include="Scripts\guide\index2.js" />
     <Content Include="Scripts\search\index.js" />
     <Content Include="Scripts\system\users.js" />
     <Content Include="Scripts\charting\flotr2.js" />
@@ -520,6 +521,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Guide\_EpgGrid.cshtml" />
+    <Content Include="Views\Guide\Index2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

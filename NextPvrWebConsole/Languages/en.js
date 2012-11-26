@@ -92,6 +92,7 @@
     'EnableUserSupport'                 :               'Enable User Support',
     'EnableUserSupport-Description'     :               'When enabled, users will be able to create their own Channel Groups, managed their own Channels, create their own Recording Directories and schedule personal recordings.\nNote XBMC is currently the only front-end that truly supports this feature.',
     'Time-Range'                        :               ' %s to %s',
+    'Time-Range-WithDuration'           :               ' %s to %s (%s Minutes)',
     'Smtp-Server-Description'           :               'The mail server used when sending emails.',
     'Smtp-Port-Description'             :               'The port to use when sending emails.',
     'Smtp-Username-Description'         :               'Optional, only used if your mail server requires authentication.',

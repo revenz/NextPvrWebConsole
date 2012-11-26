@@ -1,20 +1,20 @@
-﻿@model Dictionary<NextPvrWebConsole.Models.Channel, List<NextPvrWebConsole.Models.EpgListing>>
+﻿@model List<NextPvrWebConsole.Models.Channel>
 @{
-    DateTime GuideStart = DateTime.Now;
+    DateTime GuideStart = (DateTime)ViewBag.GuideStart;
     DateTime GuideEnd = GuideStart.AddDays(1);
     int minuteWidth = 5;
     var listingCss = new Func<NextPvrWebConsole.Models.EpgListing, string>((NextPvrWebConsole.Models.EpgListing listing) =>
     {            
-        DateTime dEnd = listing.EndTime;
-        DateTime dStart = listing.StartTime;
+        DateTime dEnd = listing.EndTime.ToLocalTime();
+        DateTime dStart = listing.StartTime.ToLocalTime();
 
         if (listing.EndTime > GuideEnd)
         {
             dEnd = GuideEnd; // ends before end of day
         }
 
-        var start = (int)GuideStart.Subtract(dStart).TotalMinutes;
-        var end = (int)GuideStart.Subtract(dEnd).TotalMinutes;
+        var start = (int)dStart.Subtract(GuideStart).TotalMinutes;
+        var end = (int)dEnd.Subtract(GuideStart).TotalMinutes;
 
         if (start < 0)
         {
@@ -42,18 +42,56 @@
         return _class;
     });
 }
-@foreach (var channel in Model.Keys)
-{
-<ul class="listings" data-channeloid="@channel.Oid">
-    @foreach(var listing in channel.Listings) 
-    {
-    <li ondblclick="openListing()" style="@listingCss(listing)" class="@listingClass(listing)">
-        <div>
-            <span class="title">@listing.Title</span>
-            <span class="start">@listing.StartTime.ToString("h:mm tt").Replace("a.m.", "AM").Replace("p.m.", "PM")</span>
-            <span class="subtitle">@listing.Subtitle</span>
+
+
+    <div class="epg-channels">
+        <ul>
+            @foreach (var channel in Model)
+            {
+            <li click="liveStream();" class="epg-channel @(channel.HasIcon ? "logo-available" : "")" title="Start Live TV">
+                <div class="logo">
+                    @if (channel.HasIcon)
+                    {
+                        <img class="logo" src="/channelicon/@channel.Oid" />
+                    }
+                </div>
+                <span class="name">@channel.Name</span>
+                <span class="number">@channel.Number</span>      
+            </li>
+            }
+        </ul>
+    </div>
+    <div class="epg-time">
+        <ul class="timeline">
+            @for (int i = 0; i < 24; i++)
+            {
+            <li class="time">
+                <span>@(i == 0 ? "12am" : (i == 12 ? "12pm" : (i > 12 ? (i - 12) + "pm" : i + "am")))</span>
+            </li> 
+            }
+        </ul>
+    </div>
+    <div class="epg-listings">
+        <div class="epg-listings-channel">        
+            @foreach (var channel in Model)
+            {
+            <ul class="listings" data-channeloid="@channel.Oid">
+                @foreach (var listing in channel.Listings ?? new List<NextPvrWebConsole.Models.EpgListing>())
+                {
+                <li data-oid="@listing.Oid" ondblclick="guide.openListing(this)" style="@listingCss(listing)" class="listing @listingClass(listing)">
+                    <div>
+                        <span class="title">@listing.Title</span>
+                        <span class="start">@listing.StartTime.ToLocalTime().ToString("h:mm tt").Replace("a.m.", "AM").Replace("p.m.", "PM")</span>
+                        <span class="subtitle">@listing.Subtitle</span>
+                    </div>
+                </li>
+                }
+            </ul>
+            }
         </div>
-    </li>
-    }
-</ul>
-}
+        <div id="epg-time-indicator" class="epg-time-indicator">
+            <div class="top"></div>
+            <div class="middle"></div>
+            <div class="bottom"></div>
+        </div>
+    </div>
