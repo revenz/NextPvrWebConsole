@@ -11,12 +11,14 @@ $(function () {
     };
     scheduleEditorViewModel = new ScheduleEditorViewModel();
     ko.applyBindings(scheduleEditorViewModel, $('#Guide-ScheduleEditor').get(0));
+
+    setInterval(guide.updateTimeIndicator, 15 * 1000);
 });
 
 var guide = new function () {
     var self = this;
-    var guideStart = new Date();
-    guideStart.setHours(0, 0, 0, 0);
+    self.guideStart = new Date();
+    self.guideStart.setHours(0, 0, 0, 0);
 
     self.minuteWidth = 5;
 
@@ -53,7 +55,7 @@ var guide = new function () {
     };
 
     self.getMinutesFromStartOfGuide = function (time) {
-        var diff = time - guideStart;
+        var diff = time - self.guideStart;
         var minutes = Math.floor((diff / 1000) / 60);
         return minutes;
     };
@@ -69,16 +71,18 @@ var guide = new function () {
         if (!date)
             return;
         var group = $('#epg-groups .selected').attr('data-name');
-        console.log('group: ' + group);
         gui.doWork();
-        $('.epg-container .epg').load('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group), function () {
-            guide.initEpgGrid();
-            gui.finishWork();
-        });
         var actualDate = new Date(date);
         var today = new Date();
         var isToday = actualDate.getMonth() == today.getMonth() && actualDate.getDate() == today.getDate();
-        $('#epg-time-indicator').css({ display: isToday ? 'block' : 'none' });
+
+        $('.epg-container .epg').load('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group), function () {
+            guide.initEpgGrid();
+            $('#epg-time-indicator').css({ display: isToday ? 'block' : 'none' });
+            if (isToday)
+                self.updateTimeIndicator();
+            gui.finishWork();
+        });
     };
 
     self.nextChannelGroup = function () {
@@ -94,6 +98,15 @@ var guide = new function () {
         self.loadEpgData();
     };
 
+    self.updateTimeIndicator = function () {
+        var date = new Date();
+        var mins = (date.getHours() * 60) + date.getMinutes();
+        var guideMins = (self.guideStart.getHours() * 60) + self.guideStart.getMinutes();
+        mins = mins - guideMins;
+        var sameday = self.guideStart.getDate() == date.getDate() && self.guideStart.getMonth() == date.getMonth();
+        $('#epg-time-indicator').css({ left: mins * self.minuteWidth + 'px', height: $('.epg-listings-channel').height(), display: sameday ? '' : 'none' });
+    };
+
     self.openListing = function (sender) {
         var $sender = $(sender);
         var oid = $sender.attr('data-oid');
@@ -105,7 +118,7 @@ var guide = new function () {
 
             var channelIconUrl = $('#epg-channel-' + result.ChannelOid + ' img').attr('src');
 
-            showInfo.find('.channelIcon').css('visible', channelIconUrl.length > 0).attr('src', channelIconUrl);
+            showInfo.find('.channelIcon').css('visible', channelIconUrl && channelIconUrl.length > 0).attr('src', channelIconUrl);
             showInfo.find('.channelnumber').text(result.ChannelNumber);
             showInfo.find('.channelname').text(result.ChannelName);
             showInfo.find('.subtitle').text(result.Subtitle);

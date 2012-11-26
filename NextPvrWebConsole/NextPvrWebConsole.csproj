@@ -369,7 +369,6 @@
     <Content Include="Scripts\core\jquery.timespinner.js" />
     <Content Include="Scripts\core\knockout-sortable.js" />
     <Content Include="Scripts\dashboard\upcomingrecordings.js" />
-    <Content Include="Scripts\guide\timeIndicator.js" />
     <Content Include="Scripts\jquery.filetree.js" />
     <Content Include="Scripts\recordings\available.js" />
     <Content Include="Scripts\recordings\pending.js" />

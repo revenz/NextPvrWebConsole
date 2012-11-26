@@ -200,7 +200,7 @@ namespace NextPvrWebConsole.Models
 
         internal static bool DeleteByOid(int UserOid, int Oid)
         {
-            var recurrence = NUtility.RecurringRecording.LoadByOID(Oid);
+            var recurrence = Helpers.NpvrCoreHelper.RecurringRecordingLoadByOID(Oid);
             if (recurrence == null)
                 throw new Exception("Failed to locate recurrence.");
             var config = new Configuration();
@@ -210,8 +210,7 @@ namespace NextPvrWebConsole.Models
                 if (!recurrenceDirs.ContainsKey(recurrence.RecordingDirectoryID))
                     throw new UnauthorizedAccessException();
             }
-            var instance = NShared.RecordingServiceProxy.GetInstance();
-            instance.CancelRecurring(recurrence.OID);
+            Helpers.NpvrCoreHelper.CancelRecurring(recurrence.OID);
             return true;
         }
 

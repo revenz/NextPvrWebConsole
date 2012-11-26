@@ -28,17 +28,8 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult Epg(DateTime? Date, string Group)
         {
-            var userOid = this.GetUser().Oid;
-            var config = new Configuration();
-            if (!config.EnableUserSupport)
-                userOid = Globals.SHARED_USER_OID;
-
             ViewBag.GuideStart = Date.Value;
-            // round start to midnight today.
-            DateTime start = new DateTime(Date.Value.Year, Date.Value.Month, Date.Value.Day, 0, 0, 0);
-            start = TimeZone.CurrentTimeZone.ToUniversalTime(start); // convert to utc            
-            var data = Models.Channel.LoadForTimePeriod(userOid, Group, start, start.AddDays(1));
-
+            var data = new Api.GuideController().Get(Date.Value, Group);
             return PartialView("_EpgGrid", data);
         }
     }

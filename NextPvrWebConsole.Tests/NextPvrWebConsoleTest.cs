@@ -25,6 +25,10 @@ namespace NextPvrWebConsole.Tests
                 Password = "setupuser",
                 ConfirmPassword = "setupuser"
             });
+
+            var config = new NextPvrWebConsole.Models.Configuration();
+            config.UserBaseRecordingDirectory = System.IO.Path.GetTempPath();
+            config.Save();
         }
 
         protected Models.User User;

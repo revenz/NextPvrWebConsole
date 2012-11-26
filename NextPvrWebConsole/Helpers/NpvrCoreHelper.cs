@@ -83,5 +83,19 @@ namespace NextPvrWebConsole.Helpers
             GetRecordingServiceInstance().DeleteRecording(Recording);
         }
         #endregion
+
+        #region recurring
+        internal static void CancelRecurring(int RecurrenceOID)
+        {
+            var instance = GetRecordingServiceInstance();
+            instance.CancelRecurring(RecurrenceOID);
+        }
+
+        #endregion
+
+        internal static RecurringRecording RecurringRecordingLoadByOID(int RecurrenceOID)
+        {
+            return RecurringRecording.LoadByOID(RecurrenceOID);
+        }
     }
 }

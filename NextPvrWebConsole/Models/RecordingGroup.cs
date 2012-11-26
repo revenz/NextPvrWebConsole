@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using NUtility;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace NextPvrWebConsole.Models
 {
@@ -49,7 +50,7 @@ namespace NextPvrWebConsole.Models
                         continue; // no point showing deleted...
 
                     RecordingDirectory rd = null;
-                    if (!String.IsNullOrEmpty(sr.Filename))
+                    if (!String.IsNullOrEmpty(sr.Filename) && !Regex.IsMatch(sr.Filename, @"^\[[^\]]+\]$"))
                     {
                         // recordings are in {Directory}\{Show Name}\{Showname}.{ext} so we need the parent directory of the recordign
                         string path = new System.IO.FileInfo(sr.Filename).Directory.Parent.FullName.ToLower();
@@ -78,7 +79,8 @@ namespace NextPvrWebConsole.Models
                         if (!String.IsNullOrEmpty(sr.Filename)) // if this isnt set it will be saved in the default path
                         {
                             // is set for a recording path, so check the security
-                            if (rds.Values.Where(x => x.RecordingDirectoryId == sr.Filename).Count() == 0)
+                            rd = rds.Values.Where(x => x.RecordingDirectoryId == sr.Filename).FirstOrDefault();
+                            if(rd == null)
                                 continue; // a once off recording they dont have access to.
                         }
                     }
@@ -90,7 +92,7 @@ namespace NextPvrWebConsole.Models
                     if (!results.ContainsKey(sr.Name))
                         results.Add(sr.Name, new RecordingGroup(sr.Name));
 
-                    results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectoryId = rd == null ? "" :rd.RecordingDirectoryId });
+                    results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectoryId = rd == null ? "" : rd.RecordingDirectoryId });
                 }
                 catch (Exception ex)
                 {

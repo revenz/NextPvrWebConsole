@@ -33,12 +33,11 @@ namespace NextPvrWebConsole.Tests.Controllers
             }
 
             var listings = controller.Get(date, groupName);
-            //var listing = listings.Where(x => x.Listings.Count > 0).SelectMany(x => x.Listings)
-            //                      .Where(x => x.StartTime > DateTime.UtcNow.AddMinutes(15))
-            //                      .OrderBy(x => Guid.NewGuid()) // random order
-            //                      .FirstOrDefault();
-            //return listing;
-            throw new Exception("I've broken this temporarily.");
+            var listing = listings.Where(x => x.Listings.Count > 0).SelectMany(x => x.Listings)
+                                  .Where(x => x.StartTime > DateTime.UtcNow.AddMinutes(15))
+                                  .OrderBy(x => Guid.NewGuid()) // random order
+                                  .FirstOrDefault();
+            return listing;
         }
 
         [TestMethod]
