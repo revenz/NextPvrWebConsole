@@ -20,10 +20,11 @@ namespace NextPvrWebConsole.Helpers
             client.Port = config.SmtpPort;
             if (!String.IsNullOrEmpty(config.SmtpUsername))
             {
+                client.UseDefaultCredentials = false;
                 // password is encrypted using cpu id as secret so unique to the machine it was installed on
                 client.Credentials = new NetworkCredential(config.SmtpUsername, Encrypter.Decrypt(config.SmtpPassword, Encrypter.GetCpuId())); 
             }
-
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.EnableSsl = config.SmtpUseSsl;
 
             MailMessage message = new MailMessage();

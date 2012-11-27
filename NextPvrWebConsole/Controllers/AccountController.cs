@@ -41,7 +41,7 @@ namespace NextPvrWebConsole.Controllers
 
                 if (String.IsNullOrEmpty(returnUrl) || !roles.Select(x => x.ToLower()).Contains(returnUrl.Substring(1).ToLower()))
                     returnUrl = "/" + roles[0];
-                if (returnUrl.ToLower() == "/dashboard")
+                if (returnUrl.ToLower() == "/dashboard" || returnUrl == "/0")
                     returnUrl = "/";
 
                 return RedirectToLocal(returnUrl);
@@ -97,11 +97,14 @@ namespace NextPvrWebConsole.Controllers
             {
                 Models.User user = Models.User.ValidateResetCode(Code);
                 ViewBag.PasswordReset = true;
+                ViewBag.Title = "Password Reset";
+                ViewBag.Message = "A new password has been successfully generated and email to you.  Please follow the email instructions to continue.";
             }
             catch (Exception ex)
             {
                 ViewBag.PasswordReset = false;
-                ViewBag.Error = ex.Message;
+                ViewBag.Title = "Failed to Reset Password";
+                ViewBag.Message = ex.Message;
             }
             return View();
         }
