@@ -32,9 +32,18 @@ namespace NextPvrWebConsole.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && Membership.ValidateUser(model.UserName, model.Password))//WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid && Membership.ValidateUser(model.UserName, model.Password))
             {
-                FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);                
+                Models.User.LoggedIn(model.UserName);
+                FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+                string[] roles = Roles.GetRolesForUser(model.UserName);
+
+                if (String.IsNullOrEmpty(returnUrl) || !roles.Select(x => x.ToLower()).Contains(returnUrl.Substring(1).ToLower()))
+                    returnUrl = "/" + roles[0];
+                if (returnUrl.ToLower() == "/dashboard")
+                    returnUrl = "/";
+
                 return RedirectToLocal(returnUrl);
             }
 

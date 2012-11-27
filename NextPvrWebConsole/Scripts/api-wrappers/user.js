@@ -20,10 +20,14 @@ function User(data) {
     self.username = ko.observable(data.Username);
     self.emailaddress = ko.observable(data.EmailAddress);
     self.userrole = ko.observable(data.UserRole);
-    if (data.LastLoggedInUtc.indexOf('.') > 0)
-        data.LastLoggedInUtc = data.LastLoggedInUtc.substr(0, data.LastLoggedInUtc.indexOf('.')) + 'Z';
+    if (typeof (data.LastLoggedInUtc) == 'string')
+    {
+        if(data.LastLoggedInUtc.indexOf('.') > 0)
+            data.LastLoggedInUtc = data.LastLoggedInUtc.substr(0, data.LastLoggedInUtc.indexOf('.')) + 'Z';
+        data.LastLoggedInUtc = new Date(data.LastLoggedInUtc);
+    }
 
-    self.lastLoggedIn = ko.observable(new Date(data.LastLoggedInUtc));
+    self.lastLoggedIn = ko.observable(data.LastLoggedInUtc);
     self.dateCreated = ko.observable(data.DateCreatedUtc);
     self.readonly = ko.observable(data.ReadOnly);
     self.passwordHash = ko.observable(data.PasswordHash);

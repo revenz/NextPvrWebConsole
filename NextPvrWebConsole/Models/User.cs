@@ -306,5 +306,12 @@ namespace NextPvrWebConsole.Models
 
             return user;
         }
+
+        internal static void LoggedIn(string Username)
+        {
+            var user = GetByUsername(Username);
+            user.LastLoggedInUtc = DateTime.UtcNow;
+            user.Save();
+        }
     }
 }
