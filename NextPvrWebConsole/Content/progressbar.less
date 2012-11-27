@@ -1,0 +1,32 @@
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.progress 
+{
+    overflow:hidden;
+    .rounded(4px);
+    .gradient(#f7f7f7, #f5f5f5, #f9f9f9);
+    .inner-shadow(0, 1px, 2px, 0.1);
+    height:25px;
+    border:solid 1px #d3d3d3;
+    .bar {
+        float:left;
+        height:100%;
+        font-size:12px;
+        color:White;
+        text-align:center;
+        .inner-shadow(0, -1px, 0, 0.15);
+        box-sizing:border-box;        
+        .gradient(#0E90D2, #0480BE, #149BDF);      
+    }
+    .bar-success {
+        .gradient(#5eb95e, #57a957, #62c462);        
+    }
+    .bar-warning {
+        .gradient(#FAA732, #F89406, #FBB450);        
+    }
+    .bar-danger {
+        .gradient(#DD514C, #C43C35, #EE5F5B);        
+    }    
+}
+

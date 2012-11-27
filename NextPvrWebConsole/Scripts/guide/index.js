@@ -140,7 +140,25 @@ var guide = new function () {
             var dialog_buttons = {};
 
             if (result.IsRecording) {
-                dialog_buttons[$.i18n._("Cancel")] = function () {
+                if (result.IsRecurring) {
+                    dialog_buttons[$.i18n._("Cancel Series")] = function () {
+                        gui.confirmMessage({
+                            message: $.i18n._("Are you sure you want to cancel the series '%s'?", [result.Title]),
+                            yes: function () {
+                                api.deleteJSON('recordings/deleterecurring/' + result.RecordingOid, null, function (data) {
+                                    if (data) {
+                                        $sender.removeClass('recording');
+                                        $sender.attr('data-recordingoid', '');
+                                        $sender.attr('data-isrecurring', '0'); 
+                                    }
+                                    showInfo.dialog('close');
+                                });
+                            }
+                        });
+                    };
+                }
+
+                dialog_buttons[$.i18n._("Cancel Recording")] = function () {
                     gui.confirmMessage({
                         message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [result.Title]),
                         yes: function () {
@@ -148,7 +166,7 @@ var guide = new function () {
                                 if (data) {
                                     $sender.removeClass('recording');
                                     $sender.attr('data-recordingoid', '');
-                                    $sender.attr('data-isrecurring', '0'); // or should leave this??? when they cancel is it that single recurrence or the entire series????
+                                    $sender.attr('data-isrecurring', '0'); 
                                 }
                                 showInfo.dialog('close');
                             });

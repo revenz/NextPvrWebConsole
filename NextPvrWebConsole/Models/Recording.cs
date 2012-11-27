@@ -133,21 +133,22 @@ namespace NextPvrWebConsole.Models
         public static NUtility.ScheduledRecording QuickRecord(int UserOid, int Oid)
         {
             var config = new Configuration();
-            string recordingDirectoryId = ""; // default
-            if (config.EnableUserSupport)
+            RecordingDirectory rd = null;
+            if (config.EnableUserSupport && config.UserRecordingDirectoriesEnabled)
+                rd = RecordingDirectory.LoadUserDefault(UserOid);
+
+            if (rd == null)
+                rd = RecordingDirectory.LoadSystemDefault();
+
+            return Record(UserOid, new Models.RecordingSchedule()
             {
-                var rd = RecordingDirectory.LoadForUser(UserOid, false).OrderBy(x => x.IsDefault).FirstOrDefault();
-                if (rd != null)
-                    recordingDirectoryId = rd.RecordingDirectoryId;
-            }
-
-            var epgevent = Helpers.NpvrCoreHelper.EPGEventLoadByOID(Oid);
-            if (epgevent == null)
-                throw new Exception("Failed to locate EPG Event to record.");
-
-            var instance = NShared.RecordingServiceProxy.GetInstance();
-            ScheduledRecording recording = instance.ScheduleRecording(epgevent, config.PrePadding, config.PostPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId);
-            return recording;
+                NumberToKeep = 0,
+                Oid = Oid,
+                PostPadding = config.PostPadding,
+                PrePadding = config.PrePadding,
+                RecordingDirectoryId = rd == null ? "" : rd.RecordingDirectoryId,
+                Type = RecordingType.Record_Once
+            });
         }
 
         public static ScheduledRecording Record(int UserOid, Models.RecordingSchedule Schedule)

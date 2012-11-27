@@ -282,6 +282,7 @@
     <Compile Include="Models\ConfigurationModels\RecordingConfiguration.cs" />
     <Compile Include="Models\ConfigurationModels\SmtpConfiguration.cs" />
     <Compile Include="Models\DbHelper.cs" />
+    <Compile Include="Models\DriveUsage.cs" />
     <Compile Include="Models\EpgListing.cs" />
     <Compile Include="Models\EpgRecordingData.cs" />
     <Compile Include="Models\Generated\Database.cs">
@@ -390,7 +391,6 @@
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\font-awesome-ie7.less" />
     <Content Include="Content\font\font-awesome.less" />
-    <Content Include="Content\guide\epg.less" />
     <Content Include="Content\guide\index.less" />
     <Content Include="Content\guide\show-info-dialog.less" />
     <Content Include="Content\themes\bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -444,6 +444,7 @@
     <Content Include="Content\usersettings\recordingdirectories.less" />
     <Content Include="Content\vtabs.less" />
     <Content Include="Content\search\index.less" />
+    <None Include="Content\progressbar.less" />
     <None Include="Models\Generated\Database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Database.cs</LastGenOutput>

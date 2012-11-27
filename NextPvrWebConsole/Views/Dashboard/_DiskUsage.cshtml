@@ -1,52 +1,14 @@
-﻿<div id="editor-render-0" style="width:380px;height:260px">
+﻿@{
+    foreach (NextPvrWebConsole.Models.DriveUsage drive in ViewBag.DriveStatistics)
+    {
 
-</div>
-
-<script>
-    var loadChart = function () {
-        (function basic_pie(container) {
-
-            var total = @ViewBag.Total;
-            var free = @ViewBag.Free;
-            var recordings = @ViewBag.Recordings;
-            var used = @ViewBag.Used;
-
-            var 
-              d1 = [[0, used / (1024 * 1024)]],
-              d2 = [[0, recordings / (1024 * 1024)]],
-              d3 = [[0, used / (1024 * 1024)]],
-              graph;
-
-            graph = Flotr.draw(container, [
-              { data: d1, label: 'Used', color: '#CB4B4B' },
-              { data: d2, label: 'Recordings', color: '#00A8F0' },
-              { data: d3, label: 'Free', color: '#4DA74D' }
-            ], {
-                HtmlText: false,
-                grid: {
-                    verticalLines: false,
-                    horizontalLines: false,
-                    outlineWidth: 0
-                },
-                xaxis: { showLabels: false },
-                yaxis: { showLabels: false },
-                pie: {
-                    show: true,
-                    explode: 0,
-                    sizeRatio: 0.7
-                },
-                legend: {
-                    position: 'ce',
-                    backgroundColor: '#fff',
-                    outline: ''
-                }
-            });
-        })(document.getElementById("editor-render-0"));
-    };
-
-    if (window.addEventListener)
-        window.addEventListener('load', loadChart, false);
-    else if (window.attachEvent)
-        window.attachEvent('onload', loadChart);
-
-</script>
+        int width_Used = (int)Math.Round((drive.Used - drive.RecordingsSize) / drive.Size * 100);
+        int width_Recordings = (int)Math.Round(drive.RecordingsSize / drive.Size * 100);
+        
+        <div style="width:100%" class="progress">
+            <div class="bar bar-success" style="width:@(width_Used)%"></div>
+            <div class="bar bar-warning" style="width:@(width_Recordings)%"></div>
+        </div>
+        <div class="label" data-lang="@drive.Name"></div>
+    }
+}
