@@ -2,15 +2,18 @@
     Layout = null;
 
     string hostname = Environment.MachineName; // TODO get this from a setting
-    
+
+    string title = "";
     string url = "http://" + hostname + ":8866/";
     if(ViewBag.IsRecording)
     {
         url += "live?recording=" + ViewBag.Oid;
+        title = "Recording: " + ViewBag.Title;
     }
     else
     {
         url += "live?channeloid=" + ViewBag.ChannelOid;
+        title = ViewBag.ChannelName + " Live";
     }
 }
 
@@ -19,7 +22,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.ChannelName Live</title>
+    <title>@title</title>
 </head>
 <body>
     <embed type="application/x-vlc-plugin"

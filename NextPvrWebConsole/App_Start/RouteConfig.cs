@@ -20,7 +20,7 @@ namespace NextPvrWebConsole
 
             routes.MapRoute("SearchRoute", "search/{searchText}", new { action = "Index", controller = "Search" });
 
-            routes.MapRoute("StreamRecording", "stream/recording/{oid}", new { action = "recording", controller = "streaming" }, new { oid = @"^\d+$" });
+            routes.MapRoute("StreamRecording", "stream/recording/{oid}", new { action = "recording", controller = "stream" }, new { oid = @"^\d+$" });
 
             routes.MapRoute(
                 name: "Default",

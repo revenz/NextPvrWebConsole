@@ -22,7 +22,7 @@ $(function () {
             gui.confirmMessage({
                 message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [title]),
                 yes: function () {
-                    api.deleteJSON('recording/' + recordingOid, null, function (result) {
+                    api.deleteJSON('recordings/' + recordingOid, null, function (result) {
                         if (result) {
                             tr.find('.btnRecord').removeAttr('style');
                             tr.find('.btnCancelRecording').attr('style', 'display:none');
