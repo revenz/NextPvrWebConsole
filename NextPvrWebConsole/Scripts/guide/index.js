@@ -66,6 +66,7 @@ var guide = new function () {
         guide.loadEpgData();
     };
 
+    var epgLoadTarget = document.getElementById('epg-load-target');
     self.loadEpgData = function () {
         var date = $('.epg-days .selected').attr('data-date');
         if (!date)
@@ -76,9 +77,8 @@ var guide = new function () {
         var today = new Date();
         var isToday = actualDate.getMonth() == today.getMonth() && actualDate.getDate() == today.getDate();
 
-        console.log('debug 1');
-        $('#epg-load-target').load('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group), function () {
-            console.log('debug 2');
+        $.get('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group), null, function (data, textStatus, jqXHR) {
+            epgLoadTarget.innerHTML = data;
             guide.initEpgGrid();
             $('#epg-time-indicator').css({ display: isToday ? 'block' : 'none' });
             if (isToday)
