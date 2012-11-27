@@ -19,6 +19,7 @@ namespace NextPvrWebConsole.Models
         public int RecordingOid { get; set; }
         public bool IsRecording { get; set; }
         public bool IsRecurring { get; set; }
+        public int RecurrenceOid { get; set; }
 
         public int ChannelNumber { get; set; }
         public string ChannelName { get; set; }

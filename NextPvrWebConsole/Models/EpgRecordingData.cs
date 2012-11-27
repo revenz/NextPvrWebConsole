@@ -15,6 +15,7 @@ namespace NextPvrWebConsole.Models
         public bool IsRecurring { get; set; }
         public RecordingType RecordingType { get; set; }
         public int RecordingOid { get; set; }
+        public int RecurrenceOid { get; set; }
 
         public static EpgRecordingData LoadForEpgEventOid(int UserOid, int EpgEventOid)
         {
@@ -60,6 +61,7 @@ namespace NextPvrWebConsole.Models
                             PostPadding = recurrence.PostPadding,
                             RecordingDirectoryId = recurrence.RecordingDirectoryID,
                             IsRecurring = true,
+                            RecurrenceOid = r.RecurrenceOID,
                             RecordingType = RecurringRecording.GetRecordingType(recurrence),
                             RecordingOid = r.OID
                         };

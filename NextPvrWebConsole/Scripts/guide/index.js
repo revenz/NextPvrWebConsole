@@ -77,7 +77,8 @@ var guide = new function () {
         var today = new Date();
         var isToday = actualDate.getMonth() == today.getMonth() && actualDate.getDate() == today.getDate();
 
-        $.get('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group), null, function (data, textStatus, jqXHR) {
+        // add random to stop IE from caching the guide data
+        $.get('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group) + '&rand=' + Math.random(), null, function (data, textStatus, jqXHR) {
             epgLoadTarget.innerHTML = data;
             guide.initEpgGrid();
             $('#epg-time-indicator').css({ display: isToday ? 'block' : 'none' });
@@ -120,7 +121,7 @@ var guide = new function () {
 
             var channelIconUrl = $('#epg-channel-' + result.ChannelOid + ' img').attr('src');
 
-            showInfo.find('.channelIcon').css('visible', channelIconUrl && channelIconUrl.length > 0).attr('src', channelIconUrl);
+            showInfo.find('.channelIcon').css('visibility', channelIconUrl && channelIconUrl.length > 0 ? 'visible' : 'hidden').attr('src', channelIconUrl);
             showInfo.find('.channelnumber').text(result.ChannelNumber);
             showInfo.find('.channelname').text(result.ChannelName);
             showInfo.find('.subtitle').text(result.Subtitle);
@@ -145,7 +146,7 @@ var guide = new function () {
                         gui.confirmMessage({
                             message: $.i18n._("Are you sure you want to cancel the series '%s'?", [result.Title]),
                             yes: function () {
-                                api.deleteJSON('recordings/deleterecurring/' + result.RecordingOid, null, function (data) {
+                                api.deleteJSON('recordings/deleterecurring/' + result.RecurrenceOid, null, function (data) {
                                     if (data) {
                                         $sender.removeClass('recording');
                                         $sender.attr('data-recordingoid', '');

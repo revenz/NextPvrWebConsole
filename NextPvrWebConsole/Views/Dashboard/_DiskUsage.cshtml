@@ -6,8 +6,8 @@
         int width_Recordings = (int)Math.Round(drive.RecordingsSize / drive.Size * 100);
         
         <div style="width:100%" class="progress">
-            <div class="bar bar-success" style="width:@(width_Used)%"></div>
-            <div class="bar bar-warning" style="width:@(width_Recordings)%"></div>
+            <div class="bar bar-success" style="width:@(width_Used)%" title="Used Space"></div>
+            <div class="bar bar-warning" style="width:@(width_Recordings)%" title="Used By Recordings"></div>
         </div>
         <div class="label" data-lang="@drive.Name"></div>
     }
