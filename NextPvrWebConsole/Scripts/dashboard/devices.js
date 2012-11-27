@@ -27,7 +27,7 @@ $(function () {
         };
     }
 
-    ko.applyBindings(new DevicesViewModel(), $('.tuners').get(0));
+    ko.applyBindings(new DevicesViewModel(), $('#tuners-data').get(0));
     $('#tuners-data').removeAttr('style');
 });
 

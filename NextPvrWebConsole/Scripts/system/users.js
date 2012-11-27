@@ -7,13 +7,13 @@
 $(function () {
 
     // setup knockoutjs data-bind on model generated inputs
-    $.each($('#Configuration-User-Editor tr'), function (i, ele) {
+    $.each($('#System-User-Editor tr'), function (i, ele) {
         var _class = $(ele).attr('class');
         $(ele).find('input:not([type=checkbox])').attr('data-bind', 'value: ' + _class);
     });
 
-    $('#Configuration-User-Editor .password input').attr('data-bind', 'value: password, event: { keyup: $root.passwordConfirmKeyUp }');
-    $('#Configuration-User-Editor .passwordconfirm input').attr('data-bind', 'value: passwordconfirm, event: { keyup: $root.passwordConfirmKeyUp }');
+    $('#System-User-Editor .password input').attr('data-bind', 'value: password, event: { keyup: $root.passwordConfirmKeyUp }');
+    $('#System-User-Editor .passwordconfirm input').attr('data-bind', 'value: passwordconfirm, event: { keyup: $root.passwordConfirmKeyUp }');
 
     function UsersViewModel() {
         var self = this;
@@ -52,39 +52,38 @@ $(function () {
         };
 
         self.passwordConfirmKeyUp = function (item) {
-            var same = $('#Configuration-User-Editor .password input').val() == $('#Configuration-User-Editor .passwordconfirm input').val();
+            var same = $('#System-User-Editor .password input').val() == $('#System-User-Editor .passwordconfirm input').val();
             if (same)
-                $('#Configuration-User-Editor #confirmpassword-error').addClass('field-validation-valid').removeClass('field-validation-error').css('display', 'none');
+                $('#System-User-Editor #confirmpassword-error').addClass('field-validation-valid').removeClass('field-validation-error').css('display', 'none');
             else
-                $('#Configuration-User-Editor #confirmpassword-error').addClass('field-validation-error').removeClass('field-validation-valid').css('display', 'inline');
+                $('#System-User-Editor #confirmpassword-error').addClass('field-validation-error').removeClass('field-validation-valid').css('display', 'inline');
         };
 
         var funCheckAdmin = function (isAdmin) {
             if (isAdmin)
-                $('#Configuration-User-Editor .userroles input').attr('disabled', true);
+                $('#System-User-Editor .userroles input').attr('disabled', true);
             else
-                $('#Configuration-User-Editor .userroles input').attr('disabled', false);
+                $('#System-User-Editor .userroles input').attr('disabled', false);
         };
 
         var showUserEditor = function (user, isNew, callback) {
             self.user(user);
-
             funCheckAdmin(user.administrator());
-
-            var dialog = $('#Configuration-User-Editor');
+            
+            var dialog = $('#System-User-Editor');
             dialog.find('.username input').attr('readonly', !isNew).attr('disabled', !isNew);
             dialog.find('tr.password, tr.passwordconfirm').css('display', isNew ? null : 'none');
-
+            
             var dialog_buttons = {};
             dialog_buttons[$.i18n._(isNew ? "Create" : "Save")] = function () {
 
                 var isValid = true;
-                var form = $('#Configuration-User-Editor form');
+                var form = $('#System-User-Editor form');
                 isValid &= (form.validate().element($('#userModel_EmailAddress ')));
                 if (isNew) {
                     isValid &= form.validate().element($('#userModel_Username '));
                     isValid &= (form.validate().element($('#userModel_Password ')));
-                    isValid &= $('#Configuration-User-Editor .password input').val() == $('#Configuration-User-Editor .passwordconfirm input').val();
+                    isValid &= $('#System-User-Editor .password input').val() == $('#System-User-Editor .passwordconfirm input').val();
                 }
 
                 if (isValid == false)

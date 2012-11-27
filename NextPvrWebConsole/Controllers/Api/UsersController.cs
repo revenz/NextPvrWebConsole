@@ -23,19 +23,21 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             if (value.Oid > 0) // edit
             {
-                if (!Validators.Validator.IsValid(value, "Password", "ConfirmPassword")) 
+                if (!Validators.Validator.IsValid(value, "Password", "ConfirmPassword"))
                     throw new ArgumentException();
+
+                var user = value.Save();
+                if (user != null)
+                    user.PasswordHash = String.Empty;
+                return user;
             }
             else
             {
                 if (!Validators.Validator.IsValid(value)) // need to pass in properties to ignore...
                     throw new ArgumentException();
+
+                return Models.User.CreateUser(value.Username, value.EmailAddress, value.Password, value.UserRole, value.Administrator);
             }
-            
-            var user = value.Save();
-            if (user != null)
-                user.PasswordHash = String.Empty;
-            return user;
         }
 
         // DELETE api/delete/5

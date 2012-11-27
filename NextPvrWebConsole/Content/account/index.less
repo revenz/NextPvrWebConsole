@@ -5,7 +5,8 @@ html {
     height:auto !important;
     height:100%;
 }
-.login-page {
+.login-page 
+{
     height:100%;
     h1 
     {
@@ -37,6 +38,10 @@ html {
 	    border:solid 1px #d3d3d3;
 	    padding:30px;
     }
+    input[type=text], input[type=password]
+    {
+        line-height: normal;
+    }
     #loginForm form
     {
 	    font-size:1.5em;
@@ -52,7 +57,7 @@ html {
 	    }
 	    input[type=text],input[type=password] {
 		    font-size:1.5em;
-		    padding: 0 15px;
+		    padding: 3px 15px 0;
 		    width:440px
 	    }
 	    input[type=password] {
@@ -104,4 +109,10 @@ html {
         right: 0px;
         top: -45px;
 	}
+}
+
+.ie .login-page input[type=password]
+{
+    padding-top:0 !important;
+    padding-bottom:3px !important;
 }

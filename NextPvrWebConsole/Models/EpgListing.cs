@@ -98,7 +98,7 @@ namespace NextPvrWebConsole.Models
             }).ToList();
         }
 
-        internal static List<SearchResult> Search(int UserOid, string SearchText)
+        internal static List<SearchResult> Search(int UserOid, string SearchText, int MaximumResults = 50)
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -126,14 +126,14 @@ namespace NextPvrWebConsole.Models
                     else if (searchPattern.IsMatch(Regex.Replace(listing.Subtitle, @"[^\w\d\s*]", "")))
                         listings2[2].Add(listing); //results.Add(new SearchResult(channels[listing.ChannelOID], new EpgListing(listing), 2));
                     else if (searchPattern.IsMatch(Regex.Replace(listing.Description, @"[^\w\d\s*]", "")))
-                        listings2[3].Add(listing); //results.Add(new SearchResult(channels[listing.ChannelOID], new EpgListing(listing), 3));
+                        listings2[3].Add(listing); //results.Add(new SearchResult(channels[listing.ChannelOID], new EpgListing(listing), 3));                    
                 }
 
                 // now pull all the epgevents into one list
                 var listings3 = listings2.SelectMany(x => x.Value).ToList();
                 
                 // now load the complete EpgList object for the list
-                return EpgListing.LoadEpgListings(UserOid, channels.Keys.ToArray(), listings3).Select(x => new SearchResult(channels[x.ChannelOid], x)).ToList();
+                return EpgListing.LoadEpgListings(UserOid, channels.Keys.ToArray(), listings3).Take(MaximumResults).Select(x => new SearchResult(channels[x.ChannelOid], x)).ToList();
             }
             finally
             {

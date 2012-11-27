@@ -42,7 +42,7 @@
     <ul data-bind="foreach: channels">
         <li>
             <input type="checkbox" class="noibutton" data-bind="checked: enabled, attr: { id: 'ChannelGroups-Channels-Channel-' + $index() }"  />
-            <label data-bind="text: name, attr: { for: 'ChannelGroups-Channels-Channel-' + $index() }" />
+            <label data-bind="text: name, attr: { for: 'ChannelGroups-Channels-Channel-' + $index() }"></label>
         </li>
     </ul>
 </div>

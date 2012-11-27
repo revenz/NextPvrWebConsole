@@ -12,6 +12,10 @@ $(function () {
 
         self.upcomingRecordings = ko.observableArray([]);
 
+        self.stop = function (listing) {
+            alert('No implemented yet.');
+        };
+
         var refreshUpcomingRecordings = function () {
             api.getJSON("recordings/getupcoming", null, function (allData) {
                 var mapped = $.map(allData, function (item) { return new Recording(item) });
@@ -21,5 +25,6 @@ $(function () {
         refreshUpcomingRecordings();
     }
 
-    ko.applyBindings(new UpcomingRecordingsViewModel(), $('.upcoming-recordings').get(0));
+    if ($('#upcoming-recordings').length > 0)
+        ko.applyBindings(new UpcomingRecordingsViewModel(), $('#upcoming-recordings').get(0));
 });

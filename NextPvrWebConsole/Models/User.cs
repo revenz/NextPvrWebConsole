@@ -77,13 +77,7 @@ namespace NextPvrWebConsole.Models
 
                 if (this.Oid == 0)
                 {
-                    if (this.Password.Length < 6)
-                        throw new ArgumentException(); // shouldnt have been posted back
-
-                    user.DateCreatedUtc = DateTime.UtcNow;
-                    user.LastLoggedInUtc = new DateTime(1970,1,1);
-                    user.Password = this.Password;
-                    db.Insert("user", "oid", true, user);
+                    throw new Exception("User does not exist.");
                 }
                 else
                 {

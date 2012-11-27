@@ -7,7 +7,9 @@
 var USERROLE_DASHBOARD = 1;
 var USERROLE_GUIDE = 2;
 var USERROLE_RECORDINGS = 4;
-var USERROLE_CONFIGURATION = 8;
+var USERROLE_USERSETTINGS = 8;
+var USERROLE_CONFIGURATION = 16;
+var USERROLE_SYSTEM = 32;
 
 function User(data) {
     if (!data) {
@@ -18,14 +20,20 @@ function User(data) {
     self.username = ko.observable(data.Username);
     self.emailaddress = ko.observable(data.EmailAddress);
     self.userrole = ko.observable(data.UserRole);
-    self.lastLoggedIn = ko.observable(data.LastLoggedInUtc);
+    if (data.LastLoggedInUtc.indexOf('.') > 0)
+        data.LastLoggedInUtc = data.LastLoggedInUtc.substr(0, data.LastLoggedInUtc.indexOf('.')) + 'Z';
+
+    self.lastLoggedIn = ko.observable(new Date(data.LastLoggedInUtc));
     self.dateCreated = ko.observable(data.DateCreatedUtc);
     self.readonly = ko.observable(data.ReadOnly);
     self.passwordHash = ko.observable(data.PasswordHash);
     self.password = ko.observable(data.Password ? data.Password : '');
     self.passwordconfirm = ko.observable(data.ConfirmPassword ? data.ConfirmPassword : '');
     self.administrator = ko.observable(data.Administrator);
+    
     self.lastLoggedInString = ko.computed(function () {
+        if (self.lastLoggedIn().getFullYear() < 2000)
+            return $.i18n._('Never');
         return gui.formatDateLong(self.lastLoggedIn());
     });
     self.dateCreatedString = ko.computed(function () {
@@ -49,6 +57,14 @@ function User(data) {
     self.roleConfiguration = ko.computed({
         read: function () { return (self.userrole() & USERROLE_CONFIGURATION) == USERROLE_CONFIGURATION; },
         write: function (value) { self.userrole(self.userrole() | USERROLE_CONFIGURATION); }
+    });
+    self.roleSystem = ko.computed({
+        read: function () { return (self.userrole() & USERROLE_SYSTEM) == USERROLE_SYSTEM; },
+        write: function (value) { self.userrole(self.userrole() | USERROLE_SYSTEM); }
+    });
+    self.roleUserSettings = ko.computed({
+        read: function () { return (self.userrole() & USERROLE_USERSETTINGS) == USERROLE_USERSETTINGS; },
+        write: function (value) { self.userrole(self.userrole() | USERROLE_USERSETTINGS); }
     });
 
     self.toApiObject = function () {

@@ -314,7 +314,7 @@
 {
 	.border-radius-right(0px)
 }
-.epg-listings-channel ul:nth-child(odd) .listing{
+.epg-listings-channel ul:nth-child(odd) .listing {
     .gradient(#555, #555, #999);
 }
 .listing 
@@ -334,7 +334,7 @@
 }
 
 .listing.recording {
-    .gradient(#444, #330000, #770000) !important; /* a nice read gradient */
+    .gradient(#700, #300, #700) !important; /* a nice read gradient */
 }
 
 .epg-time-indicator {
@@ -367,4 +367,16 @@
         border-left: 7px solid transparent; 
         border-right: 7px solid transparent; 
     }
+}
+
+.ie 
+{
+    .epg-days 
+    {
+        background:#006;
+        li.selected { background: @epgday_selected_background_gradient_stop; }
+    }
+    .listing { background: #444; }
+    .listing.recording { background:#700; }
+    .epg-listings-channel ul:nth-child(odd) .listing { background:#555; }
 }
