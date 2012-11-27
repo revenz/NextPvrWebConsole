@@ -77,7 +77,7 @@ var guide = new function () {
         var isToday = actualDate.getMonth() == today.getMonth() && actualDate.getDate() == today.getDate();
 
         console.log('debug 1');
-        $('.epg-container .epg').load('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group), function () {
+        $('#epg-load-target').load('/guide/epg?date=' + date + '&group=' + encodeURIComponent(group), function () {
             console.log('debug 2');
             guide.initEpgGrid();
             $('#epg-time-indicator').css({ display: isToday ? 'block' : 'none' });
