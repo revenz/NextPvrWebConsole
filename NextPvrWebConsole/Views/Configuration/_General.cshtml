@@ -7,9 +7,11 @@
         <tr class="livetvbuffer">
             <td class="label" data-lang="Live TV Buffer"></td>
             <td class="value">
-                @Html.TextBoxFor(m => modelGeneral.LiveTvBufferDirectory, new { @readonly= "readonly" })
-                <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
-                <span class="description" data-lang="LiveTvBuffer-Description" />
+                <div>
+                    @Html.TextBoxFor(m => modelGeneral.LiveTvBufferDirectory, new { @readonly= "readonly" })
+                    <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
+                    <span class="description" data-lang="LiveTvBuffer-Description" />
+                </div>
             </td>
         </tr>
         <tr>
@@ -37,9 +39,11 @@
         <tr class="userrecordingdirectory">
             <td class="label" data-lang="User Recording Directory"></td>
             <td class="value">
-                @Html.TextBoxFor(m => modelGeneral.UserBaseRecordingDirectory, new { @readonly = "readonly" })
-                <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnUserBaseRecordingDirectoryBrowse" onclick="return false">...</button>
-                <span class="description" data-lang="UserBaseRecordingDirectory-Description" />
+                <div>
+                    @Html.TextBoxFor(m => modelGeneral.UserBaseRecordingDirectory, new { @readonly = "readonly" })
+                    <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnUserBaseRecordingDirectoryBrowse" onclick="return false">...</button>
+                    <span class="description" data-lang="UserBaseRecordingDirectory-Description" />
+                </div>
             </td>
         </tr>
         <tr>

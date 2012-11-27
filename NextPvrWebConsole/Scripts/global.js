@@ -9,8 +9,30 @@ var DIRECTORY_REGULAR_EXPRSESION = '^([^"*/:?|<>\\\\.\\x00-\\x20]([^"*/:?|<>\\\\
 var DIRECTORY_ERROR_MESSAGE = $.i18n._('Invalid folder name');
 var DIRECTORY_CREATE_MESSAGE = $.i18n._('Type in the name of the folder to create.');
 var DIRECTORY_CREATE_TITLE = $.i18n._('Create Recording Folder');
-
 $(function () {
+    $('html').removeClass('no-js');
+    var userAgent = navigator.userAgent.toLowerCase();
+    $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+
+    // Is this a version of Chrome?
+    if ($.browser.chrome)
+        $('html').addClass('chrome webkit');
+    else if ($.browser.safari)// Is this a version of Safari?
+        $('html').addClass('safari webkit');
+
+    // Is this a version of Mozilla?
+    if ($.browser.mozilla) {
+        //Is it Firefox?
+        if (navigator.userAgent.toLowerCase().indexOf('firefox') != -1)
+            $('html').addClass('firefox mozilla');
+        else // If not then it must be another Mozilla
+            $('html').addClass('moizlla');
+    }
+
+    // Is this a version of Opera?
+    if ($.browser.opera)
+        $('html').addClass('opera');
+
     $(":checkbox:not(.noibutton)").iButton();
 
     var changePasswordDialog = $('#ChangePasswordContainer');
