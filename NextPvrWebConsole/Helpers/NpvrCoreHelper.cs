@@ -97,5 +97,9 @@ namespace NextPvrWebConsole.Helpers
         {
             return RecurringRecording.LoadByOID(RecurrenceOID);
         }
+        internal static List<RecurringRecording> RecurringRecordingLoadAll()
+        {
+            return RecurringRecording.LoadAll();
+        }
     }
 }

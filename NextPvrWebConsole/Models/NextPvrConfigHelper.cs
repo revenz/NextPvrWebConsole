@@ -148,7 +148,7 @@ namespace NextPvrWebConsole.Models
                         }
                     }
                 }
-                settings.SetSetting("/Settings/Recording/ExtraRecordingDirectories", value == null ? "" : String.Join("", (from rd in value select "{0}~{1}~".FormatStr(rd.Key, rd.Value)).ToArray()));
+                settings.SetSetting("/Settings/Recording/ExtraRecordingDirectories", value == null ? "" : String.Join("", value.Select(x => "{0}~{1}~".FormatStr(x.Key.StartsWith("[") && x.Key.EndsWith("]") ? x.Key.Substring(1, x.Key.Length - 2) : x.Key , x.Value)).ToArray()));
             }
         }
 

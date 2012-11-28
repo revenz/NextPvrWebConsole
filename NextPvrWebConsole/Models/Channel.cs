@@ -39,17 +39,17 @@ namespace NextPvrWebConsole.Models
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Logger.Log("Channel load for time period.");
-            int[] channelOids = ChannelGroup.LoadChannelOids(UserOid, GroupName);
+            Dictionary<int, Channel> channels = Channel.LoadChannelsForGroup(UserOid, GroupName).ToDictionary(x => x.Oid);
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
-            var data = Helpers.NpvrCoreHelper.GetListingsForTimePeriod(Start.AddHours(-12), End); 
-            var listingData = data.Where(x => channelOids.Contains(x.Key.OID)).SelectMany(x => x.Value);
+            var data = Helpers.NpvrCoreHelper.GetListingsForTimePeriod(Start.AddHours(-12), End);
+            var listingData = data.Where(x => channels.ContainsKey(x.Key.OID)).SelectMany(x => x.Value);
             Logger.Log("Time[0]: " + timer.Elapsed.ToString());
             
 
             // load here to pass into loadepglisting            
 
             var userRdDefault = RecordingDirectory.LoadUserDefault(UserOid);
-            var listings = EpgListing.LoadEpgListings(UserOid, channelOids, listingData, userRdDefault);
+            var listings = EpgListing.LoadEpgListings(UserOid, channels.Keys.ToArray(), listingData, userRdDefault);
             Logger.Log("Time[6]: " + timer.Elapsed.ToString());
             Dictionary<int, List<EpgListing>> listingResults = new Dictionary<int, List<EpgListing>>();
             foreach (var listing in listings)
@@ -61,12 +61,12 @@ namespace NextPvrWebConsole.Models
             Logger.Log("Time[7]: " + timer.Elapsed.ToString());
             
             List<Channel> results = new List<Channel>();
-            foreach (var key in data.Keys.Where(x => channelOids.Contains(x.OID)))
+            foreach (var key in data.Keys.Where(x => channels.Keys.Contains(x.OID)))
             {
                 results.Add(new Channel() 
                 {
                     Name = key.Name,
-                    Number = key.Number,
+                    Number = channels[key.OID].Number,
                     Oid = key.OID,
                     HasIcon = key.Icon != null,
                     Listings = listingResults.ContainsKey(key.OID) ? listingResults[key.OID] : null
@@ -74,7 +74,7 @@ namespace NextPvrWebConsole.Models
             }
             Logger.Log("Time[8]: " + timer.Elapsed.ToString());
             timer.Stop();
-            return results;
+            return results.OrderBy(x => x.Number).ToList();
         }
 
 

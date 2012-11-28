@@ -444,7 +444,7 @@
     <Content Include="Content\usersettings\recordingdirectories.less" />
     <Content Include="Content\vtabs.less" />
     <Content Include="Content\search\index.less" />
-    <None Include="Content\progressbar.less" />
+    <Content Include="Content\progressbar.less" />
     <None Include="Models\Generated\Database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Database.cs</LastGenOutput>

@@ -73,7 +73,7 @@ where cg1.useroid = @0 order by cg1.orderoid
             if (userSupport)
             {
                 // need to filter out their disabled channels
-                sql = "select cgc.channeloid from channelgroupchannel cgc inner join channel c on cgc.channeloid = c.oid inner join userchannel uc on cgc.channeloid = uc.channeloid where c.enabled = 1 and uc.enabled = 1 and channelgroupoid = @0";
+                sql = "select cgc.channeloid from channelgroupchannel cgc inner join channel c on cgc.channeloid = c.oid inner join userchannel uc on cgc.channeloid = uc.channeloid where c.enabled = 1 and uc.enabled = 1 and channelgroupoid = @0 and uc.useroid = " + UserOid;
             }
             return db.Fetch<int>(sql, channelGroup.Oid).ToArray();
         }

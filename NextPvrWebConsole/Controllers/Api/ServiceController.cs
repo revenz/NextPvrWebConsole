@@ -22,6 +22,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         public HttpResponseMessage Get(string Method, string Ver = null, string Device = null, string Sid = null, string Md5 = null, int channel_id = 0, int start = 0, int end = 0, string group_id = null, string filter = null, int recording_id = 0, string name = null, int channel = 0, int time_t = 0, int duration = 0)
         {
+            Logger.ILog("Service Request: {0}", Method);
             object response = new Response() { ErrorCode = 0, ErrorMessage = "Unknown method." };
             try
             {
@@ -83,6 +84,7 @@ namespace NextPvrWebConsole.Controllers.Api
         #region session stuff
         private Response Session_Initiate(string Version, string Device)
         {
+            Logger.ILog("ServiceController.Session_Initiate(\"{0}\", \"{1}\")", Version, Device);
             string sid = null;
             do
             {
@@ -103,6 +105,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Session_Login(string Sid, string Md5)
         {
+            Logger.ILog("ServiceController.Session_Login(\"{0}\", \"{1}\")", Sid, Md5);
             try
             {
                 string salt = SidsAndSalts[Sid];
@@ -147,6 +150,8 @@ namespace NextPvrWebConsole.Controllers.Api
             try
             {
                 Version npvrVersion = Models.NextPvrConfigHelper.NextPvrVersion;
+                if (npvrVersion.ToString().StartsWith("2.5.9"))
+                    npvrVersion = new Version(2, 5, 10, 0);
                 int streamingPort = Models.NextPvrConfigHelper.WebServerPort;
 
                 return new Response()
@@ -171,6 +176,7 @@ namespace NextPvrWebConsole.Controllers.Api
         #region channel stuff
         private Response Channel_Listings(int UserOid, int ChannelOid, long Start, long End)
         {
+            Logger.ILog("ServiceController.Channel_List({0}, {1}, \"{2}\", \"{3}\")", UserOid, ChannelOid, Start.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"), End.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"));
             // todo: authorization session...
             var channel = Models.Channel.Load(ChannelOid, UserOid);
             if(channel == null)
@@ -187,6 +193,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Channel_List(int UserOid, string GroupName)
         {
+            Logger.ILog("ServiceController.Channel_List({0}, \"{1}\")", UserOid, GroupName);
             return new Response()
             {
                 Channels = String.IsNullOrWhiteSpace(GroupName) ? Models.Channel.LoadAll(UserOid).ToList() : Models.Channel.LoadChannelsForGroup(UserOid, GroupName).ToList(),
@@ -197,6 +204,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private object Channel_Icon(int UserOid, int ChannelOid)
         {
+            Logger.ILog("ServiceController.Channel_Icon({0}, {1})", UserOid, ChannelOid);
             var channel = NUtility.Channel.LoadByOID(ChannelOid);
             if (channel == null || channel.Icon == null)
                 return null;
@@ -215,11 +223,12 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Channel_Groups(int UserOid)
         {
+            Logger.ILog("ServiceController.Channel_Groups({0})", UserOid);
             return new Response()
             {
                 Type = Response.ResponseType.ChannelGroups,
                 Stat = Response.ResponseStat.ok,
-                Groups = Models.ChannelGroup.LoadAll(UserOid).ToList()
+                Groups = Models.ChannelGroup.LoadAll(UserOid).Where(x => x.Enabled).ToList()
             };
         }
         #endregion
@@ -227,12 +236,13 @@ namespace NextPvrWebConsole.Controllers.Api
         #region recoring stuff
         private Response Recording_List(int UserOid, string Filter)
         {
+            Logger.ILog("ServiceController.Recording_List({0}, \"{1}\")", UserOid, Filter);
             try
             {
                 Dictionary<int, NUtility.RecurringRecording> reocurring = new Dictionary<int,NUtility.RecurringRecording>();
                 foreach(var r in NUtility.RecurringRecording.LoadAll())
                     reocurring.Add(r.OID, r);
-                List<MyScheduledRecording> recordings = null;
+                List<Models.Recording> recordings = null;
                 switch (Filter)
                 {
                     case null:
@@ -241,24 +251,12 @@ namespace NextPvrWebConsole.Controllers.Api
                         break;
                     case "pending":
                         {
-                            recordings = (from r in Models.ScheduledRecordingModel.LoadAll(UserOid, true)
-                                          where r.Status == NUtility.RecordingStatus.STATUS_PENDING
-                                          select new MyScheduledRecording()
-                                          {
-                                              Recording = r,
-                                              Recurring = r.RecurrenceOID > 0 && reocurring.ContainsKey(r.RecurrenceOID) ? reocurring[r.RecurrenceOID] : null
-                                          }).ToList();
+                            recordings = Models.RecordingGroup.Get(UserOid, IncludePending: true).SelectMany(x => x.Recordings).OrderBy(x => x.StartTime).ToList();
                         }
                         break;
                     case "ready":
                         {
-                            recordings = (from r in Models.ScheduledRecordingModel.LoadAll(UserOid, true)
-                                          where r.Status == NUtility.RecordingStatus.STATUS_COMPLETED || r.Status == NUtility.RecordingStatus.STATUS_COMPLETED_WITH_ERROR                                            
-                                          select new MyScheduledRecording()
-                                          {
-                                              Recording = r,
-                                              Recurring = r.RecurrenceOID > 0 && reocurring.ContainsKey(r.RecurrenceOID) ? reocurring[r.RecurrenceOID] : null
-                                          }).ToList();
+                            recordings = Models.RecordingGroup.Get(UserOid, IncludeAvailable: true).SelectMany(x => x.Recordings).ToList();
                         }
                         break;
                 }
@@ -280,6 +278,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Recording_Delete(int UserOid, int RecordingId)
         {
+            Logger.ILog("ServiceController.Recording_Delete({0}, \"{1}\")", UserOid, RecordingId);
             NUtility.ScheduledRecording recording = NUtility.ScheduledRecording.LoadByOID(RecordingId);
             if (recording == null)
                 return new Response() { Stat = Response.ResponseStat.ok };
@@ -296,6 +295,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Recording_Save(int UserOid, string Name, int ChannelOid, long Time, int Duration)
         {
+            Logger.ILog("ServiceController.Recording_Save({0}, \"{1}\", {2}, \"{3}\", {4})", UserOid, Name, ChannelOid, Time.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"), Duration);
             DateTime start = Time.FromUnixTime();
             DateTime end = start.AddSeconds(Duration);
             var epgevent = NUtility.EPGEvent.LoadByNameAndTime(ChannelOid, Name, start, end);
@@ -326,11 +326,11 @@ namespace NextPvrWebConsole.Controllers.Api
             return sb.ToString();
         }
 
-        private class MyScheduledRecording
-        {
-            public NUtility.ScheduledRecording Recording { get; set; }
-            public NUtility.RecurringRecording Recurring { get; set; }
-        }
+        //private class MyScheduledRecording
+        //{
+        //    public NUtility.ScheduledRecording Recording { get; set; }
+        //    public NUtility.RecurringRecording Recurring { get; set; }
+        //}
 
         private class Response
         {
@@ -355,7 +355,8 @@ namespace NextPvrWebConsole.Controllers.Api
             public List<NUtility.EPGEvent> Listings { get; set; }
             public List<Models.Channel> Channels { get; set; }
             public List<Models.ChannelGroup> Groups { get; set; }
-            public List<MyScheduledRecording> Recordings { get; set; }
+            //public List<MyScheduledRecording> Recordings { get; set; }
+            public List<Models.Recording> Recordings { get; set; }
 
             public Response()
             {
@@ -402,26 +403,28 @@ namespace NextPvrWebConsole.Controllers.Api
                                     }
                                     return String.Empty;
                                 };
+                                Dictionary<int, NUtility.RecurringRecording> recurring = Helpers.NpvrCoreHelper.RecurringRecordingLoadAll().ToDictionary(x => x.OID);
                                 root.Add(new XElement("recordings", this.Recordings.Select(x =>
                                             new XElement("recording",
-                                                new XElement("id", x.Recording.OID),
-                                                new XElement("recurring_parent", x.Recording.RecurrenceOID),
-                                                new XElement("name", x.Recording.Name),
-                                                new XElement("desc", x.Recording.Name), // this is a desc, but original service sets this to the same as the name...
-                                                new XElement("start_time", TimeZone.CurrentTimeZone.ToLocalTime(x.Recording.StartTime).ToString("d/M/yyyy h:mm:ss tt")),
-                                                new XElement("start_time_ticks", x.Recording.StartTime.ToUnixTime()),
-                                                new XElement("duration", x.Recording.EndTime.Subtract(x.Recording.StartTime).ToString("hh':'mm")),
-                                                new XElement("duration_seconds", ((int)x.Recording.EndTime.Subtract(x.Recording.StartTime).TotalSeconds)),
-                                                new XElement("status", statusToString(x.Recording.Status)),
-                                                new XElement("quality", x.Recording.Quality.ToString()),
-                                                new XElement("channel", x.Recording.ChannelOID),
-                                                new XElement("channel_id", x.Recording.ChannelOID),
-                                                new XElement("recurring", x.Recording.RecurrenceOID > 0),
-                                                new XElement("daymask", x.Recurring != null ? x.Recurring.DayMask.ToString() : ""),
-                                                new XElement("recurring_start", x.Recurring != null ? x.Recurring.StartTime.ToString("d/M/yyyy h:mm:ss tt") : ""),
-                                                new XElement("recurring_start_ticks", x.Recurring != null ? x.Recurring.StartTime.Ticks.ToString() : ""),
-                                                new XElement("recurring_end", x.Recurring != null ? x.Recurring.EndTime.ToString("d/M/yyyy h:mm:ss tt") : ""),
-                                                new XElement("recurring_end_ticks", x.Recurring != null ? x.Recurring.EndTime.Ticks.ToString() : "")))));
+                                                new XElement("id", x.OID),
+                                                new XElement("recurring_parent", x.RecurrenceOid),
+                                                new XElement("name", x.Name),
+                                                new XElement("desc", x.Name), // this is a desc, but original service sets this to the same as the name...
+                                                new XElement("start_time", TimeZone.CurrentTimeZone.ToLocalTime(x.StartTime).ToString("d/M/yyyy h:mm:ss tt")),
+                                                new XElement("start_time_ticks", x.StartTime.ToUnixTime()),
+                                                new XElement("duration", x.EndTime.Subtract(x.StartTime).ToString("hh':'mm")),
+                                                new XElement("duration_seconds", ((int)x.EndTime.Subtract(x.StartTime).TotalSeconds)),
+                                                new XElement("status", statusToString(x.Status)),
+                                                new XElement("quality", x.Quality == null ? "QUALITY_DEFAULT" : x.Quality.ToString()),
+                                                new XElement("channel", x.ChannelOID),
+                                                new XElement("channel_id", x.ChannelOID),
+                                                new XElement("recurring", x.RecurrenceOid > 0),
+                                                new XElement("daymask", x.RecurrenceOid > 0 && recurring.ContainsKey(x.RecurrenceOid) ? recurring[x.RecurrenceOid].DayMask.ToString() : ""),
+                                                new XElement("recurring_start", x.RecurrenceOid > 0 && recurring.ContainsKey(x.RecurrenceOid) ? recurring[x.RecurrenceOid].StartTime.ToString("d/M/yyyy h:mm:ss tt") : ""),
+                                                new XElement("recurring_start_ticks", x.RecurrenceOid > 0 && recurring.ContainsKey(x.RecurrenceOid) ? recurring[x.RecurrenceOid].StartTime.Ticks.ToString() : ""),
+                                                new XElement("recurring_end", x.RecurrenceOid > 0 && recurring.ContainsKey(x.RecurrenceOid) ? recurring[x.RecurrenceOid].EndTime.ToString("d/M/yyyy h:mm:ss tt") : ""),
+                                                new XElement("recurring_end_ticks", x.RecurrenceOid > 0 && recurring.ContainsKey(x.RecurrenceOid) ? recurring[x.RecurrenceOid].EndTime.Ticks.ToString() : "")
+                                                ))));
 
                             }
                             break;

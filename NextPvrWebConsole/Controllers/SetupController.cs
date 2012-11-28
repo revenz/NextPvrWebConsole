@@ -49,7 +49,7 @@ namespace NextPvrWebConsole.Controllers
             foreach (var extra in extras)
             {
                 // make sure there aren't any directories from NextPVRWebConsole
-                string name = extra.Key;
+                string name = "[{0}]".FormatStr(extra.Key);
                 if (name.StartsWith("[Shared - "))
                     name = "[" + name.Substring("[Shared - ".Length);
                 if (Regex.IsMatch(name, @"^\[[^\]\-]+\-[^\]]+\]$"))
