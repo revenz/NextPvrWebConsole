@@ -10,15 +10,15 @@
 <div class="user-settings vtab-container">
 
     <ul class="vtab-buttons">
-        <li data-tab="user-settings-tab-channelgroups" class="first selected"><i class="icon icon-sitemap"></i><span data-lang="Channel Groups" /></li>
+        <li data-tab="channelgroups" class="first selected"><i class="icon icon-sitemap"></i><span data-lang="Channel Groups" /></li>
         @if (ViewBag.UserRecordingDirectoriesEnabled)
         {
-            <li data-tab="user-settings-tab-channels"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
-            <li data-tab="user-settings-tab-recordingdirectories" class="last"><i class="icon icon-folder-close"></i><span data-lang="Recording Directories" /></li>
+            <li data-tab="channels"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
+            <li data-tab="recordingdirectories" class="last"><i class="icon icon-folder-close"></i><span data-lang="Recording Directories" /></li>
         }
         else
         {
-            <li data-tab="user-settings-tab-channels" class="last"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
+            <li data-tab="channels" class="last"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
         }
     </ul>
 

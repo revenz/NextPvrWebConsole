@@ -66,10 +66,10 @@ namespace NextPvrWebConsole.Controllers
             }
         }
 
-        public ActionResult Log(string Oid)
+        public ActionResult Log(string Oid, string Name)
         {
             // security, make sure the filename is in the list of log files
-            var log = new Api.LogsController().Get().Where(x => x.Oid == Oid).FirstOrDefault();
+            var log = new Api.LogsController().Get().Where(x => x.Oid == Oid || (Oid == "" && x.Name == Name)).FirstOrDefault();
             if (log != null)
             {
                 using (var stream = new System.IO.FileStream(log.FullName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))

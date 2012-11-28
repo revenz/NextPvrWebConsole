@@ -16,13 +16,24 @@ $(function () {
 
     $('.vtab-buttons li').click(function () {
         var $this = $(this);
-        var container = $this.closest('.vtab-container');
-        container.find('.vtab-buttons .selected').removeClass('selected');
-        $this.addClass('selected');
-        var tabid = $this.attr('data-tab');
-        container.find('.vtab-content.selected').removeClass('selected');
-        $('#' + tabid).addClass('selected');
+        var dataTab = $this.attr('data-tab');
+        $.address.value("/tab/" + dataTab);
     });
 
     resizeTabs();
+});
+
+$.address.change(function (event) {
+    if (event.value.startsWith('/tab/')) {
+        var tabname = event.value.substr(5);
+        if (tabname.indexOf('/') > 0)
+            tabname = tabname.substr(0, tabname.indexOf('/'));
+        console.log('tabname: ' + tabname);
+        var tabButton = $('.vtab-buttons [data-tab=' + tabname + ']');
+        var container = tabButton.closest('.vtab-container');
+        container.find('.vtab-buttons .selected').removeClass('selected');
+        tabButton.addClass('selected');
+        container.find('.vtab-content.selected').removeClass('selected');
+        container.find('.vtab-content[id$=' + tabname + ']').addClass('selected');
+    }
 });

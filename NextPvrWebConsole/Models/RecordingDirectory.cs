@@ -172,6 +172,7 @@ namespace NextPvrWebConsole.Models
                     throw new ArgumentException("Invalid parameters");
             }
 
+            var config = new Configuration();
             string username = User.GetUsername(UserOid);
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();
@@ -189,6 +190,10 @@ namespace NextPvrWebConsole.Models
                         defaultRecordingDirectoryOid = rd.Oid;
                     if (UserOid != Globals.SHARED_USER_OID && rd.IsShared) // dont let users update the shared directory
                         continue;
+                    
+                    if (UserOid != Globals.SHARED_USER_OID && (!config.EnableUserSupport || !config.UserRecordingDirectoriesEnabled))
+                        continue;
+
                     rd.UserOid = UserOid;
                     rd.Username = username;
                     if (rd.Oid < 1) // new one

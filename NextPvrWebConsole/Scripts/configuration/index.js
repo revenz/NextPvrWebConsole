@@ -4,15 +4,18 @@
 /// <reference path="../core/knockout-2.2.0.js" />
 
 $(function () {
-    
+
     function RecordingDirectoriesViewModel() {
         // Data
         var self = this;
 
         self.selectedDefault = ko.observable();
-        for (var i = 0; i < recordingDirectories.length; i++)
-            if (recordingDirectories[i].isDefault)
+        for (var i = 0; i < recordingDirectories.length; i++) {
+            if (recordingDirectories[i].isDefault()) {
                 self.selectedDefault(i);
+                console.log('selected default: ' + i);
+            }
+        }
 
         self.add = function () {
             ShowFolderBrowser(function (dir) {
