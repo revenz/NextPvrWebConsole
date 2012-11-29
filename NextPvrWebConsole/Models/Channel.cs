@@ -39,7 +39,7 @@ namespace NextPvrWebConsole.Models
             Stopwatch timer = new Stopwatch();
             timer.Start();
             Logger.Log("Channel load for time period.");
-            Dictionary<int, Channel> channels = Channel.LoadChannelsForGroup(UserOid, GroupName).ToDictionary(x => x.Oid);
+            Dictionary<int, Channel> channels = (String.IsNullOrWhiteSpace(GroupName) ? Channel.LoadAll(UserOid, false) : Channel.LoadChannelsForGroup(UserOid, GroupName)).ToDictionary(x => x.Oid);
             // -12 hours from start to make sure we get data that starts earlier than start, but finishes after start
             var data = Helpers.NpvrCoreHelper.GetListingsForTimePeriod(Start.AddHours(-12), End);
             var listingData = data.Where(x => channels.ContainsKey(x.Key.OID)).SelectMany(x => x.Value);

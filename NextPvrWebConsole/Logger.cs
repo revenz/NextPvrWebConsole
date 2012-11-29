@@ -78,8 +78,8 @@ namespace NextPvrWebConsole
                         // new file, write out standard info
                         File.AppendAllText(name, new String('=', 60) + Environment.NewLine +
                                                 "NextPVR Version: " + Globals.NextPvrVersion + Environment.NewLine +
-                                                "NextPVR Webconsole Version: " + Globals.NextPvrWebConsoleVersion + Environment.NewLine +
-                                                "NextPVR Webconsole Database Version: " + Globals.DB_VERSION + Environment.NewLine +
+                                                "NextPVR Web Console Version: " + Globals.NextPvrWebConsoleVersion + Environment.NewLine +
+                                                "NextPVR Web Console Database Version: " + Globals.DB_VERSION + Environment.NewLine +
                                                 new String('=', 60) + Environment.NewLine + Environment.NewLine);
                         return name;
                     }

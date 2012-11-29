@@ -72,6 +72,10 @@ $(function () {
                 self.selectedChannelGroup(editing);
                 var dialog_buttons = {};
                 dialog_buttons[$.i18n._("OK")] = function () {
+                    if (editing.name().toLowerCase() == 'all channels') {
+                        gui.showError($.i18n._("Cannot create a Channel Group 'All Channels' as it is reserved."));
+                        return;
+                    }
                     // check name is unique
                     var duplicate = false;
                     $.each(self.channelgroups(), function (i, ele) {

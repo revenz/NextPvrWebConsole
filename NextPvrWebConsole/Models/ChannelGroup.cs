@@ -175,6 +175,8 @@ where cg1.useroid = @0 order by cg1.orderoid
         {
             if (ChannelGroups.Where(x => !x.IsShared || UserOid == Globals.SHARED_USER_OID).DuplicatesBy(x => x.Name.ToLower()).Count() > 0)
                 throw new ArgumentException("Channel group names must be unique.");
+            if (ChannelGroups.Where(x => x.Name.ToLower() == Globals.ALL_CHANNELS_GROUP_NAME.ToLower()).Count() > 0)
+                throw new ArgumentException("Cannot create a Channel Group '{0}' as it is reserved.".FormatStr(Globals.ALL_CHANNELS_GROUP_NAME));
 
             var db = DbHelper.GetDatabase();
             db.BeginTransaction();

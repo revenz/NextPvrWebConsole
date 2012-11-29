@@ -85,7 +85,7 @@ namespace NextPvrWebConsole.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your password for NextPVR Webconsole has been reset for the following Website.
+        ///   Looks up a localized string similar to Your password for NextPVR Web Console has been reset for the following Website.
         ///
         ///{Url}
         ///
@@ -101,7 +101,7 @@ namespace NextPvrWebConsole.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A password reset request was made for this account for NextPVR Webconsole.
+        ///   Looks up a localized string similar to A password reset request was made for this account for NextPVR Web Console.
         ///
         ///If you did not make this request, delete this email.
         ///

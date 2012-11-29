@@ -25,8 +25,9 @@
     
         <div id="epg-groups" style="display:none">
             <ul>
+                <li class="group selected" data-name=""><span data-lang="All Channels"></span></li>
             @{
-                bool first = true;
+                bool first = false;
                 foreach (var g in ViewBag.Groups)
                 {
                 <li class="group @(first ? "selected" : "")" data-name="@g.Name"><span>@g.Name</span></li>

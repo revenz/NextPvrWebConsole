@@ -71,7 +71,7 @@ namespace NextPvrWebConsole.Controllers
                     db.Insert("channel", "oid", false, c);
 
                 // insert groups
-                var groups = NUtility.Channel.GetChannelGroups().Select(x => new Models.ChannelGroup() { Name = x, UserOid = Globals.SHARED_USER_OID }).ToArray();
+                var groups = NUtility.Channel.GetChannelGroups().Where(x => x != "All Channels" && x != "All TV Channels").Select(x => new Models.ChannelGroup() { Name = x, UserOid = Globals.SHARED_USER_OID }).ToArray();
                 for (int i = 0; i < groups.Length; i++)
                 {
                     groups[i].OrderOid = i + 1;

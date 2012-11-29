@@ -154,7 +154,7 @@ namespace NextPvrWebConsole.Models
             var config = new Configuration();
             string url = "{0}ResetPassword?code={1}".FormatStr(config.WebsiteAddress, Helpers.Encrypter.Encrypt("{0}:{1}:{2}".FormatStr(user.Username, user.EmailAddress, DateTime.UtcNow.Ticks)));
 
-            Helpers.Emailer.Send(user.EmailAddress, "NextPVR Webconsole Password Reset Request", Resources.Files.PasswordResetRequestBody.Replace("{Url}", url));
+            Helpers.Emailer.Send(user.EmailAddress, "NextPVR Web Console Password Reset Request", Resources.Files.PasswordResetRequestBody.Replace("{Url}", url));
         }
 
         public void Save()
@@ -302,7 +302,7 @@ namespace NextPvrWebConsole.Models
             string newPassword = Membership.GeneratePassword(12, 2);
             user.ChangePassword(newPassword);
 
-            Helpers.Emailer.Send(user.EmailAddress, "NextPVR Webconsole Password Reset", Resources.Files.PasswordResetBody.Replace("{Username}", user.Username).Replace("{Password}", newPassword).Replace("{Url}", config.WebsiteAddress));
+            Helpers.Emailer.Send(user.EmailAddress, "NextPVR Web Console Password Reset", Resources.Files.PasswordResetBody.Replace("{Username}", user.Username).Replace("{Password}", newPassword).Replace("{Url}", config.WebsiteAddress));
 
             return user;
         }

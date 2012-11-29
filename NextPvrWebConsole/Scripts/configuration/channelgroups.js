@@ -37,6 +37,10 @@ $(function () {
                 initialValue: item.name(),
                 message: $.i18n._('Type in the new name of the channel group.'),
                 success: function (name) {
+                    if (name.toLowerCase() == 'all channels') {
+                        gui.showError($.i18n._("Cannot create a Channel Group 'All Channels' as it is reserved."));
+                        return;
+                    }
                     item.name(name);
                 }
             });
@@ -47,6 +51,10 @@ $(function () {
                 title: $.i18n._('Create Channel Group'),
                 message: $.i18n._('Type in the name of the channel group to create.'),
                 success: function (name) {
+                    if (name.toLowerCase() == 'all channels') {
+                        gui.showError($.i18n._("Cannot create a Channel Group 'All Channels' as it is reserved."));
+                        return;
+                    }
                     self.channelGroups.push(new ChannelGroup({ Oid: 0, Name: name, OrderOid: -1 }));
                 }
             });

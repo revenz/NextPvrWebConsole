@@ -15,7 +15,7 @@ namespace NextPvrWebConsole.Models
     public class Configuration
     {
         /// <summary>
-        /// Gets or sets if this is the first run of the Webconsole, used when display the initial configuration page
+        /// Gets or sets if this is the first run of the Web Console, used when display the initial configuration page
         /// </summary>
         public bool FirstRun { get; set; }
 
