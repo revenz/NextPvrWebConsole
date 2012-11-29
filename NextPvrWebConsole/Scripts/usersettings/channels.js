@@ -37,6 +37,7 @@ $(function () {
                 apiChannels.push(ele.toApiObject());
             });
             api.postJSON("channels/update", apiChannels, function () {
+                pendingChanges = false;
             });
         };
 

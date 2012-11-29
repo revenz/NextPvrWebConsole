@@ -27,7 +27,7 @@ namespace NextPvrWebConsole.Helpers
 
         public static void FlushCache(Regex KeyMatch)
         {
-            var keys = _Cache.Where(x => KeyMatch.IsMatch(x.Key)).Select(x => x.Key);
+            var keys = _Cache.Where(x => KeyMatch.IsMatch(x.Key)).Select(x => x.Key).ToArray();
             foreach (var k in keys)
                 _Cache.Remove(k);
         }

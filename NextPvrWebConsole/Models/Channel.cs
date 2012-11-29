@@ -146,6 +146,9 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
                 foreach (var channel in Channels.Where(x => allowedChanneldOids.Contains(x.Oid)))
                     db.Execute("update userchannel set number = @0, [enabled] = @1 where channeloid = @2 and useroid = @3", channel.Number, channel.Enabled, channel.Oid, UserOid);
                 db.CompleteTransaction();
+
+                // flush the cacher
+                Helpers.Cacher.FlushCache(new Regex(@"^Channel\.[^(]+\(" + UserOid));
             }
             catch (Exception ex)
             {
