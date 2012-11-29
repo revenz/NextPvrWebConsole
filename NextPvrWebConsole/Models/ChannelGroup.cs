@@ -28,15 +28,28 @@ namespace NextPvrWebConsole.Models
         public static List<ChannelGroup> LoadAll(int UserOid, bool LoadChannelOids = false)
         {
             var db = DbHelper.GetDatabase();
-            var results = db.Fetch<ChannelGroup>(@"
-select
-    cg1.oid, cg1.orderoid, cg1.enabled, cg1.parentoid,
+            var results = db.Fetch<ChannelGroup>(
+                UserOid == Globals.SHARED_USER_OID ? 
+                "select * from channelgroup where useroid = @0 order by orderoid"  
+                :
+@"select
+    cg1.oid as oid, cg1.orderoid as orderoid, cg1.parentoid as parentoid,
     case when cg1.parentoid > 0 then cg2.name else cg1.name end as name
+    , cg1.enabled as enabled
 from channelgroup cg1
 left outer join channelgroup cg2
-on cg1.parentoid = cg2.oid and cg2.useroid = 1
-where cg1.useroid = @0 order by cg1.orderoid
-", UserOid);            
+on cg1.parentoid = cg2.oid and cg2.useroid = @1
+where cg1.useroid = @0
+
+union
+
+select 0 as oid, 9999999 as orderoid, oid, name, 0 as enabled
+from channelgroup
+where useroid = @1 and oid not in (select parentoid from channelgroup where useroid = @0)
+
+
+order by orderoid
+", UserOid, Globals.SHARED_USER_OID);            
             if (LoadChannelOids)
             {
                 foreach (var r in results)
@@ -115,13 +128,17 @@ where cg1.useroid = @0 order by cg1.orderoid
                     throw new ArgumentException("A group with the name '{0}' already exists.".FormatStr(this.Name));
             }
 
-            if (IsShared && this.Oid == 0)
-                throw new ArgumentException("Cannot insert a shared channel group."); // need to check how shared groups will be inserted...
-
             if (this.Oid == 0) // new group
             {
                 this.OrderOid = db.FirstOrDefault<int>("select ifnull(max(orderoid),0) + 1 from channelgroup where useroid = @0", this.UserOid);
+                if (this.IsShared)
+                {
+                    // special case, insert missing shared, so need to make sure name isnt inserted as it comes from the parent channel group
+                    this.Name = ""; 
+
+                }
                 db.Insert("channelgroup", "oid", true, this);
+                
                 if (this.Oid < 1)
                     throw new Exception("Failed to insert channel group.");
             }
