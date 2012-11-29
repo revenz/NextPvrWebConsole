@@ -22,7 +22,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         public HttpResponseMessage Get(string Method, string Ver = null, string Device = null, string Sid = null, string Md5 = null, int channel_id = 0, int start = 0, int end = 0, string group_id = null, string filter = null, int recording_id = 0, string name = null, int channel = 0, int time_t = 0, int duration = 0)
         {
-            Logger.ILog("Service Request: {0}", Method);
+            Logger.ServiceILog("Service Request: {0}, {1}", Method, Request.RequestUri.ToString());
             object response = new Response() { ErrorCode = 0, ErrorMessage = "Unknown method." };
             try
             {
@@ -30,6 +30,7 @@ namespace NextPvrWebConsole.Controllers.Api
                 {
                     case "session.initiate": response = Session_Initiate(Ver, Device); break;
                     case "session.login": response = Session_Login(Sid, Md5); break;
+                    case "channel.icon": response = Channel_Icon(channel_id); break;
                     default:
                     {
                         var config = new Models.Configuration();
@@ -46,7 +47,6 @@ namespace NextPvrWebConsole.Controllers.Api
                             case "setting.list": response = Setting_List(); break;
                             case "channel.listings": response = Channel_Listings(userOid, channel_id, start, end); break;
                             case "channel.list": response = Channel_List(userOid, group_id); break;
-                            case "channel.icon": response = Channel_Icon(userOid, channel_id); break;
                             case "channel.groups": response = Channel_Groups(userOid); break;
                             case "recording.list": response = Recording_List(userOid, filter); break;
                             case "recording.delete": response = Recording_Delete(userOid, recording_id); break;
@@ -84,7 +84,7 @@ namespace NextPvrWebConsole.Controllers.Api
         #region session stuff
         private Response Session_Initiate(string Version, string Device)
         {
-            Logger.ILog("ServiceController.Session_Initiate(\"{0}\", \"{1}\")", Version, Device);
+            Logger.ServiceILog("ServiceController.Session_Initiate(\"{0}\", \"{1}\")", Version, Device);
             string sid = null;
             do
             {
@@ -105,7 +105,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Session_Login(string Sid, string Md5)
         {
-            Logger.ILog("ServiceController.Session_Login(\"{0}\", \"{1}\")", Sid, Md5);
+            Logger.ServiceILog("ServiceController.Session_Login(\"{0}\", \"{1}\")", Sid, Md5);
             try
             {
                 string salt = SidsAndSalts[Sid];
@@ -176,7 +176,7 @@ namespace NextPvrWebConsole.Controllers.Api
         #region channel stuff
         private Response Channel_Listings(int UserOid, int ChannelOid, long Start, long End)
         {
-            Logger.ILog("ServiceController.Channel_List({0}, {1}, \"{2}\", \"{3}\")", UserOid, ChannelOid, Start.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"), End.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"));
+            Logger.ServiceILog("ServiceController.Channel_List({0}, {1}, \"{2}\", \"{3}\")", UserOid, ChannelOid, Start.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"), End.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"));
             // todo: authorization session...
             var channel = Models.Channel.Load(ChannelOid, UserOid);
             if(channel == null)
@@ -193,7 +193,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Channel_List(int UserOid, string GroupName)
         {
-            Logger.ILog("ServiceController.Channel_List({0}, \"{1}\")", UserOid, GroupName);
+            Logger.ServiceILog("ServiceController.Channel_List({0}, \"{1}\")", UserOid, GroupName);
             return new Response()
             {
                 Channels = String.IsNullOrWhiteSpace(GroupName) ? Models.Channel.LoadAll(UserOid).ToList() : Models.Channel.LoadChannelsForGroup(UserOid, GroupName).ToList(),
@@ -202,28 +202,36 @@ namespace NextPvrWebConsole.Controllers.Api
             };
         }
 
-        private object Channel_Icon(int UserOid, int ChannelOid)
+        private object Channel_Icon(int ChannelOid)
         {
-            Logger.ILog("ServiceController.Channel_Icon({0}, {1})", UserOid, ChannelOid);
+            Logger.ServiceILog("ServiceController.Channel_Icon({0})", ChannelOid);
             var channel = NUtility.Channel.LoadByOID(ChannelOid);
             if (channel == null || channel.Icon == null)
                 return null;
 
-            //using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
+            using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
             {
-                // cant dispose of this, otherwise the response is empty...
-                System.IO.MemoryStream stream = new System.IO.MemoryStream();
-                channel.Icon.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-                stream.Position = 0;
-                HttpResponseMessage response = new HttpResponseMessage() { Content = new StreamContent(stream) };
-                response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
-                return response;
+                // have to construct a new Image, other saving the channel.Icon directly results in a "Generic GDI+ Exception" :)
+                using (System.Drawing.Image target = new System.Drawing.Bitmap(channel.Icon.Width, channel.Icon.Height))
+                {
+                    using (var g = System.Drawing.Graphics.FromImage(target))
+                    {
+                        g.DrawImage(channel.Icon, 0, 0, target.Width, target.Height);
+                    }
+
+                    target.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                    stream.Position = 0;
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    response.Content = new ByteArrayContent(stream.ToArray());
+                    response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+                    return response;
+                }
             }
         }
 
         private Response Channel_Groups(int UserOid)
         {
-            Logger.ILog("ServiceController.Channel_Groups({0})", UserOid);
+            Logger.ServiceILog("ServiceController.Channel_Groups({0})", UserOid);
             return new Response()
             {
                 Type = Response.ResponseType.ChannelGroups,
@@ -236,7 +244,7 @@ namespace NextPvrWebConsole.Controllers.Api
         #region recoring stuff
         private Response Recording_List(int UserOid, string Filter)
         {
-            Logger.ILog("ServiceController.Recording_List({0}, \"{1}\")", UserOid, Filter);
+            Logger.ServiceILog("ServiceController.Recording_List({0}, \"{1}\")", UserOid, Filter);
             try
             {
                 Dictionary<int, NUtility.RecurringRecording> reocurring = new Dictionary<int,NUtility.RecurringRecording>();
@@ -278,7 +286,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Recording_Delete(int UserOid, int RecordingId)
         {
-            Logger.ILog("ServiceController.Recording_Delete({0}, \"{1}\")", UserOid, RecordingId);
+            Logger.ServiceILog("ServiceController.Recording_Delete({0}, \"{1}\")", UserOid, RecordingId);
             NUtility.ScheduledRecording recording = NUtility.ScheduledRecording.LoadByOID(RecordingId);
             if (recording == null)
                 return new Response() { Stat = Response.ResponseStat.ok };
@@ -295,7 +303,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private Response Recording_Save(int UserOid, string Name, int ChannelOid, long Time, int Duration)
         {
-            Logger.ILog("ServiceController.Recording_Save({0}, \"{1}\", {2}, \"{3}\", {4})", UserOid, Name, ChannelOid, Time.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"), Duration);
+            Logger.ServiceILog("ServiceController.Recording_Save({0}, \"{1}\", {2}, \"{3}\", {4})", UserOid, Name, ChannelOid, Time.FromUnixTime().ToString("yyyy-MM-ddTHH:mm:ss"), Duration);
             DateTime start = Time.FromUnixTime();
             DateTime end = start.AddSeconds(Duration);
             var epgevent = NUtility.EPGEvent.LoadByNameAndTime(ChannelOid, Name, start, end);
@@ -385,8 +393,9 @@ namespace NextPvrWebConsole.Controllers.Api
                             break;
                         case ResponseType.ChannelList:
                             {
-                                //todo: change type from hardcoded 0x02 (which I assume is live tv...)
-                                root.Add(new XElement("channels", this.Channels.Select(x => new XElement("channel", new XElement("id", x.Oid), new XElement("name", x.Name), new XElement("number", x.Number), new XElement("type", "0x02")))));
+                                //todo: change type from hardcoded 0x1 (which I assume is live tv...)
+                                // 0xa == radio, any other value will be treated like channel
+                                root.Add(new XElement("channels", this.Channels.Select(x => new XElement("channel", new XElement("id", x.Oid), new XElement("name", x.Name), new XElement("number", x.Number), new XElement("type", "0x1"), new XElement("icon", x.HasIcon.ToString().ToLower())))));
                             }
                             break;
                         case ResponseType.ChannelGroups:

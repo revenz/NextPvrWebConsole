@@ -33,7 +33,11 @@ namespace NextPvrWebConsole
             var errorResponse = context.Request.CreateResponse<ApiMessageError>(status, apiError);
             context.Response = errorResponse;
 
+#if(DEBUG)
             Logger.ELog(context.Exception.Message + Environment.NewLine + context.Exception.StackTrace);
+#else
+            Logger.ELog(context.Exception.Message);
+#endif
 
             base.OnException(context);
         }
