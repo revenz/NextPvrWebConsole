@@ -58,39 +58,39 @@ namespace NextPvrWebConsole.Models
             }
         }
 
-        private static bool _Loaded = false;
-
-        public static PetaPoco.Database GetDatabase()
+        public static PetaPoco.Database GetDatabase(bool ValidateDatabase = true)
         {
             dbMutex.WaitOne();
 
-            if (!_Loaded)
-            {
-                if (!System.IO.File.Exists(DbFile))
-                    CreateDatabase(DbFile);
-                _Loaded = true;
-            }
+            if (!System.IO.File.Exists(DbFile))
+                CreateDatabase(DbFile);
 
             try
             {
                 var db = new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
+                if (ValidateDatabase)
+                {
+                    int version = 0;
+                    try
+                    {
+                        version = db.ExecuteScalar<int>("select databaseversion from [version]");
 #if(DEBUG)
-                int version = 0;
-                try
-                {
-                    version = db.ExecuteScalar<int>("select databaseversion from [version]");
-                }
-                catch (Exception) { }
-
-                if (version != Globals.DB_VERSION)
-                {
-                    db.Dispose();
-                    // recreate db
-                    System.IO.File.Delete(DbFile);
-                    CreateDatabase(DbFile);
-                    db = new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
-                }
+                        if (version != Globals.DB_VERSION)
+                        {
+                            db.Dispose();
+                            // recreate db
+                            System.IO.File.Delete(DbFile);
+                            CreateDatabase(DbFile);
+                            db = new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(DbFile), "System.Data.SQLite");
+                        }
 #endif
+                    }
+                    catch (Exception)
+                    {
+                        throw new SetupException();
+                    }
+                }
+
                 return db;
             }
             finally

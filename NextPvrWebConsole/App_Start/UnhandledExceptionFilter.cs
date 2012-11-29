@@ -10,6 +10,7 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Http.ModelBinding;
+using System.Web;
 
 namespace NextPvrWebConsole
 {
@@ -24,7 +25,7 @@ namespace NextPvrWebConsole
             if (exType == typeof(UnauthorizedAccessException))
                 status = HttpStatusCode.Unauthorized;
             else if (exType == typeof(ArgumentException))
-                status = HttpStatusCode.NotFound;
+                status = HttpStatusCode.NotFound;                
 
             var apiError = new ApiMessageError() { message = context.Exception.Message };
 

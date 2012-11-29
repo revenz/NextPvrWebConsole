@@ -16,8 +16,13 @@ namespace NextPvrWebConsole.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var config = new Models.Configuration();
-            if (!config.FirstRun)
+            bool firstRun = false;
+            try
+            {
+                firstRun = new Models.Configuration().FirstRun;
+            }
+            catch (Exception) { firstRun = true; }
+            if (!firstRun)
                 return RedirectToAction("Login", "Account");
 
             return View();
@@ -29,9 +34,15 @@ namespace NextPvrWebConsole.Controllers
 #if(DEBUG)
             System.Threading.Thread.Sleep(2000);
 #endif
-            var config = new Models.Configuration();
-            if (!config.FirstRun)
-                return RedirectToAction("Login", "Account");
+            try
+            {
+                if (!new Models.Configuration().FirstRun)
+                    return RedirectToAction("Login", "Account");
+            }
+            catch (Exception)
+            {
+                // db likely not created or setup.
+            }
 
             if (!ModelState.IsValid)
                 return View();
@@ -60,7 +71,7 @@ namespace NextPvrWebConsole.Controllers
             }
             #endregion
 
-            var db = DbHelper.GetDatabase();
+            var db = DbHelper.GetDatabase(false);
             #region import channels and groups
             db.BeginTransaction();
             try
@@ -95,6 +106,8 @@ namespace NextPvrWebConsole.Controllers
                 System.Web.Security.FormsAuthentication.SetAuthCookie(Model.Username, false);
             }
             catch (Exception) { }
+
+            var config = new Configuration();
 
             if (HttpContext != null && HttpContext.Request != null)
                 config.WebsiteAddress = HttpContext.Request.Url.ToString().Substring(0, HttpContext.Request.Url.ToString().LastIndexOf("/") + 1);
