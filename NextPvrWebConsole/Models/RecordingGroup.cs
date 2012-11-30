@@ -102,6 +102,41 @@ namespace NextPvrWebConsole.Models
 
             return results.Values.ToArray();
         }
+
+        internal static bool Move(int UserOid, string GroupName, string DestinationRecordingDirectoryId)
+        {
+            // get the recording group
+            var RecordingGroup = Get(UserOid, false, true).Where(x => x.Name == GroupName).FirstOrDefault();
+            if(RecordingGroup == null)
+                throw new Exception("Recording Group '{0}' not found.".FormatStr(GroupName));
+
+            // make sure they have access ot the destination recording group.
+            var directory = RecordingDirectory.LoadForUser(UserOid, true).Where(x => x.RecordingDirectoryId == DestinationRecordingDirectoryId).FirstOrDefault();
+            if (directory == null)
+                throw new Exception("Failed to locate destination Recording Directory.");
+
+            // need to iterate through all recordings in group
+            List<int> recurrenceOids = new List<int>();
+            foreach(var recording in RecordingGroup.Recordings)
+            {
+                // push those into a "moving" table (stored in db, so if app is restarted queue can be restored)
+                // a worker thread will then handle the moving progress.
+                // lets just try using the inbuilt "Archive" feature...
+                Helpers.NpvrCoreHelper.ArchiveRecording(recording.OID, DestinationRecordingDirectoryId);
+
+                // update recurrences to use the new destination recording directory for future recurrences
+                if (recording.RecurrenceOid > 0 && recurrenceOids.Contains(recording.RecurrenceOid))
+                {
+                    var recurrence = Helpers.NpvrCoreHelper.RecurringRecordingLoadByOID(recording.RecurrenceOid);
+                    recurrence.RecordingDirectoryID = DestinationRecordingDirectoryId;
+                    recurrence.Save();
+
+                    recurrenceOids.Add(recording.RecurrenceOid);
+                }
+            }
+
+            return true;
+        }
     }
 
 }

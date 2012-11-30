@@ -3,6 +3,10 @@
         <span data-lang="Recording Group:"></span>
         <select data-bind="options: recordingGroups, optionsText: 'name', optionsValue: 'name', value: selectedRecordingGroupName">
         </select>
+        
+        <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.move">
+            <span class="icon-trash icon-large" data-lang="Move Recording Group"></span>
+        </button>
     </div>
     
     <div>
@@ -35,6 +39,15 @@
                 </tr>
             </tbody>
         </table>
-    </div>
 
+        <div id="recording-group-mover" style="display:none">
+            <p data-lang="Please select a Recording Directory to move these recordings to."></p>
+            <p data-lang="Note all future recordings will also be recorded in the destination Recording Group"></p>
+
+
+            <select data-bind="options: recordingDirectories, optionsText: 'name', optionsValue: 'recordingDirectoryId', value: selectedRecordingDirectory">
+            </select>
+        </div>
+
+    </div>
 </div>

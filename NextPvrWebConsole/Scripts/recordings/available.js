@@ -12,9 +12,11 @@ $(function () {
         var self = this;
         self.recordingGroups = ko.observableArray([]);
         self.selectedRecordingGroupName = ko.observable();
+        self.recordingDirectories = ko.observableArray([]);
+        self.selectedRecordingDirectory = ko.observable();
 
         self.selectedRecordingGroup = ko.computed(function () {
-            for (var i = 0; i < self.recordingGroups().length; i ++) {
+            for (var i = 0; i < self.recordingGroups().length; i++) {
                 var data = self.recordingGroups()[i];
                 if (data.name() === self.selectedRecordingGroupName()) {
                     return data;
@@ -23,6 +25,30 @@ $(function () {
             return null;
         });
 
+        self.move = function () {
+            var groupname = self.selectedRecordingGroupName();
+            groupname = 'test';
+            if (!groupname)
+                return;
+            var dialog = $('#recording-group-mover');
+            var dialog_buttons = {};
+            dialog_buttons[$.i18n._("Move")] = function () {
+                var destination = self.selectedRecordingDirectory();
+                api.getJSON('recordings/moverecordings', { groupname: groupname, DestinationRecordingDirectoryId: destination }, function () {
+                    gui.showInfo($.i18n._("Starting moving recordings, this may take a while"));
+                    dialog.dialog('close');
+                });
+            };
+            dialog_buttons[$.i18n._("Cancel")] = function () { dialog.dialog('close'); };
+
+            dialog.dialog({
+                title: $.i18n._('Move Channel Group'),
+                buttons: dialog_buttons,
+                width: 500,
+                height: 270,
+                resizable: false
+            });
+        };
 
         self.remove = function (item) {
             gui.confirmMessage({
@@ -44,6 +70,12 @@ $(function () {
             var index = 0;
             var mapped = $.map(allData, function (item) { return new RecordingGroup(item, ++index) });
             self.recordingGroups(mapped);
+        });
+        api.getJSON("recordingdirectories?includeshared=true", null, function (allData) {
+            console.log(allData);
+            var mapped = $.map(allData, function (item) { return new RecordingDirectory(item) });
+            console.log(mapped);
+            self.recordingDirectories(mapped);
         });
     }
     var viewModel = new AvailableRecordingsViewModel();

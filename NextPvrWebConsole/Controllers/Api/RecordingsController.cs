@@ -64,14 +64,10 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.RecurringRecording.DeleteByOid(this.GetUser().Oid, Oid);
         }
 
+        [HttpGet]
         public bool MoveRecordings(string GroupName, string DestinationRecordingDirectoryId)
         {
-            // need to iterate through all recordings in group
-            // push those into a "moving" table (stored in db, so if app is restarted queue can be restored)
-            // a worker thread will then handle the moving progress.
-            // before the move, when the recordings are added to the table, it should look for recurrence oids and if found
-            // update recurrences to use the new destination recording directory for future recurrences
-            return true;
+            return Models.RecordingGroup.Move(this.GetUser().Oid, GroupName, DestinationRecordingDirectoryId);
         }
     }
 }

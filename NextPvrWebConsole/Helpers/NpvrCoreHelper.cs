@@ -101,5 +101,14 @@ namespace NextPvrWebConsole.Helpers
         {
             return RecurringRecording.LoadAll();
         }
+
+        internal static void ArchiveRecording(int ScheduledRecordingOid, string RecordingDirectoryId)
+        {
+            var recording = ScheduledRecordingLoadByOID(ScheduledRecordingOid);
+            if (recording != null)
+            {
+                GetRecordingServiceInstance().ArchiveRecording(recording, RecordingDirectoryId);
+            }
+        }
     }
 }

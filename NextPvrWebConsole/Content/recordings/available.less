@@ -8,21 +8,51 @@
 		height:50px;
 		display:block;
 
-		span { 
+		> span { 
 			font-weight:bold;
 			width:220px;
 			text-align:right;
 			display:inline-block;
 		}
 		select {
-			position:absolute;
-			left:225px;
-			right:0;
-			width:auto;
-			display:inline-block;
-			min-width:600px;
+			position:relative;
+			top:1px;
 		}
 		font-size:1.2em;
 		margin:0 0 20px 20px;
 	}
+}
+
+#recording-group-mover select
+{
+    width:100%;
+}
+
+@media only screen
+{
+    /* defaults */
+    #recordings-tab-available .recordings-available-group select
+    {
+        width:600px;
+    }
+}
+@media only screen and (max-width: 1540px) 
+{
+    #recordings-tab-available .recordings-available-group select
+    {
+        width:400px;
+    }
+}
+@media only screen and (max-width: 1200px) 
+{
+    #recordings-tab-available .recordings-available-group
+    {
+        
+		> span { width:170px; }
+         select
+        {
+            width:280px;
+        }
+    }
+    
 }
