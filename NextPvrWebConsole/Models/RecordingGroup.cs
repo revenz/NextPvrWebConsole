@@ -122,14 +122,17 @@ namespace NextPvrWebConsole.Models
                 // push those into a "moving" table (stored in db, so if app is restarted queue can be restored)
                 // a worker thread will then handle the moving progress.
                 // lets just try using the inbuilt "Archive" feature...
-                Helpers.NpvrCoreHelper.ArchiveRecording(recording.OID, DestinationRecordingDirectoryId);
+                Helpers.NpvrCoreHelper.ArchiveRecording(recording.OID, directory.RecordingDirectoryId.Substring(1, directory.RecordingDirectoryId.Length - 2));
 
                 // update recurrences to use the new destination recording directory for future recurrences
-                if (recording.RecurrenceOid > 0 && recurrenceOids.Contains(recording.RecurrenceOid))
+                if (recording.RecurrenceOid > 0 && !recurrenceOids.Contains(recording.RecurrenceOid))
                 {
                     var recurrence = Helpers.NpvrCoreHelper.RecurringRecordingLoadByOID(recording.RecurrenceOid);
-                    recurrence.RecordingDirectoryID = DestinationRecordingDirectoryId;
-                    recurrence.Save();
+                    if (recurrence != null)
+                    {
+                        recurrence.RecordingDirectoryID = DestinationRecordingDirectoryId;
+                        recurrence.Save();
+                    }
 
                     recurrenceOids.Add(recording.RecurrenceOid);
                 }

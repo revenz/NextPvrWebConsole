@@ -19,7 +19,6 @@ function User(data) {
     self.oid = ko.observable(data.Oid);
     self.username = ko.observable(data.Username);
     self.emailaddress = ko.observable(data.EmailAddress);
-    self.userrole = ko.observable(data.UserRole);
     if (typeof (data.LastLoggedInUtc) == 'string')
     {
         if(data.LastLoggedInUtc.indexOf('.') > 0)
@@ -46,36 +45,33 @@ function User(data) {
     self.administratorString = ko.computed(function () {
         return self.administrator() ? $.i18n._('Yes') : $.i18n._('No');
     });
-    self.roleDashboard = ko.computed({
-        read: function () { return (self.userrole() & USERROLE_DASHBOARD) == USERROLE_DASHBOARD; },
-        write: function (value) { self.userrole(self.userrole() | USERROLE_DASHBOARD); }
-    });
-    self.roleGuide = ko.computed({
-        read: function () { return (self.userrole() & USERROLE_GUIDE) == USERROLE_GUIDE; },
-        write: function (value) { self.userrole(self.userrole() | USERROLE_GUIDE); }
-    });
-    self.roleRecordings = ko.computed({
-        read: function () { return (self.userrole() & USERROLE_RECORDINGS) == USERROLE_RECORDINGS; },
-        write: function (value) { self.userrole(self.userrole() | USERROLE_RECORDINGS); }
-    });
-    self.roleConfiguration = ko.computed({
-        read: function () { return (self.userrole() & USERROLE_CONFIGURATION) == USERROLE_CONFIGURATION; },
-        write: function (value) { self.userrole(self.userrole() | USERROLE_CONFIGURATION); }
-    });
-    self.roleSystem = ko.computed({
-        read: function () { return (self.userrole() & USERROLE_SYSTEM) == USERROLE_SYSTEM; },
-        write: function (value) { self.userrole(self.userrole() | USERROLE_SYSTEM); }
-    });
-    self.roleUserSettings = ko.computed({
-        read: function () { return (self.userrole() & USERROLE_USERSETTINGS) == USERROLE_USERSETTINGS; },
-        write: function (value) { self.userrole(self.userrole() | USERROLE_USERSETTINGS); }
-    });
+
+    self.roleDashboard = ko.observable((data.UserRole & USERROLE_DASHBOARD) == USERROLE_DASHBOARD);
+    self.roleGuide = ko.observable((data.UserRole & USERROLE_GUIDE) == USERROLE_GUIDE);
+    self.roleRecordings = ko.observable((data.UserRole & USERROLE_RECORDINGS) == USERROLE_RECORDINGS);
+    self.roleConfiguration = ko.observable((data.UserRole & USERROLE_CONFIGURATION) == USERROLE_CONFIGURATION);
+    self.roleSystem = ko.observable((data.UserRole & USERROLE_SYSTEM) == USERROLE_SYSTEM);
+    self.roleUserSettings = ko.observable((data.UserRole & USERROLE_USERSETTINGS) == USERROLE_USERSETTINGS);
 
     self.toApiObject = function () {
         data.Oid = self.oid();
         data.Username = self.username();
         data.EmailAddress = self.emailaddress();
-        data.UserRole = self.userrole();
+
+        data.UserRole = 0;
+        if (self.roleGuide())
+            data.UserRole += USERROLE_GUIDE;
+        if (self.roleDashboard())
+            data.UserRole += USERROLE_DASHBOARD;
+        if (self.roleRecordings())
+            data.UserRole += USERROLE_RECORDINGS;
+        if (self.roleUserSettings())
+            data.UserRole += USERROLE_USERSETTINGS;
+        if (self.roleConfiguration())
+            data.UserRole += USERROLE_CONFIGURATION;
+        if (self.roleSystem())
+            data.UserRole += USERROLE_SYSTEM;
+
         data.LastLoggedInUtc = self.lastLoggedIn();
         data.DateCreatedUtc = self.dateCreated();
         data.ReadOnly = self.readonly();

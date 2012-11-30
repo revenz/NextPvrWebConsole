@@ -27,7 +27,6 @@ $(function () {
 
         self.move = function () {
             var groupname = self.selectedRecordingGroupName();
-            groupname = 'test';
             if (!groupname)
                 return;
             var dialog = $('#recording-group-mover');
