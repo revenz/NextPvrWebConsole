@@ -120,12 +120,18 @@ var guide = new function () {
             console.log(result);
 
             var channelIconUrl = $('#epg-channel-' + result.ChannelOid + ' img').attr('src');
-
+            
             showInfo.find('.channelIcon').css('visibility', channelIconUrl && channelIconUrl.length > 0 ? 'visible' : 'hidden').attr('src', channelIconUrl);
             showInfo.find('.channelnumber').text(result.ChannelNumber);
             showInfo.find('.channelname').text(result.ChannelName);
             showInfo.find('.subtitle').text(result.Subtitle);
             showInfo.find('.description').text(result.Description);
+            showInfo.find('.repeat').text(result.FirstRun ? '' : $.i18n._('[REPEAT]'));
+            var seasonAndEpisode = '';
+            if (result.Season > 0 && result.Episode > 0)
+                seasonAndEpisode = $.i18n._('Season %s, Episode %s', [result.Season, result.Episode]);
+            showInfo.find('.seasonAndEpisode').text(seasonAndEpisode);
+
             var genres = '';
             if (result.Genres) {
                 genres = $.Enumerable.From(result.Genres).Select(function (x) {
@@ -150,7 +156,7 @@ var guide = new function () {
                                     if (data) {
                                         $sender.removeClass('recording');
                                         $sender.attr('data-recordingoid', '');
-                                        $sender.attr('data-isrecurring', '0'); 
+                                        $sender.attr('data-isrecurring', '0');
                                     }
                                     showInfo.dialog('close');
                                 });
@@ -167,7 +173,7 @@ var guide = new function () {
                                 if (data) {
                                     $sender.removeClass('recording');
                                     $sender.attr('data-recordingoid', '');
-                                    $sender.attr('data-isrecurring', '0'); 
+                                    $sender.attr('data-isrecurring', '0');
                                 }
                                 showInfo.dialog('close');
                             });

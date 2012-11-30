@@ -178,3 +178,9 @@ if (typeof String.prototype.startsWith != 'function') {
         return this.indexOf(str) == 0;
     };
 }
+if (typeof Number.prototype.pad != 'function') {
+    // see below for better implementation!
+    Number.prototype.pad= function (number) {
+        return Array(number - String(this).length + 1).join('0') + this;
+    };
+}
