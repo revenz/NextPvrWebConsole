@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 using NUtility;
+using System.Threading;
 
 namespace NextPvrWebConsole.Helpers
 {
@@ -109,6 +110,67 @@ namespace NextPvrWebConsole.Helpers
             {
                 GetRecordingServiceInstance().ArchiveRecording(recording, RecordingDirectoryId);
             }
+        }
+
+        #region EPG stuff
+        internal static void EmptyEpg()
+        {
+            Logger.ILog("Emptying EPG");
+            NShared.EPGManager manager = new NShared.EPGManager();
+            manager.EmptyEPG();
+            FlushEpgCache();
+        }
+
+        static Mutex EpgUpdateMutex = new Mutex();
+
+        internal static void UpdateEpg(Action<string> CallBack = null)
+        {         
+            Logger.ILog("Update EPG Started");
+            NShared.EPGManager manager = new NShared.EPGManager();
+            WebConsoleEpgUpdateCallback wcCallback = new WebConsoleEpgUpdateCallback(CallBack);
+            System.Threading.Tasks.Task.Factory.StartNew(delegate
+            {
+                if (!EpgUpdateMutex.WaitOne(100))
+                {
+                    Logger.ELog("Failed to update EPG, already running.");
+                    return;
+                }
+                try
+                {
+                    Hubs.NextPvrEventHub.Clients_ShowInfoMessage("EPG Update Started");
+                    manager.UpdateEPG(wcCallback);
+                    Hubs.NextPvrEventHub.Clients_ShowInfoMessage("EPG Update Completed");
+                }
+                catch (Exception ex)
+                {
+                    Hubs.NextPvrEventHub.Clients_ShowErrorMessage(ex.Message, "EPG Update Failed");
+                    wcCallback.SetEPGUpdateStatus("ERROR: " + ex.Message);
+                }
+                finally
+                {
+                    System.Threading.Thread.Sleep(10000);
+                    EpgUpdateMutex.ReleaseMutex();
+                }
+            });
+        }
+        #endregion
+    }
+
+    class WebConsoleEpgUpdateCallback : NShared.EPGManager.IEPGUpdateCallback
+    {
+        private Action<string> CallBack;
+
+        public WebConsoleEpgUpdateCallback(Action<string> CallBack = null)
+        {
+            this.CallBack = CallBack;
+        }
+
+        public bool SetEPGUpdateStatus(string status)
+        {
+            Logger.ILog("Updating EPG Status: " + status);
+            if (CallBack != null)
+                CallBack(status);
+            return true;
         }
     }
 }

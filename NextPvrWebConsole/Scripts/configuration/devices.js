@@ -15,7 +15,7 @@ $(function () {
             $('#device_' + arg.item.oid() + '_enabled').iButton();
         };
 
-        $('#btnDevicesSave').click(function () {
+        self.save = function() {
             var devices = new Array();
             var priority = 1;
             $.each(self.devices(), function (i, ele) {
@@ -27,11 +27,22 @@ $(function () {
                 {
                     UseReverseOrderForLiveTv: $('#modelDevices_UseReverseOrderForLiveTv:checked').length > 0,
                     Devices: devices
-                },
-                function () {
                 }
             );
-        });
+        };
+
+        self.updateEpg = function () {
+            api.getJSON('configuration/updateepg');
+        };
+
+        self.emptyEpg = function () {
+            gui.confirmMessage({ 
+                message: $.i18n._('Are sure you want to empty the EPG data?'),
+                yes: function() {
+                    api.getJSON('configuration/emptyepg');
+                }
+            });
+        };
     }
     ko.applyBindings(new DevicesViewModel(), $('#configuration-tab-devices').get(0));
 

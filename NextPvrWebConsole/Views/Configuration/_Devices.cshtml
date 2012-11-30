@@ -38,7 +38,20 @@
     <tr>
         <td class="label"></td>
         <td class="value">
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnDevicesSave">
+        
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"" data-bind="click: $root.updateEpg">
+                <span class="icon-refresh icon-large" data-lang="Update EPG"></span>
+            </button>
+
+            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.emptyEpg">
+                <span class="icon-trash icon-large" data-lang="Empty EPG"></span>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td class="label"></td>
+        <td class="value">
+            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
                 <span class="icon-save icon-large" data-lang="Save"></span>
             </button>
         </td>
