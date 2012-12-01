@@ -124,8 +124,11 @@ namespace NextPvrWebConsole.Helpers
         static Mutex EpgUpdateMutex = new Mutex();
 
         internal static void UpdateEpg(Action<string> CallBack = null)
-        {         
+        {
             Logger.ILog("Update EPG Started");
+            NUtility.PluginRegistry.GetInstance().LoadPlugins();
+            NShared.RecordingServiceProxy.ForceRemote();
+            ScheduleHelperFactory.SetScheduleHelper(GetRecordingServiceInstance());
             NShared.EPGManager manager = new NShared.EPGManager();
             WebConsoleEpgUpdateCallback wcCallback = new WebConsoleEpgUpdateCallback(CallBack);
             System.Threading.Tasks.Task.Factory.StartNew(delegate

@@ -49,7 +49,7 @@ namespace NextPvrWebConsole.Models
                 dirId++;
 
             }
-            return results;
+            return results.OrderByDescending(x => x.DateModified).ToList();
         }
     }
 }
