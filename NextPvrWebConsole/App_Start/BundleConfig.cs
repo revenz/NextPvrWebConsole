@@ -100,7 +100,9 @@ namespace NextPvrWebConsole
             PageBundle(bundles, "Search");
 
             // this allows bundling when in debug mode
-            // BundleTable.EnableOptimizations = true;   
+#if(!DEBUG)
+            BundleTable.EnableOptimizations = true;   
+#endif
         }
 
         private static void PageBundle(BundleCollection bundles, string Name)

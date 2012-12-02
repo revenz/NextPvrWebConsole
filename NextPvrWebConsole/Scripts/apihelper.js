@@ -161,5 +161,7 @@ $(function(){
     npvrevent.showWarningMessage = function(message, title) { gui.showWarning(message, title); };
     
     // Start the connection
-    $.connection.hub.start();
+    $.connection.hub.start({ transport: 'longPolling' }, function(){
+        console.log('connected.');
+    });
 });
