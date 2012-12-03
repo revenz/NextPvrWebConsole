@@ -56,10 +56,14 @@ namespace NextPvrWebConsole
                     Directory.CreateDirectory(loggingDir);
                 GrantDirectoryAccess(loggingDir);
 
-                string npvrDir = @"C:\Users\Public\NPVR";
+                string npvrDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "NPVR");
+                if (Environment.OSVersion.Version.Major >= 6 || !Directory.Exists(npvrDir))
+                    npvrDir = Path.Combine(System.Environment.GetEnvironmentVariable("PUBLIC"), "NPVR");
+                if(!Directory.Exists(npvrDir))
+                    npvrDir = @"C:\Users\Public\NPVR";
                 if (!Directory.Exists(npvrDir))
                     npvrDir = @"C:\Documents and Settings\All Users\Application Data\NPVR";
-                //NUtility.SettingsHelper.GetInstance().GetDataDirectory()
+
                 GrantDirectoryAccess(npvrDir);
 
                 string regapp = Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles"), @"UltiDev\Web Server\UWS.RegApp.exe");
