@@ -9,6 +9,8 @@ using System.Web.Routing;
 using System.Net.Http.Formatting;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Web.WebPages;
+using NextPvrWebConsole.App_Start;
 
 namespace NextPvrWebConsole
 {
@@ -37,6 +39,8 @@ namespace NextPvrWebConsole
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.EmailAttribute), typeof(Validators.EmailValidator));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.UsernameAttribute), typeof(Validators.UsernameValidator));
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(Validators.WebsiteAddressAttribute), typeof(Validators.WebsiteAddressValidator));
+
+            DisplayModeProvider.Instance.Modes.Insert(0, new MobileDisplayMode());
             
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

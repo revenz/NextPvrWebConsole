@@ -198,6 +198,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\LessTransform.cs" />
+    <Compile Include="App_Start\MobileDisplayMode.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionFilter.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -332,12 +333,12 @@
     <Content Include="Content\images\icons-36-white.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\menu_button_selected.png" />
-    <Content Include="Content\jquery.mobile-1.2.0.css" />
-    <Content Include="Content\jquery.mobile-1.2.0.min.css" />
-    <Content Include="Content\jquery.mobile.structure-1.2.0.css" />
-    <Content Include="Content\jquery.mobile.structure-1.2.0.min.css" />
-    <Content Include="Content\jquery.mobile.theme-1.2.0.css" />
-    <Content Include="Content\jquery.mobile.theme-1.2.0.min.css" />
+    <Content Include="Content\mobile\jquery.mobile-1.2.0.css" />
+    <Content Include="Content\mobile\jquery.mobile-1.2.0.min.css" />
+    <Content Include="Content\mobile\jquery.mobile.structure-1.2.0.css" />
+    <Content Include="Content\mobile\jquery.mobile.structure-1.2.0.min.css" />
+    <Content Include="Content\mobile\jquery.mobile.theme-1.2.0.css" />
+    <Content Include="Content\mobile\jquery.mobile.theme-1.2.0.min.css" />
     <Content Include="Content\mixins.less" />
     <Content Include="Content\dashboard\devices.less" />
     <Content Include="Resources\Files\CreateDatabase.sql" />
@@ -523,6 +524,9 @@
     <Content Include="Views\Guide\_EpgGrid.cshtml" />
     <Content Include="Views\Guide\Index.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Shared\_Layout.mobile.cshtml" />
+    <Content Include="Views\Dashboard\Index.mobile.cshtml.cshtml" />
+    <Content Include="Views\Account\Login.mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -583,7 +587,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>9888</DevelopmentServerPort>
+          <DevelopmentServerPort>15733</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

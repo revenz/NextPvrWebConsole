@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NextPVR Web Console</title>
+    
+    @Styles.Render("~/Content/mobile/css")      
+    @Scripts.Render("~/bundles/mobile/js") 
+</head>
+<body>
+    <div data-role="page"> 
+        <div data-role="header"> 
+	        <h1>NextPVR Web Console</h1> 
+        </div> 
+
+        <div data-role="content">
+            <form action="account/mobilelogin" method="post">
+
+                <div data-role="fieldcontain" class="ui-hide-label">
+	                <label for="username">Username:</label>
+	                <input type="text" name="username" id="username" value="" placeholder="Username"/>
+                </div>
+
+                <div data-role="fieldcontain" class="ui-hide-label">
+	                <label for="username">Password:</label>
+	                <input type="password" name="password" id="password" value="" placeholder="Password"/>
+                </div>
+
+                <label for="flip-1">Remember Me:</label>
+                <select name="rememberMe" id="rememberMe" data-role="slider">
+	                <option value="false">Off</option>
+	                <option value="true">On</option>
+                </select> 
+
+                <input type="submit" value="Login" />
+            </form>
+        </div>
+    </div>
+</body>
+</html>

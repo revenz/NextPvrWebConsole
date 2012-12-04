@@ -1,0 +1,38 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    
+    @Styles.Render("~/Content/mobile/css")      
+    @Scripts.Render("~/bundles/mobile/js") 
+</head>
+<body>
+
+    <div data-role="page"> 
+        <div data-role="header"> 
+	        <h1>@ViewBag.Title</h1> 
+        </div> 
+        
+        <div data-role="content">
+            @RenderBody()
+        </div>
+
+        <div data-role="footer">		
+	        <div data-role="navbar">
+		        <ul>
+			        <li><a href="#" data-icon="home">Dashboard</a></li>
+			        <li><a href="#" data-icon="grid">Guide</a></li>
+			        <li><a href="#" data-icon="star">Recordings</a></li>
+                    <li><a href="#" data-icon="gear">Settings</a></li>
+		        </ul>
+	        </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div>
+</body>
+</html>

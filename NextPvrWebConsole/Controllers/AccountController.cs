@@ -24,6 +24,27 @@ namespace NextPvrWebConsole.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult MobileLogin(string Username, string Password, bool RememberMe)
+        {
+            if (Membership.ValidateUser(Username, Password))
+            {
+                Models.User.LoggedIn(Username);
+                FormsAuthentication.SetAuthCookie(Username, RememberMe);
+
+                string[] roles = Roles.GetRolesForUser(Username);
+
+                string returnUrl = "/" + roles[0];
+                if (returnUrl.ToLower() == "/dashboard" || returnUrl == "/0")
+                    returnUrl = "/";
+
+                returnUrl = "/"; // for now.
+                return RedirectToLocal(returnUrl);
+            }
+            return View();
+        }
+
         //
         // POST: /Account/Login
 

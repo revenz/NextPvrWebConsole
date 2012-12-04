@@ -84,10 +84,15 @@ namespace NextPvrWebConsole
             cssBootstrap.Transforms.Add(new CssMinify());
             bundles.Add(cssBootstrap);
 
-            bundles.Add(new StyleBundle("~/Content/jquery.mobile/css").Include(
-                        "~/Content/jquery.mobile-{version}.css",
-                        "~/Content/jquery.mobile-structure-{version}.css",
-                        "~/Content/jquery.mobile-theme-{version}.css"));
+            bundles.Add(new StyleBundle("~/Content/mobile/css").Include(
+                        "~/Content/mobile/jquery.mobile-{version}.css",
+                        "~/Content/mobile/jquery.mobile-structure-{version}.css",
+                        "~/Content/mobile/jquery.mobile-theme-{version}.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/mobile/js").Include(
+                    "~/Scripts/core/jquery-{version}.js",
+                    "~/Scripts/core/jquery.mobile-{version}.js"
+                    ));
 
             PageBundle(bundles, "Dashboard");
             PageBundle(bundles, "Guide");
