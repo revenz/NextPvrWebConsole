@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    string selected = ViewContext.Controller.GetType().Name.Replace("Controller", "").ToLower();
 }
 
 <!DOCTYPE html>
@@ -9,27 +10,25 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     
-    @Styles.Render("~/Content/mobile/css")      
-    @Scripts.Render("~/bundles/mobile/js") 
+    @Styles.Render("~/Content/mobile/css")         
+    @RenderSection("styles", required: false)
+       
+    @Scripts.Render("~/bundles/mobile/js")   
+
 </head>
 <body>
 
     <div data-role="page"> 
-        <div data-role="header"> 
-	        <h1>@ViewBag.Title</h1> 
-        </div> 
         
-        <div data-role="content">
-            @RenderBody()
-        </div>
-
-        <div data-role="footer">		
+        @RenderBody()
+        
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false">		
 	        <div data-role="navbar">
 		        <ul>
-			        <li><a href="#" data-icon="home">Dashboard</a></li>
-			        <li><a href="#" data-icon="grid">Guide</a></li>
-			        <li><a href="#" data-icon="star">Recordings</a></li>
-                    <li><a href="#" data-icon="gear">Settings</a></li>
+			        <li><a class="@(selected == "dashboard" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "Dashboard")" data-icon="home">Dashboard</a></li>
+			        <li><a class="@(selected == "guide" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "Guide")" data-icon="grid">Guide</a></li>
+			        <li><a class="@(selected == "recordings" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "Recordings")" data-icon="star">Recordings</a></li>
+                    <li><a class="@(selected == "usersettings" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "UserSettings")" data-icon="gear">Settings</a></li>
 		        </ul>
 	        </div><!-- /navbar -->
         </div><!-- /footer -->

@@ -243,7 +243,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
-    <Content Include="Content\images\icon_channel_all.png" />
+    <Content Include="Content\mobile\images\icon_channel_all.png" />
     <Content Include="Content\images\jquery.filetree\application.png" />
     <Content Include="Content\images\jquery.filetree\code.png" />
     <Content Include="Content\images\jquery.filetree\css.png" />
@@ -325,12 +325,12 @@
     <Content Include="Content\configuration\index.less" />
     <Content Include="Content\dashboard\upcomingrecordings.less" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
-    <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\mobile\images\ajax-loader.gif" />
     <Content Include="Content\images\header.jpg" />
-    <Content Include="Content\images\icons-18-black.png" />
-    <Content Include="Content\images\icons-18-white.png" />
-    <Content Include="Content\images\icons-36-black.png" />
-    <Content Include="Content\images\icons-36-white.png" />
+    <Content Include="Content\mobile\images\icons-18-black.png" />
+    <Content Include="Content\mobile\images\icons-18-white.png" />
+    <Content Include="Content\mobile\images\icons-36-black.png" />
+    <Content Include="Content\mobile\images\icons-36-white.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\menu_button_selected.png" />
     <Content Include="Content\mobile\jquery.mobile-1.2.0.css" />
@@ -525,8 +525,13 @@
     <Content Include="Views\Guide\Index.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Shared\_Layout.mobile.cshtml" />
-    <Content Include="Views\Dashboard\Index.mobile.cshtml.cshtml" />
     <Content Include="Views\Account\Login.mobile.cshtml" />
+    <Content Include="Views\Guide\Index.mobile.cshtml" />
+    <Content Include="Views\Dashboard\Index.mobile.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Recordings\Index.mobile.cshtml" />
+    <Content Include="Views\UserSettings\Index.mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

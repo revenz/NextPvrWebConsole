@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Recordings";
+    Layout = "~/Views/Shared/_Layout.mobile.cshtml";
+
+    var controller = new NextPvrWebConsole.Controllers.Api.RecordingsController();
+    var available = controller.Available();
+    var pending = controller.Pending();
+    var recurring = controller.Recurring();
+}
+
+@section styles{
+    <style>
+        .sub-list
+        {
+            padding-top:45px;
+        }
+    </style>
+}
+
+<div data-role="content" id="recording-menu">
+    <ul data-role="listview" data-inset="true">
+	    <li>
+            <a href="#available">
+                <h3 class="ui-li-heading">Available Recordings</h3>
+                <p class="ui-li-desc">The recordings that are available to you.</p>
+                <span class="ui-li-count">@available.Count()</span>       
+            </a>
+        </li>
+	    <li>
+            <a href="#pending">
+                <h3 class="ui-li-heading">Pending Recordings</h3>
+                <p class="ui-li-desc">All recordings that are scheduled to record in the near future</p>
+                <span class="ui-li-count">@pending.Count()</span>       
+            </a>
+        </li>
+	    <li>
+            <a href="#recurring">
+                <h3 class="ui-li-heading">Recurring Recordings</h3>
+                <p class="ui-li-desc">Recordings that will be scheduled whenever a recurrence is found based on the rules.</p>
+                <span class="ui-li-count">@recurring.Count()</span>       
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div id="available" style="display:none" class="sub-list">
+    <div data-role="header" data-position="fixed"> 
+	    <a href="#" data-icon="back" class="record-back">Back</a>
+	    <h1>Available Recordings</h1> 
+    </div> 
+    
+    <div data-role="content">
+        <ul data-role="listview" data-inset="true" data-filter="true" data-autodividers="true" >
+            @foreach (var item in available)
+            {
+                <li>@item.Name</li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div id="pending" style="display:none" class="sub-list">
+    <div data-role="header" data-position="fixed"> 
+	    <a href="#" data-icon="back" class="record-back">Back</a>
+	    <h1>Pending Recordings</h1> 
+    </div> 
+    
+    <div data-role="content">
+        <ul data-role="listview" id="pending-list" data-inset="true" data-filter="true">
+            @{
+                var currentDate = "";
+                foreach (var item in pending)
+                {
+                    var startime = item.StartTime.ToLocalTime().ToLongDateString();
+                    if(startime != currentDate)
+                    {
+                        currentDate = startime;
+                        <li data-role="list-divider">@startime</li>
+                    }
+                    <li>@item.Name</li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+<div id="recurring" style="display:none" class="sub-list">
+    <div data-role="header" data-position="fixed"> 
+	    <a href="#" data-icon="back" class="record-back">Back</a>
+	    <h1>Recurring Recordings</h1> 
+    </div> 
+    
+    <div data-role="content">
+        <ul data-role="listview" data-inset="true" data-filter="true" data-autodividers="true" >
+            @foreach (var item in recurring)
+            {
+                <li>@item.Name</li>
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var recmenu = $('#recording-menu');
+        $('#recording-menu a').click(function () {
+            var target = $($(this).attr('href'));
+            recmenu.css('display', 'none');
+            target.css('display', 'block');
+        });
+
+        $('.record-back').click(function () {
+            var target = $(this).closest('.sub-list');
+            recmenu.css('display', 'block');
+            target.css('display', 'none');
+        });       
+    });
+</script>
