@@ -1,0 +1,199 @@
+﻿#pageGuide #epg 
+{
+    background:black;
+    position:absolute;
+    top:42px;
+    bottom:104px;
+    left:0;
+    right:0;
+    overflow:hidden;
+}
+#programs
+{
+    display: -webkit-box;
+    position:absolute;
+    top:10px;
+    bottom:0px;
+    left:50px;
+    right:0;
+}
+#programs ul
+{
+    padding-bottom:100px;
+}
+#pageGuide #epgWrapper
+{
+    /*
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    */
+}
+#pageGuide #programList
+{
+    border:solid 1px black;
+    margin:0;
+    padding:0;
+    /*
+    padding-top:20px;
+    position:absolute;
+    top:-9px;
+    left:0px;
+    bottom:0px;
+    */
+}
+#pageGuide #programList li
+{
+    padding:0;
+    margin:0;
+    list-style:none;
+    border-top:solid 1px black;
+}
+#pageGuide #programList li.channel
+{
+    background-repeat:no-repeat;
+    background-position:0 0;
+    padding-left:50px;
+    height:40px;
+    overflow:hidden;
+    position:relative;
+}
+#pageGuide #timeline
+{
+    display:block;
+    white-space:nowrap;
+    border-top:none;    
+    top:-1px;
+    position:absolute;
+    left:0;
+    z-index:10;
+}
+#pageGuide #timeline span
+{
+    background:grey;  
+    padding:0;
+    margin:0;
+}
+#pageGuide .spacer
+{
+    width:50px;
+    display:inline-block;
+    height:14px;
+    border:solid 1px white;
+    border-left:none;
+    top:-1px;
+    position:relative;
+}
+#pageGuide .bucket
+{
+    display:inline-table;
+    border:solid 1px white;
+    border-left:none;
+    height:10px;
+    color:White;
+    font-weight:bold;
+    font-size:12px;
+}
+#pageGuide .program
+{
+    /*display:table-cell;*/
+   	display:inline-block;
+    height:39px;
+    background:#d3d3d3;
+    border-right:solid 1px black;
+    padding:0;
+    margin:0;
+    font-size:0.8em;
+    overflow:hidden;
+    line-height:18px;
+    text-shadow: white 0px 0px 3px;
+	font-weight: bold;
+	position:relative;
+	top:1px;
+}
+#pageGuide .program div
+{
+	word-wrap:break-word;
+	padding:3px;	
+	width:100%;
+}
+#pageGuide #channelicons
+{
+    position:absolute;
+    left:0;
+    top:12px;
+    bottom:0;
+    width:49px;
+    z-index:9;
+}
+#pageGuide #channelicons .icon
+{
+    width:49px;
+    height:39px;
+    background:#666;
+    display:block;
+    border:solid 1px black;
+    padding:0;
+    margin:0;
+    position:relative;
+}
+#pageGuide #channelicons .icon span
+{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	display:block;	
+	font-size:0.7em;
+    text-shadow: none;
+}
+#pageGuide #channelicons .icon .text
+{
+	color:white;
+	left:6px;
+	right:6px;
+	top:6px;
+	bottom:6px;
+	overflow:hidden;
+}
+#channelGroup
+{
+    bottom:100px;
+    position:absolute;
+    z-index:11;
+}
+#footerGuide, #footerConfig
+{
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+}
+
+#pageGuide, #pageConfig
+{
+    position:absolute !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0px !important;
+    min-height:416px !important;
+}
+/* Portrait */
+@media screen and (max-width: 320px)
+{
+    div[data-role="page"]
+    {
+        min-height:416px !important;
+    }
+}/* Landscape */
+@media screen and (min-width: 321px)
+{
+    div[data-role="page"]
+    {
+        min-height:200px !important;
+    }
+}

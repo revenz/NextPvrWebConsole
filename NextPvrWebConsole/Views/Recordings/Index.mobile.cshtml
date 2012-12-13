@@ -77,7 +77,9 @@
                         currentDate = startime;
                         <li data-role="list-divider">@startime</li>
                     }
-                    <li>@item.Name</li>
+                    <li>@item.Name
+                        <span class="ui-li-count">@item.StartTime.ToLocalTime().ToShortTimeString()</span>
+                    </li>
                 }
             }
         </ul>
@@ -113,6 +115,22 @@
             var target = $(this).closest('.sub-list');
             recmenu.css('display', 'block');
             target.css('display', 'none');
-        });       
+        });
+
+
+        $('#available li').swipeDelete({
+            direction: 'swiperight', // standard jquery mobile event name
+            btnLabel: 'Delete',
+            btnTheme: 'b',
+            btnClass: 'aSwipeBtn',
+            click: function (e) {
+                e.preventDefault();
+                var url = $(e.target).attr('href');
+                $(this).parents('li').remove();
+                $.post(url, function (data) {
+                    console.log(data);
+                });
+            }
+        });
     });
 </script>

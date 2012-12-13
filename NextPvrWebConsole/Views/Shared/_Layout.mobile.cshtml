@@ -2,36 +2,168 @@
     Layout = null;
     string selected = ViewContext.Controller.GetType().Name.Replace("Controller", "").ToLower();
 }
-
-<!DOCTYPE html>
-
+<!doctype html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+         Remove this if you use the .htaccess -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>NextPVR Web Console</title>
+
+    <meta name="description" content="NextPVR Web Console">
+    <meta name="author" content="reven.co.nz">
+  
+    <!--  Mobile viewport optimized -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     
+  
     @Styles.Render("~/Content/mobile/css")         
     @RenderSection("styles", required: false)
        
-    @Scripts.Render("~/bundles/mobile/js")   
+    @Scripts.Render("~/bundles/mobile/js")     
 
+    <script type="text/javascript">
+
+        $.mobile.defaultPageTransition = 'none';
+
+    </script>
 </head>
-<body>
 
-    <div data-role="page"> 
-        
-        @RenderBody()
-        
-        <div data-role="footer" data-position="fixed" data-tap-toggle="false">		
-	        <div data-role="navbar">
-		        <ul>
-			        <li><a class="@(selected == "dashboard" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "Dashboard")" data-icon="home">Dashboard</a></li>
-			        <li><a class="@(selected == "guide" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "Guide")" data-icon="grid">Guide</a></li>
-			        <li><a class="@(selected == "recordings" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "Recordings")" data-icon="star">Recordings</a></li>
-                    <li><a class="@(selected == "usersettings" ? "ui-btn-active ui-state-persist" : "")" href="@Url.Action("Index", "UserSettings")" data-icon="gear">Settings</a></li>
-		        </ul>
+<body>
+    <div id="appLoading" class="appLoading"></div>
+
+    <div data-role="page" id="pageHome">
+	    <div data-role="header" data-position="fixed">
+			<h1>Home</h1>
+		</div><!-- /header -->
+		    
+		<div data-role="content">	
+			<h2>One</h2>
+		</div><!-- /content -->
+	    
+		<div data-role="footerTab" data-item="home"></div>
+    </div>
+    
+    <div data-role="page" id="pageGuide">
+	    
+		<div data-role="header" data-position="fixed">
+	        <a href="#" data-icon="arrow-l" class="ui-btn-left" id="guidePrevDay" data-iconpos="notext"></a>
+			<h1 id="epgDate">Today</h1>
+	        <a href="#" data-icon="arrow-r" class="ui-btn-right" id="guideNextDay" data-iconpos="notext"></a>
+		</div><!-- /header -->
+	    
+		<div data-role="content" id="epg">	
+	        <div id="timeline"></div>
+	        <div id="channelicons"></div>
+	        <div id="guidescroller">
+	            <div id="programs">
+	                <ul id="programList">
+	                </ul>
+	            </div>
+	        </div>
+		</div><!-- /content -->
+	    <!--
+	    <div id="channelGroup" data-role="header">
+	        <a href="#" data-icon="arrow-l" class="ui-btn-left" id="channelGroupPrev" data-iconpos="notext"></a>
+			<h4 id="channelGroupName">All Channels</h4>
+	        <a href="#" data-icon="arrow-r" class="ui-btn-right" id="channelGroupNext" data-iconpos="notext"></a>
+	    </div><!-- /channelGroup -->
+		-->
+	    <div id="footerGuide" data-role="footerTab" data-item="guide">
+            <div data-role="header">	        
+	            <a href="#" data-icon="arrow-l" class="ui-btn-left" id="channelGroupPrev" data-iconpos="notext"></a>
+			    <h1 id="channelGroupName">All Channels</h1>
+	            <a href="#" data-icon="arrow-r" class="ui-btn-right" id="channelGroupNext" data-iconpos="notext"></a>
 	        </div><!-- /navbar -->
-        </div><!-- /footer -->
+        </div>
+
+    </div>
+    
+    
+    
+    <div data-role="page" id="pageRecordings">
+    	
+		<div data-role="header" data-position="fixed">
+			<h1>Recordings</h1>
+			<a href="#" data-icon="delete" class="ui-btn-right" id="RecordingsEdit">Edit</a>
+		</div><!-- /header -->
+		    
+		<div data-role="content">
+			<ul data-role="listview" id="recordingsList" class="ui-listview">
+				
+				
+				
+			<li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">NCIS</a><span class=" ui-li-count">2</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Dexter</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Bones</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">Buffy the Vampire Slayer</a><span class=" ui-li-count">3</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">Angel</a><span class=" ui-li-count">2</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Six Feet Under</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">30 Rock</a><span class=" ui-li-count">2</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Tacky House</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">60 Minute Makeover</a><span class=" ui-li-count">3</span></li>
+			<li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">NCIS</a><span class=" ui-li-count">2</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Dexter</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Bones</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">Buffy the Vampire Slayer</a><span class=" ui-li-count">3</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">Angel</a><span class=" ui-li-count">2</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Six Feet Under</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">30 Rock</a><span class=" ui-li-count">2</span></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-video.png">Tacky House</a></li><li><a href="#"><img class="ui-li-icon" src="Content/images/icon-folder-dark.png">60 Minute Makeover</a><span class=" ui-li-count">3</span></li>
+			</ul>
+		</div><!-- /content -->
+	
+		<div id="footerRecordings" data-role="footerTab" data-item="recordings"></div>
+
+    </div>
+
+    
+    <div data-role="page" id="pageConfig">
+    	
+		<div data-role="header" data-position="fixed">
+			<h1>Configuration</h1>
+		</div><!-- /header -->
+		    
+		<div data-role="content">	
+			<div class="configgroup">
+				Here you can specify the server and port of your For the Record server.
+				<div class="input-wrapper">
+					<input type="text" name="4trServer" id="4trServer" maxlength="64" />
+					<span class="overlay">Server:</span>
+				</div>
+	
+				<div class="input-wrapper">
+					<input type="number" name="4trPort" id="4trPort" maxlength="5" />
+					<span class="overlay">Port:</span>
+				</div>
+			</div>
+		    
+			<div class="configgroup">
+			    This allows you to force a refresh of all cached data.
+			    <button id="btnRefreshDatabase" onclick="return false;">Refresh Data</button>
+		    </div>
+		
+		    <button id="btnSaveSettings" onclick="return false;">Save Configuration</button>
+		</div><!-- /content -->
+	
+		<div id="footerConfig" data-role="footerTab" data-item="config"></div>
+
+    </div>
+
+    <script>
+        var footers = $('[data-role="footerTab"]');
+        $.each(footers, function (i, ele) {
+            var $ele = $(ele);
+
+            var footerHtml = '<div data-role="footer" data-position="fixed">' +
+							 ' 	<div data-role="navbar">' +
+							 '		<ul>';
+            var pages = ['Home', 'Guide', 'Timers', 'Recordings', 'Config'];
+            for (var i = 0; i < pages.length; i++) {
+                footerHtml += '<li><a data-icon="' + pages[i].toLowerCase() + '" id="' + pages[i].toLowerCase() + '" '
+                if (pages[i].toLowerCase() == $ele.data('item'))
+                    footerHtml += ' class="ui-btn-active" ';
+                footerHtml += 'href="#page' + pages[i] + '">' + pages[i] + '</a></li>';
+            }
+            footerHtml += '		</ul>' +
+						  '	</div>' +
+						  '</div>';
+            $ele.append(footerHtml);
+        });
+    </script>
+
+    <div style="display:none">
+    @RenderBody()
     </div>
 </body>
 </html>

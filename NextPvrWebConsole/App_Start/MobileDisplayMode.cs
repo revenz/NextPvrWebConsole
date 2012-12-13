@@ -31,6 +31,9 @@ namespace NextPvrWebConsole.App_Start
         private bool IsMobile(string useragentString)
         {
             bool isMoblie = _useragenStringPartialIdentifiers.Any(val => useragentString.IndexOf(val, StringComparison.InvariantCultureIgnoreCase) >= 0);
+#if(DEBUG)
+            return true;
+#endif
             return isMoblie;
         }
     }

@@ -243,6 +243,10 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
+    <Content Include="Content\mobile\core\guide.css" />
+    <Content Include="Content\mobile\core\jquery.swipebutton.css" />
+    <Content Include="Content\mobile\core\jquery.touchscroll.css" />
+    <Content Include="Content\mobile\core\_main.css" />
     <Content Include="Content\mobile\images\icon_channel_all.png" />
     <Content Include="Content\images\jquery.filetree\application.png" />
     <Content Include="Content\images\jquery.filetree\code.png" />
@@ -312,6 +316,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Files.resx</DependentUpon>
     </Compile>
+    <Content Include="Scripts\core-mobile\guide.js" />
+    <Content Include="Scripts\core-mobile\jquery.swipebutton.js" />
     <Compile Include="Validators\DirectoryAttribute.cs" />
     <Compile Include="Validators\EmailAttribute.cs" />
     <Compile Include="Models\SetupModel.cs" />
@@ -359,6 +365,9 @@
     <Content Include="Scripts\configuration\channels.js" />
     <Content Include="Scripts\configuration\devices.js" />
     <Content Include="Scripts\configuration\index.js" />
+    <Content Include="Scripts\core-mobile\main.js" />
+    <Content Include="Scripts\core-mobile\touchscroll.js" />
+    <Content Include="Scripts\core-mobile\webserviceinterface.js" />
     <Content Include="Scripts\core\jquery.address.js" />
     <Content Include="Scripts\guide\index.js" />
     <Content Include="Scripts\search\index.js" />

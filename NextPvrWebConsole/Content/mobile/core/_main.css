@@ -1,0 +1,77 @@
+﻿.ui-footer .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+.ui-footer .ui-btn .ui-icon
+{ 
+    width: 30px!important; 
+    height: 30px!important; 
+    margin-left: -15px !important; 
+    box-shadow: none!important; 
+    -moz-box-shadow: none!important; 
+    -webkit-box-shadow: none!important; 
+    -webkit-border-radius: 0 !important; 
+    border-radius: 0 !important;  
+}
+.ui-icon-guide
+{
+    background:url('/content/mobile/images/icon-tv.png') 50% 50% no-repeat; 
+    background-size: 24px 24px;   
+}
+.ui-icon-home
+{
+    background:url('/content/mobile/images/icon-dashboard.png') 50% 50% no-repeat; 
+    background-size: 28px 28px;   
+}
+.ui-icon-timers
+{
+    background:url('/content/mobile/images/icon-timers.png') 50% 50% no-repeat; 
+    background-size: 25px 25px;   
+}
+.ui-icon-recordings, .ui-icon-rec
+{
+    background:url('/content/mobile/images/icon-recordings.png') 50% 50% no-repeat; 
+    background-size: 26px 16px;   
+}
+.ui-icon-settings, .ui-icon-config
+{
+    background:url('/content/mobile/images/icon-settings.png') 50% 50% no-repeat; 
+    background-size: 26px 26px;   
+}
+
+.appLoading
+{
+    display:none;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:red;
+    z-index:1000000;
+}
+#pageConfig input[type=text], #pageConfig input[type=number]
+{
+	text-align: right;
+	position:relative;
+	color:#999;
+}
+#pageConfig input[type=text]:focus, #pageConfig input[type=number]:focus
+{
+	text-align: left;
+	z-index:10;
+	color:black;
+}
+.input-wrapper{
+	position:relative;
+	margin-top:4px;
+	margin-bottom:4px;
+}
+.input-wrapper .overlay
+{
+	position:absolute;
+	top:10px;
+	left:10px;
+	color:black;
+}
+.configgroup
+{
+	margin-bottom:20px;
+}

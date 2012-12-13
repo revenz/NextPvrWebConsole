@@ -1,6 +1,30 @@
 ﻿@{
     ViewBag.Title = "Guide";
     Layout = "~/Views/Shared/_Layout.mobile.cshtml";
+    ViewBag.PageCss = "pageGuide";
 }
 
-this is the guide page
+<div data-role="header" data-position="fixed">
+	<a href="#" data-icon="arrow-l" class="ui-btn-left" id="guidePrevDay" data-iconpos="notext"></a>
+	<h1 id="epgDate">Today</h1>
+	<a href="#" data-icon="arrow-r" class="ui-btn-right" id="guideNextDay" data-iconpos="notext"></a>
+</div><!-- /header -->
+	    
+<div data-role="content" id="epg">	
+	<div id="timeline"></div>
+	<div id="channelicons"></div>
+	<div id="guidescroller">
+	    <div id="programs">
+	        <ul id="programList">
+	        </ul>
+	    </div>
+	</div>
+</div><!-- /content -->
+
+<div id="footerGuide" data-role="footerTab" data-item="guide">
+    <div data-role="header">	        
+	    <a href="#" data-icon="arrow-l" class="ui-btn-left" id="channelGroupPrev" data-iconpos="notext"></a>
+		<h1 id="channelGroupName">All Channels</h1>
+	    <a href="#" data-icon="arrow-r" class="ui-btn-right" id="channelGroupNext" data-iconpos="notext"></a>
+	</div><!-- /navbar -->
+</div>
