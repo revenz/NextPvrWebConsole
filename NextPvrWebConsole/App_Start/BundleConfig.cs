@@ -93,7 +93,7 @@ namespace NextPvrWebConsole
             bundles.Add(new ScriptBundle("~/bundles/mobile/js").Include(
                     "~/Scripts/core/jquery-{version}.js",
                     "~/Scripts/core/jquery.mobile-{version}.js",
-                    "~/Scripts/apihelper.js",
+                    "~/Scripts/core/jquery.dateFormat-1.0.js",
                     "~/Scripts/functions.js",
                     "~/Scripts/apihelper.js")
                     .IncludeDirectory("~/Scripts/api-wrappers", "*.js")

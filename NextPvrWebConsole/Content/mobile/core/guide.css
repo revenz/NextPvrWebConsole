@@ -172,6 +172,10 @@
 	left:0;
 	right:0;
 }
+#footerGuide
+{
+    bottom:69px;
+}
 
 #pageGuide, #pageConfig
 {

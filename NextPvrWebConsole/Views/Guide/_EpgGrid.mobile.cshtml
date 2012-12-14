@@ -1,0 +1,84 @@
+﻿@model List<NextPvrWebConsole.Models.Channel>
+@{
+    DateTime GuideStart = ((DateTime)ViewBag.GuideStart).ToUniversalTime();
+    DateTime GuideEnd = GuideStart.AddDays(1);
+    int minuteWidth = 3;
+    var listingCss = new Func<NextPvrWebConsole.Models.EpgListing, string>((NextPvrWebConsole.Models.EpgListing listing) =>
+    {            
+        DateTime dEnd = listing.EndTime;
+        DateTime dStart = listing.StartTime;
+
+        if (listing.EndTime > GuideEnd)
+        {
+            dEnd = GuideEnd; // ends before end of day
+        }
+
+        var start = (int)dStart.Subtract(GuideStart).TotalMinutes;
+        var end = (int)dEnd.Subtract(GuideStart).TotalMinutes;
+
+        if (start < 0)
+        {
+            start = 0; // starts the day before
+        }
+
+        return "left: " + ((minuteWidth * start)) + "px;width:"+ ((minuteWidth * (end - start)) - 1) + "px";
+    });
+    var listingClass = new Func<NextPvrWebConsole.Models.EpgListing, string>((NextPvrWebConsole.Models.EpgListing listing) =>
+    {
+        string _class = "";
+
+        if (listing.StartTime < GuideStart)
+        {
+            _class += "pre-guide-start ";
+        }
+        if (listing.EndTime > GuideEnd)
+        {
+            _class += "post-guide-end ";
+        }
+        if (listing.IsRecording)
+        {
+            _class += "recording ";
+        }
+        return _class;
+    });
+    
+    int totalMinutes = (int)GuideEnd.Subtract(GuideStart).TotalMinutes;
+}
+
+<div id="timeline">
+    @{
+        DateTime tempDate = GuideStart;
+        while(tempDate < GuideEnd){
+            <span class="bucket 30min" style="width:@(30 * minuteWidth)px">&nbsp;&nbsp;@tempDate.ToString("h:mm")</span>    
+            tempDate = tempDate.AddMinutes(30);
+        }
+    }
+</div>
+<div id="channelicons">
+    @foreach (var channel in Model)
+    {
+        <div class="icon">
+            <span class="text">@channel.Name</span>
+            <span class="logo" style="background: transparent url(@(channel.HasIcon ? "/channelicon/" + channel.Oid : "")) no-repeat 0 0;"></span>
+        </div>
+    }
+</div>
+<div id="guidescroller">
+	<div id="programs">
+	    <ul id="programList" style="width:@(totalMinutes * minuteWidth)px">
+            @foreach (var channel in Model)
+            {
+            <li class="channel">
+                @foreach (var listing in channel.Listings)
+                {
+                    int duration = (int)listing.EndTime.Subtract(listing.StartTime).TotalMinutes;                   
+                    int width = minuteWidth * duration - 1;
+                    int xPos = (int)((listing.StartTime - GuideStart).TotalMinutes / (60 * 1000)) * minuteWidth;
+                    <span class="program" data-start="@listing.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" data-end="@listing.EndTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" 
+                        data-duration="@duration" style="width:@(minuteWidth)px;position:absolute;left:@(xPos)px"><div>@listing.Title</div></span>
+                }
+            </li>
+            }
+	    </ul>
+	</div>
+</div>

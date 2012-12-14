@@ -42,12 +42,3 @@
         callbackfunction(result);
     });
 }
-
-function refreshChannelGroups(callback) {
-    var url = getForTheRecordUrl('GetChannelGroups');
-    console.log('url: ' + url);
-    $.getJSON(url, [], function (result) {
-        if (callback)
-            callback(result);
-    });
-}

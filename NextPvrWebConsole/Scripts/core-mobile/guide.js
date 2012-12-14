@@ -1,6 +1,13 @@
-﻿var currentDay;
+﻿/// <reference path="../core/jquery-1.8.2.js" />
+/// <reference path="../functions.js" />
+/// <reference path="../apihelper.js" />
+/// <reference path="../core/knockout-2.1.0.debug.js" />
+/// <reference path="../core/modernizr-2.6.2.js" />
+
+var currentDay;
 var currentChannelGroupIndex = 0;
 var initialLoadDone = false;
+var channelGroups = [{ Name: 'All Channels', Id: ''}];
 
 $(function () {
     console.log('test');
@@ -60,7 +67,9 @@ $('#pageGuide').live('pageshow', function (event) {
 
 
 function initialLoadEpgPage() {
-    setEpgDate(new Date());
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    refreshChannelGroups(function () { setEpgDate(today); });    
     initialLoadDone = true;
 }
 
@@ -86,22 +95,37 @@ function setEpgDate(newDate) {
     refreshEpgData();
 }
 
+function refreshChannelGroups(callback) {
+    api.getJSON('channelgroups', null, function (data) {
+        channelGroups = [{ Name: 'All Channels', Id: ''}];
+        console.log(data);
+        for (var i = 0; i < data.length; i++)
+            channelGroups.push(data[i]);
+        if (callback)
+            callback();
+    });
+}
+
 function refreshEpgData() {
     console.log('refreshEpgData()');
+
     var programList = $('#programList');
     programList.empty();
     var channelicons = $('#channelicons');
     channelicons.empty();
     $('#pageGuide #timeline').empty();
     $.mobile.showPageLoadingMsg();
-    console.log('channelGroups: ' + channelGroups);
-    $('#channelGroupName').text(channelGroups[currentChannelGroupIndex].Name);
-    var tzBias = getTimeZoneBias();
-    var startUtc = new Date(currentDay);
-    startUtc.setMinutes(startUtc.getMinutes() + tzBias);
-    console.log('utc date: ' + startUtc);
 
-    loadEpgData(startUtc, channelGroups[currentChannelGroupIndex].Id, function (channels, totalMinutes) {
+    console.log(channelGroups);
+    console.log('currentChannelGroupIndex: ' + currentChannelGroupIndex);
+    $('#channelGroupName').text(channelGroups[currentChannelGroupIndex].Name);
+
+    var id = channelGroups[currentChannelGroupIndex].Id;
+    if(id == null)
+        id = channelGroups[currentChannelGroupIndex].Name;
+    loadEpgData(currentDay, id, function (channels, totalMinutes) {
+        $('#pageGuide #epg').html(channels);
+        /*
         var timeline = '';
         var minWidth = 3;
         programList.width(totalMinutes * minWidth + 'px');
@@ -117,15 +141,18 @@ function refreshEpgData() {
         $('#pageGuide #timeline').append('<span class="spacer">&nbsp;</span>' + timeline);
         $.each(channels, function (i, channel) {
             var id = 'channel' + channel.Name.split(' ').join('_');
-            var iconUrl = getForTheRecordUrl('GetChannelLogo') + '&ChannelName=' + escape(channel.Name) + '&Width=50&Height=40';
-            console.log(iconUrl);
+            var iconUrl = ''; // getForTheRecordUrl('GetChannelLogo') + '&ChannelName=' + escape(channel.Name) + '&Width=50&Height=40';
+            //console.log(iconUrl);
             //var liChannel = '<li class="channel" style="background-image:url(' + "'" + iconUrl + "'" + ')>';
             var liChannel = '<li class="channel">';
-            console.log('Channel: ' + channel.Name + ' , programs: ' + channel.ProgramListings.length);
-            $.each(channel.ProgramListings, function (j, pg) {
-                var duration = pg.getDuration();
-                var xpos = (pg.StartUtc - currentDay) / (60 * 1000) * minWidth;
-                liChannel += '<span class="program" data-start="' + pg.StartUtc + '" data-end="' + pg.EndUtc + '" data-duration="' + duration + '" ' +
+            $.each(channel.Listings, function (j, pg) {
+                console.log(pg);
+                var diffMs = new Date(pg.EndTime) - new Date(pg.StartTime);
+                var duration = Math.floor((diffMs / 1000) / 60)
+                console.log(duration + ', start: ' + pg.StartTime + ', end: ' + pg.EndTime + ', ' + currentDay);
+                //var duration = pg.getDuration();
+                var xpos = (new Date(pg.StartTime) - currentDay) / (60 * 1000) * minWidth;
+                liChannel += '<span class="program" data-start="' + pg.StartTime + '" data-end="' + pg.EndTime + '" data-duration="' + duration + '" ' +
                                 ' style="width:' + (minWidth * duration - 1) + 'px;position:absolute;left:' + xpos + 'px"><div>' + $('<div/>').text(pg.Title).html() + '</div></span>';
             });
 
@@ -134,10 +161,20 @@ function refreshEpgData() {
             //channelicons.append('<img class="icon" src="' + iconUrl + '" alt="' + channel.Name + '" />');
             channelicons.append('<div class="icon"><span class="text">' + $('<div/>').text(channel.Name).html() + '</span><span class="logo" style="background: transparent url(' + iconUrl + ') no-repeat 0 0;"></span>');
         });
+        */
 
         $('#programList span').bind('taphold', function () {
             alert('taphold!');
         });
         $.mobile.hidePageLoadingMsg();
+    });
+}
+
+function loadEpgData(startUtc, groupName, callback) {
+    console.log('loading epg data');
+
+    $.get('/guide/epg?date=' + $.format.date(startUtc, 'yyyy-MM-dd') + '&group=' + encodeURIComponent(groupName) + '&rand=' + Math.random(), null, function (data, textStatus, jqXHR) {
+        if (callback)
+            callback(data, 24 * 60);
     });
 }

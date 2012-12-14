@@ -154,6 +154,8 @@ var api = new function()
 
 var npvrevent;
 $(function(){
+    if(!$.connection || !$.connection.nextPvrEvent)
+        return;
     npvrevent = $.connection.nextPvrEvent;
     npvrevent.showInfoMessage = function(message, title) { gui.showInfo(message, title); };
     npvrevent.showErrorMessage = function(message, title) { gui.showError(message, title); };

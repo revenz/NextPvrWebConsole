@@ -541,6 +541,7 @@
     </Content>
     <Content Include="Views\Recordings\Index.mobile.cshtml" />
     <Content Include="Views\UserSettings\Index.mobile.cshtml" />
+    <Content Include="Views\Guide\_EpgGrid.mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
