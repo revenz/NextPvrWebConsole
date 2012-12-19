@@ -1,6 +1,81 @@
 ﻿@{
-    ViewBag.Title = "Dashboard";
-    Layout = "~/Views/Shared/_Layout.mobile.cshtml";
+    Layout = null;
 }
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
 
-this is the content
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+         Remove this if you use the .htaccess -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>NextPVR Web Console</title>
+
+    <meta name="description" content="NextPVR Web Console">
+    <meta name="author" content="reven.co.nz">
+  
+    <!--  Mobile viewport optimized -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+  
+    @Styles.Render("~/Content/mobile/css")        
+       
+    @Scripts.Render("~/bundles/mobile/js")     
+
+    <script type="text/javascript">
+
+        $.mobile.defaultPageTransition = 'none';
+
+    </script>
+</head>
+
+<body>
+    <div id="appLoading" class="appLoading"></div>
+
+    <div data-role="page" id="masterpage">
+    
+	    <div data-role="footer" data-position="fixed" data-tap-toggle="false" id="footer">
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-icon="home" href="#home">Dashboard</a></li>
+                    <li><a data-icon="guide" href="#guide" data-load-script="initialLoadEpgPage()">Guide</a></li>
+                    <li><a data-icon="recordings" href="#recordings">Recordings</a></li>
+                    <li><a data-icon="config" href="#config">Config</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script language="javascript">
+        $(function () {
+            var $footer = $('#footer');
+            var $masterpage = $('#masterpage');
+
+            $footer.find('a').click(function () {
+                var $this = $(this);
+                var pageName = $(this).attr('href').substr(1);
+
+                $.get(pageName, function (html) {
+                    $footer.find('.ui-btn-active').removeClass('ui-btn-active');
+                    $footer.detach();
+                    var _class = $masterpage.attr('class');
+                    _class = _class.replace(/page[\w]+/gi, '');
+                    $masterpage.html(html);
+                    $masterpage.trigger("pagecreate");
+                    $masterpage.attr('class', _class).addClass('page' + pageName);
+                    $footer.appendTo('#masterpage');
+                    $this.addClass("ui-btn-active");
+
+                    var loadscript = $this.attr('data-load-script');
+                    if (loadscript && loadscript.length > 0)
+                        eval('(' + loadscript + ')');
+                });
+            });
+        });
+</script>
+
+</body>
+</html>

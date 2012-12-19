@@ -1,19 +1,23 @@
-﻿#pageGuide #epg 
+﻿@import "~/Content/mixins.less";
+@import "~/Content/globals.less";
+
+.pageguide #epg 
 {
     background:black;
     position:absolute;
-    top:42px;
-    bottom:104px;
+    top:68px;
+    bottom:112px;
     left:0;
     right:0;
-    overflow:hidden;
+    overflow:scroll;
+	padding-top:10px;
 }
 #programs
 {
     display: -webkit-box;
     position:absolute;
-    top:10px;
-    bottom:0px;
+    top:0;
+    bottom:0;
     left:50px;
     right:0;
 }
@@ -21,37 +25,23 @@
 {
     padding-bottom:100px;
 }
-#pageGuide #epgWrapper
+.pageguide #epgWrapper
 {
-    /*
-    position:absolute;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-    */
 }
-#pageGuide #programList
+.pageguide #programList
 {
     border:solid 1px black;
     margin:0;
     padding:0;
-    /*
-    padding-top:20px;
-    position:absolute;
-    top:-9px;
-    left:0px;
-    bottom:0px;
-    */
 }
-#pageGuide #programList li
+.pageguide #programList li
 {
     padding:0;
     margin:0;
     list-style:none;
     border-top:solid 1px black;
 }
-#pageGuide #programList li.channel
+.pageguide #programList li.channel
 {
     background-repeat:no-repeat;
     background-position:0 0;
@@ -60,33 +50,38 @@
     overflow:hidden;
     position:relative;
 }
-#pageGuide #timeline
+.pageguide #timeline
 {
     display:block;
     white-space:nowrap;
     border-top:none;    
-    top:-1px;
-    position:absolute;
+    top:42px;
+    position:fixed;
     left:0;
     z-index:10;
+	table {
+		border-spacing:0;
+		border-collapse:collapse;
+	}
+	td
+	{
+		background:grey;  
+		padding:0;
+		margin:0;
+		height:24px;
+		line-height:24px;
+		font-size:1em;
+		border:solid 1px white;
+		.gradient(#555, #555, #999);
+	}
+	.spacer
+	{
+		width:50px;
+		display:inline-block;
+		border-left:none;
+	}
 }
-#pageGuide #timeline span
-{
-    background:grey;  
-    padding:0;
-    margin:0;
-}
-#pageGuide .spacer
-{
-    width:50px;
-    display:inline-block;
-    height:14px;
-    border:solid 1px white;
-    border-left:none;
-    top:-1px;
-    position:relative;
-}
-#pageGuide .bucket
+.pageguide .bucket
 {
     display:inline-table;
     border:solid 1px white;
@@ -96,30 +91,37 @@
     font-weight:bold;
     font-size:12px;
 }
-#pageGuide .program
+.pageguide .program
 {
     /*display:table-cell;*/
    	display:inline-block;
     height:39px;
-    background:#d3d3d3;
     border-right:solid 1px black;
     padding:0;
     margin:0;
     font-size:0.8em;
     overflow:hidden;
     line-height:18px;
-    text-shadow: white 0px 0px 3px;
 	font-weight: bold;
 	position:relative;
 	top:1px;
+	color:white;
+	text-shadow:none;
+
+	.rounded(5px);
+    .gradient(#555, #555, #999);
+	
 }
-#pageGuide .program div
+#programList li:nth-child(odd) .program {
+    .gradient(#A5A5A5, #B4B4B4, #A5A5A5);
+}
+.pageguide .program div
 {
 	word-wrap:break-word;
 	padding:3px;	
 	width:100%;
 }
-#pageGuide #channelicons
+.pageguide #channelicons
 {
     position:absolute;
     left:0;
@@ -127,37 +129,44 @@
     bottom:0;
     width:49px;
     z-index:9;
-}
-#pageGuide #channelicons .icon
-{
-    width:49px;
-    height:39px;
-    background:#666;
-    display:block;
-    border:solid 1px black;
-    padding:0;
-    margin:0;
-    position:relative;
-}
-#pageGuide #channelicons .icon span
-{
-	position:absolute;
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
-	display:block;	
-	font-size:0.7em;
-    text-shadow: none;
-}
-#pageGuide #channelicons .icon .text
-{
-	color:white;
-	left:6px;
-	right:6px;
-	top:6px;
-	bottom:6px;
-	overflow:hidden;
+	.icon
+	{
+		width:49px;
+		height:39px;
+		background:#666;
+		display:block;
+		border:solid 1px black;
+		padding:0;
+		margin:0;
+		position:relative;
+		overflow:hidden;
+		span
+		{
+			position:absolute;
+			top:0;
+			left:0;
+			right:0;
+			bottom:0;
+			display:block;	
+			font-size:0.7em;
+			text-shadow: none;
+		}
+		.text
+		{
+			color:white;
+			left:6px;
+			right:6px;
+			top:6px;
+			bottom:6px;
+			overflow:hidden;
+		}
+		img {
+			width:50px;
+			height:50px;
+			position:relative;
+			top:-5px;
+		}
+	}
 }
 #channelGroup
 {
@@ -165,19 +174,16 @@
     position:absolute;
     z-index:11;
 }
-#footerGuide, #footerConfig
-{
-	position:absolute;
-	bottom:0;
-	left:0;
-	right:0;
-}
 #footerGuide
 {
-    bottom:69px;
+	position:fixed;
+    bottom:68px;
+	left:0;
+	right:0;
+    z-index:10;
 }
 
-#pageGuide, #pageConfig
+.pageguide
 {
     position:absolute !important;
     top:0 !important;

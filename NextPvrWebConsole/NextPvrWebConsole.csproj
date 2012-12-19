@@ -243,10 +243,18 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
-    <Content Include="Content\mobile\core\guide.css" />
+    <Content Include="Content\mobile\core\guide.less" />
     <Content Include="Content\mobile\core\jquery.swipebutton.css" />
     <Content Include="Content\mobile\core\jquery.touchscroll.css" />
     <Content Include="Content\mobile\core\_main.css" />
+    <Content Include="Content\mobile\images\ajax-loader.png" />
+    <Content Include="Content\mobile\images\icon-dashboard.png" />
+    <Content Include="Content\mobile\images\icon-folder-dark.png" />
+    <Content Include="Content\mobile\images\icon-folder.png" />
+    <Content Include="Content\mobile\images\icon-recordings.png" />
+    <Content Include="Content\mobile\images\icon-settings.png" />
+    <Content Include="Content\mobile\images\icon-timers.png" />
+    <Content Include="Content\mobile\images\icon-tv.png" />
     <Content Include="Content\mobile\images\icon_channel_all.png" />
     <Content Include="Content\images\jquery.filetree\application.png" />
     <Content Include="Content\images\jquery.filetree\code.png" />
@@ -533,7 +541,6 @@
     <Content Include="Views\Guide\_EpgGrid.cshtml" />
     <Content Include="Views\Guide\Index.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Shared\_Layout.mobile.cshtml" />
     <Content Include="Views\Account\Login.mobile.cshtml" />
     <Content Include="Views\Guide\Index.mobile.cshtml" />
     <Content Include="Views\Dashboard\Index.mobile.cshtml">

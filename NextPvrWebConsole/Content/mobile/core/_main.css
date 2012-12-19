@@ -75,3 +75,12 @@
 {
 	margin-bottom:20px;
 }
+
+.fixedheader
+{
+    padding-top:65px;
+}
+.sub-list .ui-header-fixed
+{
+    position:fixed;
+}

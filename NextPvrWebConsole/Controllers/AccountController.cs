@@ -39,8 +39,8 @@ namespace NextPvrWebConsole.Controllers
                 if (returnUrl.ToLower() == "/dashboard" || returnUrl == "/0")
                     returnUrl = "/";
 
-                returnUrl = "/"; // for now.
-                return RedirectToLocal(returnUrl);
+                returnUrl = "~/"; // for now.
+                return Redirect("/");
             }
             return View();
         }

@@ -1,20 +1,11 @@
 ﻿@{
     ViewBag.Title = "Recordings";
-    Layout = "~/Views/Shared/_Layout.mobile.cshtml";
+    Layout = "";
 
     var controller = new NextPvrWebConsole.Controllers.Api.RecordingsController();
     var available = controller.Available();
     var pending = controller.Pending();
     var recurring = controller.Recurring();
-}
-
-@section styles{
-    <style>
-        .sub-list
-        {
-            padding-top:45px;
-        }
-    </style>
 }
 
 <div data-role="content" id="recording-menu">
@@ -49,7 +40,7 @@
 	    <h1>Available Recordings</h1> 
     </div> 
     
-    <div data-role="content">
+    <div data-role="content" class="fixedheader">
         <ul data-role="listview" data-inset="true" data-filter="true" data-autodividers="true" >
             @foreach (var item in available)
             {
@@ -65,7 +56,7 @@
 	    <h1>Pending Recordings</h1> 
     </div> 
     
-    <div data-role="content">
+    <div data-role="content" class="fixedheader">
         <ul data-role="listview" id="pending-list" data-inset="true" data-filter="true">
             @{
                 var currentDate = "";
@@ -92,7 +83,7 @@
 	    <h1>Recurring Recordings</h1> 
     </div> 
     
-    <div data-role="content">
+    <div data-role="content" class="fixedheader">
         <ul data-role="listview" data-inset="true" data-filter="true" data-autodividers="true" >
             @foreach (var item in recurring)
             {
