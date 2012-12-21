@@ -325,6 +325,7 @@
       <DependentUpon>Files.resx</DependentUpon>
     </Compile>
     <Content Include="Scripts\core-mobile\guide.js" />
+    <Content Include="Scripts\core-mobile\jquery.nicescroll.js" />
     <Content Include="Scripts\core-mobile\jquery.swipebutton.js" />
     <Compile Include="Validators\DirectoryAttribute.cs" />
     <Compile Include="Validators\EmailAttribute.cs" />

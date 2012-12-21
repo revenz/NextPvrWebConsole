@@ -10,62 +10,48 @@ var initialLoadDone = false;
 var channelGroups = [{ Name: 'All Channels', Id: ''}];
 
 $(function () {
-    /*
-    console.log('test');
-    var timeline = $('#pageGuide #timeline');
-    var channelicons = $('#pageGuide #channelicons');
-    var scrollNode = document.querySelector("#programs");
-    var options = {
-    onMove: function (x, y) {
-    timeline.css('-webkit-transform', 'translate(' + x + 'px, 0px)');
-    channelicons.css('-webkit-transform', 'translate(0px, ' + y + 'px)');
-    }
-    };
-    var scroller = new TouchScroll(scrollNode, options);
-    */
-});
 
-$('#guidePrevDay').live('click', function () {
-    if (!currentDay)
-        return;
-    var date = new Date();
-    date.setHours(0, 0, 0, 0);
-    if (currentDay <= date)
-        return;
-    date.setDate(currentDay.getDate() - 1);
-    setEpgDate(date);
-});
+    $('#guidePrevDay').live('click', function () {
+        if (!currentDay)
+            return;
+        var date = new Date();
+        date.setHours(0, 0, 0, 0);
+        if (currentDay <= date)
+            return;
+        date.setDate(currentDay.getDate() - 1);
+        setEpgDate(date);
+    });
 
-$('#guideNextDay').live('click', function () {
-    if (!currentDay)
-        return;
-    var date = new Date();
-    date.setHours(0, 0, 0, 0);
-    date.setDate(currentDay.getDate() + 1);
-    setEpgDate(date);
-});
+    $('#guideNextDay').live('click', function () {
+        if (!currentDay)
+            return;
+        var date = new Date();
+        date.setHours(0, 0, 0, 0);
+        date.setDate(currentDay.getDate() + 1);
+        setEpgDate(date);
+    });
 
-$('#channelGroupNext').live('click', function () {
-    currentChannelGroupIndex += 1;
-    if (currentChannelGroupIndex >= channelGroups.length)
-        currentChannelGroupIndex = 0;
-    refreshEpgData();
-});
-$('#channelGroupPrev').live('click', function () {
-    currentChannelGroupIndex -= 1;
-    if (currentChannelGroupIndex < 0)
-        currentChannelGroupIndex = channelGroups.length - 1;
-    refreshEpgData();
-});
+    $('#channelGroupNext').live('click', function () {
+        currentChannelGroupIndex += 1;
+        if (currentChannelGroupIndex >= channelGroups.length)
+            currentChannelGroupIndex = 0;
+        refreshEpgData();
+    });
+    $('#channelGroupPrev').live('click', function () {
+        currentChannelGroupIndex -= 1;
+        if (currentChannelGroupIndex < 0)
+            currentChannelGroupIndex = channelGroups.length - 1;
+        refreshEpgData();
+    });
 
-$('#pageGuide').live('pageshow', function (event) {
-    console.log('showing guide page');
-    if (!initialLoadDone) {
-        $.mobile.showPageLoadingMsg();
-        initialLoadEpgPage();
-    }
+    $('#pageGuide').live('pageshow', function (event) {
+        console.log('showing guide page');
+        if (!initialLoadDone) {
+            $.mobile.showPageLoadingMsg();
+            initialLoadEpgPage();
+        }
+    });
 });
-
 
 function initialLoadEpgPage() {
     var today = new Date();
@@ -110,11 +96,6 @@ function refreshChannelGroups(callback) {
 function refreshEpgData() {
     console.log('refreshEpgData()');
 
-    //var programList = $('#programList');
-    //programList.empty();
-    //var channelicons = $('#channelicons');
-    //channelicons.empty();
-    //$('#pageGuide #timeline').empty();
     $.mobile.showPageLoadingMsg();
 
     console.log(channelGroups);
@@ -124,8 +105,43 @@ function refreshEpgData() {
     var id = channelGroups[currentChannelGroupIndex].Id;
     if(id == null)
         id = channelGroups[currentChannelGroupIndex].Name;
+
+    var epg = $('#epg');
     loadEpgData(currentDay, id, function (channels, totalMinutes) {
-        $('#epg').html(channels);
+        epg.get(0).innerHTML = channels;
+
+        epg.niceScroll();
+
+
+        var timeline = $('#timeline');
+        var channelicons = $('#channelicons');
+        var scroller = epg.getNiceScroll()[0];
+        scroller.scrollstart(function (info) {
+            channelicons.css('left', (info.end.x) + 'px');
+            timeline.css('top', (info.end.y) + 'px');
+        });
+        scroller.scrollend(function (info) {
+            channelicons.css('left', (info.current.x) + 'px');
+            timeline.css('top', (info.current.y) + 'px');
+        });
+        scroller.scrollcancel(function (info) {
+            channelicons.css('left', (info.current.x) + 'px');
+            timeline.css('top', (info.current.y) + 'px');
+        });
+        scroller.scroll(function (info) {
+            console.log('scroll');
+            console.log(info);
+            if(info.end.x > info.current.x)
+                channelicons.css('left', (info.current.x) + 'px');
+            else
+                channelicons.css('left', (info.end.x) + 'px');
+            if(info.end.y > info.current.y)
+                timeline.css('top', (info.current.y) + 'px');
+            else
+                timeline.css('top', (info.end.y) + 'px');
+        });
+
+        //$('#epg').html(channels);
 
         //$('#programList span').bind('taphold', function () {
         //    console.log('taphold!');

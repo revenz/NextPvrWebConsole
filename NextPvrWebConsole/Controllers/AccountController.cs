@@ -26,12 +26,19 @@ namespace NextPvrWebConsole.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult MobileLogin(string Username, string Password, bool RememberMe)
+        public ActionResult MobileLogin(string Username, string Password, bool? RememberMe)
         {
+#if(DEBUG)
+            if (Username == null)
+            {
+                Username = "john";
+                Password = "password";
+            }
+#endif
             if (Membership.ValidateUser(Username, Password))
             {
                 Models.User.LoggedIn(Username);
-                FormsAuthentication.SetAuthCookie(Username, RememberMe);
+                FormsAuthentication.SetAuthCookie(Username, (RememberMe ?? false as bool?).Value);
 
                 string[] roles = Roles.GetRolesForUser(Username);
 

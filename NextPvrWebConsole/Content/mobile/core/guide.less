@@ -5,12 +5,13 @@
 {
     background:black;
     position:absolute;
-    top:68px;
+    top:44px;
     bottom:112px;
     left:0;
     right:0;
     overflow:scroll;
-	padding-top:10px;
+	text-shadow:none;
+	padding:0;
 }
 #programs
 {
@@ -33,6 +34,7 @@
     border:solid 1px black;
     margin:0;
     padding:0;
+	padding-top:26px;
 }
 .pageguide #programList li
 {
@@ -55,8 +57,8 @@
     display:block;
     white-space:nowrap;
     border-top:none;    
-    top:42px;
-    position:fixed;
+    top:0;
+    position:absolute;
     left:0;
     z-index:10;
 	table {
@@ -72,7 +74,6 @@
 		line-height:24px;
 		font-size:1em;
 		border:solid 1px white;
-		.gradient(#555, #555, #999);
 	}
 	.spacer
 	{
@@ -106,14 +107,12 @@
 	position:relative;
 	top:1px;
 	color:white;
-	text-shadow:none;
 
-	.rounded(5px);
-    .gradient(#555, #555, #999);
+    background:#333;
 	
 }
 #programList li:nth-child(odd) .program {
-    .gradient(#A5A5A5, #B4B4B4, #A5A5A5);
+    background:#444;
 }
 .pageguide .program div
 {
@@ -125,7 +124,7 @@
 {
     position:absolute;
     left:0;
-    top:12px;
+    top:27px;
     bottom:0;
     width:49px;
     z-index:9;
