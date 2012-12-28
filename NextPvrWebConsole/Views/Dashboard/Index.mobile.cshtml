@@ -35,9 +35,9 @@
 <body>
     <div id="appLoading" class="appLoading"></div>
 
-    <div data-role="page" id="masterpage">
+    <div data-role="page" id="masterpage" data-theme="a">
     
-	    <div data-role="footer" data-position="fixed" data-tap-toggle="false" id="footer">
+	    <div data-role="footer" data-position="fixed" data-theme="c" data-tap-toggle="false" id="footer">
             <div data-role="navbar">
                 <ul>
                     <li><a data-icon="home" href="#home">Dashboard</a></li>
@@ -56,8 +56,13 @@
 
             $footer.find('a').click(function () {
                 var $this = $(this);
-                var pageName = $(this).attr('href').substr(1);
+                changeAppPage($this);
+            });
 
+            changeAppPage($footer.find('a:first'));
+
+            function changeAppPage(sender) {
+                var pageName = sender.attr('href').substr(1);
                 $.get(pageName, function (html) {
                     $footer.find('.ui-btn-active').removeClass('ui-btn-active');
                     $footer.detach();
@@ -67,13 +72,14 @@
                     $masterpage.trigger("pagecreate");
                     $masterpage.attr('class', _class).addClass('page' + pageName);
                     $footer.appendTo('#masterpage');
-                    $this.addClass("ui-btn-active");
+                    sender.addClass("ui-btn-active");
 
-                    var loadscript = $this.attr('data-load-script');
+                    var loadscript = sender.attr('data-load-script');
                     if (loadscript && loadscript.length > 0)
                         eval('(' + loadscript + ')');
                 });
-            });
+
+            }
         });
 </script>
 

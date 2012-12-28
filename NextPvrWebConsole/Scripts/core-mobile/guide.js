@@ -14,20 +14,14 @@ $(function () {
     $('#guidePrevDay').live('click', function () {
         if (!currentDay)
             return;
-        var date = new Date();
-        date.setHours(0, 0, 0, 0);
-        if (currentDay <= date)
-            return;
-        date.setDate(currentDay.getDate() - 1);
+        var date = date_by_subtracting_days(currentDay, 1);
         setEpgDate(date);
     });
 
     $('#guideNextDay').live('click', function () {
         if (!currentDay)
             return;
-        var date = new Date();
-        date.setHours(0, 0, 0, 0);
-        date.setDate(currentDay.getDate() + 1);
+        var date = date_by_adding_days(currentDay, 1);
         setEpgDate(date);
     });
 
@@ -61,6 +55,7 @@ function initialLoadEpgPage() {
 }
 
 function setEpgDate(newDate) {
+    console.log('setEpgDate');
     currentDay = newDate
     var today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -71,7 +66,7 @@ function setEpgDate(newDate) {
     twodaystime.setHours(0, 0, 0, 0);
     twodaystime.setDate(today.getDate() + 2);
 
-    var text = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][currentDay.getDate()] + ", " +
+    var text = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][currentDay.getDay()] + ", " +
                ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][currentDay.getMonth()] + " " + currentDay.getDate();
 
     if (currentDay >= today && currentDay < tomorrow)
@@ -106,48 +101,58 @@ function refreshEpgData() {
     if(id == null)
         id = channelGroups[currentChannelGroupIndex].Name;
 
-    var epg = $('#epg');
-    loadEpgData(currentDay, id, function (channels, totalMinutes) {
-        epg.get(0).innerHTML = channels;
+    var iframe = true;
 
-        epg.niceScroll();
-
-
-        var timeline = $('#timeline');
-        var channelicons = $('#channelicons');
-        var scroller = epg.getNiceScroll()[0];
-        scroller.scrollstart(function (info) {
-            channelicons.css('left', (info.end.x) + 'px');
-            timeline.css('top', (info.end.y) + 'px');
-        });
-        scroller.scrollend(function (info) {
-            channelicons.css('left', (info.current.x) + 'px');
-            timeline.css('top', (info.current.y) + 'px');
-        });
-        scroller.scrollcancel(function (info) {
-            channelicons.css('left', (info.current.x) + 'px');
-            timeline.css('top', (info.current.y) + 'px');
-        });
-        scroller.scroll(function (info) {
-            console.log('scroll');
-            console.log(info);
-            if(info.end.x > info.current.x)
-                channelicons.css('left', (info.current.x) + 'px');
-            else
-                channelicons.css('left', (info.end.x) + 'px');
-            if(info.end.y > info.current.y)
-                timeline.css('top', (info.current.y) + 'px');
-            else
-                timeline.css('top', (info.end.y) + 'px');
-        });
-
-        //$('#epg').html(channels);
-
-        //$('#programList span').bind('taphold', function () {
-        //    console.log('taphold!');
-        //});
+    if (iframe) {
+        $('#epg iframe').attr('src', '/guide/epg?date=' + $.format.date(currentDay, 'yyyy-MM-dd') + '&group=' + encodeURIComponent(id) + '&rand=' + Math.random());
         $.mobile.hidePageLoadingMsg();
-    });
+    } else {
+
+        var epg = $('#epg');
+        loadEpgData(currentDay, id, function (channels, totalMinutes) {
+            epg.css('visibility', 'hidden');
+            epg.get(0).innerHTML = channels;
+
+            epg.niceScroll();
+
+
+            var timeline = $('#timeline');
+            var channelicons = $('#channelicons');
+            var scroller = epg.getNiceScroll()[0];
+            scroller.scrollstart(function (info) {
+                channelicons.css('left', (info.end.x) + 'px');
+                timeline.css('top', (info.end.y) + 'px');
+            });
+            scroller.scrollend(function (info) {
+                channelicons.css('left', (info.current.x) + 'px');
+                timeline.css('top', (info.current.y) + 'px');
+            });
+            scroller.scrollcancel(function (info) {
+                channelicons.css('left', (info.current.x) + 'px');
+                timeline.css('top', (info.current.y) + 'px');
+            });
+            scroller.scroll(function (info) {
+                console.log('scroll');
+                console.log(info);
+                if (info.end.x > info.current.x)
+                    channelicons.css('left', (info.current.x) + 'px');
+                else
+                    channelicons.css('left', (info.end.x) + 'px');
+                if (info.end.y > info.current.y)
+                    timeline.css('top', (info.current.y) + 'px');
+                else
+                    timeline.css('top', (info.end.y) + 'px');
+            });
+
+            //$('#epg').html(channels);
+
+            //$('#programList span').bind('taphold', function () {
+            //    console.log('taphold!');
+            //});
+            epg.css('visibility', 'visible');
+            $.mobile.hidePageLoadingMsg();
+        });
+    }
 }
 
 function loadEpgData(startUtc, groupName, callback) {
@@ -157,4 +162,28 @@ function loadEpgData(startUtc, groupName, callback) {
         if (callback)
             callback(data, 24 * 60);
     });
+}
+
+function date_by_subtracting_days(date, days) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() - days,
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    );
+}
+
+function date_by_adding_days(date, days) {
+    return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate() + days,
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    );
 }

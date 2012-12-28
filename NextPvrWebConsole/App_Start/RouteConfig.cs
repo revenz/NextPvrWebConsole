@@ -22,6 +22,9 @@ namespace NextPvrWebConsole
 
             routes.MapRoute("StreamRecording", "stream/recording/{oid}", new { action = "recording", controller = "stream" }, new { oid = @"^\d+$" });
 
+
+            routes.MapRoute("Home", "home", new { action = "Home", controller = "Dashboard" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

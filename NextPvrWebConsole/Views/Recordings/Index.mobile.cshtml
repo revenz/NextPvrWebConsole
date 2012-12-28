@@ -36,7 +36,7 @@
 
 <div id="available" style="display:none" class="sub-list">
     <div data-role="header" data-position="fixed"> 
-	    <a href="#" data-icon="back" class="record-back">Back</a>
+	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back">&nbsp;</a>
 	    <h1>Available Recordings</h1> 
     </div> 
     
@@ -52,7 +52,7 @@
 
 <div id="pending" style="display:none" class="sub-list">
     <div data-role="header" data-position="fixed"> 
-	    <a href="#" data-icon="back" class="record-back">Back</a>
+	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back">&nbsp;</a>
 	    <h1>Pending Recordings</h1> 
     </div> 
     
@@ -79,7 +79,7 @@
 
 <div id="recurring" style="display:none" class="sub-list">
     <div data-role="header" data-position="fixed"> 
-	    <a href="#" data-icon="back" class="record-back">Back</a>
+	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back">&nbsp;</a>
 	    <h1>Recurring Recordings</h1> 
     </div> 
     
@@ -120,6 +120,20 @@
                 $(this).parents('li').remove();
                 $.post(url, function (data) {
                     console.log(data);
+                });
+            }
+        });
+
+        $('.sub-list ul').pullrefresh({
+            urlFunction: function () {
+                var id = $(this).closest('.sub-list').attr('id');
+                console.log('id: ' + id);
+                return id;
+            },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function () {
+                    $('ul').prepend('<li><p>' + this.text + '</p></li>');
                 });
             }
         });

@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "";
+    bool iFrame = true;
 }
 
 <div data-role="header" data-position="fixed">
@@ -9,6 +10,12 @@
 </div><!-- /header -->
 	    
 <div data-role="content" id="epg">	
+    @if (iFrame)
+    {
+        <iframe src="http://www.reven.co.nz/"></iframe>
+    }
+    else
+    {
 	<div id="timeline"></div>
 	<div id="channelicons"></div>
 	<div id="guidescroller">
@@ -17,6 +24,7 @@
 	        </ul>
 	    </div>
 	</div>
+    }
 </div><!-- /content -->
 
 <div id="footerGuide" data-role="header" data-tapToggle="false">	        

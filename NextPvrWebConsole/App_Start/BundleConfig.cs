@@ -87,7 +87,7 @@ namespace NextPvrWebConsole
             var cssMobile = new Bundle("~/Content/mobile/css").Include(
                         "~/Content/mobile/jquery.mobile-{version}.css",
                         "~/Content/mobile/jquery.mobile-structure-{version}.css",
-                        "~/Content/mobile/jquery.mobile-theme-{version}.css")
+                        "~/Content/mobile/nextpvr.css")
                         .IncludeDirectory("~/Content/mobile/core", "*.css")
                         .IncludeDirectory("~/Content/mobile/core", "*.less");
             cssMobile.Transforms.Add(new LessTransform());

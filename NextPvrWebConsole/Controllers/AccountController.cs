@@ -28,13 +28,6 @@ namespace NextPvrWebConsole.Controllers
         [AllowAnonymous]
         public ActionResult MobileLogin(string Username, string Password, bool? RememberMe)
         {
-#if(DEBUG)
-            if (Username == null)
-            {
-                Username = "john";
-                Password = "password";
-            }
-#endif
             if (Membership.ValidateUser(Username, Password))
             {
                 Models.User.LoggedIn(Username);

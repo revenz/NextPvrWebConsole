@@ -1,17 +1,24 @@
 ﻿@import "~/Content/mixins.less";
 @import "~/Content/globals.less";
 
+@minutewidth: 3px;
+
 .pageguide #epg 
 {
     background:black;
     position:absolute;
     top:44px;
-    bottom:112px;
+    bottom:114px;
     left:0;
     right:0;
-    overflow:scroll;
-	text-shadow:none;
+	text-shadow: 0 0 transparent !important;
 	padding:0;
+}
+div.pageguide #epg {
+	overflow:hidden;
+}
+body.pageguide {	
+    overflow:scroll;
 }
 #programs
 {
@@ -81,6 +88,9 @@
 		display:inline-block;
 		border-left:none;
 	}
+	.bucket.sixty-minute {
+		width:60 * @minutewidth - 1; /* minute 2 for the border */
+	}
 }
 .pageguide .bucket
 {
@@ -100,7 +110,7 @@
     border-right:solid 1px black;
     padding:0;
     margin:0;
-    font-size:0.8em;
+    font-size:0.7em;
     overflow:hidden;
     line-height:18px;
 	font-weight: bold;
@@ -118,7 +128,8 @@
 {
 	word-wrap:break-word;
 	padding:3px;	
-	width:100%;
+	width:100%;	
+	text-shadow: 0 0 transparent;
 }
 .pageguide #channelicons
 {
@@ -176,10 +187,11 @@
 #footerGuide
 {
 	position:fixed;
-    bottom:68px;
+    bottom:67px;
 	left:0;
 	right:0;
     z-index:10;
+	border:none;
 }
 
 .pageguide
@@ -205,4 +217,17 @@
     {
         min-height:200px !important;
     }
+}
+
+.pageguide iframe
+{
+    /*position:absolute;*/
+    /*top:44px;*/
+    /*bottom:112px;*/
+	border:0;
+    left:0;
+    right:0;
+    overflow:scroll;
+	height:100%;
+	width:100%;
 }

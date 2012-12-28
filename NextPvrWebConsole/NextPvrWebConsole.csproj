@@ -244,10 +244,12 @@
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
     <Content Include="Content\mobile\core\guide.less" />
+    <Content Include="Content\mobile\core\jquery.pullrefresh.css" />
     <Content Include="Content\mobile\core\jquery.swipebutton.css" />
     <Content Include="Content\mobile\core\jquery.touchscroll.css" />
     <Content Include="Content\mobile\core\_main.css" />
     <Content Include="Content\mobile\images\ajax-loader.png" />
+    <Content Include="Content\mobile\images\down.png" />
     <Content Include="Content\mobile\images\icon-dashboard.png" />
     <Content Include="Content\mobile\images\icon-folder-dark.png" />
     <Content Include="Content\mobile\images\icon-folder.png" />
@@ -286,6 +288,11 @@
     <Content Include="Content\images\loading-large.gif" />
     <Content Include="Content\images\logo-dark.png" />
     <Content Include="Content\jquery.ibutton.css" />
+    <Content Include="Content\mobile\images\loading.gif" />
+    <Content Include="Content\mobile\jquery.mobile-1.2.0.css" />
+    <Content Include="Content\mobile\jquery.mobile-1.2.0.min.css" />
+    <Content Include="Content\mobile\nextpvr.css" />
+    <Content Include="Content\mobile\nextpvr.min.css" />
     <Content Include="Languages\en.js" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ChannelGroup.cs" />
@@ -326,6 +333,7 @@
     </Compile>
     <Content Include="Scripts\core-mobile\guide.js" />
     <Content Include="Scripts\core-mobile\jquery.nicescroll.js" />
+    <Content Include="Scripts\core-mobile\jquery.pullrefresh.js" />
     <Content Include="Scripts\core-mobile\jquery.swipebutton.js" />
     <Compile Include="Validators\DirectoryAttribute.cs" />
     <Compile Include="Validators\EmailAttribute.cs" />
@@ -348,12 +356,8 @@
     <Content Include="Content\mobile\images\icons-36-white.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\menu_button_selected.png" />
-    <Content Include="Content\mobile\jquery.mobile-1.2.0.css" />
-    <Content Include="Content\mobile\jquery.mobile-1.2.0.min.css" />
     <Content Include="Content\mobile\jquery.mobile.structure-1.2.0.css" />
     <Content Include="Content\mobile\jquery.mobile.structure-1.2.0.min.css" />
-    <Content Include="Content\mobile\jquery.mobile.theme-1.2.0.css" />
-    <Content Include="Content\mobile\jquery.mobile.theme-1.2.0.min.css" />
     <Content Include="Content\mixins.less" />
     <Content Include="Content\dashboard\devices.less" />
     <Content Include="Resources\Files\CreateDatabase.sql" />
@@ -550,6 +554,7 @@
     <Content Include="Views\Recordings\Index.mobile.cshtml" />
     <Content Include="Views\UserSettings\Index.mobile.cshtml" />
     <Content Include="Views\Guide\_EpgGrid.mobile.cshtml" />
+    <Content Include="Views\Dashboard\Home.mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
