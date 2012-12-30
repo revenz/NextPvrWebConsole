@@ -276,7 +276,7 @@
 }
 .ui-btn-down-b {
 	border: 1px solid #bbbbbb /*{b-bdown-border}*/;
-	background: #000 /*{b-bdown-background-color}*/;
+	background: #fff /*{b-bdown-background-color}*/;
 	font-weight: bold;
 	color: #2f3e46 /*{b-bdown-color}*/;
 	text-shadow: 0 /*{b-bdown-shadow-x}*/ 1px /*{b-bdown-shadow-y}*/ 0 /*{b-bdown-shadow-radius}*/ #ffffff /*{b-bdown-shadow-color}*/;

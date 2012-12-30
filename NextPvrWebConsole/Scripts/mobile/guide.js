@@ -211,6 +211,12 @@ function MobileEpgViewModel() {
     self.selectedShow = ko.observable();
 
     self.selectShow = function (oid) {
+
+        if (oid)
+            location.hash = 'guide-' + oid;
+        else
+            location.hash = 'guide';
+
         console.log('selecting show: ' + oid);
         if (oid == 0) {
             $('#showdetails').hide();
@@ -237,4 +243,16 @@ $(function () {
     console.log('showinfo...');
     console.log($('#showinfo').get(0));
     ko.applyBindings(viewModel, $('#showinfo').get(0));
+
+    if (location.hash && location.hash.indexOf('-') > 0) {
+        var hash = location.hash.substr(location.hash.indexOf('-') + 1);
+        console.log('guide hash: ' + hash);
+        epgShowProgram(hash);
+    }
+
+    $('#showinfo').on('change', '#recording-options', function () {
+        console.log('change');
+        var value = $(this).val();
+        $('#showinfo .advanced').css('display', value == 0 ? 'none' : 'block');
+    });
 });

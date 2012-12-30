@@ -10,7 +10,9 @@
     <file relUrl="Content/images/jquery.filetree/script.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Content/mobile/images/icon-dashboard.png" publishTime="12/01/2011 10:44:12" />
     <file relUrl="Scripts/mobile/core/fixScrollAndTapHold.js" publishTime="12/30/2012 17:25:01" />
+    <file relUrl="Content/themes/bootstrap/inputs.less" publishTime="11/13/2012 17:03:14" />
     <file relUrl="Scripts/api-wrappers/recordinggroup.js" publishTime="11/17/2012 10:25:24" />
+    <file relUrl="Content/font/fontawesome-webfont.woff" publishTime="11/03/2012 19:24:16" />
     <file relUrl="Content/images/jquery.filetree/ruby.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="bin/System.Web.Razor.xml" publishTime="11/03/2012 19:24:18" />
     <file relUrl="bin/Newtonsoft.Json.xml" publishTime="11/03/2012 19:24:19" />
@@ -21,33 +23,35 @@
     <file relUrl="Content/mobile/core/jquery.touchscroll.css" publishTime="12/13/2012 21:00:41" />
     <file relUrl="Content/images/jquery.filetree/php.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Content/mobile/images/ajax-loader.png" publishTime="12/01/2011 10:19:12" />
+    <file relUrl="Scripts/core/jquery.unobtrusive-ajax.min.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Scripts/usersettings/recordingdirectories.js" publishTime="11/18/2012 21:29:39" />
     <file relUrl="Views/Shared/_Menu.cshtml" publishTime="11/27/2012 19:33:20" />
     <file relUrl="Scripts/core/jquery.ibutton.js" publishTime="11/09/2012 23:23:24" />
     <file relUrl="Content/system/index.less" publishTime="11/20/2012 20:13:22" />
     <file relUrl="Content/mobile/images/loading.gif" publishTime="12/28/2012 20:31:19" />
     <file relUrl="Resources/Files/PasswordResetBody.txt" publishTime="11/29/2012 16:40:01" />
+    <file relUrl="bin/SignalR.xml" publishTime="11/03/2012 19:24:19" />
     <file relUrl="Scripts/api-wrappers/log.js" publishTime="11/20/2012 19:46:00" />
     <file relUrl="Content/themes/bootstrap/images/ui-bg_glass_55_fbf9ee_1x400.png" publishTime="11/05/2012 16:50:15" />
-    <file relUrl="Scripts/usersettings/channelgroups.js" publishTime="11/29/2012 16:40:01" />
     <file relUrl="bin/Microsoft.CSharp.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Scripts/core/jquery.validate.unobtrusive.min.js" publishTime="11/09/2012 17:28:06" />
-    <file relUrl="Views/Recordings/Index.mobile.cshtml" publishTime="12/30/2012 17:39:37" />
+    <file relUrl="Content/scheduleeditor.less" publishTime="11/16/2012 23:34:57" />
     <file relUrl="Scripts/mobile/core/jquery.nicescroll.js" publishTime="12/23/2012 09:58:56" />
     <file relUrl="bin/System.Web.Mvc.xml" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Scripts/core/jquery.mobile-1.2.0.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="bin/System.Web.Http.dll" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Content/mixins.less" publishTime="11/28/2012 16:36:03" />
     <file relUrl="Content/usersettings/channels.less" publishTime="11/21/2012 00:38:00" />
-    <file relUrl="Views/Shared/_Layout.cshtml" publishTime="12/01/2012 19:14:00" />
     <file relUrl="Content/themes/bootstrap/jquery.autocomplete.less" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Views/Configuration/_Devices.cshtml" publishTime="11/30/2012 17:51:25" />
     <file relUrl="Scripts/core/jquery.i18n.min.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Scripts/core/jquery.metadata.js" publishTime="11/09/2012 22:58:27" />
     <file relUrl="Content/themes/bootstrap/images/ui-icons_f6cf3b_256x240.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="bin/SignalR.Hosting.Common.xml" publishTime="11/03/2012 19:24:19" />
+    <file relUrl="Scripts/setup/index.js" publishTime="11/12/2012 21:19:56" />
     <file relUrl="Content/dashboard/devices.less" publishTime="11/21/2012 20:06:32" />
     <file relUrl="Scripts/system/smtpsettings.js" publishTime="11/20/2012 00:47:34" />
+    <file relUrl="Views/System/_General.cshtml" publishTime="11/21/2012 20:06:32" />
     <file relUrl="Scripts/system/logs.js" publishTime="11/29/2012 16:40:01" />
     <file relUrl="Content/images/jquery.filetree/picture.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="bin/System.Web.Optimization.dll" publishTime="11/03/2012 19:24:18" />
@@ -63,10 +67,10 @@
     <file relUrl="Views/Account/_SetPasswordPartial.cshtml" publishTime="11/03/2012 19:24:17" />
     <file relUrl="Content/mobile/images/icons-18-black.png" publishTime="12/28/2012 21:13:47" />
     <file relUrl="Views/Search/Index.cshtml" publishTime="11/22/2012 19:48:42" />
-    <file relUrl="Scripts/configuration/devices.js" publishTime="11/30/2012 17:51:25" />
+    <file relUrl="Scripts/usersettings/channelgroups.js" publishTime="11/29/2012 16:40:01" />
     <file relUrl="Scripts/recordings/available.js" publishTime="11/30/2012 18:47:36" />
     <file relUrl="Views/Shared/FileTree.cshtml" publishTime="11/11/2012 01:18:39" />
-    <file relUrl="Scripts/dashboard/devices.js" publishTime="11/27/2012 16:41:44" />
+    <file relUrl="Content/jquery.filelist.less" publishTime="11/11/2012 00:47:49" />
     <file relUrl="Content/mobile/images/icon_channel_all.png" publishTime="11/16/2012 18:13:35" />
     <file relUrl="Scripts/core/linq.min.js" publishTime="11/09/2012 17:28:07" />
     <file relUrl="Content/themes/bootstrap/jquery.tabs.less" publishTime="11/05/2012 16:50:16" />
@@ -79,20 +83,23 @@
     <file relUrl="Scripts/core/jquery.easing.1.3.js" publishTime="11/09/2012 22:55:08" />
     <file relUrl="Languages/en.js" publishTime="11/29/2012 16:40:01" />
     <file relUrl="bin/System.Web.Providers.dll" publishTime="11/03/2012 19:24:18" />
-    <file relUrl="Content/mobile/nextpvr.css" publishTime="12/30/2012 18:55:29" />
+    <file relUrl="Scripts/dashboard/devices.js" publishTime="11/27/2012 16:41:44" />
+    <file relUrl="bin/EntityFramework.xml" publishTime="11/03/2012 19:24:18" />
+    <file relUrl="Content/mobile/nextpvr.css" publishTime="12/30/2012 23:49:47" />
     <file relUrl="Content/images/jquery.filetree/hdd.png" publishTime="11/11/2012 00:47:20" />
     <file relUrl="Scripts/dashboard/upcomingrecordings.js" publishTime="11/27/2012 20:36:55" />
+    <file relUrl="Content/images/jquery.filetree/html.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Content/usersettings/index.less" publishTime="11/08/2012 23:57:25" />
     <file relUrl="Scripts/mobile/core/touchscroll.js" publishTime="12/13/2012 21:15:34" />
-    <file relUrl="Scripts/mobile/core/jquery.swipebutton.js" publishTime="12/12/2012 22:42:15" />
     <file relUrl="Content/mobile/images/icon-tv.png" publishTime="12/01/2011 10:41:22" />
     <file relUrl="Scripts/api-wrappers/recording.js" publishTime="11/27/2012 00:03:36" />
     <file relUrl="Views/UserSettings/_ChannelGroups.cshtml" publishTime="11/14/2012 21:22:12" />
-    <file relUrl="Views/Guide/Index.mobile.cshtml" publishTime="12/30/2012 20:42:59" />
-    <file relUrl="bin/NextPvrWebConsole.pdb" publishTime="12/30/2012 20:43:46" />
+    <file relUrl="Views/Guide/Index.mobile.cshtml" publishTime="12/31/2012 01:36:58" />
+    <file relUrl="bin/NextPvrWebConsole.pdb" publishTime="12/31/2012 01:47:47" />
     <file relUrl="Content/themes/bootstrap/jquery.progressbar.less" publishTime="11/07/2012 18:50:47" />
+    <file relUrl="bin/System.Web.Routing.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Content/images/jquery.filetree/xls.png" publishTime="11/10/2012 23:38:08" />
-    <file relUrl="Scripts/setup/index.js" publishTime="11/12/2012 21:19:56" />
+    <file relUrl="Scripts/mobile/core/jquery.swipebutton.js" publishTime="12/12/2012 22:42:15" />
     <file relUrl="Scripts/core/knockout-sortable.js" publishTime="11/12/2012 17:37:23" />
     <file relUrl="Scripts/core/linq-vsdoc.js" publishTime="11/09/2012 17:28:07" />
     <file relUrl="Content/mobile/images/icon-recordings.png" publishTime="12/01/2011 10:47:56" />
@@ -103,8 +110,9 @@
     <file relUrl="Views/Shared/Error.cshtml" publishTime="11/03/2012 19:24:17" />
     <file relUrl="Content/images/jquery.filetree/film.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Views/System/_Users.cshtml" publishTime="11/27/2012 16:41:44" />
-    <file relUrl="Views/Guide/_EpgGrid.mobile.cshtml" publishTime="12/30/2012 17:45:41" />
+    <file relUrl="Views/Guide/_EpgGrid.mobile.cshtml" publishTime="12/30/2012 20:56:17" />
     <file relUrl="Content/dashboard/upcomingrecordings.less" publishTime="11/21/2012 20:06:32" />
+    <file relUrl="Scripts/global.js" publishTime="11/28/2012 16:36:03" />
     <file relUrl="Scripts/addons/toastr.js" publishTime="11/03/2012 19:24:16" />
     <file relUrl="Scripts/mobile/core/jquery.pullrefresh.js" publishTime="12/28/2012 20:37:22" />
     <file relUrl="Views/UserSettings/Index.cshtml" publishTime="11/29/2012 16:40:01" />
@@ -113,8 +121,6 @@
     <file relUrl="bin/SignalR.Hosting.AspNet.dll" publishTime="11/03/2012 19:24:19" />
     <file relUrl="Scripts/core/jquery.i18n.js" publishTime="11/10/2012 00:22:12" />
     <file relUrl="Scripts/recordings/pending.js" publishTime="11/17/2012 10:17:32" />
-    <file relUrl="Scripts/mobile/guide.js" publishTime="12/30/2012 20:20:50" />
-    <file relUrl="Content/usersettings/channelgroups.less" publishTime="11/14/2012 21:22:12" />
     <file relUrl="Views/Dashboard/_DiskUsage.cshtml" publishTime="11/28/2012 16:36:03" />
     <file relUrl="Global.asax" publishTime="11/03/2012 19:24:16" />
     <file relUrl="Scripts/core/jquery-ui-1.9.0.min.js" publishTime="11/09/2012 17:28:06" />
@@ -122,12 +128,12 @@
     <file relUrl="Content/themes/bootstrap/variables.less" publishTime="11/20/2012 19:46:00" />
     <file relUrl="Content/mobile/core/jquery.pullrefresh.css" publishTime="12/28/2012 20:31:49" />
     <file relUrl="bin/Microsoft.Web.Infrastructure.dll" publishTime="11/03/2012 19:24:18" />
-    <file relUrl="Views/Web.config" publishTime="11/06/2012 20:53:14" />
+    <file relUrl="Views/Configuration/_ChannelGroups.cshtml" publishTime="11/30/2012 17:51:25" />
     <file relUrl="Scripts/core/jquery-1.8.2-vsdoc.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Views/System/_SmtpSettings.cshtml" publishTime="11/20/2012 00:48:26" />
     <file relUrl="bin/System.Data.Entity.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Content/configuration/index.less" publishTime="11/28/2012 16:36:03" />
-    <file relUrl="Views/Account/Login.mobile.cshtml" publishTime="12/30/2012 10:11:24" />
+    <file relUrl="Views/Account/Login.mobile.cshtml" publishTime="12/31/2012 01:45:56" />
     <file relUrl="Scripts/core/jquery-ui-1.9.0.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Content/themes/bootstrap/theme.less" publishTime="11/28/2012 16:36:03" />
     <file relUrl="bin/System.Transactions.dll" publishTime="03/18/2010 19:31:26" />
@@ -141,82 +147,80 @@
     <file relUrl="Views/Dashboard/_Tuners.cshtml" publishTime="11/27/2012 00:36:57" />
     <file relUrl="Scripts/core/knockout-2.2.0.js" publishTime="11/09/2012 17:28:07" />
     <file relUrl="bin/Newtonsoft.Json.dll" publishTime="11/03/2012 19:24:19" />
-    <file relUrl="Content/mobile/images/icons-36-black.png" publishTime="12/28/2012 21:13:47" />
+    <file relUrl="Scripts/_references.js" publishTime="11/12/2012 17:37:23" />
     <file relUrl="Content/themes/bootstrap/jquery.datepicker.less" publishTime="11/05/2012 16:50:15" />
-    <file relUrl="bin/System.Configuration.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="bin/System.Web.WebPages.xml" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Scripts/recordings/recurring.js" publishTime="11/17/2012 10:14:20" />
     <file relUrl="bin/System.Web.Http.WebHost.dll" publishTime="11/03/2012 19:24:18" />
-    <file relUrl="Scripts/configuration/channelgroups.js" publishTime="11/29/2012 16:40:01" />
     <file relUrl="Content/mobile/images/icons-36-white.png" publishTime="12/28/2012 21:13:47" />
     <file relUrl="Views/UserSettings/Index.mobile.cshtml" publishTime="12/09/2012 16:38:15" />
     <file relUrl="Content/font/fontawesome-webfont.svg" publishTime="11/03/2012 19:24:16" />
     <file relUrl="Content/dashboard/index.less" publishTime="11/28/2012 16:36:03" />
     <file relUrl="App_Readme/glimpse.readme.txt" publishTime="11/05/2012 16:50:15" />
+    <file relUrl="bin/System.Drawing.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Scripts/core/jquery.signalR-0.5.3.min.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Scripts/core/jquery.linq.min.js" publishTime="11/09/2012 17:28:06" />
-    <file relUrl="Content/themes/bootstrap/images/ui-bg_highlight-soft_75_cccccc_1x100.png" publishTime="11/05/2012 16:50:15" />
+    <file relUrl="Content/images/jquery.filetree/code.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="bin/SignalR.Hosting.Common.dll" publishTime="11/03/2012 19:24:19" />
     <file relUrl="Content/themes/bootstrap/images/ui-icons_cd0a0a_256x240.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Scripts/charting/flotr2.min.js" publishTime="11/18/2012 16:10:31" />
     <file relUrl="Content/themes/bootstrap/images/ui-bg_glass_75_ffffff_1x400.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Scripts/charting/flotr2.js" publishTime="11/18/2012 16:08:37" />
     <file relUrl="Scripts/core/modernizr-2.6.2.js" publishTime="11/09/2012 17:28:07" />
-    <file relUrl="Content/images/jquery.filetree/html.png" publishTime="11/10/2012 23:38:08" />
+    <file relUrl="bin/EntityFramework.dll" publishTime="11/03/2012 19:24:18" />
     <file relUrl="bin/System.Web.Razor.dll" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Content/recordings/available.less" publishTime="11/30/2012 17:51:25" />
     <file relUrl="Views/Shared/_ScheduleEditor.cshtml" publishTime="11/21/2012 21:38:58" />
     <file relUrl="Content/themes/bootstrap/images/ui-icons_454545_256x240.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Scripts/configuration/channels.js" publishTime="11/13/2012 22:09:29" />
-    <file relUrl="Scripts/global.js" publishTime="11/28/2012 16:36:03" />
+    <file relUrl="Scripts/core/knockout-2.2.0.debug.js" publishTime="11/09/2012 17:28:07" />
     <file relUrl="Scripts/api-wrappers/recordingdirectory.js" publishTime="11/30/2012 17:51:25" />
     <file relUrl="bin/System.Net.Http.WebRequest.xml" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Content/account/index.less" publishTime="11/28/2012 00:00:02" />
     <file relUrl="Content/themes/bootstrap/jquery.spinner.less" publishTime="11/10/2012 20:19:11" />
     <file relUrl="Content/font/fontawesome-webfont.ttf" publishTime="11/03/2012 19:24:16" />
     <file relUrl="bin/SignalR.dll" publishTime="11/03/2012 19:24:19" />
+    <file relUrl="Scripts/configuration/channelgroups.js" publishTime="11/29/2012 16:40:01" />
     <file relUrl="Content/mobile/images/icon-folder-dark.png" publishTime="12/02/2011 15:49:17" />
-    <file relUrl="bin/System.ComponentModel.DataAnnotations.dll" publishTime="03/18/2010 19:31:26" />
+    <file relUrl="Views/Shared/_Layout.cshtml" publishTime="12/01/2012 19:14:00" />
     <file relUrl="Content/themes/bootstrap/jquery.toolbar.less" publishTime="11/05/2012 16:50:16" />
     <file relUrl="Views/Dashboard/Index.mobile.cshtml" publishTime="12/30/2012 20:23:05" />
     <file relUrl="Views/Setup/Index.cshtml" publishTime="11/12/2012 21:19:40" />
     <file relUrl="Scripts/api-wrappers/device.js" publishTime="11/16/2012 18:13:35" />
     <file relUrl="Scripts/system/index.js" publishTime="11/19/2012 21:50:50" />
     <file relUrl="bin/System.Data.DataSetExtensions.dll" publishTime="03/18/2010 19:31:26" />
-    <file relUrl="Scripts/_references.js" publishTime="11/12/2012 17:37:23" />
     <file relUrl="Scripts/core/jquery.dateFormat-1.0.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Content/themes/bootstrap/images/ui-bg_inset-soft_95_fef1ec_1x100.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Content/globals.less" publishTime="11/20/2012 23:37:01" />
     <file relUrl="Content/vtabs.less" publishTime="11/21/2012 20:06:32" />
-    <file relUrl="Content/font/fontawesome-webfont.woff" publishTime="11/03/2012 19:24:16" />
+    <file relUrl="bin/System.Xml.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="bin/Antlr3.Runtime.dll" publishTime="11/03/2012 19:24:19" />
     <file relUrl="bin/BundleTransformer.Core.dll" publishTime="11/03/2012 19:24:17" />
     <file relUrl="Scripts/core/jquery.nicescroll.js" publishTime="11/09/2012 17:28:06" />
-    <file relUrl="Views/System/_Logs.cshtml" publishTime="11/24/2012 14:41:27" />
     <file relUrl="Scripts/jquery.filetree.js" publishTime="11/11/2012 10:42:30" />
     <file relUrl="bin/System.Web.Mvc.dll" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Content/themes/bootstrap/images/ui-icons_222222_256x240.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Views/Shared/EditorTemplates/HourPicker.cshtml" publishTime="11/11/2012 01:18:04" />
     <file relUrl="Content/mobile/images/icon-folder.png" publishTime="12/02/2011 15:43:11" />
+    <file relUrl="Content/themes/bootstrap/images/ui-bg_highlight-soft_75_cccccc_1x100.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Content/jquery.ibutton.css" publishTime="11/09/2012 23:13:44" />
     <file relUrl="bin/WebGrease.dll" publishTime="11/03/2012 19:24:19" />
-    <file relUrl="Scripts/api-wrappers/listing.js" publishTime="12/30/2012 20:21:28" />
+    <file relUrl="Scripts/api-wrappers/listing.js" publishTime="12/31/2012 00:26:30" />
     <file relUrl="bin/System.Web.Http.xml" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Scripts/core/jquery.timespinner.js" publishTime="11/10/2012 17:58:47" />
     <file relUrl="bin/System.Xml.Linq.dll" publishTime="03/18/2010 19:31:26" />
-    <file relUrl="Content/jquery.filelist.less" publishTime="11/11/2012 00:47:49" />
     <file relUrl="Content/themes/bootstrap/jquery.button.less" publishTime="11/20/2012 19:46:00" />
     <file relUrl="Content/themes/bootstrap/jquery.menu.less" publishTime="11/05/2012 16:50:16" />
     <file relUrl="Views/Configuration/_General.cshtml" publishTime="11/28/2012 16:36:03" />
     <file relUrl="Scripts/core/linq.js" publishTime="11/09/2012 17:28:07" />
     <file relUrl="Content/images/jquery.filetree/linux.png" publishTime="11/10/2012 23:38:08" />
+    <file relUrl="Views/Web.config" publishTime="11/06/2012 20:53:14" />
     <file relUrl="bin/System.Net.Http.Formatting.dll" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Views/UserSettings/_RecordingDirectories.cshtml" publishTime="11/18/2012 21:29:06" />
     <file relUrl="Content/mobile/jquery.mobile.structure-1.2.0.min.css" publishTime="12/09/2012 16:26:52" />
     <file relUrl="Content/images/jquery.filetree/spinner.gif" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Scripts/functions.js" publishTime="12/30/2012 20:30:34" />
     <file relUrl="Views/Dashboard/Index.cshtml" publishTime="11/28/2012 16:36:03" />
-    <file relUrl="bin/System.Web.Entity.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="bin/System.Web.Abstractions.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Content/images/jquery.filetree/java.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Content/font/fontawesome-webfont.eot" publishTime="11/03/2012 19:24:16" />
@@ -240,13 +244,12 @@
     <file relUrl="Content/images/jquery.filetree/directory.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Content/font/font-awesome-ie7.less" publishTime="11/03/2012 19:24:16" />
     <file relUrl="Views/Account/_ChangePasswordPartial.cshtml" publishTime="11/03/2012 19:24:17" />
-    <file relUrl="Scripts/core/knockout-2.2.0.debug.js" publishTime="11/09/2012 17:28:07" />
-    <file relUrl="bin/NextPvrWebConsole.dll" publishTime="12/30/2012 20:43:46" />
+    <file relUrl="bin/NextPvrWebConsole.dll" publishTime="12/31/2012 01:47:47" />
     <file relUrl="Scripts/api-wrappers/recurringrecording.js" publishTime="11/18/2012 14:08:33" />
     <file relUrl="Content/images/loading-large.gif" publishTime="11/12/2012 20:47:36" />
     <file relUrl="Content/usersettings/recordingdirectories.less" publishTime="11/15/2012 19:42:09" />
     <file relUrl="Content/custom.css" publishTime="11/03/2012 19:24:16" />
-    <file relUrl="bin/System.Xml.dll" publishTime="03/18/2010 19:31:26" />
+    <file relUrl="Content/themes/bootstrap/icons.less" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Content/mobile/core/_main.css" publishTime="12/30/2012 10:03:07" />
     <file relUrl="Scripts/core/jquery.validate.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Content/images/logo-dark.png" publishTime="11/12/2012 17:37:23" />
@@ -254,7 +257,6 @@
     <file relUrl="Content/recordings/index.less" publishTime="11/21/2012 20:06:32" />
     <file relUrl="Content/progressbar.less" publishTime="11/28/2012 16:36:03" />
     <file relUrl="Content/guide/show-info-dialog.less" publishTime="11/30/2012 17:51:25" />
-    <file relUrl="bin/EntityFramework.dll" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Views/Account/_LoginLayout.cshtml" publishTime="11/27/2012 16:41:44" />
     <file relUrl="Scripts/api-wrappers/channelgroup.js" publishTime="11/16/2012 18:13:35" />
     <file relUrl="Content/mobile/images/icon-settings.png" publishTime="12/01/2011 10:42:56" />
@@ -275,27 +277,25 @@
     <file relUrl="bin/dotless.Core.dll" publishTime="11/03/2012 19:24:19" />
     <file relUrl="Content/mobile/core/jquery.swipebutton.css" publishTime="12/12/2012 22:44:31" />
     <file relUrl="bin/SignalR.Hosting.AspNet.xml" publishTime="11/03/2012 19:24:19" />
-    <file relUrl="Content/themes/bootstrap/inputs.less" publishTime="11/13/2012 17:03:14" />
+    <file relUrl="Scripts/mobile/guide.js" publishTime="12/31/2012 01:09:55" />
     <file relUrl="Content/mobile/images/icons-18-white.png" publishTime="12/28/2012 21:13:47" />
+    <file relUrl="Content/addons/toastr.css" publishTime="11/03/2012 19:24:16" />
     <file relUrl="Views/Shared/_ChangePassword.cshtml" publishTime="11/19/2012 19:28:31" />
     <file relUrl="Content/themes/bootstrap/images/ui-icons_888888_256x240.png" publishTime="11/05/2012 16:50:15" />
-    <file relUrl="Content/themes/bootstrap/icons.less" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Views/Recordings/Index.cshtml" publishTime="11/29/2012 16:40:01" />
     <file relUrl="Views/Shared/_LoginPartial.cshtml" publishTime="11/19/2012 19:28:31" />
+    <file relUrl="Content/mobile/images/icons-36-black.png" publishTime="12/28/2012 21:13:47" />
     <file relUrl="Content/search/index.less" publishTime="11/21/2012 20:30:10" />
     <file relUrl="Scripts/core/jquery.validate.unobtrusive.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Content/system/users.less" publishTime="11/27/2012 16:41:44" />
     <file relUrl="Content/images/jquery.filetree/file.png" publishTime="11/10/2012 23:38:08" />
-    <file relUrl="Content/images/jquery.filetree/code.png" publishTime="11/10/2012 23:38:08" />
-    <file relUrl="Content/mobile/core/guide.less" publishTime="12/30/2012 20:40:12" />
+    <file relUrl="Content/mobile/core/guide.less" publishTime="12/31/2012 01:47:18" />
     <file relUrl="bin/System.Data.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="bin/NUtility.dll" publishTime="10/02/2012 05:49:32" />
     <file relUrl="Views/System/_About.cshtml" publishTime="11/18/2012 15:38:04" />
-    <file relUrl="Views/Configuration/_ChannelGroups.cshtml" publishTime="11/30/2012 17:51:25" />
     <file relUrl="Content/guide/index.less" publishTime="11/28/2012 16:36:03" />
-    <file relUrl="Scripts/api-wrappers/user.js" publishTime="12/01/2012 00:24:31" />
     <file relUrl="Views/_ViewStart.cshtml" publishTime="11/03/2012 19:24:17" />
-    <file relUrl="Content/addons/toastr.css" publishTime="11/03/2012 19:24:16" />
+    <file relUrl="Content/themes/bootstrap/jquery.selectable.less" publishTime="11/05/2012 16:50:16" />
     <file relUrl="Content/themes/bootstrap/images/ui-bg_glass_75_e6e6e6_1x400.png" publishTime="11/05/2012 16:50:15" />
     <file relUrl="Views/Configuration/_Channels.cshtml" publishTime="11/30/2012 17:51:25" />
     <file relUrl="bin/NShared.dll" publishTime="11/17/2012 11:02:31" />
@@ -307,11 +307,10 @@
     <file relUrl="Scripts/system/users.js" publishTime="11/27/2012 16:41:44" />
     <file relUrl="Content/images/ibutton-slider-default.png" publishTime="11/09/2012 22:59:39" />
     <file relUrl="bin/ru-ru/BundleTransformer.Core.resources.dll" publishTime="11/03/2012 19:24:17" />
-    <file relUrl="Web.config" publishTime="12/30/2012 20:43:49" />
-    <file relUrl="Content/themes/bootstrap/jquery.selectable.less" publishTime="11/05/2012 16:50:16" />
+    <file relUrl="Web.config" publishTime="12/31/2012 01:47:51" />
     <file relUrl="Scripts/core/jquery.unobtrusive-ajax.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Views/Shared/EditorTemplates/Enum.cshtml" publishTime="11/29/2012 16:40:01" />
-    <file relUrl="bin/SignalR.xml" publishTime="11/03/2012 19:24:19" />
+    <file relUrl="Scripts/api-wrappers/user.js" publishTime="12/01/2012 00:24:31" />
     <file relUrl="Views/Account/Login.cshtml" publishTime="11/20/2012 19:46:00" />
     <file relUrl="Views/Dashboard/_UpcomingRecordings.cshtml" publishTime="11/27/2012 16:41:44" />
     <file relUrl="Content/themes/bootstrap/images/ui-bg_glass_75_dadada_1x400.png" publishTime="11/05/2012 16:50:15" />
@@ -319,23 +318,24 @@
     <file relUrl="bin/System.Net.Http.Formatting.xml" publishTime="11/03/2012 19:24:18" />
     <file relUrl="Scripts/core/jquery.signalR-0.5.3.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Views/Stream/Index.cshtml" publishTime="11/27/2012 23:24:55" />
-    <file relUrl="bin/System.Web.Routing.dll" publishTime="03/18/2010 19:31:26" />
+    <file relUrl="bin/System.ComponentModel.DataAnnotations.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Content/images/jquery.filetree/txt.png" publishTime="11/10/2012 23:38:08" />
-    <file relUrl="Content/scheduleeditor.less" publishTime="11/16/2012 23:34:57" />
-    <file relUrl="bin/System.Drawing.dll" publishTime="03/18/2010 19:31:26" />
+    <file relUrl="bin/System.Web.Entity.dll" publishTime="03/18/2010 19:31:26" />
+    <file relUrl="Views/Recordings/Index.mobile.cshtml" publishTime="12/30/2012 17:39:37" />
     <file relUrl="Content/mobile/images/down.png" publishTime="12/28/2012 20:31:08" />
     <file relUrl="Content/images/jquery.filetree/css.png" publishTime="11/10/2012 23:38:08" />
     <file relUrl="Views/Guide/Index.cshtml" publishTime="11/30/2012 17:51:25" />
-    <file relUrl="Views/System/_General.cshtml" publishTime="11/21/2012 20:06:32" />
+    <file relUrl="Views/System/_Logs.cshtml" publishTime="11/24/2012 14:41:27" />
     <file relUrl="Scripts/guide/index.js" publishTime="11/30/2012 17:51:25" />
+    <file relUrl="Scripts/configuration/devices.js" publishTime="11/30/2012 17:51:25" />
     <file relUrl="Scripts/core/jquery-1.8.2.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="bin/System.Runtime.Serialization.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Scripts/core/jquery.validate-vsdoc.js" publishTime="11/09/2012 17:28:06" />
     <file relUrl="Views/Guide/_EpgGrid.cshtml" publishTime="11/27/2012 16:41:44" />
     <file relUrl="Content/mobile/images/icon-timers.png" publishTime="12/01/2011 10:43:19" />
-    <file relUrl="Scripts/core/jquery.unobtrusive-ajax.min.js" publishTime="11/09/2012 17:28:06" />
+    <file relUrl="Content/usersettings/channelgroups.less" publishTime="11/14/2012 21:22:12" />
     <file relUrl="bin/System.dll" publishTime="03/18/2010 19:31:26" />
-    <file relUrl="bin/EntityFramework.xml" publishTime="11/03/2012 19:24:18" />
+    <file relUrl="bin/System.Configuration.dll" publishTime="03/18/2010 19:31:26" />
     <file relUrl="Views/Configuration/_Recording.cshtml" publishTime="11/13/2012 17:03:14" />
   </publishProfile>
 </publishData>

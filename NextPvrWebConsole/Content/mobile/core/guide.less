@@ -193,7 +193,7 @@ body.pageguide .ui-page {
 #footerGuide
 {
 	position:fixed;
-    bottom:65px;
+    bottom:64px;
 	left:0;
 	right:0;
     z-index:10;
@@ -224,7 +224,41 @@ body.pageguide .ui-page {
 }
 
 #showinfo {
+	padding-bottom:70px;
 	.ui-content {
 		padding-top:50px;
 	}
+	.label {
+		float:left;
+		color:#999;
+		width:120px;
+	}
+	.ui-li > span + span {
+		margin-left: 120px;
+		display: block;
+	}
+	.ui-select {
+		margin:-15px 0 -15px 120px;
+	}
+	.ui-slider {
+		position: absolute;
+		left: 190px;
+		right: 10px;
+		top: 21px;
+		width:auto;
+	}
+	.ui-input-text {
+		margin:0 0 0 120px;
+		width:70px;
+	}
+	.advanced {
+		display:none;
+	}
+	#recording-settings {
+		margin-top:40px;
+		.label {
+			line-height:36px;
+		}
+	}
 }
+

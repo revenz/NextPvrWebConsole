@@ -42,34 +42,84 @@
 	    <h1 id="epgDate">Show Information</h1>
     </div><!-- /header -->
 
-    <div data-role="content">	
+    <div data-role="content" style="margin:10px">	
         <div id="showdetails" data-bind="with: selectedShow">
-            <table>
-                <tr>
-                    <td>Title</td>
-                    <td data-bind="text: title"></td>
-                </tr>
-                <tr>
-                    <td>Start</td>
-                    <td data-bind="text: startDateTimeShort"></td>
-                </tr>
-                <tr>
-                    <td>End</td>
-                    <td data-bind="text: endDateTimeShort"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" data-bind="text: description"></td>
-                </tr>
-                <tr data-bind="visible: isRecording">
-                    <td colspan="2">                   
-                        <div data-role="controlgroup">
-                            <a href="index.html" data-role="button">Cancel Recording</a>
-                            <a href="index.html" data-role="button" data-bind="visible: isRecurring">Cancel Recurring</a>
-                        </div>
-                    </td>
-                </tr>
+            <ul data-role="listview">
+                <li data-role="list-divider" data-bind="text: title"></li>
+                <li>
+                    <span class="label">Channel</span>
+                    <span data-bind="text: channelName"></span>
+                </li>
+                <li data-bind="visible: hasSubtitle">
+                    <span class="label">Subtitle</span>
+                    <span data-bind="text: subtitle"></span>
+                </li>
+                <li>
+                    <span class="label">Start</span>
+                    <span data-bind="text: startDateTimeShort"></span>
+                </li>
+                <li>
+                    <span class="label">End</span>
+                    <span data-bind="text: endDateTimeShort"></span>
+                </li>
+                <li data-bind="visible: genresString().length > 0">
+                    <span class="label">Genres</span>
+                    <span data-bind="text: genresString"></span>
+                </li>
+                <li>
+                    <span data-bind="text: description"></span>
+                </li>         
+            </ul>
+                   
+            <div data-role="controlgroup" data-bind="visible: isRecording" style="margin:35px -15px 0">
+                <a href="index.html" data-role="button">Cancel Recording</a>
+                <a href="index.html" data-role="button" data-bind="visible: isRecurring">Cancel Recurring</a>
+            </div>
 
-            </table>
+            <ul data-role="listview" id="recording-settings" data-bind="visible: !isRecording()">
+                <li data-role="list-divider">Record</li>
+                <li>
+                    <span class="label">Type</span>
+                    <select id="recording-options" name="recording-options">
+                        <option value="0">Quick Record</option>
+                        <option value="1" data-lang="Record_Once">Once</option>
+                        <option value="2" data-lang="Record_Season_New">Season New</option>
+                        <option value="3" data-lang="Record_Seaon_All">Season All</option>
+                        <option value="4" data-lang="Record_Season_Daily">Season Daily</option>
+                        <option value="5" data-lang="Record_Season_Weekly">Season Weekly</option>
+                        <option value="6" data-lang="Record_Season_Mon_To_Fri">Season Weekdays</option>
+                        <option value="7" data-lang="Record_Season_Weekends">Season Weekends</option>
+                        <option value="8" data-lang="Record_All_Eps_All_Chs">All Episodes, All Channels</option>
+                    </select>
+                </li>
+                <li class="advanced">
+                    <span class="label">Pre-Padding</span>
+                    <input id="prepadding" type="number" min="0" max="88" value="4" />
+                </li>
+                <li class="advanced">
+                    <span class="label">Post-Padding</span>
+                    <input id="postpadding" type="number" min="0" max="88" value="4" />
+                </li>
+                <li class="advanced">
+                    <span class="label">Keep</span>
+                    <select id="keep" name="keep">
+                        <option value="0">All Recordings</option>
+                        @for (int i = 1; i <= 28; i++) { <option value="@i">@i</option> }
+                    </select>
+                </li>
+                <li class="advanced">
+                    <span class="label">Directory</span>
+                    <select id="recordingdirectory" name="recordingdirectory">
+                        <option value="0">Default</option>
+                    </select>
+                </li>
+                <li>
+                    <div data-role="controlgroup">
+                        <a href="index.html" data-role="button">Record</a>
+                    </div>
+                </li>
+            </ul>
+        
         </div>
 
     </div>
