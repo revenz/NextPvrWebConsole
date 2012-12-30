@@ -4,24 +4,36 @@
     var devices = new NextPvrWebConsole.Controllers.Api.DevicesController().Get();
 }
 
+<div data-role="content">
+    <div data-role="collapsible" data-collapsed="false">
+        <h3>Devices</h3>
+        <p>The tuner devices status.</p>
 
-<div data-role="collapsible" data-collapsed="false">
-    <h3>Devices</h3>
-    <ul data-role="listview">
-    @foreach (var d in devices)
-    {
-        if (d.Enabled)
+        @foreach (var d in devices)
         {
-            <li data-role="list-divider" role="subheading"><span class="name">@d.Name</span></li>        
-            
-            foreach (var s in d.Streams ?? new List<NextPvrWebConsole.Models.Stream>())
+            if (d.Enabled)
             {
-                <li>
-                    <span class="channel">@(String.IsNullOrWhiteSpace(s.ChannelName) ? s.ChannelNumber.ToString() : s.ChannelName)</span>
-                    <span class="title">@(String.IsNullOrWhiteSpace(s.Title) ? "Unknown" : s.Title)</span>
-                </li>                    
+                
+                <div data-role="collapsible" data-collapsed="@((d.Streams == null || d.Streams.Count == 0).ToString().ToLower())">
+                    <h3>@d.Name</h3>
+                    @if(d.Streams != null && d.Streams.Count > 0) {
+                        <ul data-role="listview">
+                        @foreach (var s in d.Streams ?? new List<NextPvrWebConsole.Models.Stream>())
+                        {
+                            <li>
+                                <span class="channel">@(String.IsNullOrWhiteSpace(s.ChannelName) ? s.ChannelNumber.ToString() : s.ChannelName)</span>
+                                <span class="title">@(String.IsNullOrWhiteSpace(s.Title) ? "Unknown" : s.Title)</span>
+                            </li>                    
+                        }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No active streams.</p>
+                    }
+                        
+                </div>
             }
         }
-    }
-    </ul>
+    </div>
 </div>

@@ -244,6 +244,7 @@
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\images\ibutton-slider-default.png" />
     <Content Include="Content\mobile\core\guide.less" />
+    <Content Include="Content\mobile\core\jquery.mobile.simpledialog.css" />
     <Content Include="Content\mobile\core\jquery.pullrefresh.css" />
     <Content Include="Content\mobile\core\jquery.swipebutton.css" />
     <Content Include="Content\mobile\core\jquery.touchscroll.css" />
@@ -292,7 +293,6 @@
     <Content Include="Content\mobile\jquery.mobile-1.2.0.css" />
     <Content Include="Content\mobile\jquery.mobile-1.2.0.min.css" />
     <Content Include="Content\mobile\nextpvr.css" />
-    <Content Include="Content\mobile\nextpvr.min.css" />
     <Content Include="Languages\en.js" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ChannelGroup.cs" />
@@ -331,10 +331,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Files.resx</DependentUpon>
     </Compile>
-    <Content Include="Scripts\core-mobile\guide.js" />
-    <Content Include="Scripts\core-mobile\jquery.nicescroll.js" />
-    <Content Include="Scripts\core-mobile\jquery.pullrefresh.js" />
-    <Content Include="Scripts\core-mobile\jquery.swipebutton.js" />
+    <Content Include="Scripts\mobile\core\fixScrollAndTapHold.js" />
+    <Content Include="Scripts\mobile\guide.js" />
+    <Content Include="Scripts\mobile\core\jquery.mobile.simpledialog2.js" />
+    <Content Include="Scripts\mobile\core\jquery.nicescroll.js" />
+    <Content Include="Scripts\mobile\core\jquery.pullrefresh.js" />
+    <Content Include="Scripts\mobile\core\jquery.swipebutton.js" />
     <Compile Include="Validators\DirectoryAttribute.cs" />
     <Compile Include="Validators\EmailAttribute.cs" />
     <Compile Include="Models\SetupModel.cs" />
@@ -378,9 +380,9 @@
     <Content Include="Scripts\configuration\channels.js" />
     <Content Include="Scripts\configuration\devices.js" />
     <Content Include="Scripts\configuration\index.js" />
-    <Content Include="Scripts\core-mobile\main.js" />
-    <Content Include="Scripts\core-mobile\touchscroll.js" />
-    <Content Include="Scripts\core-mobile\webserviceinterface.js" />
+    <Content Include="Scripts\mobile\core\main.js" />
+    <Content Include="Scripts\mobile\core\touchscroll.js" />
+    <Content Include="Scripts\mobile\core\webserviceinterface.js" />
     <Content Include="Scripts\core\jquery.address.js" />
     <Content Include="Scripts\guide\index.js" />
     <Content Include="Scripts\search\index.js" />
@@ -555,6 +557,7 @@
     <Content Include="Views\UserSettings\Index.mobile.cshtml" />
     <Content Include="Views\Guide\_EpgGrid.mobile.cshtml" />
     <Content Include="Views\Dashboard\Home.mobile.cshtml" />
+    <Content Include="Views\Configuration\index.mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

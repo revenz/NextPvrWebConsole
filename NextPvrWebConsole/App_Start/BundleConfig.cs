@@ -86,7 +86,7 @@ namespace NextPvrWebConsole
 
             var cssMobile = new Bundle("~/Content/mobile/css").Include(
                         "~/Content/mobile/jquery.mobile-{version}.css",
-                        "~/Content/mobile/jquery.mobile-structure-{version}.css",
+                        //"~/Content/mobile/jquery.mobile-structure-{version}.css",
                         "~/Content/mobile/nextpvr.css")
                         .IncludeDirectory("~/Content/mobile/core", "*.css")
                         .IncludeDirectory("~/Content/mobile/core", "*.less");
@@ -97,11 +97,15 @@ namespace NextPvrWebConsole
             bundles.Add(new ScriptBundle("~/bundles/mobile/js").Include(
                     "~/Scripts/core/jquery-{version}.js",
                     "~/Scripts/core/jquery.mobile-{version}.js",
-                    "~/Scripts/core/jquery.dateFormat-1.0.js",                    
+                    "~/Scripts/core/knockout-{version}.js",
+                    "~/Scripts/core/jquery.i18n.js",
+                    "~/Scripts/core/linq.js",
+                    "~/Scripts/core/jquery.linq.js*",
+                    "~/Scripts/core/jquery.dateFormat-1.0.js",
                     "~/Scripts/functions.js",
                     "~/Scripts/apihelper.js")
                     .IncludeDirectory("~/Scripts/api-wrappers", "*.js")
-                    .IncludeDirectory("~/Scripts/core-mobile", "*.js"));
+                    .IncludeDirectory("~/Scripts/mobile/core", "*.js"));
 
             PageBundle(bundles, "Dashboard");
             PageBundle(bundles, "Guide");

@@ -25,6 +25,8 @@
        
     @Scripts.Render("~/bundles/mobile/js")     
 
+    @Scripts.Render("~/languages/en.js")       
+
     <script type="text/javascript">
 
         $.mobile.defaultPageTransition = 'none';
@@ -40,48 +42,15 @@
 	    <div data-role="footer" data-position="fixed" data-theme="c" data-tap-toggle="false" id="footer">
             <div data-role="navbar">
                 <ul>
-                    <li><a data-icon="home" href="#home">Dashboard</a></li>
-                    <li><a data-icon="guide" href="#guide" data-load-script="initialLoadEpgPage()">Guide</a></li>
-                    <li><a data-icon="recordings" href="#recordings">Recordings</a></li>
-                    <li><a data-icon="config" href="#config">Config</a></li>
+                    <li><a id="pagetab_home" data-icon="home" href="#home">Dashboard</a></li>
+                    <li><a id="pagetab_guide" data-icon="guide" href="#guide" data-load-script="initialLoadEpgPage()">Guide</a></li>
+                    <li><a id="pagetab_recordings" data-icon="recordings" href="#recordings">Recordings</a></li>
+                    <li><a id="pagetab_configuration" data-icon="config" href="#configuration">Config</a></li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <script language="javascript">
-        $(function () {
-            var $footer = $('#footer');
-            var $masterpage = $('#masterpage');
-
-            $footer.find('a').click(function () {
-                var $this = $(this);
-                changeAppPage($this);
-            });
-
-            changeAppPage($footer.find('a:first'));
-
-            function changeAppPage(sender) {
-                var pageName = sender.attr('href').substr(1);
-                $.get(pageName, function (html) {
-                    $footer.find('.ui-btn-active').removeClass('ui-btn-active');
-                    $footer.detach();
-                    var _class = $masterpage.attr('class');
-                    _class = _class.replace(/page[\w]+/gi, '');
-                    $masterpage.html(html);
-                    $masterpage.trigger("pagecreate");
-                    $masterpage.attr('class', _class).addClass('page' + pageName);
-                    $footer.appendTo('#masterpage');
-                    sender.addClass("ui-btn-active");
-
-                    var loadscript = sender.attr('data-load-script');
-                    if (loadscript && loadscript.length > 0)
-                        eval('(' + loadscript + ')');
-                });
-
-            }
-        });
-</script>
 
 </body>
 </html>

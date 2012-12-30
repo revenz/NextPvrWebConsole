@@ -45,6 +45,10 @@ $(function () {
             initialLoadEpgPage();
         }
     });
+
+    $('#btnShowInfoBack').click(function () {
+        epgShowProgram(0);
+    });
 });
 
 function initialLoadEpgPage() {
@@ -187,3 +191,50 @@ function date_by_adding_days(date, days) {
         date.getMilliseconds()
     );
 }
+
+var currentProgramOid = 0;
+var viewModel = null;
+
+function epgShowProgram(oid) {
+    console.log('epgShowProgram: ' + oid);
+    if (currentProgramOid === oid)
+        return;
+    console.log('about to select show: ' + oid);
+    currentProgramOid = oid;
+    viewModel.selectShow(oid);
+}
+
+
+function MobileEpgViewModel() {
+    // Data
+    var self = this;
+    self.selectedShow = ko.observable();
+
+    self.selectShow = function (oid) {
+        console.log('selecting show: ' + oid);
+        if (oid == 0) {
+            $('#showdetails').hide();
+            $('#showinfo').hide();
+            $('#epgcontainer').show();
+            self.selectedShow(null);
+            return;
+        } else {
+            $('#epgcontainer').hide();
+            $('#showinfo').show();
+        }
+        api.getJSON('guide/epglisting/' + oid, null, function (result) {
+            $('#showdetails').show();
+            console.log(result);
+            self.selectedShow(new Listing(null, result));
+
+            $('#masterpage').trigger("pagecreate");
+        });
+    };
+}
+
+$(function () {
+    viewModel = new MobileEpgViewModel();
+    console.log('showinfo...');
+    console.log($('#showinfo').get(0));
+    ko.applyBindings(viewModel, $('#showinfo').get(0));
+});

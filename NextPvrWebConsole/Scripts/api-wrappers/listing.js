@@ -6,6 +6,11 @@
 
 
 function Listing(channel, epgListing) {
+    if (channel && !epgListing) {
+        // i really should of made this constructor the other way around...
+        epgListing = channel;
+        channel = null;
+    }
     var self = this;
     self.channel = channel;
     self.epgListing = epgListing;
@@ -26,6 +31,7 @@ function Listing(channel, epgListing) {
     self.startDateTimeShort = ko.computed(function () { return gui.formatDateTimeShort(Date.parse(epgListing.StartTime)); });
     self.startTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(epgListing.StartTime)); });
     self.startTimeLong = ko.computed(function () { return gui.formatDateLong(Date.parse(epgListing.StartTime)); });
+    self.endDateTimeShort = ko.computed(function () { return gui.formatDateTimeShort(Date.parse(epgListing.EndTime)); });
     self.endTimeShort = ko.computed(function () { return gui.formatTime(Date.parse(epgListing.EndTime)); });
     self.duration = ko.computed(function () { return Math.floor((Math.abs(Date.parse(epgListing.EndTime) - Date.parse(epgListing.StartTime)) / 1000) / 60) + ' ' + $.i18n._('Minutes') });
     self.genres = ko.observableArray(epgListing.Genres ? epgListing.Genres : []);

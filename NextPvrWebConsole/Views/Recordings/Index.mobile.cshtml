@@ -8,24 +8,43 @@
     var recurring = controller.Recurring();
 }
 
+<style>
+    .sub-list ul .ui-li-static
+    {
+        padding:0;
+    }
+    .sub-list ul .ui-btn
+    {
+        border:0;
+        padding:0;
+        margin:0;
+        background:none;
+    }
+    .sub-list ul input[type=checkbox]
+    {
+        visibility:hidden;
+    }
+</style>
+
+
 <div data-role="content" id="recording-menu">
     <ul data-role="listview" data-inset="true">
 	    <li>
-            <a href="#available">
+            <a href="#recordings-available">
                 <h3 class="ui-li-heading">Available Recordings</h3>
                 <p class="ui-li-desc">The recordings that are available to you.</p>
                 <span class="ui-li-count">@available.Count()</span>       
             </a>
         </li>
 	    <li>
-            <a href="#pending">
+            <a href="#recordings-pending">
                 <h3 class="ui-li-heading">Pending Recordings</h3>
                 <p class="ui-li-desc">All recordings that are scheduled to record in the near future</p>
                 <span class="ui-li-count">@pending.Count()</span>       
             </a>
         </li>
 	    <li>
-            <a href="#recurring">
+            <a href="#recordings-recurring">
                 <h3 class="ui-li-heading">Recurring Recordings</h3>
                 <p class="ui-li-desc">Recordings that will be scheduled whenever a recurrence is found based on the rules.</p>
                 <span class="ui-li-count">@recurring.Count()</span>       
@@ -34,26 +53,28 @@
     </ul>
 </div>
 
-<div id="available" style="display:none" class="sub-list">
+<div id="recordings-available" style="display:none" class="sub-list">
     <div data-role="header" data-position="fixed"> 
-	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back">&nbsp;</a>
+	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back" title="Back" data-theme="b">&nbsp;</a>
 	    <h1>Available Recordings</h1> 
+        <a href="#" data-icon="delete" data-iconpos="notext" title="Delete" class="delete" data-theme="b">&nbsp;</a>
     </div> 
     
     <div data-role="content" class="fixedheader">
         <ul data-role="listview" data-inset="true" data-filter="true" data-autodividers="true" >
             @foreach (var item in available)
             {
-                <li>@item.Name</li>
+                <li><label><input type="checkbox" />@item.Name</label></li>
             }
         </ul>
     </div>
 </div>
 
-<div id="pending" style="display:none" class="sub-list">
+<div id="recordings-pending" style="display:none" class="sub-list">
     <div data-role="header" data-position="fixed"> 
-	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back">&nbsp;</a>
+	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back" title="Back" data-theme="b">&nbsp;</a>
 	    <h1>Pending Recordings</h1> 
+        <a href="#" data-icon="delete" data-iconpos="notext" title="Delete" class="delete" data-theme="b">&nbsp;</a>
     </div> 
     
     <div data-role="content" class="fixedheader">
@@ -63,31 +84,30 @@
                 foreach (var item in pending)
                 {
                     var startime = item.StartTime.ToLocalTime().ToLongDateString();
-                    if(startime != currentDate)
+                    if (startime != currentDate)
                     {
                         currentDate = startime;
                         <li data-role="list-divider">@startime</li>
                     }
-                    <li>@item.Name
-                        <span class="ui-li-count">@item.StartTime.ToLocalTime().ToShortTimeString()</span>
-                    </li>
+                    <li><label><input type="checkbox" />@item.Name</label><span class="ui-li-count">@item.StartTime.ToLocalTime().ToShortTimeString()</span></li>
                 }
             }
         </ul>
     </div>
 </div>
 
-<div id="recurring" style="display:none" class="sub-list">
+<div id="recordings-recurring" style="display:none" class="sub-list">
     <div data-role="header" data-position="fixed"> 
-	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back">&nbsp;</a>
+	    <a href="#" data-icon="arrow-l" data-iconpos="notext" class="record-back" title="Back" data-theme="b">&nbsp;</a>
 	    <h1>Recurring Recordings</h1> 
+        <a href="#" data-icon="delete" data-iconpos="notext" title="Delete" class="delete" data-theme="b">&nbsp;</a>
     </div> 
     
     <div data-role="content" class="fixedheader">
         <ul data-role="listview" data-inset="true" data-filter="true" data-autodividers="true" >
             @foreach (var item in recurring)
             {
-                <li>@item.Name</li>
+                <li><label><input type="checkbox" />@item.Name</label></li>
             }
         </ul>
     </div>
@@ -96,31 +116,45 @@
 <script>
     $(function () {
         var recmenu = $('#recording-menu');
+        if (location.hash && location.hash.indexOf('-') > 0) {
+            var target = $('#' + location.hash.substr(1));
+            recmenu.css('display', 'none');
+            target.css('display', 'block');
+        }
+
         $('#recording-menu a').click(function () {
+            var href = $(this).attr('href');
+            console.log('href: ' + href);
+
+            location.hash = href.substr(1);
+
             var target = $($(this).attr('href'));
             recmenu.css('display', 'none');
             target.css('display', 'block');
+
+            return false;
         });
 
         $('.record-back').click(function () {
             var target = $(this).closest('.sub-list');
             recmenu.css('display', 'block');
             target.css('display', 'none');
+
+            location.hash = 'recordings';
         });
 
+        $('.sub-list').on('click', '.delete', function () {
+            var $this = $(this);
+            var sublist = $this.closest('.sub-list');
+            var section = sublist.attr('id').substr(11); // remove the 'recordings-' prefix
+            var ul = $this.closest('ul');
+            console.log('section: ' + section);
+            if (!sublist.find(':checked').length)
+                return;
+            console.log('going to do delete');
 
-        $('#available li').swipeDelete({
-            direction: 'swiperight', // standard jquery mobile event name
-            btnLabel: 'Delete',
-            btnTheme: 'b',
-            btnClass: 'aSwipeBtn',
-            click: function (e) {
-                e.preventDefault();
-                var url = $(e.target).attr('href');
-                $(this).parents('li').remove();
-                $.post(url, function (data) {
-                    console.log(data);
-                });
+            if (confirm('Are you sure you want to delete the selected recordings?')) {
+                
             }
         });
 

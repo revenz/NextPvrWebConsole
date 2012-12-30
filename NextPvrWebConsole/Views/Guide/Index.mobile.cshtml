@@ -3,32 +3,77 @@
     bool iFrame = true;
 }
 
-<div data-role="header" data-position="fixed">
-	<a href="#" data-icon="arrow-l" class="ui-btn-left" id="guidePrevDay" data-iconpos="notext"></a>
-	<h1 id="epgDate">Today</h1>
-	<a href="#" data-icon="arrow-r" class="ui-btn-right" id="guideNextDay" data-iconpos="notext"></a>
-</div><!-- /header -->
-	    
-<div data-role="content" id="epg">	
-    @if (iFrame)
-    {
-        <iframe src="http://www.reven.co.nz/"></iframe>
-    }
-    else
-    {
-	<div id="timeline"></div>
-	<div id="channelicons"></div>
-	<div id="guidescroller">
-	    <div id="programs">
-	        <ul id="programList">
-	        </ul>
-	    </div>
-	</div>
-    }
-</div><!-- /content -->
+<div id="epgcontainer">
 
-<div id="footerGuide" data-role="header" data-tapToggle="false">	        
-	<a href="#" data-icon="arrow-l" class="ui-btn-left" id="channelGroupPrev" data-iconpos="notext"></a>
-	<h1 id="channelGroupName">All Channels</h1>
-	<a href="#" data-icon="arrow-r" class="ui-btn-right" id="channelGroupNext" data-iconpos="notext"></a>
-</div><!-- /navbar -->
+    <div data-role="header" data-position="fixed">
+	    <a href="#" data-icon="arrow-l" class="ui-btn-left" id="guidePrevDay" data-iconpos="notext" data-theme="b"></a>
+	    <h1 id="epgDate">Today</h1>
+	    <a href="#" data-icon="arrow-r" class="ui-btn-right" id="guideNextDay" data-iconpos="notext" data-theme="b"></a>
+    </div><!-- /header -->
+	    
+    <div data-role="content" id="epg">	
+        @if (iFrame)
+        {
+            <iframe src="http://www.reven.co.nz/"></iframe>
+        }
+        else
+        {
+	    <div id="timeline"></div>
+	    <div id="channelicons"></div>
+	    <div id="guidescroller">
+	        <div id="programs">
+	            <ul id="programList">
+	            </ul>
+	        </div>
+	    </div>
+        }
+    </div><!-- /content -->
+
+    <div id="footerGuide" data-role="header" data-tapToggle="false">	        
+	    <a href="#" data-icon="arrow-l" class="ui-btn-left" id="channelGroupPrev" data-iconpos="notext" data-theme="b"></a>
+	    <h1 id="channelGroupName">All Channels</h1>
+	    <a href="#" data-icon="arrow-r" class="ui-btn-right" id="channelGroupNext" data-iconpos="notext" data-theme="b"></a>
+    </div><!-- /navbar -->
+</div>
+
+<div id="showinfo" style="display:none">
+    <div data-role="header" data-position="fixed">
+	    <a href="#" data-icon="arrow-l" class="ui-btn-left" id="btnShowInfoBack" data-iconpos="notext" data-theme="b"></a>
+	    <h1 id="epgDate">Show Information</h1>
+    </div><!-- /header -->
+
+    <div data-role="content">	
+        <div id="showdetails" data-bind="with: selectedShow">
+            <table>
+                <tr>
+                    <td>Title</td>
+                    <td data-bind="text: title"></td>
+                </tr>
+                <tr>
+                    <td>Start</td>
+                    <td data-bind="text: startDateTimeShort"></td>
+                </tr>
+                <tr>
+                    <td>End</td>
+                    <td data-bind="text: endDateTimeShort"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" data-bind="text: description"></td>
+                </tr>
+                <tr data-bind="visible: isRecording">
+                    <td colspan="2">                   
+                        <div data-role="controlgroup">
+                            <a href="index.html" data-role="button">Cancel Recording</a>
+                            <a href="index.html" data-role="button" data-bind="visible: isRecurring">Cancel Recurring</a>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+@Scripts.Render("~/Scripts/mobile/guide.js")   

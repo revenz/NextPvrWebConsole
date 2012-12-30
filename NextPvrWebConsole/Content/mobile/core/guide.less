@@ -7,8 +7,8 @@
 {
     background:black;
     position:absolute;
-    top:44px;
-    bottom:114px;
+    top:42px;
+    bottom:108px;
     left:0;
     right:0;
 	text-shadow: 0 0 transparent !important;
@@ -19,6 +19,10 @@ div.pageguide #epg {
 }
 body.pageguide {	
     overflow:scroll;
+	background:black;
+}
+body.pageguide .ui-page {	
+	background:black;
 }
 #programs
 {
@@ -26,29 +30,25 @@ body.pageguide {
     position:absolute;
     top:0;
     bottom:0;
-    left:50px;
+    left:48px;
     right:0;
 }
 #programs ul
 {
     padding-bottom:100px;
 }
-.pageguide #epgWrapper
-{
-}
 .pageguide #programList
 {
     border:solid 1px black;
     margin:0;
     padding:0;
-	padding-top:26px;
+	padding-top:23px;
 }
 .pageguide #programList li
 {
     padding:0;
     margin:0;
     list-style:none;
-    border-top:solid 1px black;
 }
 .pageguide #programList li.channel
 {
@@ -64,12 +64,14 @@ body.pageguide {
     display:block;
     white-space:nowrap;
     border-top:none;    
+	background:red;
     top:0;
     position:absolute;
     left:0;
+	right:0;
     z-index:10;
 	table {
-		border-spacing:0;
+		border-spacing:10px;
 		border-collapse:collapse;
 	}
 	td
@@ -80,12 +82,13 @@ body.pageguide {
 		height:24px;
 		line-height:24px;
 		font-size:1em;
-		border:solid 1px white;
+		border:solid 1px black;
+		border-left:0;
+		display:inline-block;
 	}
 	.spacer
 	{
-		width:50px;
-		display:inline-block;
+		width:48px;
 		border-left:none;
 	}
 	.bucket.sixty-minute {
@@ -95,16 +98,15 @@ body.pageguide {
 .pageguide .bucket
 {
     display:inline-table;
-    border:solid 1px white;
-    border-left:none;
+    border:solid 1px black;
+	border-left:none;
     height:10px;
-    color:White;
+    color:white;
     font-weight:bold;
     font-size:12px;
 }
 .pageguide .program
 {
-    /*display:table-cell;*/
    	display:inline-block;
     height:39px;
     border-right:solid 1px black;
@@ -119,10 +121,13 @@ body.pageguide {
 	color:white;
 
     background:#333;
-	
 }
 #programList li:nth-child(odd) .program {
     background:#444;
+}
+.pageguide .program.recording,
+#programList li:nth-child(odd) .program.recording {
+	background:#800;
 }
 .pageguide .program div
 {
@@ -135,17 +140,18 @@ body.pageguide {
 {
     position:absolute;
     left:0;
-    top:27px;
+    top:25px;
     bottom:0;
     width:49px;
     z-index:9;
+	border-right:solid 1px black;
 	.icon
 	{
 		width:49px;
 		height:39px;
-		background:#666;
+		background:#000;
 		display:block;
-		border:solid 1px black;
+		border-bottom:solid 1px black;
 		padding:0;
 		margin:0;
 		position:relative;
@@ -187,7 +193,7 @@ body.pageguide {
 #footerGuide
 {
 	position:fixed;
-    bottom:67px;
+    bottom:65px;
 	left:0;
 	right:0;
     z-index:10;
@@ -203,21 +209,6 @@ body.pageguide {
     bottom:0px !important;
     min-height:416px !important;
 }
-/* Portrait */
-@media screen and (max-width: 320px)
-{
-    div[data-role="page"]
-    {
-        min-height:416px !important;
-    }
-}/* Landscape */
-@media screen and (min-width: 321px)
-{
-    div[data-role="page"]
-    {
-        min-height:200px !important;
-    }
-}
 
 .pageguide iframe
 {
@@ -230,4 +221,10 @@ body.pageguide {
     overflow:scroll;
 	height:100%;
 	width:100%;
+}
+
+#showinfo {
+	.ui-content {
+		padding-top:50px;
+	}
 }

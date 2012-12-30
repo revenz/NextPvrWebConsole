@@ -45,6 +45,8 @@
     int totalMinutes = (int)GuideEnd.Subtract(GuideStart).TotalMinutes;
 
     bool iFrame = true;
+
+    bool isToday = DateTime.Today.ToString("yyyy-MM-dd") == GuideStart.ToLocalTime().ToString("yyyy-MM-dd");
 }
 
 @if (iFrame)
@@ -72,24 +74,20 @@
 
     <body class="pageguide">
 
-
-
-    
-
         <div id="timeline">
-            <table>
-                <tr>
-                    <td class="spacer"></td>            
-            @{
-    DateTime tempDate = GuideStart;
-    while (tempDate < GuideEnd)
-    {
-                    <td class="bucket sixty-minute">&nbsp;&nbsp;@tempDate.ToLocalTime().ToString("h tt")</td>    
-        tempDate = tempDate.AddMinutes(60);
-    }
+        @{
+            /* need to user string builder, because in IE empty text nodes appear and create a unwanted "space" between each td */
+            System.Text.StringBuilder timeline = new System.Text.StringBuilder();
+            timeline.Append("<table><tr><td class=\"spacer\">&nbsp;</td>");
+            DateTime tempDate = GuideStart;
+            while (tempDate < GuideEnd)
+            {
+                timeline.Append("<td class=\"bucket sixty-minute\">&nbsp;&nbsp;" + tempDate.ToLocalTime().ToString("h tt") + "</td>");
+                tempDate = tempDate.AddMinutes(60);
             }
-                </tr>
-            </table>
+            timeline.Append("</tr></table>");
+        }
+        @Html.Raw(timeline.ToString())
         </div>
         <div id="channelicons">
             @foreach (var channel in Model)
@@ -116,8 +114,8 @@
                         int duration = (int)listing.EndTime.Subtract(listing.StartTime).TotalMinutes;
                         int width = (minuteWidth * duration) - 1;
                         int xPos = (int)(listing.StartTime - GuideStart).TotalMinutes * minuteWidth;
-                        <span class="program" data-start="@listing.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" data-end="@listing.EndTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" 
-                            data-duration="@duration" style="width:@(width)px;position:absolute;left:@(xPos)px"><div>@listing.Title (@listing.StartTime.ToLocalTime().ToString("h:mm tt"))</div></span>
+                        <span class="program @(listing.IsRecording ? "recording" : "")" data-start="@listing.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" data-end="@listing.EndTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" 
+                            data-duration="@duration" style="width:@(width)px;position:absolute;left:@(xPos)px" data-oid="@listing.Oid"><div>@listing.Title (@listing.StartTime.ToLocalTime().ToString("h:mm tt"))</div></span>
                     }
                 </li>
                 }
@@ -125,34 +123,58 @@
         </div>
 
         <script>
-            var lastScroll = new Date();  
-            var hidden = false;          
-            var timeline = $('#timeline');
-            var channelicons = $('#channelicons');
-            $(document).scroll(function (e) {
-
-                hidden = true;
-                lastScroll = new Date();
+            $(function(){
+                var lastScroll = new Date();  
+                var hidden = false;          
+                var timeline = $('#timeline');
+                var channelicons = $('#channelicons');
                 
-                var yPos = $(document).scrollTop();
-                var xPos = $(document).scrollLeft();
-                //channelicons.css('display', 'none');
-                //timeline.css('display', 'none');
-                channelicons.css({ left: '0px', display: 'block' });
-                timeline.css({ top: '0px', display: 'block' });
+
+                @if(isToday){
+                <text>
+                    hidden = false;
+                    var now = new Date(),
+                        then = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0),
+                        diff = now.getTime()-then.getTime(); 
+                        diff = diff - (diff % (60 * 60 * 1000));
+                    var minutes = diff / (60 * 1000);
+                    var pixels = Math.floor(minutes * @minuteWidth);
+                    setTimeout(function(){
+                    $(document).scrollLeft(pixels);
+                    }, 1500);
+                </text>
+                }
+
+                $(document).scroll(function (e) {
+                    hidden = true;
+                    lastScroll = new Date();
+                
+                    var yPos = $(document).scrollTop();
+                    var xPos = $(document).scrollLeft();
+
+                    channelicons.css({ left: '0px' });
+                    timeline.css({ top: '0px' });
+                });
+
+                setInterval(function () {   
+                    if (!hidden || new Date().getTime() - lastScroll.getTime() < 500)
+                        return;
+                    hidden = false;
+                    var yPos = $(document).scrollTop();
+                    var xPos = $(document).scrollLeft();
+                    channelicons.css({ left: (xPos) + 'px' });
+                    timeline.css({ top: (yPos) + 'px'});
+                }, 500);
+
+                $('#programList').on('taphold', '.program', function(event){
+                    if($.mobile.isScrolling())
+                        return;
+                    var oid = $(this).attr('data-oid');
+                    console.log(event);
+                    console.log('tapheld');
+                    window.parent.epgShowProgram(oid);
+                });
             });
-
-            setInterval(function () {
-                
-                if (!hidden || new Date().getTime() - lastScroll.getTime() < 500)
-                    return;
-                hidden = false;
-                var yPos = $(document).scrollTop();
-                var xPos = $(document).scrollLeft();
-                channelicons.css({ left: (xPos) + 'px', display: 'block' });
-                timeline.css({ top: (yPos) + 'px', display: 'block' });
-            }, 500);
-
         </script>
     </body>
     </html>
@@ -200,7 +222,7 @@ else
                 int duration = (int)listing.EndTime.Subtract(listing.StartTime).TotalMinutes;
                 int width = (minuteWidth * duration) - 1;
                 int xPos = (int)(listing.StartTime - GuideStart).TotalMinutes * minuteWidth;
-                <span class="program" data-start="@listing.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" data-end="@listing.EndTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" 
+                <span class="program @(listing.IsRecording ? "recording" : "")" data-start="@listing.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" data-end="@listing.EndTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")Z" 
                     data-duration="@duration" style="width:@(width)px;position:absolute;left:@(xPos)px"><div>@listing.Title</div></span>
             }
         </li>

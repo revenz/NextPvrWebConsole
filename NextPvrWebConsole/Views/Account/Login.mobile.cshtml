@@ -11,9 +11,30 @@
     
     @Styles.Render("~/Content/mobile/css")      
     @Scripts.Render("~/bundles/mobile/js") 
+
+    <style>
+        .ui-header 
+        {
+            height:40px;
+            position:fixed;
+            top:0;
+            left:0;
+            right:0;            
+        }
+        .ui-content
+        {
+            padding-top:50px;
+            text-align:center;
+        }
+        #forgotpassword
+        {
+            margin-top:20px;
+            display:block;
+        }
+    </style>
 </head>
 <body>
-    <div data-role="page"> 
+    <div data-role="page" data-theme="b"> 
         <div data-role="header"> 
 	        <h1>NextPVR Web Console</h1> 
         </div> 
@@ -39,7 +60,7 @@
 
                 <input type="submit" value="Login" />
 
-                <a href="ForgotPassword">Forgot Password?</a>
+                <a href="ForgotPassword" id="forgotpassword">Forgot Password?</a>
             </form>
         </div>
     </div>

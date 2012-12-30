@@ -88,3 +88,12 @@
 {
     padding-bottom:60px;
 }
+
+
+/* Portrait */
+@media screen and (max-width: 320px)
+{
+}/* Landscape */
+@media screen and (min-width: 321px)
+{
+}
