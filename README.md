@@ -11,3 +11,4 @@ Aim is to simplify and improve the Web Console for Next PVR.
 ![Alt text](https://github.com/revenz/NextPvrWebConsole/raw/master/screenshots/guide.jpg "Guide")
 ![Alt text](https://github.com/revenz/NextPvrWebConsole/raw/master/screenshots/recordings.jpg "Recordings")
 ![Alt text](https://github.com/revenz/NextPvrWebConsole/raw/master/screenshots/configuration-devices.jpg "Configuration - Devices")
+![Alt text](https://github.com/revenz/NextPvrWebConsole/raw/master/screenshots/mobile-guide.png "Mobile - Guide")
