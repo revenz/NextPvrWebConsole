@@ -32,5 +32,20 @@ namespace NextPvrWebConsole.Controllers
             var data = new Api.GuideController().Get(Date.Value, Group);
             return PartialView("_EpgGrid", data);
         }
+
+        public ActionResult Record(RecordingSchedule Recording)
+        {
+            NUtility.ScheduledRecording result = null;
+            if ((int)Recording.Type == 0)
+            {
+                // quick record
+                result = new Api.GuideController().QuickRecord(Recording.Oid);
+            }
+            else
+            {
+                result = new Api.GuideController().Record(Recording);
+            }
+            return Json(new { success = result != null, result = result });
+        }
     }
 }

@@ -71,16 +71,21 @@
                 </li>         
             </ul>
                    
-            <div data-role="controlgroup" data-bind="visible: isRecording" style="margin:35px -15px 0">
-                <a href="index.html" data-role="button">Cancel Recording</a>
-                <a href="index.html" data-role="button" data-bind="visible: isRecurring">Cancel Recurring</a>
+            <div data-role="controlgroup" data-bind="visible: isRecording() && isRecurring()" style="margin:35px -15px 0">
+                <a href="#" data-role="button" class="cancel-recording" onclick="return false">Cancel Recording</a>
+                <a href="#" data-role="button" class="cancel-recurring" onclick="return false">Cancel Recurring</a>
+            </div> 
+
+            <div data-bind="visible: isRecording() && !isRecurring()" style="margin:35px -15px 0">
+                <a href="#" data-role="button" class="cancel-recording" onclick="return false">Cancel Recording</a>
             </div>
 
+            <input type="hidden" id="Recording_Oid" name="Recording.Oid" data-bind="value: oid" />
             <ul data-role="listview" id="recording-settings" data-bind="visible: !isRecording()">
                 <li data-role="list-divider">Record</li>
                 <li>
                     <span class="label">Type</span>
-                    <select id="recording-options" name="recording-options">
+                    <select id="Recording_Type" name="Recording.Type">
                         <option value="0">Quick Record</option>
                         <option value="1" data-lang="Record_Once">Once</option>
                         <option value="2" data-lang="Record_Season_New">Season New</option>
@@ -94,32 +99,31 @@
                 </li>
                 <li class="advanced">
                     <span class="label">Pre-Padding</span>
-                    <input id="prepadding" type="number" min="0" max="88" value="4" />
+                    <input id="Recording_PrePadding" name="Recording.PrePadding" type="number" min="0" max="88" value="4" />
                 </li>
                 <li class="advanced">
                     <span class="label">Post-Padding</span>
-                    <input id="postpadding" type="number" min="0" max="88" value="4" />
+                    <input id="Recording_PostPadding" name="Recording.PostPadding" type="number" min="0" max="88" value="4" />
                 </li>
                 <li class="advanced">
                     <span class="label">Keep</span>
-                    <select id="keep" name="keep">
+                    <select id="Recording_NumberToKeep" name="Recording.NumberToKeep">
                         <option value="0">All Recordings</option>
                         @for (int i = 1; i <= 28; i++) { <option value="@i">@i</option> }
                     </select>
                 </li>
                 <li class="advanced">
                     <span class="label">Directory</span>
-                    <select id="recordingdirectory" name="recordingdirectory">
+                    <select id="Recording_RecordingDirectoryId" name="Recording.RecordingDirectoryId">
                         <option value="0">Default</option>
                     </select>
                 </li>
                 <li>
                     <div data-role="controlgroup">
-                        <a href="index.html" data-role="button">Record</a>
+                        <input type="button" value="Record" id="btnRecord" />
                     </div>
                 </li>
             </ul>
-        
         </div>
 
     </div>

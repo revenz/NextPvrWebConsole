@@ -61,6 +61,7 @@ function Listing(channel, epgListing) {
     self.recordingType = ko.observable(epgListing.RecordingType);
     self.recordingDirectoryId = ko.observable(epgListing.RecordingDirectoryId);
     self.recordingOid = ko.observable(epgListing.RecordingOid);
+    self.recurrenceOid = ko.observable(epgListing.RecurrenceOid);
 
     self.hasSubtitle = ko.computed(function () {
         return self.subtitle().length > 0;

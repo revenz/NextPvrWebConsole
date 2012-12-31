@@ -250,9 +250,42 @@ $(function () {
         epgShowProgram(hash);
     }
 
-    $('#showinfo').on('change', '#recording-options', function () {
+    $('#showinfo').on('change', '#Recording_Type', function () {
         console.log('change');
         var value = $(this).val();
         $('#showinfo .advanced').css('display', value == 0 ? 'none' : 'block');
+    });
+
+    $('#showinfo').on('click', '#btnRecord', function () {
+        var parameters = [];
+        $.each($('#showinfo [id^=Recording_]'), function (i, ele) {
+            parameters[$(ele).attr('name')] = $(ele).val();
+        });
+        parameters = $.extend({}, parameters);
+        ajax.postJSON('guide/record', parameters, function (result) {
+            if (result && result.success) {
+                viewModel.selectedShow().isRecording(result.result.OID > 0);
+                viewModel.selectedShow().isRecurring(result.result.RecurrenceOID > 0);
+                viewModel.selectedShow().prePadding(result.result.PrePadding);
+                viewModel.selectedShow().postPadding(result.result.PostPadding);
+            }
+        });
+    });
+
+    $('#showinfo').on('click', '.cancel-recording', function () {
+        api.deleteJSON('recordings/' + viewModel.selectedShow().recordingOid(), null, function (data) {
+            if (data) {
+                viewModel.selectedShow().isRecording(false);                
+            }
+        });
+    });
+
+    $('#showinfo').on('click', '.cancel-recurring', function () {
+        api.deleteJSON('recordings/deleterecurring/' + viewModel.selectedShow().recurrenceOid(), null, function (result) {
+            if (result) {
+                viewModel.selectedShow().isRecording(false);
+                viewModel.selectedShow().isRecurring(false);
+            }
+        });
     });
 });
