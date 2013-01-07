@@ -9,48 +9,6 @@ var currentChannelGroupIndex = 0;
 var initialLoadDone = false;
 var channelGroups = [{ Name: 'All Channels', Id: ''}];
 
-$(function () {
-
-    $('#guidePrevDay').live('click', function () {
-        if (!currentDay)
-            return;
-        var date = date_by_subtracting_days(currentDay, 1);
-        setEpgDate(date);
-    });
-
-    $('#guideNextDay').live('click', function () {
-        if (!currentDay)
-            return;
-        var date = date_by_adding_days(currentDay, 1);
-        setEpgDate(date);
-    });
-
-    $('#channelGroupNext').live('click', function () {
-        currentChannelGroupIndex += 1;
-        if (currentChannelGroupIndex >= channelGroups.length)
-            currentChannelGroupIndex = 0;
-        refreshEpgData();
-    });
-    $('#channelGroupPrev').live('click', function () {
-        currentChannelGroupIndex -= 1;
-        if (currentChannelGroupIndex < 0)
-            currentChannelGroupIndex = channelGroups.length - 1;
-        refreshEpgData();
-    });
-
-    $('#pageGuide').live('pageshow', function (event) {
-        console.log('showing guide page');
-        if (!initialLoadDone) {
-            $.mobile.showPageLoadingMsg();
-            initialLoadEpgPage();
-        }
-    });
-
-    $('#btnShowInfoBack').click(function () {
-        epgShowProgram(0);
-    });
-});
-
 function initialLoadEpgPage() {
     var today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -79,6 +37,7 @@ function setEpgDate(newDate) {
         text = 'Tomorrow';
     $('#epgDate').html(text);
     refreshEpgData();
+    loadingEpgIframe();
 }
 
 function refreshChannelGroups(callback) {
@@ -221,11 +180,11 @@ function MobileEpgViewModel() {
         if (oid == 0) {
             $('#showdetails').hide();
             $('#showinfo').hide();
-            $('#epgcontainer').show();
+            //$('#epgcontainer').show();
             self.selectedShow(null);
             return;
         } else {
-            $('#epgcontainer').hide();
+            //$('#epgcontainer').hide();
             $('#showinfo').show();
         }
         api.getJSON('guide/epglisting/' + oid, null, function (result) {
@@ -238,7 +197,62 @@ function MobileEpgViewModel() {
     };
 }
 
+function epgIframeLoaded() {
+    $.mobile.loading('hide');
+    $('#epgiframe').show();
+}
+
+function loadingEpgIframe() {
+    $.mobile.loading('show', {
+        text: 'Loading Guide Data',
+        textVisible: true,
+        theme: 'c',
+        html: ""
+    });
+    $('#epgiframe').hide();
+}
+
 $(function () {
+
+    $('#guidePrevDay').live('click', function () {
+        if (!currentDay)
+            return;
+        var date = date_by_subtracting_days(currentDay, 1);
+        setEpgDate(date);
+    });
+
+    $('#guideNextDay').live('click', function () {
+        if (!currentDay)
+            return;
+        var date = date_by_adding_days(currentDay, 1);
+        setEpgDate(date);
+    });
+
+    $('#channelGroupNext').live('click', function () {
+        currentChannelGroupIndex += 1;
+        if (currentChannelGroupIndex >= channelGroups.length)
+            currentChannelGroupIndex = 0;
+        refreshEpgData();
+    });
+    $('#channelGroupPrev').live('click', function () {
+        currentChannelGroupIndex -= 1;
+        if (currentChannelGroupIndex < 0)
+            currentChannelGroupIndex = channelGroups.length - 1;
+        refreshEpgData();
+    });
+
+    $('#pageGuide').live('pageshow', function (event) {
+        console.log('showing guide page');
+        if (!initialLoadDone) {
+            $.mobile.showPageLoadingMsg();
+            initialLoadEpgPage();
+        }
+    });
+
+    $('#btnShowInfoBack').click(function () {
+        epgShowProgram(0);
+    });
+
     viewModel = new MobileEpgViewModel();
     console.log('showinfo...');
     console.log($('#showinfo').get(0));
@@ -275,7 +289,7 @@ $(function () {
     $('#showinfo').on('click', '.cancel-recording', function () {
         api.deleteJSON('recordings/' + viewModel.selectedShow().recordingOid(), null, function (data) {
             if (data) {
-                viewModel.selectedShow().isRecording(false);                
+                viewModel.selectedShow().isRecording(false);
             }
         });
     });
