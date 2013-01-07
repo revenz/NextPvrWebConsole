@@ -1,11 +1,11 @@
 ﻿<div class="upcoming-recordings" id="upcoming-recordings">
-    <ul data-bind="foreach: upcomingRecordings, visible: upcomingRecordings().length > 0">
-        <li>
-            <div class="channelNumber" data-bind="text: channelNumber"></div>
-            <div class="channelIcon"><img data-bind="visible: channelHasIcon, attr: { src: channelIconSrc }" /></div>
-            <div class="channelName" data-bind="text: channelName"></div>
-            <div class="name" data-bind="text: name"></div>
-            <div class="time" data-bind="text: timeStr"></div>
+    <ul ng-show="upcomingRecordings.length > 0">
+        <li ng-repeat="item in upcomingRecordings">
+            <div class="channelNumber">{{item.ChannelNumber}}</div>
+            <div class="channelIcon"><img ng-show="item.ChannelHasIcon"" ng-src="/channelicon/{{item.ChannelOID}}" /></div>
+            <div class="channelName">{{item.ChannelName}}</div>
+            <div class="name">{{item.Name}}</div>
+            <div class="time">{{ item.StartTime | datetimeFormatter }}</div>
             <div class="controls">
                 <button href="#" onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.stop">
                     <span class="icon-stop icon-large" data-lang="Cancel"></span>

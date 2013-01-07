@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html class="ie ie6 oldie no-js" ng-app="nextpvr"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 oldie no-js" ng-app="nextpvr"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 oldie no-js" ng-app="nextpvr"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" ng-app="nextpvr"> <![endif]-->
+<!--[if IE 10 ]>   <html class="ie ie10 no-js" ng-app="nextpvr"> <![endif]-->
+<!--[if gt IE 10 ]>   <html class="ie no-js" ng-app="nextpvr"> <![endif]-->
+<!--[if !(IE)]><!--> <html class="notie no-js" ng-app="nextpvr"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title data-lang="@ViewBag.Title">@ViewBag.Title</title>
+    
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/themes/bootstrap/css")       
+
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/languages/en.js")
+    </head>
+    <body>
+
+        <div class="body-background"></div>
+
+        <div class="body-wrapper">
+
+            <div class="siteheader-wrapper">
+                <div class="siteheader">
+
+                    <div class="logo"></div>
+                
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                
+                    <section id="search">
+                        @Html.Partial("_Search")
+                    </section>
+
+                    @Html.Partial("_Menu")
+                </div>
+            </div>
+
+            <div class="siteheader-spacer"></div>
+    
+            <div id="maincontent" class="maincontent" ng-view>
+            the ng view
+            </div>
+
+            <div id="working">
+                Working...
+            </div>
+
+        </div>
+
+        <div id="ChangePasswordContainer" style="display:none">
+            @Html.Partial("_ChangePassword")
+        </div>
+    
+        @Scripts.Render("~/bundles/jscore")
+        @Scripts.Render("~/signalr/hubs")
+        @Scripts.Render("~/bundles/api.js")
+
+    </body>
+</html>

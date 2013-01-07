@@ -1,35 +1,33 @@
 ﻿@{
     Layout = null;
-
-    string selected = ViewContext.Controller.GetType().Name.Replace("Controller", "");
-    
+        
     string[] roles = Roles.GetRolesForUser();
 }
 <nav class="mainmenu">
     <ul>
         @if (roles.Contains("Dashboard"))
         {
-        <li class="@(selected == "Dashboard" ? "selected" : "")">@Html.ActionLink("Dashboard", "Index", "Dashboard", null, new { data_lang = "Dashboard" })</li>
+        <li><a href="#/dashboard" data-lang="Dashboard"></a></li>
         }
         @if (roles.Contains("Guide"))
         {
-        <li class="@(selected == "Guide" ? "selected" :"")">@Html.ActionLink("Guide", "Index", "Guide", null, new { data_lang = "Guide" })</li>
+        <li><a href="#/guide" data-lang="Guide"></a></li>
         }
         @if (roles.Contains("Recordings"))
         {
-        <li class="@(selected == "Recordings" ? "selected" :"")">@Html.ActionLink("Recordings", "Index", "Recordings", null, new { data_lang = "Recordings" })</li>
+        <li><a href="#/recordings" data-lang="Recordings"></a></li>
         }
         @if (roles.Contains("UserSettings"))
         {
-        <li class="@(selected == "UserSettings" ? "selected" :"")">@Html.ActionLink("User Settings", "Index", "UserSettings", null, new { data_lang = "User Settings" })</li>
+        <li><a href="#/usersettings" data-lang="User Settings"></a></li>
         }
         @if (roles.Contains("Configuration"))
         {
-        <li class="@(selected == "Configuration" ? "selected" :"")">@Html.ActionLink("Configuration", "Index", "Configuration", null, new { data_lang = "Configuration" })</li>
+        <li><a href="#/configuration" data-lang="Configuration"></a></li>
         }
         @if (roles.Contains("System"))
         {
-        <li class="@(selected == "System" ? "selected" : "")">@Html.ActionLink("System", "Index", "System", null, new { data_lang = "System" })</li>
+        <li><a href="#/system" data-lang="System"></a></li>
         }
     </ul>
 </nav>

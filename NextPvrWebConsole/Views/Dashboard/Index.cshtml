@@ -1,10 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "";
 }
-@section Styles{
-    @Styles.Render("~/Content/dashboard/css")
-}
+
+@Styles.Render("~/Content/dashboard/css")
 
 <div class="portlets">
     <div class="portlets-large" id="portlet-device-status">
@@ -29,9 +27,6 @@
 
 </div>
 
-
-@section Scripts{
-    @Scripts.Render("~/Scripts/dashboard/devices.js")
-    @Scripts.Render("~/Scripts/dashboard/upcomingrecordings.js")
-    @Scripts.Render("~/bundles/charting")
-}
+@Scripts.Render("~/Scripts/dashboard/devices.js")
+@Scripts.Render("~/Scripts/dashboard/upcomingrecordings.js")
+@Scripts.Render("~/bundles/charting")

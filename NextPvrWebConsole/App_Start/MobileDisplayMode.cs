@@ -32,7 +32,7 @@ namespace NextPvrWebConsole.App_Start
         {
             bool isMoblie = _useragenStringPartialIdentifiers.Any(val => useragentString.IndexOf(val, StringComparison.InvariantCultureIgnoreCase) >= 0);
 #if(DEBUG)
-            return true;
+            //return true;
 #endif
             return isMoblie;
         }

@@ -17,6 +17,7 @@ var gui = new function () {
         return $.format.date(date, 'd MMMM');
     }
     this.formatTime = function (date) {
+        console.log('formatingt time');
         if (!(date instanceof Date))
             date = new Date(date);
         return $.format.date(date, 'h:mm a');
@@ -31,7 +32,7 @@ var gui = new function () {
         var div = $('<div><span></span></div>');
         div.find('span').text(message);
         var dialog_buttons = {};
-        dialog_buttons[$.i18n._("OK")] = function () { div.dialog('close'); };        
+        dialog_buttons[$.i18n._("OK")] = function () { div.dialog('close'); };
         div.dialog(
         {
             modal: true,
