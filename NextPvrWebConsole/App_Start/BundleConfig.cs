@@ -98,6 +98,7 @@ namespace NextPvrWebConsole
                     "~/Scripts/core/jquery-{version}.js",
                     "~/Scripts/core/jquery.mobile-{version}.js",
                     "~/Scripts/core/knockout-{version}.js",
+                    "~/Scripts/core/angular.js",
                     "~/Scripts/core/jquery.i18n.js",
                     "~/Scripts/core/linq.js",
                     "~/Scripts/core/jquery.linq.js*",

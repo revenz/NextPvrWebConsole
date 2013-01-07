@@ -331,6 +331,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Files.resx</DependentUpon>
     </Compile>
+    <Content Include="Scripts\core\angular.js" />
     <Content Include="Scripts\mobile\core\fixScrollAndTapHold.js" />
     <Content Include="Scripts\mobile\guide.js" />
     <Content Include="Scripts\mobile\core\jquery.mobile.simpledialog2.js" />
