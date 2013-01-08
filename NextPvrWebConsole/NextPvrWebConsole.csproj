@@ -332,7 +332,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Files.resx</DependentUpon>
     </Compile>
-    <Content Include="Scripts\controllers\DashboardController.js" />
+    <Content Include="Scripts\controllers\dashboard\UpcomingController.js" />
+    <Content Include="Scripts\controllers\dashboard\DevicesController.js" />
     <Content Include="Scripts\core\angular.js" />
     <Content Include="Scripts\mobile\core\fixScrollAndTapHold.js" />
     <Content Include="Scripts\mobile\guide.js" />
@@ -581,6 +582,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="ClientBin\" />
     <Folder Include="Logging\" />
+    <Folder Include="Scripts\controllers\guide\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

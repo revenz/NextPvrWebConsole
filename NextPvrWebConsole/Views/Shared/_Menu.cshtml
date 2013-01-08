@@ -3,31 +3,31 @@
         
     string[] roles = Roles.GetRolesForUser();
 }
-<nav class="mainmenu">
+<nav class="mainmenu" id="mainmenu">
     <ul>
         @if (roles.Contains("Dashboard"))
         {
-        <li><a href="#/dashboard" data-lang="Dashboard"></a></li>
+        <li class="dashboard"><a href="#/dashboard" data-lang="Dashboard"></a></li>
         }
         @if (roles.Contains("Guide"))
         {
-        <li><a href="#/guide" data-lang="Guide"></a></li>
+        <li class="guide"><a href="#/guide" data-lang="Guide"></a></li>
         }
         @if (roles.Contains("Recordings"))
         {
-        <li><a href="#/recordings" data-lang="Recordings"></a></li>
+        <li class="recordings"><a href="#/recordings" data-lang="Recordings"></a></li>
         }
         @if (roles.Contains("UserSettings"))
         {
-        <li><a href="#/usersettings" data-lang="User Settings"></a></li>
+        <li class="usersettings"><a href="#/usersettings" data-lang="User Settings"></a></li>
         }
         @if (roles.Contains("Configuration"))
         {
-        <li><a href="#/configuration" data-lang="Configuration"></a></li>
+        <li class="configuration"><a href="#/configuration" data-lang="Configuration"></a></li>
         }
         @if (roles.Contains("System"))
         {
-        <li><a href="#/system" data-lang="System"></a></li>
+        <li class="system"><a href="#/system" data-lang="System"></a></li>
         }
     </ul>
 </nav>

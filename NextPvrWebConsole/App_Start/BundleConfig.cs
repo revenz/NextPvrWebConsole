@@ -28,8 +28,8 @@ namespace NextPvrWebConsole
                         //"~/Scripts/core/jquery.linq.js*",
                         "~/Scripts/core/jquery.dateFormat-1.0.js",
                         "~/Scripts/core/angular.js",
-                        //"~/Scripts/core/knockout-{version}.js",
-                        //"~/Scripts/core/knockout-sortable.js",
+                        "~/Scripts/core/knockout-{version}.js",
+                        "~/Scripts/core/knockout-sortable.js",
                         //"~/Scripts/core/jquery.easing.1.3.js",
                         //"~/Scripts/core/jquery.metadata.js",
                         //"~/Scripts/core/jquery.ibutton.js",
@@ -39,8 +39,9 @@ namespace NextPvrWebConsole
                         //"~/Scripts/vtabs.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js",
-                        "~/Scripts/webapp.js",
-                        "~/Scripts/global.js").IncludeDirectory("~/Scripts/controllers", "*.js"));
+                        "~/Scripts/global.js")
+                        .IncludeDirectory("~/Scripts/controllers", "*.js", true)
+                        .Include("~/Scripts/webapp.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/loginjs").Include(
                         "~/Scripts/core/jquery-{version}.js",

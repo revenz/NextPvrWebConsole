@@ -1,10 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Guide";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "";
 }
-@section Styles{
-    @Styles.Render("~/Content/guide/css")
-}
+@Styles.Render("~/Content/guide/css")
+
 <div id="epg-viewmodel-container">
     <div class="epgpage-container" style="visibility:hidden">
 
@@ -67,20 +65,18 @@
 
 <input type="hidden" id="index2" />
 
-@section Scripts{
-    @Scripts.Render("~/scripts/core/jquery.nicescroll.js")
-    @Scripts.Render("~/Scripts/guide/js")
+@Scripts.Render("~/scripts/core/jquery.nicescroll.js")
+@Scripts.Render("~/Scripts/guide/js")
 
-    <script>
-        $(function () {
-            var resize = function () {
-                $('.body-wrapper').height($(window).height() - 40);
-            };
-            resize();
-            $(window).resize(resize);
-            setTimeout(function () {
-                $('.epgpage-container').css("visibility", "visible");
-            }, 500);
-        });
-    </script>
-}
+<script>
+    $(function () {
+        var resize = function () {
+            $('.body-wrapper').height($(window).height() - 40);
+        };
+        resize();
+        $(window).resize(resize);
+        setTimeout(function () {
+            $('.epgpage-container').css("visibility", "visible");
+        }, 500);
+    });
+</script>
