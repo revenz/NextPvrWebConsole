@@ -332,6 +332,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Files.resx</DependentUpon>
     </Compile>
+    <Content Include="Scripts\addons\jquery.togglebuttons.js" />
     <Content Include="Scripts\controllers\dashboard\UpcomingController.js" />
     <Content Include="Scripts\controllers\dashboard\DevicesController.js" />
     <Content Include="Scripts\core\angular.js" />
@@ -476,6 +477,7 @@
     <Content Include="Content\vtabs.less" />
     <Content Include="Content\search\index.less" />
     <Content Include="Content\progressbar.less" />
+    <None Include="Content\addons\jquery.togglebuttons.less" />
     <None Include="Models\Generated\Database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Database.cs</LastGenOutput>

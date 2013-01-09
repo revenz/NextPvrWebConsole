@@ -3,7 +3,10 @@
     <table ng-show="items.length > 0">
         <tbody ng-repeat="item in items | filter:item.Enabled" >
             <tr ng-data-oid="{{oid}}" class="device device{{$index}}">
-                <td class="identifier" colspan="8">{{item.Name}}</td>
+                <td class="identifier" colspan="8">
+                    <toggle-box ng-model="device.Enabled"></toggle-box>
+                    {{item.Name}}                
+                </td>
             </tr>
             <tr ng-repeat="stream in item.Streams" class="stream" ng-data-handle="{{stream.handle}}" class="stream type-{{stream.TypeName}}">
                 <td class="typeicon live" ng-show="stream.Type == 1"><span data-lang="IndicatorLive"></span></td>

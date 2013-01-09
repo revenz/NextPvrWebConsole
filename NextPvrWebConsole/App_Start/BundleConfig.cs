@@ -35,12 +35,12 @@ namespace NextPvrWebConsole
                         //"~/Scripts/core/jquery.ibutton.js",
                         //"~/Scripts/core/jquery.timespinner.js",
                         //"~/Scripts/core/jquery.address.js",
-                        //"~/Scripts/addons/toastr.js",
                         //"~/Scripts/vtabs.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js",
                         "~/Scripts/global.js")
                         .IncludeDirectory("~/Scripts/controllers", "*.js", true)
+                        .IncludeDirectory("~/Scripts/addons", "*.js", true)
                         .Include("~/Scripts/webapp.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/loginjs").Include(
@@ -76,8 +76,9 @@ namespace NextPvrWebConsole
                                                         "~/Content/site.less", 
                                                         "~/Content/custom.css",
                                                         "~/Content/buttons.css",
-                                                        "~/Content/addons/toastr.css",
-                                                        "~/Content/jquery.ibutton.css");
+                                                        "~/Content/jquery.ibutton.css")
+                                                        .IncludeDirectory("~/Content/addons", "*.less", true)
+                                                        .IncludeDirectory("~/Content/addons", "*.css", true);
             cssBundle.Transforms.Add(new LessTransform());
             cssBundle.Transforms.Add(new CssMinify());
             bundles.Add(cssBundle);
