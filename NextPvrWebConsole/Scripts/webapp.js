@@ -2,7 +2,7 @@
 
 npvrapp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/dashboard', { templateUrl: 'dashboard' })
-                  .when('/guide', { templateUrl: 'guide' })
+                  .when('/guide', { templateUrl: 'guide', controller: 'Controllers.GuideController' })
                   //.when('/phones/:phoneId', { templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl })
                   .otherwise({ redirectTo: '/dashboard' });
 

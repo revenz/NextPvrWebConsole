@@ -28,14 +28,15 @@ namespace NextPvrWebConsole
                         //"~/Scripts/core/jquery.linq.js*",
                         "~/Scripts/core/jquery.dateFormat-1.0.js",
                         "~/Scripts/core/angular.js",
-                        "~/Scripts/core/knockout-{version}.js",
-                        "~/Scripts/core/knockout-sortable.js",
+                        //"~/Scripts/core/knockout-{version}.js",
+                        //"~/Scripts/core/knockout-sortable.js",
                         //"~/Scripts/core/jquery.easing.1.3.js",
                         //"~/Scripts/core/jquery.metadata.js",
                         //"~/Scripts/core/jquery.ibutton.js",
                         //"~/Scripts/core/jquery.timespinner.js",
                         //"~/Scripts/core/jquery.address.js",
                         //"~/Scripts/vtabs.js",
+                        "~/Scripts/bootstrap.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js",
                         "~/Scripts/global.js")
@@ -73,6 +74,7 @@ namespace NextPvrWebConsole
             bundles.Add(new ScriptBundle("~/bundles/charting").IncludeDirectory("~/Scripts/charting", "*.js"));
 
             var cssBundle = new Bundle("~/Content/css").Include(
+                                                        "~/Content/bootstrap/bootstrap.less",
                                                         "~/Content/site.less", 
                                                         "~/Content/custom.css",
                                                         "~/Content/buttons.css",

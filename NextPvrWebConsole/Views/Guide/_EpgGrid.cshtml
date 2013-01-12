@@ -42,13 +42,11 @@
         return _class;
     });
 }
-
-
     <div class="epg-channels">
         <ul>
             @foreach (var channel in Model)
             {
-            <li onclick="guide.liveStream(@channel.Oid);" class="epg-channel @(channel.HasIcon ? "logo-available" : "")" title="Start Live TV" id="epg-channel-@channel.Oid">
+            <li ng-click="liveStream(@channel.Oid)" class="epg-channel @(channel.HasIcon ? "logo-available" : "")" title="Start Live TV" id="epg-channel-@channel.Oid">
                 <div class="logo">
                     @if (channel.HasIcon)
                     {
@@ -78,7 +76,7 @@
             <ul class="listings" data-channeloid="@channel.Oid">
                 @foreach (var listing in channel.Listings ?? new List<NextPvrWebConsole.Models.EpgListing>())
                 {
-                <li data-oid="@listing.Oid" data-recordingoid="@listing.RecordingOid" data-isrecurring="@(listing.IsRecurring ? "1" : "0")" ondblclick="guide.openListing(this)" style="@listingCss(listing)" class="listing @listingClass(listing)">
+                <li ng-dblclick="openListing(@listing.Oid)" data-oid="@listing.Oid" data-recordingoid="@listing.RecordingOid" data-isrecurring="@(listing.IsRecurring ? "1" : "0")" style="@listingCss(listing)" class="listing @listingClass(listing)">
                     <div>
                         <span class="title">@listing.Title</span>
                         <span class="subtitle">@listing.Subtitle</span>
@@ -89,7 +87,7 @@
             </ul>
             }
         </div>
-        <div id="epg-time-indicator" class="epg-time-indicator" style="display:none">
+        <div id="epg-time-indicator" class="epg-time-indicator" ng-show="todaySelected()">
             <div class="top"></div>
             <div class="middle"></div>
             <div class="bottom"></div>

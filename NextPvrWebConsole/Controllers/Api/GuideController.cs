@@ -52,6 +52,7 @@ namespace NextPvrWebConsole.Controllers.Api
             { 
                 ChannelName = channel.Name, 
                 ChannelNumber = channel.Number,
+                ChannelHasIcon = channel.HasIcon,
                 PrePadding = eventEpgRecodingData == null ? config.PrePadding : eventEpgRecodingData.PrePadding,
                 PostPadding = eventEpgRecodingData == null ? config.PostPadding : eventEpgRecodingData.PostPadding,
                 RecordingDirectoryId = eventEpgRecodingData == null ? user.DefaultRecordingDirectoryDirectoryId : eventEpgRecodingData.RecordingDirectoryId,

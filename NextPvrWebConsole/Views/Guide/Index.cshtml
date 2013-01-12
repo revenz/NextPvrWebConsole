@@ -8,37 +8,22 @@
 
         <div class="epg-days">
             <ul>
-            @{
-                var now = DateTime.Now;
-                now = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);    
-                for (int i = 0; i < 7; i++)
-                {
-                <li class="@(i == 0 ? "selected" : "")" data-date="@now.AddDays(i).ToString("yyyy-MM-dd")">
-                    <a href="#" onclick="guide.epgChangeDay(this); return false;">@now.AddDays(i).DayOfWeek (@now.AddDays(i).ToString("d MMM"))</a>
+                <li ng-repeat="day in days" ng-class="isSelectedDay($index)">
+                    <a href="" ng-click="changeDay($index)">{{ day | date:'EEEE, MMMM d' }}</a>
                 </li>
-                }
-            }
             </ul>
         </div>
     
-        <div id="epg-groups" style="display:none">
+        <div id="epg-groups" class="epg-groups" ng-show="channelGroups.length > 0">
             <ul>
-                <li class="group selected" data-name=""><span data-lang="All Channels"></span></li>
-            @{
-                bool first = false;
-                foreach (var g in ViewBag.Groups)
-                {
-                <li class="group @(first ? "selected" : "")" data-name="@g.Name"><span>@g.Name</span></li>
-                    first = false;
-                }        
-            }
+                <li ng-repeat="group in channelGroups" ng-class="'group ' + isSelectedGroup($index)"><span>{{group.Name}}</span></li>
             </ul>
-            <div class="epg-groups-button previous" onclick="guide.previousChannelGroup()"><span class="icon-caret-down"></span></div>
-            <div class="epg-groups-button next" onclick="guide.nextChannelGroup()"><span class="icon-caret-up"></span></div>
+            <div class="epg-groups-button previous" ng-click="prevChannelGroup()"><span class="icon-caret-down"></span></div>
+            <div class="epg-groups-button next" ng-click="nextChannelGroup()"><span class="icon-caret-up"></span></div>
         </div>
 
         <div class="epg-container">
-            <div class="epg" id="epg-load-target">
+            <div class="epg" id="epg-load-target" ng-bind-html-unsafe="guidehtml">
                 <!-- loaded from ajax call -->
             </div>
         </div>
@@ -46,17 +31,28 @@
 
 </div>
 
-            
-<div id="show-info" style="display:none">    
-    <img class="channelIcon" />
-    <span class="channelnumber"></span>
-    <span class="channelname"></span>
-    <span class="time"></span>
-    <span class="seasonAndEpisode"></span>
-    <span class="genres"></span>  
-    <span class="repeat"></span>
-    <span class="subtitle"></span>
-    <span class="description"></span>  
+<div class="modal hide fade" id="show-info-dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{{selectedShow.Title}}</h3>
+    </div>
+    <div class="modal-body" id="show-info">
+        <img class="channelIcon" ng-show="selectedShow.ChannelHasIcon" ng-src="{{channelIconSrc(selectedShow)}}" />
+        <span class="channelnumber">{{selectedShow.ChannelNumber}}</span>
+        <span class="channelname">{{selectedShow.ChannelName}}</span>
+        <span class="time">{{selectedShow.StartTime | date}}</span>
+        <span class="seasonAndEpisode"></span>
+        <span class="genres">{{selectedShow.Genres}}</span>  
+        <span class="repeat" ng-hide="selectedShow.FirstRun" data-lang="[REPEAT]"></span>
+        <span class="subtitle">{{selectedShow.Subtitle}}</span>
+        <span class="description">{{selectedShow.Description}}</span>  
+    </div>
+    <div class="modal-footer">
+        <a href="" class="btn">Quick Record</a>
+        <a href="#" data-dismiss="modal" aria-hidden="true" class="btn" ng-click="openRecordingEditor(selectedShow)">Record</a>
+        <a href="" class="btn">Find All</a>
+        <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Close</a>
+    </div>
 </div>
 
 <div id="Guide-ScheduleEditor" style="display:none" data-bind="with: selectedListing">
@@ -64,9 +60,6 @@
 </div>
 
 <input type="hidden" id="index2" />
-
-@Scripts.Render("~/scripts/core/jquery.nicescroll.js")
-@Scripts.Render("~/Scripts/guide/js")
 
 <script>
     $(function () {
@@ -78,5 +71,21 @@
         setTimeout(function () {
             $('.epgpage-container').css("visibility", "visible");
         }, 500);
+    });
+
+
+    $(function () {
+        var minuteWidth = 5;
+
+        updateTimeIndicator = function () {
+            var date = new Date();
+            var mins = (date.getHours() * 60) + date.getMinutes();
+            var midnight = new Date(new Date().setHours(0, 0, 0, 0));
+            var guideMins = (midnight.getHours() * 60) + midnight.getMinutes();
+            mins = mins - guideMins;
+            $('#epg-time-indicator').css({ left: mins * minuteWidth + 'px', height: $('.epg-listings-channel').height() });
+        };
+        setInterval(updateTimeIndicator, 10 * 1000);
+
     });
 </script>

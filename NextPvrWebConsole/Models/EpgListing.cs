@@ -22,6 +22,7 @@ namespace NextPvrWebConsole.Models
         public int RecurrenceOid { get; set; }
 
         public int ChannelNumber { get; set; }
+        public bool ChannelHasIcon { get; set; }
         public string ChannelName { get; set; }
 
         public string Aspect { get; set; }
