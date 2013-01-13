@@ -215,7 +215,9 @@ namespace NextPvrWebConsole.Models
                         if (config.RecurringMatch == RecurringMatchType.Exact)
                             advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "'";
                         return instance.ScheduleRecording(epgevent.Title, 0 /* all channels */, epgevent.StartTime, epgevent.EndTime, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, advancedRules, recordingDirectoryId);
-                    }     
+                    }
+                default:
+                    return null; // unknown type.
             }
             return instance.ScheduleRecording(epgevent, onlyNew, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, timeslot, recordingDirectoryId);
         }

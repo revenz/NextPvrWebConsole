@@ -23,8 +23,8 @@
         </div>
 
         <div class="epg-container">
-            <div class="epg" id="epg-load-target" ng-bind-html-unsafe="guidehtml">
-                <!-- loaded from ajax call -->
+            <div class="epg" id="epg-load-target" ng-show="channels.length > 0">
+                @Html.Partial("_EpgGridData")
             </div>
         </div>
     </div>
@@ -48,8 +48,10 @@
         <span class="description">{{selectedShow.Description}}</span>  
     </div>
     <div class="modal-footer">
-        <a href="" class="btn">Quick Record</a>
-        <a href="#" data-dismiss="modal" aria-hidden="true" class="btn" ng-click="openRecordingEditor(selectedShow)">Record</a>
+        <a href="#" data-dismiss="modal" aria-hidden="true" class="btn" ng-click="cancelRecurring()" ng-show="selectedShow.IsRecurring">Cancel Series</a>
+        <a href="#" data-dismiss="modal" aria-hidden="true" class="btn" ng-click="cancelRecording()" ng-show="selectedShow.IsRecording">Cancel Recording</a>
+        <a href="#" data-dismiss="modal" aria-hidden="true" class="btn" ng-click="quickRecord()" ng-hide="selectedShow.IsRecording">Quick Record</a>
+        <a href="#" data-dismiss="modal" aria-hidden="true" class="btn" ng-click="openRecordingEditor()" ng-hide="selectedShow.IsRecording">Record</a>
         <a href="" class="btn">Find All</a>
         <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Close</a>
     </div>

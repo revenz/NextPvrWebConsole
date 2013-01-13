@@ -613,6 +613,7 @@
     <Content Include="Views\Dashboard\Home.mobile.cshtml" />
     <Content Include="Views\Configuration\index.mobile.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Guide\_EpgGridData.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

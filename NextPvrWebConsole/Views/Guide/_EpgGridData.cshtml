@@ -1,0 +1,39 @@
+﻿<div class="epg-channels">
+    <ul>
+        <li ng-repeat="channel in channels" ng-click="liveStream(channel.Oid)" class="epg-channel logo-available" title="Start Live TV">
+            <div class="logo">
+                <img class="logo" ng-src="/channelicon/{{channel.Oid}}" ng-show="channel.HasIcon" />
+            </div>
+            <span class="name">{{channel.Name}}</span>
+            <span class="number">{{channel.Number}}</span>      
+        </li>
+    </ul>
+</div>
+<div class="epg-time">
+    <ul class="timeline">
+        @for (int i = 0; i < 24; i++)
+        {
+        <li class="time">
+            <span>@(i == 0 ? "12am" : (i == 12 ? "12pm" : (i > 12 ? (i - 12) + "pm" : i + "am")))</span>
+        </li> 
+        }
+    </ul>
+</div>
+<div class="epg-listings">
+    <div class="epg-listings-channel">        
+        <ul class="listings" ng-repeat="channel in channels">
+            <li ng-repeat="listing in channel.Listings" ng-dblclick="openListing(listing)" ng-style="listingStyle(listing)" ng-class="'listing ' + listingCss(listing)">
+                <div>
+                    <span class="title">{{listing.Title}}</span>
+                    <span class="subtitle">{{listing.Subtitle}}</span>
+                    <span class="start">{{listing.StartTime}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="epg-time-indicator" class="epg-time-indicator" ng-show="todaySelected()">
+        <div class="top"></div>
+        <div class="middle"></div>
+        <div class="bottom"></div>
+    </div>
+</div>

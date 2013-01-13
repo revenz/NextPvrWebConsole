@@ -32,7 +32,6 @@ npvrapp.run(function ($rootScope, $http) {
     $rootScope.recordingDirectories = [];
     self.scheduleEditorCallback = null;
     $rootScope.openScheduleEditor = function (listing, scheduleEditorCallback) {
-        console.log(listing);
         self.scheduleEditorCallback = scheduleEditorCallback;
         var fun = function () {
             if (!listing.RecordingDirectoryId)
@@ -44,7 +43,6 @@ npvrapp.run(function ($rootScope, $http) {
         };
         if ($rootScope.recordingDirectories == null || $rootScope.recordingDirectories.length < 1)
             $http.get('/api/recordingdirectories?IncludeShared=true').success(function (data) {
-                console.log(data);
                 $rootScope.recordingDirectories = data;
                 fun();
             });
@@ -52,8 +50,15 @@ npvrapp.run(function ($rootScope, $http) {
             fun();
     };
     $rootScope.saveScheduleEditor = function () {
-        $http.post('/api/guide/record', $rootScope.scheduleEditorRecording).success(function(result) {
-            console.log(result);
+        var data = {
+            Oid: $rootScope.scheduleEditorRecording.Oid,
+            PrePadding: $rootScope.scheduleEditorRecording.PrePadding,
+            PostPadding: $rootScope.scheduleEditorRecording.PostPadding,
+            RecordingDirectoryId: $rootScope.scheduleEditorRecording.RecordingDirectoryId,
+            NumberToKeep: $rootScope.scheduleEditorRecording.Keep,
+            Type: $rootScope.scheduleEditorRecording.RecordingType
+        };
+        $http.post('/api/guide/record', data).success(function(result) {
             if (result && self.scheduleEditorCallback)
                 self.scheduleEditorCallback(result);
         });

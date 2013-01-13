@@ -42,6 +42,11 @@ namespace NextPvrWebConsole.Models
         public int Keep { get; set; }
         public string RecordingDirectoryId { get; set; }
         public RecordingType RecordingType { get; set; }
+        
+        public int Duration
+        {
+            get { return (int)this.EndTime.Subtract(this.StartTime).TotalMinutes; }
+        }
 
         public EpgListing(NUtility.EPGEvent EpgEvent)
         {

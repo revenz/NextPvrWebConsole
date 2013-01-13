@@ -99,21 +99,23 @@ var gui = new function () {
             minWidth: 400,
             minHeight: 200
         }, settings);
-        var div = $('<div><span></span></div>');
+        var div = $('<div class="modal">' +
+                        '<div class="modal-header">' +
+                            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                            '<h3></h3>' +
+                        '</div>' +
+                        '<div class="modal-body"></div>' +
+                        '<div class="modal-footer">' + 
+                            '<a href="" data-dismiss="modal" aria-hidden="true" class="btn btn-yes"></a>' +
+                            '<a href="" data-dismiss="modal" aria-hidden="true" class="btn btn-primary btn-no"></a>' +
+                        '</div>' +
+                    '</div>');
+        div.find('h3').text(settings.title);
+        div.find('.modal-body').text(settings.message);
+        div.find('.btn-yes').text(settings.yesText).click(function () { if (settings.yes) { settings.yes(); } div.remove(); });
+        div.find('.btn-no').text(settings.noText).click(function () { if (settings.no) { settings.no(); } div.remove(); });
         div.appendTo('body')
-        div.find('span').text(settings.message);
-        var dialog_buttons = {};
-        dialog_buttons[settings.yesText] = function () { if (settings.yes) { settings.yes(); } div.dialog('close'); };
-        dialog_buttons[settings.noText] = function () { if (settings.no) { settings.no(); } div.dialog('close'); }
-        div.dialog(
-        {
-            resizable: false,
-            modal: true,
-            minWidth: settings.minWidth,
-            minHeight: settings.minHeight,
-            title: settings.title,
-            buttons: dialog_buttons
-        });
+        div.modal({});
     };
 
     this.promptMessage = function (settings) {

@@ -2,11 +2,14 @@
 
 ns.GuideController = function ($scope, $http, $compile, $rootScope) {
     "use strict";
+    var self = this;
     var minuteWidth = 5;
 
     var today = new Date(new Date().setHours(0, 0, 0, 0));
 
+    $scope.channels = [];
     $scope.selectedShow = null;
+    $scope.selectedListing = null;
     $scope.guidehtml = 'loading please wait.';
     $scope.isLoaded = true;
     $scope.days = [];
@@ -16,6 +19,7 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         $scope.days.push(new Date(date.setDate(date.getDate() + i)));
     }
     $scope.selectedDateIndex = 0;
+    self.guideStart = $scope.days[$scope.selectedDateIndex];
     $scope.channelGroups = [];
     $scope.selectedGroupIndex = -1;
 
@@ -63,6 +67,133 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         var minutes = Math.floor((diff / 1000) / 60);
         return minutes;
     };
+    $scope.refreshEpgData = function () {
+        $scope.isLoading = true;
+        gui.doWork();
+        // add random to stop IE from caching the guide data
+        console.log('about to get guide data: ' + $scope.days[$scope.selectedDateIndex]);
+        //$http.get('/guide/epg?date=' + $.format.date($scope.days[$scope.selectedDateIndex], 'yyyy-MM-dd') + '&group=' + encodeURIComponent($scope.channelGroups[$scope.selectedGroupIndex].Key) + '&rand=' + Math.random()).success(function (result) {
+        $http.get('/api/guide?date=' + $.format.date($scope.days[$scope.selectedDateIndex], 'yyyy-MM-dd') + '&group=' + encodeURIComponent($scope.channelGroups[$scope.selectedGroupIndex].Key) + '&rand=' + Math.random()).success(function (result) {
+            // need to compile it to hookup the angular events.
+            //var element = $compile(result)($scope);
+            // set the guide html to the element so its shown on the page
+            //$scope.guidehtml = element;
+
+            self.guideStart = $scope.days[$scope.selectedDateIndex];
+
+            $scope.channels = result;
+
+            $scope.initEpgGrid();
+
+            gui.finishWork();
+            $scope.isLoading = false;
+        });
+    };
+    $scope.openListing = function (listing) {
+        console.log('openning oid: ' + listing.Oid);
+        $http.get('api/guide/epglisting/' + listing.Oid).success(function (data) {
+            console.log(data);
+            $scope.selectedListing = listing;
+            $scope.selectedShow = data;
+
+            $('#show-info-dialog').modal({});
+        });
+    };
+    $scope.liveStream = function (oid) {
+        window.open('/stream/' + oid, 'livestream', 'width=830,height=480,status=1,resizable=0');
+    };
+    $scope.channelIconSrc = function (selectedShow) {
+        return selectedShow != null && selectedShow.ChannelHasIcon ? '/channelicon/' + selectedShow.ChannelOid : '';
+    };
+    $scope.openRecordingEditor = function () {
+        $rootScope.openScheduleEditor($scope.selectedListing, function (result) {
+            if (result) {
+                $scope.selectedListing.RecurrenceOid = result.recurrenceOID;
+                $scope.selectedListing.IsRecurring = result.recurrenceOID > 0;
+                $scope.selectedListing.RecordingOid = result.oid;
+                $scope.selectedListing.IsRecording = result.oid > 0;
+            }
+        });
+    };
+    $scope.quickRecord = function () {
+        $http.post('/api/guide/quickrecord?oid=' + $scope.selectedListing.Oid).success(function (result) {
+            if (result) {
+                $scope.selectedListing.RecurrenceOid = result.recurrenceOID;
+                $scope.selectedListing.IsRecurring = result.recurrenceOID > 0;
+                $scope.selectedListing.RecordingOid = result.oid;
+                $scope.selectedListing.IsRecording = result.oid > 0;
+            }
+        });
+    };
+
+    $scope.cancelRecurring = function () {
+        gui.confirmMessage({            
+            message: $.i18n._("Are you sure you want to cancel the series '%s'?", [$scope.selectedListing.Title]),
+            yes: function () {
+                $http.delete('/api/recordings/deleterecurring/' + $scope.selectedListing.RecurrenceOid).success(function (data) {
+                    if (data) {
+                        $scope.selectedListing.RecurrenceOid = 0;
+                        $scope.selectedListing.IsRecurring = true;
+                        $scope.selectedListing.RecordingOid = 0;
+                        $scope.selectedListing.IsRecording = false;
+                    }
+                });
+            }
+        });
+    };
+    $scope.cancelRecording = function () {        
+        gui.confirmMessage({            
+            message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [$scope.selectedListing.Title]),
+            yes: function () {
+                $http.delete('/api/recordings/' + $scope.selectedListing.RecordingOid).success(function (data) {
+                    if (data) {
+                        $scope.selectedListing.RecordingOid = 0;
+                        $scope.selectedListing.IsRecording = false;
+                    }
+                });
+            }
+        });
+    };
+
+    // styling, maybe move out of here, not really the angular way.
+    $scope.listingCss = function (listing) {
+        var guideEnd = new Date(self.guideStart);
+        guideEnd.setDate(guideEnd.getDate() + 1);
+        var _class = '';
+        if (listing.StartTime < self.guideStart) {
+            _class += "pre-guide-start ";
+        }
+        if (listing.EndTime > guideEnd) {
+            _class += "post-guide-end ";
+        }
+        if (listing.IsRecording) {
+            _class += "recording ";
+        }
+        return _class;
+    };
+    $scope.listingStyle = function (listing) {
+        var guideStart = self.guideStart;
+        var guideEnd = new Date(guideStart);
+        guideEnd.setDate(guideEnd.getDate() + 1);
+
+        var dEnd = listing.EndTime;
+        var dStart = listing.StartTime;
+
+        if (listing.EndTime > guideEnd)
+            dEnd = guideEnd; // ends before end of day
+
+        dStart = new Date(dStart).getTime();
+        dEnd = new Date(dEnd).getTime();
+        guideStart = guideStart.getTime();
+        var start = Math.round((dStart - guideStart) / 60000);
+        var end = Math.round((dEnd - guideStart) / 60000);
+        if (start < 0)
+            start = 0; // starts the day before
+        
+        var left = ((minuteWidth * start));
+        var width = ((minuteWidth * (end - start)) - 1);
+        return { left: left + 'px', width: width + 'px' };
+    };
     $scope.initEpgGrid = function () {
         var pageResize = function () {
             var epgGroupsHeight = $('#epg-groups').height();
@@ -91,43 +222,6 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         funScrollEpgContainer(); // call it to set it up.
 
         $('.epg-container').scrollLeft($scope.getMinutesFromStartOfGuide(new Date()) * minuteWidth - (30 * minuteWidth));
-    };
-    $scope.refreshEpgData = function () {
-        $scope.isLoading = true;
-        gui.doWork();
-        // add random to stop IE from caching the guide data
-        console.log('about to get guide data: ' + $scope.days[$scope.selectedDateIndex]);
-        $http.get('/guide/epg?date=' + $.format.date($scope.days[$scope.selectedDateIndex], 'yyyy-MM-dd') + '&group=' + encodeURIComponent($scope.channelGroups[$scope.selectedGroupIndex].Key) + '&rand=' + Math.random()).success(function (result) {
-            // need to compile it to hookup the angular events.
-            var element = $compile(result)($scope);
-            // set the guide html to the element so its shown on the page
-            $scope.guidehtml = element;
-
-            $scope.initEpgGrid();
-
-            gui.finishWork();
-            $scope.isLoading = false;
-        });
-    };
-    $scope.openListing = function (oid) {
-        console.log('openning oid: ' + oid);
-        $http.get('api/guide/epglisting/' + oid).success(function (data) {
-            console.log(data);
-            $scope.selectedShow = data;
-
-            $('#show-info-dialog').modal({});
-        });
-    };
-    $scope.liveStream = function (oid) {
-        window.open('/stream/' + oid, 'livestream', 'width=830,height=480,status=1,resizable=0');
-    };
-    $scope.channelIconSrc = function (selectedShow) {
-        return selectedShow != null && selectedShow.ChannelHasIcon ? '/channelicon/' + selectedShow.ChannelOid : '';
-    };
-    $scope.openRecordingEditor = function (listing) {
-        $rootScope.openScheduleEditor(listing, function () {
-            console.log('closed!');
-        });
     };
 }
 ns.GuideController.$inject = ['$scope', '$http', '$compile', '$rootScope'];
