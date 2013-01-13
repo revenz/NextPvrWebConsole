@@ -8,7 +8,8 @@ npvrapp.config(['$routeProvider', function ($routeProvider) {
 
 } ]);
 
-npvrapp.run(function ($rootScope) {
+npvrapp.run(function ($rootScope, $http) {
+    var self = this;
     // setup the watcher to set the 'active' item in the main menu
     $rootScope.$on("$routeChangeSuccess", function (current, previous) {
         if (previous && previous.templateUrl && previous.templateUrl.length) {
@@ -27,6 +28,36 @@ npvrapp.run(function ($rootScope) {
     $rootScope.$on('$viewContentLoaded', function () {
         translateElement($('#maincontent'));
     });
+
+    $rootScope.recordingDirectories = [];
+    self.scheduleEditorCallback = null;
+    $rootScope.openScheduleEditor = function (listing, scheduleEditorCallback) {
+        console.log(listing);
+        self.scheduleEditorCallback = scheduleEditorCallback;
+        var fun = function () {
+            if (!listing.RecordingDirectoryId)
+                listing.RecordingDirectoryId = $rootScope.recordingDirectories[0].RecordingDirectoryId;
+            if (listing.RecordingType < 1)
+                listing.RecordingType = 1; // default of 'Record Once'
+            $rootScope.scheduleEditorRecording = listing;
+            $('#recording-options').modal({});
+        };
+        if ($rootScope.recordingDirectories == null || $rootScope.recordingDirectories.length < 1)
+            $http.get('/api/recordingdirectories?IncludeShared=true').success(function (data) {
+                console.log(data);
+                $rootScope.recordingDirectories = data;
+                fun();
+            });
+        else
+            fun();
+    };
+    $rootScope.saveScheduleEditor = function () {
+        $http.post('/api/guide/record', $rootScope.scheduleEditorRecording).success(function(result) {
+            console.log(result);
+            if (result && self.scheduleEditorCallback)
+                self.scheduleEditorCallback(result);
+        });
+    };
 });
 
 npvrapp.directive('toggleBox', function () {

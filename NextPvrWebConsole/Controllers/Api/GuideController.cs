@@ -59,7 +59,8 @@ namespace NextPvrWebConsole.Controllers.Api
                 IsRecurring = eventEpgRecodingData != null && eventEpgRecodingData.IsRecurring,
                 IsRecording = eventEpgRecodingData != null && eventEpgRecodingData.RecordingOid > 0,
                 RecordingOid = eventEpgRecodingData != null ? eventEpgRecodingData.RecordingOid : 0,
-                RecurrenceOid = eventEpgRecodingData != null ? eventEpgRecodingData.RecurrenceOid : 0
+                RecurrenceOid = eventEpgRecodingData != null ? eventEpgRecodingData.RecurrenceOid : 0,
+                RecordingType = eventEpgRecodingData != null ? eventEpgRecodingData.RecordingType : (RecordingType)0
             };
         }
     }

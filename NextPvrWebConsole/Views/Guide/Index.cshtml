@@ -31,7 +31,7 @@
 
 </div>
 
-<div class="modal hide fade" id="show-info-dialog">
+<div class="modal hide" id="show-info-dialog">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>{{selectedShow.Title}}</h3>
@@ -53,10 +53,6 @@
         <a href="" class="btn">Find All</a>
         <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Close</a>
     </div>
-</div>
-
-<div id="Guide-ScheduleEditor" style="display:none" data-bind="with: selectedListing">
-@Html.Partial("_ScheduleEditor")
 </div>
 
 <input type="hidden" id="index2" />

@@ -125,8 +125,9 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         return selectedShow != null && selectedShow.ChannelHasIcon ? '/channelicon/' + selectedShow.ChannelOid : '';
     };
     $scope.openRecordingEditor = function (listing) {
-        $rootScope.recording = listing;
-        $('#recording-options').modal({});
+        $rootScope.openScheduleEditor(listing, function () {
+            console.log('closed!');
+        });
     };
 }
 ns.GuideController.$inject = ['$scope', '$http', '$compile', '$rootScope'];
