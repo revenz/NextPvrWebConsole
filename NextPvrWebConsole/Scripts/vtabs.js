@@ -9,20 +9,16 @@ $(function () {
     $('body').css('overflow-y', 'hidden');
 
     var resizeTabs = function () {
+        console.log('height: ' + ($(window).height() - 140));
         $('.vtab-container').css('height', $(window).height() - 140);
     };
 
     $(window).resize(resizeTabs);
 
-    $('.vtab-buttons li').click(function () {
-        var $this = $(this);
-        var dataTab = $this.attr('data-tab');
-        $.address.value("/tab/" + dataTab);
-    });
-
     resizeTabs();
 });
 
+/*
 $.address.change(function (event) {
     if (event.value.startsWith('/tab/')) {
         var tabname = event.value.substr(5);
@@ -37,3 +33,4 @@ $.address.change(function (event) {
         container.find('.vtab-content[id$=' + tabname + ']').addClass('selected');
     }
 });
+*/

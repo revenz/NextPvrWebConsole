@@ -35,7 +35,6 @@ namespace NextPvrWebConsole
                         //"~/Scripts/core/jquery.ibutton.js",
                         //"~/Scripts/core/jquery.timespinner.js",
                         //"~/Scripts/core/jquery.address.js",
-                        //"~/Scripts/vtabs.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js",

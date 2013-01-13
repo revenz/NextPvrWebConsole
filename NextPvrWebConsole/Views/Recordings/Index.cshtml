@@ -1,29 +1,38 @@
 ﻿@{
     ViewBag.Title = "Recordings";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "";
 }
 
-@section Styles{
-    @Styles.Render("~/Content/recordings/css")
-}
+@Styles.Render("~/Content/recordings/css")
 
 <div class="recordings vtab-container">
-
     <ul class="vtab-buttons">
-        <li data-tab="available" class="first selected"><i class="icon icon-play"></i><span data-lang="Available" /></li>
-        <li data-tab="pending"><i class="icon icon-time"></i><span data-lang="Pending" /></li>
-        <li data-tab="recurring" class="last"><i class="icon icon-magic"></i><span data-lang="Recurring" /></li>
+        <li data-tab="available" ng-class="'first ' + tabSelected('available')">
+            <a href="#/recordings/available">
+                <i class="icon icon-play"></i><span data-lang="Available" />
+            </a>
+        </li>
+        <li data-tab="pending" ng-class="tabSelected('pending')">
+            <a href="#/recordings/pending">
+                <i class="icon icon-time"></i><span data-lang="Pending" />
+            </a>
+        </li>
+        <li data-tab="recurring" ng-class="'last ' + tabSelected('recurring')">
+            <a href="#/recordings/recurring">
+                <i class="icon icon-magic"></i><span data-lang="Recurring" />
+            </a>
+        </li>
     </ul>
     
-    <div class="vtab-content selected" id="recordings-tab-available">
+    <div ng-class="'vtab-content ' + tabSelected('available')" id="recordings-tab-available">
         @Html.Partial("_Available")
     </div>
     
-    <div class="vtab-content" id="recordings-tab-pending">
+    <div ng-class="'vtab-content ' + tabSelected('pending')"  id="recordings-tab-pending">
         @Html.Partial("_Pending")
     </div>
 
-    <div class="vtab-content" id="recordings-tab-recurring">
+    <div ng-class="'vtab-content ' + tabSelected('recurring')"  id="recordings-tab-recurring">
         @Html.Partial("_Recurring")
     </div>
 </div>
@@ -37,6 +46,4 @@
     <li><span class="status status_5"></span><span data-lang="Conflict" /></li>
 </ul>
 
-@section Scripts{
-    @Scripts.Render("~/Scripts/recordings/js")
-}
+@Scripts.Render("~/Scripts/vtabs.js")

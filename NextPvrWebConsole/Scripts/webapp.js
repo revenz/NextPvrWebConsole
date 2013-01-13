@@ -3,12 +3,17 @@
 npvrapp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/dashboard', { templateUrl: 'dashboard' })
                   .when('/guide', { templateUrl: 'guide', controller: 'Controllers.GuideController' })
+                  //.when('/recordings/available', { templateUrl: 'recordings', controller: 'Controllers.Recordings.AvailableController' })
+                  //.when('/recordings/pending', { templateUrl: 'recordings', controller: 'Controllers.Recordings.PendingController' })
+                  //.when('/recordings/recurring', { templateUrl: 'recordings', controller: 'Controllers.Recordings.RecurringController' })
+                  .when('/recordings/:tabid', { templateUrl: 'recordings' })
+                  .when('/recordings', { redirectTo: '/recordings/available' })
                   //.when('/phones/:phoneId', { templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl })
                   .otherwise({ redirectTo: '/dashboard' });
 
 } ]);
 
-npvrapp.run(function ($rootScope, $http) {
+npvrapp.run(function ($rootScope, $http, $location) {
     var self = this;
     // setup the watcher to set the 'active' item in the main menu
     $rootScope.$on("$routeChangeSuccess", function (current, previous) {
@@ -62,6 +67,10 @@ npvrapp.run(function ($rootScope, $http) {
             if (result && self.scheduleEditorCallback)
                 self.scheduleEditorCallback(result);
         });
+    };
+
+    $rootScope.tabSelected = function (address) {
+        return $location.$$path.indexOf(address) > 0 ? 'selected' : '';
     };
 });
 

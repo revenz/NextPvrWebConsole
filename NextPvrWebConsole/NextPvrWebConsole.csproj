@@ -340,6 +340,9 @@
     <Content Include="Scripts\controllers\dashboard\UpcomingController.js" />
     <Content Include="Scripts\controllers\dashboard\DevicesController.js" />
     <Content Include="Scripts\controllers\guide\GuideController.js" />
+    <Content Include="Scripts\controllers\recordings\AvailableController.js" />
+    <Content Include="Scripts\controllers\recordings\PendingController.js" />
+    <Content Include="Scripts\controllers\recordings\RecurringController.js" />
     <Content Include="Scripts\core\angular.js" />
     <Content Include="Scripts\less.min.js" />
     <Content Include="Scripts\mobile\core\fixScrollAndTapHold.js" />
