@@ -4,9 +4,9 @@
         <select ng-model="selectedRecordingGroup" ng-options="rg.Name for rg in recordingGroups">
         </select>
         
-        <button onclick="return false" class="btn" ng-click="move()">
-            <span class="icon-trash icon-large" data-lang="Move Recording Group"></span>
-        </button>
+        <a href="#recording-group-mover" class="btn" role="button" data-toggle="modal">
+            <i class="icon-share"></i><span data-lang="Move Recording Group"></span>
+        </a>
     </div>
     
     <div>
@@ -38,21 +38,29 @@
                     <td class="recording-time">{{recording.StartTime | date}}</td>
                     <td class="recording-controls">
                         <button onclick="return false" class="btn btn-danger" ng-click="delete(recording)">
-                            <span class="icon-trash icon-large" data-lang="Delete"></span>
+                            <i class="icon-trash icon-white" /> Delete
                         </button>
                     </td>
                 </tr>
             </tbody>
         </table>
-
-        <div id="recording-group-mover" style="display:none">
+    </div>
+    
+    <div id="recording-group-mover" class="modal hide">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 data-lang="Move Recordings"></h3>
+        </div>
+        <div class="modal-body">
             <p data-lang="Please select a Recording Directory to move these recordings to."></p>
             <p data-lang="Note all future recordings will also be recorded in the destination Recording Group"></p>
-
-
-            <select data-bind="options: recordingDirectories, optionsText: 'name', optionsValue: 'recordingDirectoryId', value: selectedRecordingDirectory">
+            
+            <select ng-model="destinationRecordingDirectory" ng-options="rd.DisplayName for rd in recordingDirectories">
             </select>
         </div>
-
+        <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn btn-primary" ng-click="move()">Move</a>
+            <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+        </div>
     </div>
 </div>

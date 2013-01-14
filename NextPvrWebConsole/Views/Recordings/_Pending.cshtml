@@ -1,34 +1,31 @@
-﻿<div style="display:none">
-    <div>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th class="recording-status"></th>
-                    <th class="channel"></th>
-                    <th class="recording-name" data-lang="Name"></th>
-                    <th class="recording-directory" data-lang="Directory"></th>
-                    <th class="recording-time" data-lang="Time"></th>
-                    <th class="recording-controls"></th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: recordings">
-                <tr data-bind="attr: { class : cssClass }">
-                    <td class="recording-status"><span data-bind="attr: { class: 'status status_' + status() }"></span></td>
-                    <td class="channel">
-                        <img data-bind="visible: channelHasIcon, attr: { src: channelIconSrc }" />
-                        <span data-bind="visible: !channelHasIcon(), text: channelName"></span>
-                    </td>
-                    <td class="recording-name" data-bind="text: name"></td>
-                    <td class="recording-directory" data-bind="text: recordingDirectoryId"></td>
-                    <td class="recording-time" data-bind="text:timeStr"></td>
-                    <td class="recording-controls">
-                        <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
-                            <span class="icon-trash icon-large" data-lang="Delete"></span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
+﻿<div ng-controller="Controllers.Recordings.PendingController">
+    <table class="data-table" ng-show="recordings.length">
+        <thead>
+            <tr>
+                <th class="recording-status"></th>
+                <th class="channel"></th>
+                <th class="recording-name" data-lang="Name"></th>
+                <th class="recording-directory" data-lang="Directory"></th>
+                <th class="recording-time" data-lang="Time"></th>
+                <th class="recording-controls"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="recording in recordings">
+                <td class="recording-status"><span ng-class="'status status_' + recording.Status"></span></td>
+                <td class="channel">
+                    <img ng-show="recording.ChannelHasIcon" ng-src="/channelicon/{{recording.ChannelOID}}" />
+                    <span ng-hide="recording.ChannelHasIcon">{{recording.ChannelName}}</span>
+                </td>
+                <td class="recording-name">{{recording.Name}}</td>
+                <td class="recording-directory">{{recording.RecordingDirectoryId}}</td>
+                <td class="recording-time">{{recording.StartTime | date:'MMM d, h:mm a'}}</td>
+                <td class="recording-controls">
+                    <button onclick="return false" class="btn btn-danger" ng-click="cancel(recording)">
+                        <i class="icon-trash icon-white" /> Cancel
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

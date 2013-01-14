@@ -22,12 +22,10 @@
     </div>
     
     <div ng-class="'vtab-content ' + tabSelected('pending')"  id="recordings-tab-pending" ng-show="selectedTabIndex == 1">
-        pending
         @Html.Partial("_Pending")
     </div>
 
     <div ng-class="'vtab-content ' + tabSelected('recurring')"  id="recordings-tab-recurring" ng-show="selectedTabIndex == 2">
-        recurring
         @Html.Partial("_Recurring")
     </div>
 </div>

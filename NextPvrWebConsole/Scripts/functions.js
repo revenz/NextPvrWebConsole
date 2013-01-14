@@ -106,16 +106,19 @@ var gui = new function () {
                         '</div>' +
                         '<div class="modal-body"></div>' +
                         '<div class="modal-footer">' + 
-                            '<a href="" data-dismiss="modal" aria-hidden="true" class="btn btn-yes"></a>' +
-                            '<a href="" data-dismiss="modal" aria-hidden="true" class="btn btn-primary btn-no"></a>' +
+                            '<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-yes"></a>' +
+                            '<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary btn-no"></a>' +
                         '</div>' +
                     '</div>');
         div.find('h3').text(settings.title);
         div.find('.modal-body').text(settings.message);
-        div.find('.btn-yes').text(settings.yesText).click(function () { if (settings.yes) { settings.yes(); } div.remove(); });
-        div.find('.btn-no').text(settings.noText).click(function () { if (settings.no) { settings.no(); } div.remove(); });
+        div.find('.btn-yes').text(settings.yesText).click(function () { if (settings.yes) { settings.yes(); } });
+        div.find('.btn-no').text(settings.noText).click(function () { if (settings.no) { settings.no(); } });
         div.appendTo('body')
         div.modal({});
+        div.on('hidden', function () {
+            div.remove();
+        });
     };
 
     this.promptMessage = function (settings) {
