@@ -339,6 +339,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\controllers\dashboard\UpcomingController.js" />
     <Content Include="Scripts\controllers\dashboard\DevicesController.js" />
+    <Content Include="Scripts\controllers\general\TabController.js" />
     <Content Include="Scripts\controllers\guide\GuideController.js" />
     <Content Include="Scripts\controllers\recordings\AvailableController.js" />
     <Content Include="Scripts\controllers\recordings\PendingController.js" />

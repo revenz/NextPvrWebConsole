@@ -1,16 +1,16 @@
-﻿<div>
+﻿<div ng-controller="Controllers.Recordings.AvailableController">
     <div class="recordings-available-group">
         <span data-lang="Recording Group:"></span>
-        <select data-bind="options: recordingGroups, optionsText: 'name', optionsValue: 'name', value: selectedRecordingGroupName">
+        <select ng-model="selectedRecordingGroup" ng-options="rg.Name for rg in recordingGroups">
         </select>
         
-        <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.move">
+        <button onclick="return false" class="btn" ng-click="move()">
             <span class="icon-trash icon-large" data-lang="Move Recording Group"></span>
         </button>
     </div>
     
     <div>
-        <table class="data-table" data-bind="with: selectedRecordingGroup, visible: selectedRecordingGroup">
+        <table class="data-table" ng-show="selectedRecordingGroup != null">
             <thead>
                 <tr>
                     <th class="recording-status"></th>
@@ -21,18 +21,23 @@
                     <th class="recording-controls"></th>
                 </tr>
             </thead>
-            <tbody class="recordings-list" data-bind="foreach: recordings">
-                <tr data-bind="attr: { class : cssClass }">
-                    <td class="recording-status"><span data-bind="attr: { class: 'status status_' + status() }"></span></td>
+            <tbody class="recordings-list">
+                <tr ng-repeat="recording in selectedRecordingGroup.Recordings">
+                    <td class="recording-status"><span ng-class="'status status_' + recording.Status"></span></td>
                     <td class="channel">
-                        <img data-bind="visible: channelHasIcon, attr: { src: channelIconSrc }" />
-                        <span data-bind="visible: !channelHasIcon(), text: channelName"></span>
+                        <img ng-show="recording.ChannelHasIcon" ng-src="/channelicon/{{recording.ChannelOID}}" />
+                        <span ng-hide="recording.ChannelHasIcon">{{recording.ChannelName}}</span>
                     </td>
-                    <td class="recording-name"><a href="#" data-bind="text: displayName, click: openPlayer" target="_blank" /></td>
-                    <td class="recording-directory" data-bind="text: recordingDirectoryId"></td>
-                    <td class="recording-time" data-bind="text:timeStr"></td>
+                    <td class="recording-name">
+                        <a href="" ng-click="openPlayer(recording)">
+                            <span ng-show="recording.Subtitle && recording.Subtitle.length">recording.Subtitle</span>
+                            <span ng-hide="recording.Subtitle && recording.Subtitle.length" >{{ recording.StartTime | date }}</span>
+                        </a>
+                    </td>
+                    <td class="recording-directory">{{recording.RecordingDirectoryId}}</td>
+                    <td class="recording-time">{{recording.StartTime | date}}</td>
                     <td class="recording-controls">
-                        <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
+                        <button onclick="return false" class="btn btn-danger" ng-click="delete(recording)">
                             <span class="icon-trash icon-large" data-lang="Delete"></span>
                         </button>
                     </td>

@@ -6,8 +6,9 @@ npvrapp.config(['$routeProvider', function ($routeProvider) {
                   //.when('/recordings/available', { templateUrl: 'recordings', controller: 'Controllers.Recordings.AvailableController' })
                   //.when('/recordings/pending', { templateUrl: 'recordings', controller: 'Controllers.Recordings.PendingController' })
                   //.when('/recordings/recurring', { templateUrl: 'recordings', controller: 'Controllers.Recordings.RecurringController' })
-                  .when('/recordings/:tabid', { templateUrl: 'recordings' })
-                  .when('/recordings', { redirectTo: '/recordings/available' })
+                  //.when('/recordings/:tabid', { templateUrl: 'recordings' })
+                  .when('/recordings', { templateUrl: 'recordings', controller: 'Controllers.General.TabController' })
+                  //.when('/recordings', { redirectTo: '/recordings/available' })
                   //.when('/phones/:phoneId', { templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl })
                   .otherwise({ redirectTo: '/dashboard' });
 

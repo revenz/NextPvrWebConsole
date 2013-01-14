@@ -175,14 +175,25 @@ var gui = new function () {
 }
 
 if (typeof String.prototype.startsWith != 'function') {
-    // see below for better implementation!
     String.prototype.startsWith = function (str) {
         return this.indexOf(str) == 0;
     };
 }
 if (typeof Number.prototype.pad != 'function') {
-    // see below for better implementation!
-    Number.prototype.pad= function (number) {
+    Number.prototype.pad = function (number) {
         return Array(number - String(this).length + 1).join('0') + this;
+    };
+}
+
+if (typeof Array.prototype.remove != 'function') {
+    Array.prototype.remove = function () {
+        var what, a = arguments, L = a.length, ax;
+        while (L && this.length) {
+            what = a[--L];
+            while ((ax = this.indexOf(what)) !== -1) {
+                this.splice(ax, 1);
+            }
+        }
+        return this;
     };
 }
