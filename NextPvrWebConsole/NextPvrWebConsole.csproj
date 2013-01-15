@@ -308,7 +308,7 @@
     <Compile Include="Models\DbHelper.cs" />
     <Compile Include="Models\DriveUsage.cs" />
     <Compile Include="Models\EpgListing.cs" />
-    <Compile Include="Models\EpgRecordingData.cs" />
+    <Compile Include="Models\RecordingModels\EpgRecordingData.cs" />
     <Compile Include="Models\Generated\Database.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -316,14 +316,15 @@
     </Compile>
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\NextPvrConfigHelper.cs" />
+    <Compile Include="Models\NextPvrWebConsoleModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\Property.cs" />
-    <Compile Include="Models\Recording.cs" />
+    <Compile Include="Models\RecordingModels\Recording.cs" />
     <Compile Include="Models\RecordingDirectory.cs" />
     <Compile Include="Models\RecordingGroup.cs" />
-    <Compile Include="Models\RecordingSchedule.cs" />
-    <Compile Include="Models\RecurringRecording.cs" />
-    <Compile Include="Models\ScheduledRecordingModel.cs" />
+    <Compile Include="Models\RecordingModels\RecordingSchedule.cs" />
+    <Compile Include="Models\RecordingModels\RecurringRecording.cs" />
+    <Compile Include="Models\RecordingModels\ScheduledRecordingModel.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\User.cs" />

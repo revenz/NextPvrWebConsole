@@ -33,19 +33,19 @@ namespace NextPvrWebConsole.Controllers
             return PartialView("_EpgGrid", data);
         }
 
-        public ActionResult Record(RecordingSchedule Recording)
-        {
-            NUtility.ScheduledRecording result = null;
-            if ((int)Recording.Type == 0)
-            {
-                // quick record
-                result = new Api.GuideController().QuickRecord(Recording.Oid);
-            }
-            else
-            {
-                result = new Api.GuideController().Record(Recording);
-            }
-            return Json(new { success = result != null, result = result });
-        }
+        //public ActionResult Record(RecordingSchedule Recording)
+        //{
+        //    NUtility.ScheduledRecording result = null;
+        //    if ((int)Recording.Type == 0)
+        //    {
+        //        // quick record
+        //        result = new Api.GuideController().QuickRecord(Recording.EpgEventOid);
+        //    }
+        //    else
+        //    {
+        //        result = new Api.GuideController().Record(Recording);
+        //    }
+        //    return Json(new { success = result != null, result = result });
+        //}
     }
 }

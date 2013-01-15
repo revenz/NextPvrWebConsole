@@ -8,7 +8,7 @@ using System.Web;
 namespace NextPvrWebConsole.Models
 {
     [DataContract]
-    public class Recording
+    public class Recording : NextPvrWebConsoleModel
     {
         NUtility.ScheduledRecording BaseRecording { get; set; }
 
@@ -129,98 +129,76 @@ namespace NextPvrWebConsole.Models
                                                                      .Take(5)
                                                                      .Select(x => new Recording(x, UserOid)).ToArray();
         }
+        
+        //public static ScheduledRecording Record(int UserOid, Models.RecordingSchedule Schedule)
+        //{
+        //    var config = new Configuration();
+        //    string recordingDirectoryId = Schedule.RecordingDirectoryId ?? ""; // default
+        //    // make sure they have access to the recording directory
+        //    if (!String.IsNullOrEmpty(recordingDirectoryId))
+        //    {
+        //        if (!RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true).ContainsKey(recordingDirectoryId))
+        //            throw new UnauthorizedAccessException();
+        //    }            
 
-        public static NUtility.ScheduledRecording QuickRecord(int UserOid, int Oid)
-        {
-            var config = new Configuration();
-            RecordingDirectory rd = null;
-            if (config.EnableUserSupport && config.UserRecordingDirectoriesEnabled)
-                rd = RecordingDirectory.LoadUserDefault(UserOid);
+        //    var epgevent = Helpers.NpvrCoreHelper.EPGEventLoadByOID(Schedule.EpgEventOid);
+        //    if (epgevent == null)
+        //        throw new Exception("Failed to locate EPG Event to record.");
 
-            if (rd == null)
-                rd = RecordingDirectory.LoadSystemDefault();
+        //    var instance = NShared.RecordingServiceProxy.GetInstance();
 
-            return Record(UserOid, new Models.RecordingSchedule()
-            {
-                NumberToKeep = 0,
-                Oid = Oid,
-                PostPadding = config.PostPadding,
-                PrePadding = config.PrePadding,
-                RecordingDirectoryId = rd == null ? "" : rd.RecordingDirectoryId,
-                Type = RecordingType.Record_Once
-            });
-        }
+        //    int prePadding = (Schedule.PrePadding ?? (int?)config.PrePadding).Value;
+        //    int postPadding = (Schedule.PostPadding ?? (int?)config.PostPadding).Value;
 
-        public static ScheduledRecording Record(int UserOid, Models.RecordingSchedule Schedule)
-        {
-            var config = new Configuration();
-            string recordingDirectoryId = Schedule.RecordingDirectoryId ?? ""; // default
-            // make sure they have access to the recording directory
-            if (!String.IsNullOrEmpty(recordingDirectoryId))
-            {
-                if (!RecordingDirectory.LoadForUserAsDictionaryIndexedByDirectoryId(UserOid, true).ContainsKey(recordingDirectoryId))
-                    throw new UnauthorizedAccessException();
-            }
-            
-
-            var epgevent = Helpers.NpvrCoreHelper.EPGEventLoadByOID(Schedule.Oid);
-            if (epgevent == null)
-                throw new Exception("Failed to locate EPG Event to record.");
-
-            var instance = NShared.RecordingServiceProxy.GetInstance();
-
-            int prePadding = (Schedule.PrePadding ?? (int?)config.PrePadding).Value;
-            int postPadding = (Schedule.PostPadding ?? (int?)config.PostPadding).Value;
-
-            bool onlyNew = false;
-            DayMask dayMask = DayMask.ANY;
-            bool timeslot = true;
-            switch (Schedule.Type)
-            {
-                case RecordingType.Record_Once: // special cast, effectively a "Quick Record" but with a couple more options
-                    return instance.ScheduleRecording(epgevent, prePadding, postPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId);
-                case RecordingType.Record_Season_New_This_Channel:
-                    onlyNew = true;
-                    dayMask = DayMask.ANY;
-                    timeslot = false;
-                    break;
-                case RecordingType.Record_Season_All_This_Channel:
-                    onlyNew = false;
-                    dayMask = DayMask.ANY;
-                    timeslot = false;
-                    break;
-                case RecordingType.Record_Season_Daily_This_Timeslot:
-                    onlyNew = false;
-                    dayMask = DayMask.ANY;
-                    timeslot = true;
-                    break;
-                case RecordingType.Record_Season_Weekly_This_Timeslot:
-                    onlyNew = false;
-                    dayMask = dayMask = (DayMask)(1 << ((int)epgevent.StartTime.ToLocalTime().DayOfWeek));
-                    timeslot = true;
-                    break;
-                case RecordingType.Record_Season_Weekdays_This_Timeslot:
-                    onlyNew = false;
-                    dayMask = DayMask.MONDAY | DayMask.TUESDAY | DayMask.WEDNESDAY | DayMask.THURSDAY | DayMask.FRIDAY;
-                    timeslot = true;
-                    break;
-                case RecordingType.Record_Season_Weekends_This_Timeslot:
-                    onlyNew = false;
-                    dayMask = DayMask.SATURDAY | DayMask.SUNDAY;
-                    timeslot = true;
-                    break;
-                case RecordingType.Record_Season_All_Episodes_All_Channels: // another special case
-                    {
-                        string advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "%'";
-                        if (config.RecurringMatch == RecurringMatchType.Exact)
-                            advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "'";
-                        return instance.ScheduleRecording(epgevent.Title, 0 /* all channels */, epgevent.StartTime, epgevent.EndTime, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, advancedRules, recordingDirectoryId);
-                    }
-                default:
-                    return null; // unknown type.
-            }
-            return instance.ScheduleRecording(epgevent, onlyNew, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, timeslot, recordingDirectoryId);
-        }
+        //    bool onlyNew = false;
+        //    DayMask dayMask = DayMask.ANY;
+        //    bool timeslot = true;
+        //    switch (Schedule.Type)
+        //    {
+        //        case RecordingType.Record_Once: // special cast, effectively a "Quick Record" but with a couple more options
+        //            return instance.ScheduleRecording(epgevent, prePadding, postPadding, NUtility.RecordingQuality.QUALITY_DEFAULT, recordingDirectoryId);
+        //        case RecordingType.Record_Season_New_This_Channel:
+        //            onlyNew = true;
+        //            dayMask = DayMask.ANY;
+        //            timeslot = false;
+        //            break;
+        //        case RecordingType.Record_Season_All_This_Channel:
+        //            onlyNew = false;
+        //            dayMask = DayMask.ANY;
+        //            timeslot = false;
+        //            break;
+        //        case RecordingType.Record_Season_Daily_This_Timeslot:
+        //            onlyNew = false;
+        //            dayMask = DayMask.ANY;
+        //            timeslot = true;
+        //            break;
+        //        case RecordingType.Record_Season_Weekly_This_Timeslot:
+        //            onlyNew = false;
+        //            dayMask = dayMask = (DayMask)(1 << ((int)epgevent.StartTime.ToLocalTime().DayOfWeek));
+        //            timeslot = true;
+        //            break;
+        //        case RecordingType.Record_Season_Weekdays_This_Timeslot:
+        //            onlyNew = false;
+        //            dayMask = DayMask.MONDAY | DayMask.TUESDAY | DayMask.WEDNESDAY | DayMask.THURSDAY | DayMask.FRIDAY;
+        //            timeslot = true;
+        //            break;
+        //        case RecordingType.Record_Season_Weekends_This_Timeslot:
+        //            onlyNew = false;
+        //            dayMask = DayMask.SATURDAY | DayMask.SUNDAY;
+        //            timeslot = true;
+        //            break;
+        //        case RecordingType.Record_Season_All_Episodes_All_Channels: // another special case
+        //            {
+        //                string advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "%'";
+        //                if (config.RecurringMatch == RecurringMatchType.Exact)
+        //                    advancedRules = "title like '" + epgevent.Title.Replace("'", "''") + "'";
+        //                return instance.ScheduleRecording(epgevent.Title, 0 /* all channels */, epgevent.StartTime, epgevent.EndTime, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, advancedRules, recordingDirectoryId);
+        //            }
+        //        default:
+        //            return null; // unknown type.
+        //    }
+        //    return instance.ScheduleRecording(epgevent, onlyNew, prePadding, postPadding, dayMask, Schedule.NumberToKeep, RecordingQuality.QUALITY_DEFAULT, timeslot, recordingDirectoryId);
+        //}
 
         public static bool DeleteByOid(int UserOid, int Oid)
         {

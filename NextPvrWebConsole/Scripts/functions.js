@@ -182,6 +182,11 @@ if (typeof String.prototype.startsWith != 'function') {
         return this.indexOf(str) == 0;
     };
 }
+if (typeof String.prototype.endsWith != 'function') {
+    String.prototype.endsWith = function (suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
 if (typeof Number.prototype.pad != 'function') {
     Number.prototype.pad = function (number) {
         return Array(number - String(this).length + 1).join('0') + this;

@@ -16,7 +16,7 @@
             <tr>
                 <td class="label" data-lang="Recording Type"></td>
                 <td class="value">
-                    <select id="recording-type" ng-model="scheduleEditorRecording.RecordingType">
+                    <select id="recording-type" ng-model="scheduleEditorRecording.Type">
                         <option value="1" data-lang="Record_Once"></option>
                         <option value="2" data-lang="Record_Season_New"></option>
                         <option value="3" data-lang="Record_Seaon_All"></option>
@@ -50,7 +50,7 @@
             <tr>
                 <td class="label" data-lang="Keep"></td>
                 <td class="value">
-                    <select id="recording-keep" ng-model="scheduleEditorRecording.Keep">
+                    <select id="recording-keep" ng-model="scheduleEditorRecording.NumberToKeep">
                         <option value="0" data-lang="All Recordings"></option>
                         @for (int i = 1; i < 29; i++)
                         {

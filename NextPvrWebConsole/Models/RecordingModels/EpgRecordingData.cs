@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace NextPvrWebConsole.Models
 {
-    public class EpgRecordingData
+    public class EpgRecordingData : NextPvrWebConsoleModel
     {
         public int Keep { get; set; }
         public int PrePadding { get; set; }

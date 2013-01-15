@@ -27,16 +27,16 @@ namespace NextPvrWebConsole.Controllers.Api
 
         // POST api/quickrecord
         [HttpPost]
-        public NUtility.ScheduledRecording QuickRecord(int Oid)
+        public RecordingSchedule QuickRecord(int Oid)
         {
-            return Models.Recording.QuickRecord(this.GetUser().Oid, Oid);
+            return RecordingSchedule.QuickRecord(this.GetUser().Oid, Oid);
         }
 
-        [HttpPost]
-        public NUtility.ScheduledRecording Record(RecordingSchedule RecordingSchedule)        
-        {
-            return Models.Recording.Record(this.GetUser().Oid, RecordingSchedule);
-        }
+        //[HttpPost]
+        //public NUtility.ScheduledRecording Record(RecordingSchedule RecordingSchedule)        
+        //{
+        //    return Models.Recording.Record(this.GetUser().Oid, RecordingSchedule);
+        //}
 
         [HttpGet]
         public Models.EpgListing EpgListing(int Oid)

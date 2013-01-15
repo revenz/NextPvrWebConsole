@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace NextPvrWebConsole.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         //

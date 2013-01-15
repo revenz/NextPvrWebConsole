@@ -47,11 +47,18 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         [HttpPost]
-        public bool UpdateRecurring(Models.RecurringRecording RecurringRecording)
+        public bool SaveRecording(Models.RecordingSchedule Schedule)
         {
             var user = this.GetUser();
-            return RecurringRecording.Save(user.Oid);
+            return Schedule.Save(user.Oid);
         }
+
+        //[HttpPost]
+        //public bool UpdateRecurring(Models.RecurringRecording RecurringRecording)
+        //{
+        //    var user = this.GetUser();
+        //    return RecurringRecording.Save(user.Oid);
+        //}
         
         // DELETE api/recordings/5
         public bool Delete(int Oid)

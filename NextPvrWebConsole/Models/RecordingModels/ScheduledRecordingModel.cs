@@ -5,7 +5,7 @@ using System.Web;
 
 namespace NextPvrWebConsole.Models
 {
-    public class ScheduledRecordingModel
+    public class ScheduledRecordingModel : NextPvrWebConsoleModel
     {
         public static List<NUtility.ScheduledRecording> LoadAll(int UserOid, bool IncludeShared = false)
         {

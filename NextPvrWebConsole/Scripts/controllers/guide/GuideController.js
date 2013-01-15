@@ -93,6 +93,9 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         console.log('openning oid: ' + listing.Oid);
         $http.get('api/guide/epglisting/' + listing.Oid).success(function (data) {
             console.log(data);
+            listing.ChannelNumber = data.ChannelNumber;
+            listing.ChannelName = data.ChannelName;
+            listing.ChannelHasIcon = data.ChannelHasIcon;
             $scope.selectedListing = listing;
             $scope.selectedShow = data;
 
@@ -108,20 +111,20 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
     $scope.openRecordingEditor = function () {
         $rootScope.openScheduleEditor($scope.selectedListing, function (result) {
             if (result) {
-                $scope.selectedListing.RecurrenceOid = result.recurrenceOID;
-                $scope.selectedListing.IsRecurring = result.recurrenceOID > 0;
-                $scope.selectedListing.RecordingOid = result.oid;
-                $scope.selectedListing.IsRecording = result.oid > 0;
+                $scope.selectedListing.RecurrenceOid = result.recurrenceOid;
+                $scope.selectedListing.IsRecurring = result.recurrenceOid > 0;
+                $scope.selectedListing.RecordingOid = result.recordingOid;
+                $scope.selectedListing.IsRecording = result.recordingOid > 0;
             }
         });
     };
     $scope.quickRecord = function () {
         $http.post('/api/guide/quickrecord?oid=' + $scope.selectedListing.Oid).success(function (result) {
             if (result) {
-                $scope.selectedListing.RecurrenceOid = result.recurrenceOID;
-                $scope.selectedListing.IsRecurring = result.recurrenceOID > 0;
-                $scope.selectedListing.RecordingOid = result.oid;
-                $scope.selectedListing.IsRecording = result.oid > 0;
+                $scope.selectedListing.RecurrenceOid = result.recurrenceOid;
+                $scope.selectedListing.IsRecurring = result.recurrenceOid > 0;
+                $scope.selectedListing.RecordingOid = result.recordingOid;
+                $scope.selectedListing.IsRecording = result.recordingOid > 0;
             }
         });
     };

@@ -1,6 +1,6 @@
 ﻿var ns = namespace('Controllers.Recordings');
 
-ns.RecurringController = function ($scope, $http) {
+ns.RecurringController = function ($scope, $http, $rootScope) {
     "use strict";
     var self = this;
 
@@ -25,7 +25,22 @@ ns.RecurringController = function ($scope, $http) {
         });
     };
 
+    $scope.edit = function (recording) {
+        console.log(recording);
+        recording.RecordingType = recording.Type;
+        $rootScope.openScheduleEditor(recording, function (result) {
+            console.log(result);
+            if (result) {
+                recording.Type = result.RecordingType;
+                recording.RecurrenceOid = result.recurrenceOID;
+                recording.IsRecurring = result.recurrenceOID > 0;
+                recording.RecordingOid = result.oid;
+                recording.IsRecording = result.oid > 0;
+            }
+        });
+    };
+
     $scope.refresh();
 
 };
-ns.RecurringController.$inject = ['$scope', '$http'];
+ns.RecurringController.$inject = ['$scope', '$http', '$rootScope'];

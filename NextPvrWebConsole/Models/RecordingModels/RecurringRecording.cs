@@ -18,7 +18,7 @@ namespace NextPvrWebConsole.Models
         Record_Season_All_Episodes_All_Channels = 8
     }
 
-    public class RecurringRecording
+    public class RecurringRecording : NextPvrWebConsoleModel
     {
         public int Oid { get; set; }
         public string Name { get; set; }

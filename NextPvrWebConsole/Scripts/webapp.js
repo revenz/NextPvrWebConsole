@@ -37,14 +37,34 @@ npvrapp.run(function ($rootScope, $http, $location) {
 
     $rootScope.recordingDirectories = [];
     self.scheduleEditorCallback = null;
-    $rootScope.openScheduleEditor = function (listing, scheduleEditorCallback) {
+    $rootScope.openScheduleEditor = function (input, scheduleEditorCallback) {
+        var isListing = input.ObjectType.endsWith('EpgListing');
+        var isRecurring = input.ObjectType.endsWith('RecurringRecording');
+        var data = {
+            RecordingOid: isListing || input.RecordingOid ? input.RecordingOid : input.Oid,
+            RecurrenceOid: isRecurring ? input.Oid : input.RecurrenceOid,
+            EpgEventOid: isListing ? input.Oid : 0,
+            Title: input.Title ? input.Title : input.Name,
+            ChannelName: input.ChannelName,
+            Type: input.RecordingType ? input.RecordingType : input.Type,
+            PrePadding: input.PrePadding,
+            PostPadding: input.PostPadding,
+            RecordingDirectoryId: input.RecordingDirectoryId,
+            NumberToKeep: input.Keep ? input.Keep : 0
+        };
+        if (!data.Type || data.Type < 1)
+            data.Type = 1; // default of 'Record Once'
+        console.log('input');
+        console.log(input);
+        console.log('data');
+        console.log(data);
+
+
         self.scheduleEditorCallback = scheduleEditorCallback;
         var fun = function () {
-            if (!listing.RecordingDirectoryId)
-                listing.RecordingDirectoryId = $rootScope.recordingDirectories[0].RecordingDirectoryId;
-            if (listing.RecordingType < 1)
-                listing.RecordingType = 1; // default of 'Record Once'
-            $rootScope.scheduleEditorRecording = listing;
+            if (!data.RecordingDirectoryId)
+                data.RecordingDirectoryId = $rootScope.recordingDirectories[0].RecordingDirectoryId;
+            $rootScope.scheduleEditorRecording = data;
             $('#recording-options').modal({});
         };
         if ($rootScope.recordingDirectories == null || $rootScope.recordingDirectories.length < 1)
@@ -56,15 +76,7 @@ npvrapp.run(function ($rootScope, $http, $location) {
             fun();
     };
     $rootScope.saveScheduleEditor = function () {
-        var data = {
-            Oid: $rootScope.scheduleEditorRecording.Oid,
-            PrePadding: $rootScope.scheduleEditorRecording.PrePadding,
-            PostPadding: $rootScope.scheduleEditorRecording.PostPadding,
-            RecordingDirectoryId: $rootScope.scheduleEditorRecording.RecordingDirectoryId,
-            NumberToKeep: $rootScope.scheduleEditorRecording.Keep,
-            Type: $rootScope.scheduleEditorRecording.RecordingType
-        };
-        $http.post('/api/guide/record', data).success(function(result) {
+        $http.post('/api/recordings/saverecording', $rootScope.scheduleEditorRecording).success(function (result) {
             if (result && self.scheduleEditorCallback)
                 self.scheduleEditorCallback(result);
         });

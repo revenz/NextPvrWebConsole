@@ -5,7 +5,7 @@ using System.Web;
 
 namespace NextPvrWebConsole.Models
 {
-    public class SearchResult
+    public class SearchResult : NextPvrWebConsoleModel
     {
         public Channel Channel { get; set; }
         public EpgListing Listing { get; set; }

@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 
 namespace NextPvrWebConsole.Models
 {
-    public class EpgListing
+    public class EpgListing : NextPvrWebConsoleModel
     {
         public int Oid { get; set; }
         public string Title { get; set; }
