@@ -345,6 +345,8 @@
     <Content Include="Scripts\controllers\recordings\AvailableController.js" />
     <Content Include="Scripts\controllers\recordings\PendingController.js" />
     <Content Include="Scripts\controllers\recordings\RecurringController.js" />
+    <Content Include="Scripts\controllers\usersettings\ChannelsController.js" />
+    <Content Include="Scripts\controllers\usersettings\RecordingDirectoriesController.js" />
     <Content Include="Scripts\core\angular.js" />
     <Content Include="Scripts\less.min.js" />
     <Content Include="Scripts\mobile\core\fixScrollAndTapHold.js" />
@@ -363,8 +365,8 @@
     <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Content\addons\toastr.css" />
     <Content Include="Content\account\index.less" />
-    <Content Include="Content\configuration\index.less" />
-    <Content Include="Content\dashboard\upcomingrecordings.less" />
+    <Content Include="Content\pages\configuration\index.less" />
+    <Content Include="Content\pages\dashboard\upcomingrecordings.less" />
     <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\mobile\images\ajax-loader.gif" />
     <Content Include="Content\images\header.jpg" />
@@ -377,7 +379,7 @@
     <Content Include="Content\mobile\jquery.mobile.structure-1.2.0.css" />
     <Content Include="Content\mobile\jquery.mobile.structure-1.2.0.min.css" />
     <Content Include="Content\mixins.less" />
-    <Content Include="Content\dashboard\devices.less" />
+    <Content Include="Content\pages\dashboard\devices.less" />
     <Content Include="Resources\Files\CreateDatabase.sql" />
     <Content Include="Resources\Files\PasswordResetBody.txt" />
     <Content Include="Resources\Files\PasswordResetRequestBody.txt" />
@@ -426,15 +428,15 @@
     <Content Include="Scripts\usersettings\channels.js" />
     <Content Include="Scripts\usersettings\recordingdirectories.js" />
     <Content Include="Scripts\vtabs.js" />
-    <Content Include="Content\dashboard\index.less" />
+    <Content Include="Content\pages\dashboard\index.less" />
     <Content Include="Content\globals.less" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\font-awesome-ie7.less" />
     <Content Include="Content\font\font-awesome.less" />
-    <Content Include="Content\guide\index.less" />
-    <Content Include="Content\guide\show-info-dialog.less" />
+    <Content Include="Content\pages\guide\index.less" />
+    <Content Include="Content\pages\guide\show-info-dialog.less" />
     <Content Include="Content\themes\bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\bootstrap\images\ui-bg_glass_55_fbf9ee_1x400.png" />
     <Content Include="Content\themes\bootstrap\images\ui-bg_glass_65_ffffff_1x400.png" />
@@ -450,10 +452,10 @@
     <Content Include="Content\themes\bootstrap\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\bootstrap\images\ui-icons_f6cf3b_256x240.png" />
     <Content Include="Content\setup\index.less" />
-    <Content Include="Content\recordings\available.less" />
+    <Content Include="Content\pages\recordings\available.less" />
     <Content Include="Content\scheduleeditor.less" />
-    <Content Include="Content\system\index.less" />
-    <Content Include="Content\system\users.less" />
+    <Content Include="Content\pages\system\index.less" />
+    <Content Include="Content\pages\system\users.less" />
     <Content Include="Content\table.less" />
     <Content Include="Content\themes\bootstrap\icons.less" />
     <Content Include="Content\themes\bootstrap\inputs.less" />
@@ -481,12 +483,12 @@
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Dashboard\_Tuners.cshtml" />
     <Content Include="Content\themes\bootstrap\variables.less" />
-    <Content Include="Content\usersettings\index.less" />
-    <Content Include="Content\usersettings\channelgroups.less" />
-    <Content Include="Content\usersettings\channels.less" />
-    <Content Include="Content\usersettings\recordingdirectories.less" />
+    <Content Include="Content\pages\usersettings\index.less" />
+    <Content Include="Content\pages\usersettings\channelgroups.less" />
+    <Content Include="Content\pages\usersettings\channels.less" />
+    <Content Include="Content\pages\usersettings\recordingdirectories.less" />
     <Content Include="Content\vtabs.less" />
-    <Content Include="Content\search\index.less" />
+    <Content Include="Content\pages\search\index.less" />
     <Content Include="Content\progressbar.less" />
     <None Include="Content\addons\jquery.togglebuttons.less" />
     <Content Include="Content\bootstrap\wells.less" />
@@ -625,7 +627,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="Content\recordings\index.less" />
+    <Content Include="Content\pages\recordings\index.less" />
     <Content Include="Content\site.less" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />

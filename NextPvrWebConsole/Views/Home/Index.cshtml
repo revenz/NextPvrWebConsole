@@ -14,8 +14,7 @@
         <meta name="viewport" content="width=device-width" />
         <title data-lang="@ViewBag.Title">@ViewBag.Title</title>
     
-        @Styles.Render("~/Content/css")
-        @Styles.Render("~/Content/themes/bootstrap/css")       
+        @Styles.Render("~/Content/css")     
 
         @Scripts.Render("~/bundles/modernizr")
         @Scripts.Render("~/languages/en.js")
@@ -46,7 +45,6 @@
             <div class="siteheader-spacer"></div>
     
             <div id="maincontent" class="maincontent" ng-view>
-            the ng view
             </div>
 
             <div id="working">

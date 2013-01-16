@@ -3,12 +3,8 @@
 npvrapp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/dashboard', { templateUrl: 'dashboard' })
                   .when('/guide', { templateUrl: 'guide', controller: 'Controllers.GuideController' })
-                  //.when('/recordings/available', { templateUrl: 'recordings', controller: 'Controllers.Recordings.AvailableController' })
-                  //.when('/recordings/pending', { templateUrl: 'recordings', controller: 'Controllers.Recordings.PendingController' })
-                  //.when('/recordings/recurring', { templateUrl: 'recordings', controller: 'Controllers.Recordings.RecurringController' })
-                  //.when('/recordings/:tabid', { templateUrl: 'recordings' })
                   .when('/recordings', { templateUrl: 'recordings', controller: 'Controllers.General.TabController' })
-                  //.when('/recordings', { redirectTo: '/recordings/available' })
+                  .when('/usersettings', { templateUrl: 'usersettings', controller: 'Controllers.General.TabController' })
                   //.when('/phones/:phoneId', { templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl })
                   .otherwise({ redirectTo: '/dashboard' });
 
@@ -134,5 +130,36 @@ npvrapp.directive('toggleBox', function () {
                 $($element).toggleButtons('setState', newValue, true);
             });
         }
+    };
+});
+
+npvrapp.filter('daymask', function () {
+    return function (input) {
+        var mask = parseInt(input, 10);
+        switch (mask) {
+            case 255: return $.i18n._('Daily');
+            case 65: return $.i18n._('Weekends');
+            case 62: return $.i18n._('Weekdays');
+            case 1: return $.i18n._('Sundays');
+            case 2: return $.i18n._('Mondays');
+            case 4: return $.i18n._('Tuesdays');
+            case 8: return $.i18n._('Wednesdays');
+            case 16: return $.i18n._('Thursdays');
+            case 32: return $.i18n._('Fridays');
+            case 65: return $.i18n._('Saturdays');
+            default:
+                {
+                    var t = [];
+                    if ((self.mask & 1) == 1) t.push('Sun');
+                    if ((self.mask & 2) == 2) t.push('Mon');
+                    if ((self.mask & 4) == 4) t.push('Tue');
+                    if ((self.mask & 8) == 8) t.push('Wed');
+                    if ((self.mask & 16) == 16) t.push('Thu');
+                    if ((self.mask & 32) == 32) t.push('Fri');
+                    if ((self.mask & 64) == 64) t.push('Sat');
+                    return t.join();
+                }
+        }
+        return input;
     };
 });

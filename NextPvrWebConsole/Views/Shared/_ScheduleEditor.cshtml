@@ -10,12 +10,12 @@
     <div class="modal-body">
         <table>
             <tr class="channelName">
-                <td class="label" data-lang="Channel"></td>
-                <td class="value">{{scheduleEditorRecording.ChannelName}}</td>
+                <td><label data-lang="Channel"></label></td>
+                <td>{{scheduleEditorRecording.ChannelName}}</td>
             </tr>
             <tr>
-                <td class="label" data-lang="Recording Type"></td>
-                <td class="value">
+                <td><label for="recording-type" data-lang="Recording Type"></label></td>
+                <td>
                     <select id="recording-type" ng-model="scheduleEditorRecording.Type">
                         <option value="1" data-lang="Record_Once"></option>
                         <option value="2" data-lang="Record_Season_New"></option>
@@ -30,26 +30,26 @@
             </tr>
 
             <tr>
-                <td class="label" data-lang="PrePadding"></td>
-                <td class="value"><input type="number" min="0" max="89" id="recording-prepadding" ng-model="scheduleEditorRecording.PrePadding" /> (<span data-lang="Minutes"></span>)</td>
+                <td><label for="recording-prepadding" data-lang="PrePadding"></label></td>
+                <td><input type="number" min="0" max="89" id="recording-prepadding" ng-model="scheduleEditorRecording.PrePadding" /> <span class="help-inline" data-lang="(Minutes)"></span></td>
             </tr>
 
             <tr>
-                <td class="label" data-lang="PostPadding"></td>
-                <td class="value"><input type="number" min="0" max="89" id="recording-postpadding" ng-model="scheduleEditorRecording.PostPadding" /> (<span data-lang="Minutes"></span>)</td>
+                <td><label for="recording-postpadding" data-lang="PostPadding"></label></td>
+                <td><input type="number" min="0" max="89" id="recording-postpadding" ng-model="scheduleEditorRecording.PostPadding" /> <span class="help-inline" data-lang="(Minutes)"></span></td>
             </tr>
 
             <tr>
-                <td class="label" data-lang="RecordingDirectory"></td>
-                <td class="value">
+                <td><label for="recording-directory" data-lang="RecordingDirectory"></label></td>
+                <td>
                     <select id="recording-directory" ng-model="scheduleEditorRecording.RecordingDirectoryId" ng-options="rd.RecordingDirectoryId as rd.DisplayName for rd in recordingDirectories">
                     </select>
                 </td>
             </tr>
 
             <tr>
-                <td class="label" data-lang="Keep"></td>
-                <td class="value">
+                <td><label for="recording-keep" data-lang="Keep"></label></td>
+                <td>
                     <select id="recording-keep" ng-model="scheduleEditorRecording.NumberToKeep">
                         <option value="0" data-lang="All Recordings"></option>
                         @for (int i = 1; i < 29; i++)

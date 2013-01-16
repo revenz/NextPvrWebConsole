@@ -3,8 +3,6 @@
     Layout = "";
 }
 
-@Styles.Render("~/Content/recordings/css")
-
 <div class="recordings vtab-container">
     <ul class="vtab-buttons">
         <li data-tab="available" ng-class="{ first: true, selected: selectedTabIndex == 0 }" ng-click="selectedTabIndex = 0">
@@ -17,15 +15,15 @@
             <i class="icon icon-magic"></i><span data-lang="Recurring" />
         </li>
     </ul>
-    <div ng-class="'vtab-content ' + tabSelected('available')" id="recordings-tab-available" ng-show="selectedTabIndex == 0">
+    <div class="vtab-content" id="recordings-tab-available" ng-show="selectedTabIndex == 0">
         @Html.Partial("_Available")
     </div>
     
-    <div ng-class="'vtab-content ' + tabSelected('pending')"  id="recordings-tab-pending" ng-show="selectedTabIndex == 1">
+    <div class="vtab-content"  id="recordings-tab-pending" ng-show="selectedTabIndex == 1">
         @Html.Partial("_Pending")
     </div>
 
-    <div ng-class="'vtab-content ' + tabSelected('recurring')"  id="recordings-tab-recurring" ng-show="selectedTabIndex == 2">
+    <div class="vtab-content"  id="recordings-tab-recurring" ng-show="selectedTabIndex == 2">
         @Html.Partial("_Recurring")
     </div>
 </div>

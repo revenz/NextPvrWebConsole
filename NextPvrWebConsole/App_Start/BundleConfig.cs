@@ -79,7 +79,9 @@ namespace NextPvrWebConsole
                                                         "~/Content/buttons.css",
                                                         "~/Content/jquery.ibutton.css")
                                                         .IncludeDirectory("~/Content/addons", "*.less", true)
-                                                        .IncludeDirectory("~/Content/addons", "*.css", true);
+                                                        .IncludeDirectory("~/Content/addons", "*.css", true)
+                                                        .IncludeDirectory("~/Content/pages", "*.less", true)
+                                                        .IncludeDirectory("~/Content/pages", "*.css", true);
             cssBundle.Transforms.Add(new LessTransform());
             cssBundle.Transforms.Add(new CssMinify());
             bundles.Add(cssBundle);

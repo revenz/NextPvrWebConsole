@@ -1,26 +1,29 @@
 ﻿<p data-lang="UserSettings-RecordingDirectories-Summary"></p>
 
-<ul data-bind="foreach: recordingdirectories" style="display:none">
-    <li>
-        <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, value:$index, checked: $root.selectedDefault" title="Is Default" />
-        <label data-bind="text: displayName, attr: { for : 'recording-directory-default-' + $index() }"></label>
-        <div class="controls">
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.edit, visible: !isShared()">
-                <span class="icon-edit icon-large" data-lang="Edit"></span>
-            </button>
-            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.delete, visible: !isShared()">
-                <span class="icon-trash icon-large" data-lang="Delete"></span>
-            </button>
-        </div>
-    </li>
-</ul>
+<div ng-controller="Controllers.UserSettings.RecordingDirectoriesController">
 
-<p class="buttons">
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.add">
-        <span class="icon-plus icon-large" data-lang="Create Recording Directory"></span>
-    </button>
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
-        <span class="icon-save icon-large" data-lang="Save"></span>
-    </button>
-</p>
+    <ul>
+        <li ng-repeat="dir in directories">
+            <input type="radio" name="recording-directory-default" id="recording-directory-default-{{$index}}" ng-model="model.defaultRecordingDirectoryIndex" value="{{$index}}">
+            <label for="recording-directory-default-{{$index}}">{{dir.DisplayName}}</label>
+            <div class="controls">
+                <button class="btn" ng-click="edit(dir);" ng-hide="dir.UserOid == @NextPvrWebConsole.Globals.SHARED_USER_OID">
+                    <i class="icon-edit" />Edit
+                </button>
+                <button class="btn btn-danger" ng-click="delete(dir);" ng-hide="dir.UserOid == @NextPvrWebConsole.Globals.SHARED_USER_OID">
+                    <i class="icon-trash icon-white" />Delete
+                </button>
+            </div>
+        </li>
+    </ul>
 
+    <p class="buttons">
+        <button class="btn btn-large" ng-click="add()">
+            <i class="icon-plus icon-large" />Create Recording Directory
+        </button>
+        <button class="btn btn-large btn-primary" ng-click="save()">
+            <i class="icon-save icon-large" />Save
+        </button>
+    </p>
+
+</div>

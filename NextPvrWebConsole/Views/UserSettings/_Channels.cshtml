@@ -1,24 +1,28 @@
 ﻿<p data-lang="UserSettings-Channels-Summary"></p>
 
-<table id="usersettings-channels" style="display:none" class="data-table">
-    <thead>
-        <tr>
-            <th class="name" data-lang="Name"></th>
-            <th class="number" data-lang="Number"></th>
-            <th class="enabled" data-lang="Enabled"></th>
-        </tr>
-    </thead>
-    <tbody data-bind="foreach: channels">
-        <tr>        
-            <td class="name" data-bind="text: name"></td>
-            <td class="number"><input type="number" data-bind="value:number" min="0" max="9999" /></td>
-            <td class="enabled"><input type="checkbox" data-bind="checked: enabled" class="noibutton" /></td>
-        </tr>
-    </tbody>
-</table>
+<div ng-controller="Controllers.UserSettings.ChannelsController">
+    <table id="usersettings-channels" class="data-table">
+        <thead>
+            <tr>
+                <th class="name" data-lang="Name"></th>
+                <th class="number" data-lang="Number"></th>
+                <th class="enabled" data-lang="Enabled"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="channel in channels">        
+                <td class="name">{{channel.Name}}</td>
+                <td class="number"><input type="number" ng-model="channel.Number" min="0" max="9999" /></td>
+                <td class="enabled">
+                    <toggle-box ng-model="channel.Enabled"></toggle-box>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-<p class="buttons">
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: save">
-        <span class="icon-save icon-large" data-lang="Save"></span>
-    </button>
-</p>
+    <p class="buttons">
+        <button class="btn btn-primary" ng-click="save()">
+            <i class="icon-save icon-white" /> Save
+        </button>
+    </p>
+</div>

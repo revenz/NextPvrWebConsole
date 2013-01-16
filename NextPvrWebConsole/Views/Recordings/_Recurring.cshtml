@@ -19,7 +19,7 @@
                 <td class="recording-name">{{recording.Name}}</td>
                 <td class="recording-directory">{{recording.RecordingDirectoryId}}</td>
                 <td class="recording-time">{{recording.StartTime | date:'MMM d, h:mm a'}}</td>
-                <td class="recording-days">{{recording.Days}}</td>
+                <td class="recording-days">{{recording.DayMask | daymask}}</td>
                 <td class="recording-controls">
                     <button onclick="return false" class="btn" ng-click="edit(recording)">
                         <i class="icon-edit" /> Edit
