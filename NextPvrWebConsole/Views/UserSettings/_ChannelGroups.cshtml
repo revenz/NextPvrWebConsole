@@ -27,23 +27,36 @@
         </button>
     </p>
 
-    <div id="channel-group-editor" style="display:none">
-        <div data-bind="with: selectedChannelGroup">
-            <div class="input-group name">
-                <div class="label" data-lang="Name"></div>
-                <div class="value"><input type="text" data-bind="value: name" /></div>
-            </div>
-            <div class="input-group channels">
-                <div class="label" data-lang="Channels"></div>
-                <div class="value">
-                    <ul data-bind="foreach: $root.channels">
-                        <li>
-                            <input class="noibutton" type="checkbox" data-bind="attr : { 'data-oid': oid, id: 'channel_' + $index(), value: oid, checked: enabled }" />
-                            <label data-bind="text: name, attr: { for: 'channel_' + $index()}"></label>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+    <div id="channel-group-editor" class="modal hide">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Channel Group Editor header</h3>
+        </div>
+        <div class="modal-body">
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" required ng-model="selected.Name" /></td>
+                </tr>
+                <tr>
+                    <td>Channels</td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="channel in selected.Channels">
+                                <label>
+                                    <input type="checkbox" ng-model="channel.Enabled" />
+                                    {{channel.Name}}
+                                </label>
+                            </li>
+                        </ul>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary" ng-click="updateGroup()">OK</button>
         </div>
     </div>
 </div>
