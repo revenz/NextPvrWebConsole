@@ -1,45 +1,48 @@
 ﻿<p data-lang="UserSettings-ChannelGroups-Summary"></p>
 
-<ul data-bind="sortable:  { data: channelgroups, options: { handle: '.handle' }, afterMove: afterMove }" id="channelgrouplist" style="display:none">
-    <li data-bind="attr: { class: shared() ? 'shared' : 'personal' }">
-        <span class="handle"><i class="icon-move"></i></span>
-        <span class="name" data-bind="text: name"></span>
-        <div class="controls">
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.select, visible: personal">
-                <span class="icon-edit icon-large" data-lang="Edit"></span>
-            </button>
-            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove, visible: personal">
-                <span class="icon-remove icon-large" data-lang="Remove"></span>
-            </button>
-            <input type="checkbox" class="noibutton" data-bind="checked: enabled, visible: shared" />
-        </div>
-    </li>
-</ul>
+<div ng-controller="Controllers.UserSettings.ChannelGroupsController">
 
-<p class="buttons">
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.add">
-        <span class="icon-plus icon-large" data-lang="Create Channel Group"></span>
-    </button>
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
-        <span class="icon-save icon-large" data-lang="Save"></span>
-    </button>
-</p>
+    <ul ng-sortable="channelgroups" data-handle=".handle" id="channelgrouplist">
+        <li ng-sortable-index="{{$index}}" ng-repeat="group in channelgroups" ng-class="{shared: group.IsShared, personal: !group.IsShared }">
+            <span class="handle"><i class="icon-move"></i></span>
+            <span class="name">{{group.Name}}</span>
+            <div class="controls">
+                <button class="btn btn-small" ng-click="edit(group)" ng-show="!group.IsShared">
+                    <i class="icon-edit"></i>Edit
+                </button>
+                <button class="btn btn-small btn-white btn-danger" ng-click="remove(group)" ng-show="!group.IsShared">
+                    <i class="icon-remove icon-white"></i>Remove
+                </button>
+                <toggle-box ng-model="group.Enabled"></toggle-box>
+            </div>
+        </li>
+    </ul>
 
-<div id="channel-group-editor" style="display:none">
-    <div data-bind="with: selectedChannelGroup">
-        <div class="input-group name">
-            <div class="label" data-lang="Name"></div>
-            <div class="value"><input type="text" data-bind="value: name" /></div>
-        </div>
-        <div class="input-group channels">
-            <div class="label" data-lang="Channels"></div>
-            <div class="value">
-                <ul data-bind="foreach: $root.channels">
-                    <li>
-                        <input class="noibutton" type="checkbox" data-bind="attr : { 'data-oid': oid, id: 'channel_' + $index(), value: oid, checked: enabled }" />
-                        <label data-bind="text: name, attr: { for: 'channel_' + $index()}"></label>
-                    </li>
-                </ul>
+    <p class="buttons">
+        <button class="btn" ng-click="add()">
+            <i class="icon-plus" />Create Channel Group
+        </button>
+        <button class="btn" ng-click="save()">
+            <i class="icon-save" />Save
+        </button>
+    </p>
+
+    <div id="channel-group-editor" style="display:none">
+        <div data-bind="with: selectedChannelGroup">
+            <div class="input-group name">
+                <div class="label" data-lang="Name"></div>
+                <div class="value"><input type="text" data-bind="value: name" /></div>
+            </div>
+            <div class="input-group channels">
+                <div class="label" data-lang="Channels"></div>
+                <div class="value">
+                    <ul data-bind="foreach: $root.channels">
+                        <li>
+                            <input class="noibutton" type="checkbox" data-bind="attr : { 'data-oid': oid, id: 'channel_' + $index(), value: oid, checked: enabled }" />
+                            <label data-bind="text: name, attr: { for: 'channel_' + $index()}"></label>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

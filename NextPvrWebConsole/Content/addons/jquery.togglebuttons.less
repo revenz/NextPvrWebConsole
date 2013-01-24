@@ -7,6 +7,7 @@
 @white: #FEFEFE;
 @blue: #0088CC;
 @border-radius: 25px;
+@width:150px;
 
 .toggle-button {
   display: inline-block;
@@ -34,9 +35,10 @@
     }
   }
   > div {
-    display: inline-block;
-    width: 150px;
+    display: block;
+    width: @width;
     position: absolute;
+	bottom:0;
     top: 0;
     &.disabled {
       left: -50%;
@@ -46,14 +48,13 @@
     display: none;
   }
 
-  span, label {
+  span {
     cursor: pointer;
-    position: relative;
-    float: left;
     display: inline-block;
   }
 
   label {
+    cursor: pointer;
     background: @white;
     /*margin-left: -@border-radius;
     margin-right: -@border-radius;*/
@@ -62,6 +63,11 @@
     z-index: 100;
 	margin-left:-6px;
 	margin-top:0;
+	width:20px;
+
+
+	position:absolute;
+	left:@width/2 - 18;
 
     .gradient(#E6E6E6, @white, #E6E6E6);
     .rounded(@border-radius - 4);
@@ -72,18 +78,26 @@
     text-align: center;
     font-weight: bold;
     z-index: 1;
+	position:absolute;
+	text-align:left;
+	padding-left:10px;
+	padding-right:10px;
 
     &.labelLeft {
       .border-radius-top-left(@border-radius);
       .border-radius-bottom-left(@border-radius);
-      padding-left: 3px;
+	  left:0;
+	  top:0;
+	  right:50%;
     }
     &.labelRight {
       .border-radius-top-right(@border-radius);
       .border-radius-bottom-right(@border-radius);
       color: black;
 	  .gradient(#E6E6E6, @white, #E6E6E6);
-      padding-right: 3px;
+	  right:0;
+	  top:0;
+	  left:50%;
     }
 
     &.primary, &.labelLeft {

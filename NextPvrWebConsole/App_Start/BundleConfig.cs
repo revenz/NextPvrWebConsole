@@ -41,6 +41,11 @@ namespace NextPvrWebConsole
                         "~/Scripts/global.js")
                         .IncludeDirectory("~/Scripts/controllers", "*.js", true)
                         .IncludeDirectory("~/Scripts/addons", "*.js", true)
+                        .Include("~/Scripts/jqueryui/core/jquery.ui.core.js")
+                        .Include("~/Scripts/jqueryui/core/jquery.ui.widget.js")
+                        .Include("~/Scripts/jqueryui/core/jquery.ui.position.js")
+                        .Include("~/Scripts/jqueryui/core/jquery.ui.mouse.js")
+                        .IncludeDirectory("~/Scripts/jqueryui/", "*.js")
                         .Include("~/Scripts/webapp.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/loginjs").Include(

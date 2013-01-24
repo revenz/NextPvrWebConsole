@@ -56,13 +56,14 @@
 
                   $div = $cb.wrap($('<div></div>')).parent();
                   $div.append($spanLeft);
-                  $div.append($('<label></label>').attr('for', $cb.attr('id') || ''));
                   $div.append($spanRight);
+                  $div.append($('<label></label>').attr('for', $cb.attr('id') || ''));
 
+                  options["width"] /= 2;
                   if ($cb.is(':checked'))
                       $element.find('>div').css('left', "0");
                   else
-                      $element.find('>div').css({ left: "-62%" }).find('.labelLeft').css('visibility', 'hidden');
+                      $element.find('>div').css({ left: -(options.width * 1.5)}).find('.labelLeft').css('visibility', 'hidden');
 
                   if (options.animated) {
                       if (options.transitionspeed !== undefined)
@@ -76,18 +77,17 @@
                   $(this).data('transitionSpeed', transitionSpeed * 1000);
 
 
-                  options["width"] /= 2;
 
                   // width of the bootstrap-toggle-button
                   var div = $element.css('width', options.width * 1.5)
-                                    .find('>div').css('width', options.width * 3)
-                                    .find('>span').css('width', options.width);
+                                    .find('>div').css('width', options.width * 3);
+                                    //.find('>span').css('width', options.width);
 
                   // height of the bootstrap-toggle-button
                   $element.css('height', options.height)
                           .find('span').css('height', options.height)
                           .filter('span').css('line-height', options.height + "px");
-                  $element.find('label').css({ height: options.height - 4, width: options.width / 2 - 4, position: 'absolute', left: options.width });
+                  $element.find('label').css({ height: options.height - 4});//, position: 'absolute', left: options.width, width: options.width / 2 - 4 });
 
                   if ($cb.is(':disabled'))
                       $(this).addClass('deactivate');
@@ -142,7 +142,7 @@
                   , active = $(this).is(':checked')
                   , $toggleButton = $(this).closest('.toggle-button');
 
-                      $element.stop().animate({ 'left': active ? '0' : '-62%' }, $toggleButton.data('transitionSpeed'), null, function () {
+                      $element.stop().animate({ 'left': active ? '0' : -(options.width * 1.5) +'px' }, $toggleButton.data('transitionSpeed'), null, function () {
                           $element.find('.labelLeft').css('visibility', active ? 'visible' : 'hidden');
                       });
 
