@@ -349,6 +349,8 @@
     <Content Include="Scripts\controllers\usersettings\ChannelsController.js" />
     <Content Include="Scripts\controllers\usersettings\RecordingDirectoriesController.js" />
     <Content Include="Scripts\core\angular.js" />
+    <Content Include="Scripts\directives\ngSortable.js" />
+    <Content Include="Scripts\directives\toggleBox.js" />
     <Content Include="Scripts\jqueryui\core\jquery.ui.core.js" />
     <Content Include="Scripts\jqueryui\core\jquery.ui.mouse.js" />
     <Content Include="Scripts\jqueryui\core\jquery.ui.position.js" />
@@ -645,6 +647,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="ClientBin\" />
     <Folder Include="Logging\" />
+    <Folder Include="Scripts\controllers\configuration\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

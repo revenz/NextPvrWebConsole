@@ -1,37 +1,47 @@
 ﻿@{
-    ViewBag.Title = "Configuration";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "";
     var modelRecording = (NextPvrWebConsole.Models.ConfigurationModels.RecordingConfiguration)ViewBag.RecordingModel;
     var modelDevices = (NextPvrWebConsole.Models.ConfigurationModels.DevicesConfiguration)ViewBag.DevicesModel; 
-}
-
-@section Styles{
-    @Styles.Render("~/Content/configuration/css")
 }
 
 <div class="configuration vtab-container">
 
     <ul class="vtab-buttons">
-        <li data-tab="general" class="first selected"><i class="icon icon-wrench"></i><span data-lang="General" /></li>
-        <li data-tab="devices"><i class="icon icon-cogs"></i><span data-lang="Devices" /></li>
-        <li data-tab="recording"><i class="icon icon-adjust"></i><span data-lang="Recording" /></li>
-        <li data-tab="channelgroups"><i class="icon icon-sitemap"></i><span data-lang="Channel Groups" /></li>
-        <li data-tab="channels" class="last"><i class="icon icon-list-ul"></i><span data-lang="Channels" /></li>
+        <li ng-class="{ first: true, selected: selectedTabIndex == 0 }" ng-click="selectedTabIndex = 0">
+            <i class="icon icon-wrench"></i>
+            <span data-lang="General" />
+        </li>
+        <li ng-class="{ selected: selectedTabIndex == 1 }" ng-click="selectedTabIndex = 1">
+            <i class="icon icon-cogs"></i>
+            <span data-lang="Devices" />
+        </li>
+        <li ng-class="{ selected: selectedTabIndex == 2 }" ng-click="selectedTabIndex = 2">
+            <i class="icon icon-adjust"></i>
+            <span data-lang="Recording" />
+        </li>
+        <li ng-class="{ selected: selectedTabIndex == 3 }" ng-click="selectedTabIndex = 3">
+            <i class="icon icon-sitemap"></i>
+            <span data-lang="Channel Groups" />
+        </li>
+        <li ng-class="{ last: true, selected: selectedTabIndex == 4 }" ng-click="selectedTabIndex = 4">
+            <i class="icon icon-list-ul"></i>
+            <span data-lang="Channels" />
+        </li>
     </ul>
     
-    <div class="vtab-content selected" id="configuration-tab-general">
+    <div class="vtab-content selected" id="configuration-tab-general" ng-show="selectedTabIndex == 0">
         @Html.Partial("_General")
     </div>
-    <div class="vtab-content" id="configuration-tab-devices">
+    <div class="vtab-content" id="configuration-tab-devices" ng-show="selectedTabIndex == 1">
         @Html.Partial("_Devices")
     </div>
-    <div class="vtab-content" id="configuration-tab-recording">
+    <div class="vtab-content" id="configuration-tab-recording" ng-show="selectedTabIndex == 2">
         @Html.Partial("_Recording")
     </div>
-    <div class="vtab-content" id="configuration-tab-channelgroups">
+    <div class="vtab-content" id="configuration-tab-channelgroups" ng-show="selectedTabIndex == 3">
         @Html.Partial("_ChannelGroups")
     </div>
-    <div class="vtab-content" id="configuration-tab-channels">
+    <div class="vtab-content" id="configuration-tab-channels" ng-show="selectedTabIndex == 4">
         @Html.Partial("_Channels")
     </div>
 </div>
@@ -41,33 +51,5 @@
     @Html.Partial("FileTree")
 </div>
 
-@section Scripts{
-    <script>
-        var recordingDirectories = new Array();
-        @foreach(var rd in modelRecording.RecordingDirectories)
-        {
-            <text>recordingDirectories.push(new RecordingDirectory( { Oid: @rd.Oid, Name: "@rd.Name", Path: "@rd.Path.Replace(@"\", @"\\")", IsDefault: @rd.IsDefault.ToString().ToLower() }) );</text>
-        }
-
-        var devices = new Array();        
-        @foreach (var d in modelDevices.Devices)
-        {
-            <text>devices.push(new Device( { Name: "@d.Name.Replace(@"\", @"\\")", Oid: @d.Oid, Enabled: @d.Enabled.ToString().ToLower(), Present: @d.Present.ToString().ToLower(), Priority: @d.Priority, SourceType: "@d.SourceType", NumberOfChannels: @d.NumberOfChannels }) );</text>
-        }
-
-        var channelGroups = new Array();            
-        @foreach (NextPvrWebConsole.Models.ChannelGroup g in ViewBag.ChannelGroups)
-        {
-            <text>channelGroups.push(new ChannelGroup( { Name: "@g.Name.Replace(@"\", @"\\")", Oid: @g.Oid, ChannelOids: [@(String.Join(",", g.ChannelOids.Select(x => x.ToString()).ToArray())) ] }) );</text>
-        }
-
-        var channels = new Array();            
-        @foreach (NextPvrWebConsole.Models.Channel c in ViewBag.Channels)
-        {
-            <text>channels.push(new Channel( { Name: "@c.Name.Replace(@"\", @"\\")", Oid: @c.Oid, Enabled: @c.Enabled.ToString().ToLower(), Number: @c.Number }) );</text>
-        }
-    </script>
-
-    @Scripts.Render("~/Scripts/configuration/js")
-    @Scripts.Render("/Scripts/jquery.filetree.js")
-}
+@Scripts.Render("/Scripts/jquery.filetree.js")
+@Scripts.Render("~/Scripts/vtabs.js")

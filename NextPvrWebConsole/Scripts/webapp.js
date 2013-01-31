@@ -5,6 +5,8 @@ npvrapp.config(['$routeProvider', function ($routeProvider) {
                   .when('/guide', { templateUrl: 'guide', controller: 'Controllers.GuideController' })
                   .when('/recordings', { templateUrl: 'recordings', controller: 'Controllers.General.TabController' })
                   .when('/usersettings', { templateUrl: 'usersettings', controller: 'Controllers.General.TabController' })
+                  .when('/configuration', { templateUrl: 'configuration', controller: 'Controllers.General.TabController' })
+                  .when('/system', { templateUrl: 'system', controller: 'Controllers.General.TabController' })
                   //.when('/phones/:phoneId', { templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl })
                   .otherwise({ redirectTo: '/dashboard' });
 
@@ -83,55 +85,6 @@ npvrapp.run(function ($rootScope, $http, $location) {
     };
 });
 
-npvrapp.directive('toggleBox', function () {
-    return {
-        restrict: 'E',
-        scope: {
-            modelvalue: '=ngModel',
-            enabledText: '@tbEnabledText',
-            disabledText: '@tbDisabledText',
-            enabledStyle: '@tbEnabledStyle',
-            disabledStyle: '@tbDisabledStyle',
-            ngDisabled: '=ngDisabled',
-            width: '@width',
-        },
-        template: '<div>' +
-                    '<input type="checkbox">' +
-                  '</div>',
-        replace: true,
-        require: 'ngModel',
-        controller: function ($scope, $element) {
-
-            $scope.$watch(function () { return $($element).children().length; }, function (newValue, oldValue) {
-                console.log($scope.ngDisabled);
-                if ($scope.ngDisabled) {
-                    $($element).find('input').attr('disabled', 'disabled');
-                }
-                console.log('$scope.enabledText:' + $scope.enabledText);
-                $scope.toggleButton = $($element).toggleButtons({
-                    width: $scope.width && $scope.width.length ? $scope.width : 100,
-                    label: {
-                        enabled: $scope.enabledText && $scope.enabledText.length ? $scope.enabledText : 'ON',
-                        disabled: $scope.disabledText && $scope.disabledText.length ? $scope.disabledText : 'OFF'
-                    },
-                    style: {
-                        enabled: $scope.enabledStyle && $scope.enabledStyle.length ? $scope.enabledStyle : 'primary',
-                        disabled: $scope.disabledStyle && $scope.disabledStyle.length ? $scope.disabledStyle : ''
-                    },
-                    onChange:function($el, status, e){
-                        $scope.$apply(function () {
-                            $scope.modelvalue = status;
-                        });
-                    }
-                });
-            });
-
-            $scope.$watch(function () { return $scope.modelvalue; }, function (newValue, oldValue) {
-                $($element).toggleButtons('setState', newValue, true);
-            });
-        }
-    };
-});
 
 npvrapp.filter('daymask', function () {
     return function (input) {
@@ -161,34 +114,5 @@ npvrapp.filter('daymask', function () {
                 }
         }
         return input;
-    };
-});
-
-npvrapp.directive("ngSortable", function () {
-    return {
-        link: function (scope, element, attrs) {
-            var handle = null;
-            if (element.attr('data-handle'))
-                handle = element.attr('data-handle');
-            element.sortable({
-                handle: handle,
-                update: function (event, ui) {
-                    var model = scope.$eval(attrs.ngSortable);
-                    
-                    var newArray = [];
-                    // loop through items in new order
-                    element.children().each(function (index) {
-                        var oldIndex = parseInt($(this).attr("ng-sortable-index"), 10);
-                        newArray.push(model[oldIndex]);
-                    });
-
-                    for (var i = 0; i < newArray.length; i++) {
-                        model[i] = newArray[i];
-                    }
-
-                    scope.$apply();
-                }
-            });
-        }
     };
 });

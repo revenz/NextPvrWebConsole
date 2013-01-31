@@ -1,46 +1,54 @@
 ﻿@{
-    ViewBag.Title = "System";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@section Styles{
-    @Styles.Render("~/Content/system/css")
+    Layout = "";
 }
 
 
 <div class="system vtab-container">
 
     <ul class="vtab-buttons">
-        <li class="general first selected" data-tab="general"><i class="icon icon-wrench"></i><span data-lang="General" /></li>
-        <li class="smtp" data-tab="smtp"><i class="icon icon-envelope"></i><span data-lang="SMTP Settings" /></li>        
-        <li class="users" data-tab="users"><i class="icon icon-group"></i><span data-lang="Users" /></li>
-        <li class="logs" data-tab="logs"><i class="icon icon-file"></i><span data-lang="Logs" /></li>
-        <li class="about last" data-tab="about"><i class="icon icon-info-sign"></i><span data-lang="About" /></li>
+        <li ng-class="{ first: true, selected: selectedTabIndex == 0 }" ng-click="selectedTabIndex = 0">
+            <i class="icon icon-wrench"></i>
+            <span data-lang="General" />
+        </li>
+        <li ng-class="{ selected: selectedTabIndex == 1 }" ng-click="selectedTabIndex = 1">
+            <i class="icon icon-envelope"></i>
+            <span data-lang="SMTP Settings" />
+        </li>
+        <li ng-class="{ selected: selectedTabIndex == 2 }" ng-click="selectedTabIndex = 2">
+            <i class="icon icon-group"></i>
+            <span data-lang="Users" />
+        </li>
+        <li ng-class="{ selected: selectedTabIndex == 3 }" ng-click="selectedTabIndex = 3">
+            <i class="icon icon-file"></i>
+            <span data-lang="Logs" />
+        </li>
+        <li ng-class="{ last: true, selected: selectedTabIndex == 4 }" ng-click="selectedTabIndex = 4">
+            <i class="icon icon-info-sign"></i>
+            <span data-lang="About" />
+        </li>
     </ul>
 
-    <div class="vtab-content selected" id="system-tab-general">
+    <div class="vtab-content selected" id="system-tab-general" ng-show="selectedTabIndex == 0">
         @Html.Partial("_General")
     </div>
 
-    <div class="vtab-content" id="system-tab-smtp">
+    <div class="vtab-content" id="system-tab-smtp" ng-show="selectedTabIndex == 1">
         @Html.Partial("_SmtpSettings")
     </div>
 
-    <div class="vtab-content" id="system-tab-users">
+    <div class="vtab-content" id="system-tab-users" ng-show="selectedTabIndex == 2">
         @Html.Partial("_Users")
     </div>
     
-    <div class="vtab-content" id="system-tab-logs">
+    <div class="vtab-content" id="system-tab-logs" ng-show="selectedTabIndex == 3">
         @Html.Partial("_Logs")
     </div>
     
-    <div class="vtab-content" id="system-tab-about">
+    <div class="vtab-content" id="system-tab-about" ng-show="selectedTabIndex == 4">
         @Html.Partial("_About")
     </div>
 
 </div>
 
 
-@section Scripts{
-    @Scripts.Render("~/Scripts/system/js")
-}
+@Scripts.Render("~/Scripts/vtabs.js")
