@@ -16,7 +16,6 @@ namespace NextPvrWebConsole
 
             bundles.Add(new ScriptBundle("~/bundles/jscore").Include(
                         "~/Scripts/core/jquery-{version}.js",
-                        //"~/Scripts/core/jquery-ui-{version}.js",
                         "~/Scripts/core/jquery.unobtrusive-ajax",
                         "~/Scripts/core/jquery.validate*",
                         "~/Scripts/core/jquery.unobtrusive*",
@@ -28,13 +27,6 @@ namespace NextPvrWebConsole
                         //"~/Scripts/core/jquery.linq.js*",
                         "~/Scripts/core/jquery.dateFormat-1.0.js",
                         "~/Scripts/core/angular.js",
-                        //"~/Scripts/core/knockout-{version}.js",
-                        //"~/Scripts/core/knockout-sortable.js",
-                        //"~/Scripts/core/jquery.easing.1.3.js",
-                        //"~/Scripts/core/jquery.metadata.js",
-                        //"~/Scripts/core/jquery.ibutton.js",
-                        //"~/Scripts/core/jquery.timespinner.js",
-                        //"~/Scripts/core/jquery.address.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js",
@@ -45,9 +37,10 @@ namespace NextPvrWebConsole
                         .Include("~/Scripts/jqueryui/core/jquery.ui.widget.js")
                         .Include("~/Scripts/jqueryui/core/jquery.ui.position.js")
                         .Include("~/Scripts/jqueryui/core/jquery.ui.mouse.js")
-                        .IncludeDirectory("~/Scripts/jqueryui/", "*.js")
+                        .IncludeDirectory("~/Scripts/jqueryui/addons", "*.js", true)
+                        .Include("~/Scripts/webapp.js")
                         .IncludeDirectory("~/Scripts/directives", "*.js", true)
-                        .Include("~/Scripts/webapp.js"));
+                        );
 
             bundles.Add(new ScriptBundle("~/bundles/loginjs").Include(
                         "~/Scripts/core/jquery-{version}.js",
@@ -87,7 +80,8 @@ namespace NextPvrWebConsole
                                                         .IncludeDirectory("~/Content/addons", "*.less", true)
                                                         .IncludeDirectory("~/Content/addons", "*.css", true)
                                                         .IncludeDirectory("~/Content/pages", "*.less", true)
-                                                        .IncludeDirectory("~/Content/pages", "*.css", true);
+                                                        .IncludeDirectory("~/Content/pages", "*.css", true)
+                                                        .Include("~/Content/jqueryui/theme.less");
             cssBundle.Transforms.Add(new LessTransform());
             cssBundle.Transforms.Add(new CssMinify());
             bundles.Add(cssBundle);

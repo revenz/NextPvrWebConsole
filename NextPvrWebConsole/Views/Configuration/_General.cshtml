@@ -1,59 +1,56 @@
 ﻿@{
     var modelGeneral = (NextPvrWebConsole.Models.ConfigurationModels.GeneralConfiguration)ViewBag.GeneralModel;
 }
-@using (Ajax.BeginForm("UpdateGeneral", "Configuration", new AjaxOptions() { OnBegin = "ajax.onbegin", OnComplete = "ajax.oncomplete", OnFailure = "ajax.onfailure", OnSuccess = "ajax.onsuccess" })) 
-{
-    <table>
-        <tr class="livetvbuffer">
-            <td class="label" data-lang="Live TV Buffer"></td>
-            <td class="value">
-                <div>
-                    @Html.TextBoxFor(m => modelGeneral.LiveTvBufferDirectory, new { @readonly= "readonly" })
-                    <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLiveTvBufferBrowse" onclick="return false">...</button>
-                    <span class="description" data-lang="LiveTvBuffer-Description" />
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="label" data-lang="UpdateDvbEpgDuringLiveTv"></td>
-            <td class="value">
-                @Html.EditorFor(m => modelGeneral.UpdateDvbEpgDuringLiveTv)
-                <span class="description" data-lang="UpdateDvbEpgDuringLiveTv-Description" />
-            </td>
-        </tr>
-        <tr>
-            <td class="label" data-lang="EpgUpdateHour"></td>
-            <td class="value">
-                @Html.EditorFor(m => modelGeneral.EpgUpdateHour, "HourPicker")
-                @Html.ValidationMessageFor(m => modelGeneral.EpgUpdateHour)
-                <span class="description" data-lang="EpgUpdateHour-Description" />
-            </td>
-        </tr>
-        <tr>
-            <td class="label" data-lang="EnableUserSupport"></td>
-            <td class="value">
-                @Html.EditorFor(m => modelGeneral.EnableUserSupport)
-                <span class="description" data-lang="EnableUserSupport-Description" />
-            </td>
-        </tr>
-        <tr class="userrecordingdirectory">
-            <td class="label" data-lang="User Recording Directory"></td>
-            <td class="value">
-                <div>
-                    @Html.TextBoxFor(m => modelGeneral.UserBaseRecordingDirectory, new { @readonly = "readonly" })
-                    <button class="browse-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnUserBaseRecordingDirectoryBrowse" onclick="return false">...</button>
-                    <span class="description" data-lang="UserBaseRecordingDirectory-Description" />
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="label"></td>
-            <td class="value">
-                <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                    <span class="icon-save icon-large" data-lang="Save"></span>
-                </button>
-            </td>
-        </tr>
-    </table>
-}
-    
+<div ng-controller="Controllers.Configuration.GeneralController">
+    <form>
+        <table>
+            <tr class="livetvbuffer">
+                <td><label data-lang="Live TV Buffer" for="btnLiveTvBufferBrowse"></label></td>
+                <td class="value">
+                    <div>
+                        <folder-browser ng-model="model.LiveTvBufferDirectory"></folder-browser>
+                        <span class="description" data-lang="LiveTvBuffer-Description" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="modelGeneral_UpdateDvbEpgDuringLiveTv" data-lang="UpdateDvbEpgDuringLiveTv"></label></td>
+                <td class="value">
+                    <toggle-box ng-model="model.UpdateDvbEpgDuringLiveTv"></toggle-box>
+                    <span class="description" data-lang="UpdateDvbEpgDuringLiveTv-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td><label data-lang="EpgUpdateHour" for="modelGeneral_EpgUpdateHour"></label></td>
+                <td class="value">
+                    <time-spinner ng-model="model.EpgUpdateHour"></time-spinner>
+                    <span class="description" data-lang="EpgUpdateHour-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="modelGeneral_EnableUserSupport" data-lang="EnableUserSupport"></label></td>
+                <td class="value">
+                    <toggle-box ng-model="model.EnableUserSupport"></toggle-box>
+                    <span class="description" data-lang="EnableUserSupport-Description" />
+                </td>
+            </tr>
+            <tr class="userrecordingdirectory">
+                <td><label for="btnUserBaseRecordingDirectoryBrowse" data-lang="User Recording Directory"></label></td>
+                <td class="value">
+                    <div>
+                        <folder-browser ng-model="model.UserBaseRecordingDirectory"></folder-browser>
+                        <span class="description" data-lang="UserBaseRecordingDirectory-Description" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"></td>
+                <td class="value">
+                    <button class="btn btn-primary">
+                        <i class="icon-save icon-large" /><span data-lang="Save"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
