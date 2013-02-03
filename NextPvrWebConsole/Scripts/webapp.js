@@ -83,6 +83,19 @@ npvrapp.run(function ($rootScope, $http, $location) {
     $rootScope.tabSelected = function (address) {
         return $location.$$path.indexOf(address) > 0 ? 'selected' : '';
     };
+
+
+    $rootScope.configuration = null;    
+    $rootScope.getConfiguration = function (callback) {
+        if ($rootScope.configuration == null) {
+            $http.get('/api/configuration').success(function (data) {
+                $rootScope.configuration = data;
+                callback($rootScope.configuration);
+            });
+        } else {
+            callback($root.configuration);
+        }
+    };
 });
 
 

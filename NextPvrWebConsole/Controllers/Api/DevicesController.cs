@@ -13,7 +13,7 @@ namespace NextPvrWebConsole.Controllers.Api
         // GET api/tuners
         public IEnumerable<Models.Device> Get()
         {
-            return Models.Device.GetDevices();
+            return Models.Device.GetDevices();        
         }
         
         [HttpDelete]

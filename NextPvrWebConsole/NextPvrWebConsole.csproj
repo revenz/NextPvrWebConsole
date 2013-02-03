@@ -243,6 +243,8 @@
     <Compile Include="Helpers\ObjectCloner.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
+    <Content Include="Content\addons\folder-browser.less" />
+    <None Include="Content\addons\spinner.less" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\ibutton-slider-default.png" />
@@ -338,6 +340,7 @@
     <Content Include="Scripts\addons\jquery.togglebuttons.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\controllers\configuration\DeviceController.js" />
     <Content Include="Scripts\controllers\configuration\GeneralController.js" />
     <Content Include="Scripts\controllers\dashboard\UpcomingController.js" />
     <Content Include="Scripts\controllers\dashboard\DevicesController.js" />
@@ -357,10 +360,8 @@
     <Content Include="Scripts\jqueryui\core\jquery.ui.core.js" />
     <Content Include="Scripts\jqueryui\core\jquery.ui.mouse.js" />
     <Content Include="Scripts\jqueryui\core\jquery.ui.position.js" />
-    <Content Include="Scripts\jqueryui\addons\jquery.ui.button.js" />
     <Content Include="Scripts\jqueryui\addons\jquery.ui.sortable.js" />
     <Content Include="Scripts\jqueryui\core\jquery.ui.widget.js" />
-    <Content Include="Scripts\jqueryui\addons\jquery.ui.spinner.js" />
     <Content Include="Scripts\less.min.js" />
     <Content Include="Scripts\mobile\core\fixScrollAndTapHold.js" />
     <Content Include="Scripts\mobile\guide.js" />
@@ -424,7 +425,6 @@
     <Content Include="Scripts\core\jquery.i18n.min.js" />
     <Content Include="Scripts\core\jquery.ibutton.js" />
     <Content Include="Scripts\core\jquery.metadata.js" />
-    <Content Include="Scripts\jqueryui\addons\jquery.ui.timespinner.js" />
     <Content Include="Scripts\core\knockout-sortable.js" />
     <Content Include="Scripts\dashboard\upcomingrecordings.js" />
     <Content Include="Scripts\addons\jquery.filetree.js" />

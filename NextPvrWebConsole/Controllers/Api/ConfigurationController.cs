@@ -17,6 +17,12 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         [HttpGet]
+        public IEnumerable<Models.Device> Devices()
+        {
+            return Models.Device.LoadAll();
+        }
+
+        [HttpGet]
         public bool EmptyEpg()
         {
             Helpers.NpvrCoreHelper.EmptyEpg();

@@ -81,7 +81,8 @@ namespace NextPvrWebConsole
                                                         .IncludeDirectory("~/Content/addons", "*.css", true)
                                                         .IncludeDirectory("~/Content/pages", "*.less", true)
                                                         .IncludeDirectory("~/Content/pages", "*.css", true)
-                                                        .Include("~/Content/jqueryui/theme.less");
+                                                        //.Include("~/Content/jqueryui/theme.less")
+                                                        ;
             cssBundle.Transforms.Add(new LessTransform());
             cssBundle.Transforms.Add(new CssMinify());
             bundles.Add(cssBundle);

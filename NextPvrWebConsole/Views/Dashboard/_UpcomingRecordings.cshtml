@@ -7,8 +7,8 @@
             <div class="name">{{item.Name}}</div>
             <div class="time">{{ item.StartTime | date:'medium' }}</div>
             <div class="controls">
-                <button ng-click="cancel(item)">
-                    <span class="icon-stop icon-large" data-lang="Cancel"></span>
+                <button ng-click="cancel(item)" class="btn btn-danger btn-small">
+                    <i class="icon-stop icon-white"></i> Cancel
                 </button>
             </div>
         </li>

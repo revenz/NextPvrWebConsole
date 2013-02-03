@@ -1,59 +1,60 @@
 ﻿@{
     var modelDevices = (NextPvrWebConsole.Models.ConfigurationModels.DevicesConfiguration)ViewBag.DevicesModel;
 }
-<table class="devices" id="device-table">
-    <thead>
+<div ng-controller="Controllers.Configuration.DeviceController">
+    <table class="devices" id="device-table">
+        <thead>
+            <tr>
+                <th class="handle"></th>
+                <th class="type" data-lang="Type"></th>
+                <th class="device" data-lang="Device"></th>
+                <th class="present" data-lang="Present"></th>
+                <th class="enabled" data-lang="Enabled"></th>
+                <th class="channels" data-lang="Channels"></th>
+            </tr>
+        </thead>
+        <tbody ng-sortable="model" data-handle=".handle" id="devices">
+            <tr ng-sortable-index="{{$index}}" ng-repeat="device in model">
+                <td class="handle"><i class="icon-move"></i></td>
+                <td class="type">{{device.SourceType}}</td>
+                <td class="device">{{device.Name}}</td>
+                <td class="present"><span ng-show="device.Present">Yes</span><span ng-hide="device.Present">No</span></td>
+                <td class="enabled">
+                    <toggle-box ng-model="device.Enabled"></toggle-box>
+                </td>
+                <td class="channels">{{device.NumberOfChannels}}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <table>
         <tr>
-            <th class="handle"></th>
-            <th class="type" data-lang="Type"></th>
-            <th class="device" data-lang="Device"></th>
-            <th class="present" data-lang="Present"></th>
-            <th class="enabled" data-lang="Enabled"></th>
-            <th class="channels" data-lang="Channels"></th>
+            <td><label data-lang="UseReverseOrderForLiveTv"></label></td>
+            <td class="value">
+                <toggle-box ng-model="UseReverseOrderForLiveTv"></toggle-box>
+                <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
+            </td>
         </tr>
-    </thead>
-    <tbody data-bind="sortable: { template: 'device-template', data: devices, options: { handle: 'td:first' }, afterMove: afterMove }">
-    </tbody>
-</table>
-
-<script  type="text/html" id="device-template">
-    <tr>
-        <td class="handle"><i class="icon-move"></i></td>
-        <td class="type" data-bind="text: sourceType"></td>
-        <td class="device" data-bind="text: name"></td>
-        <td class="present" data-bind="text: presentString"></td>
-        <td class="enabled"><input type="checkbox" data-bind="checked: enabled, attr: { id: 'device_' + oid() + '_enabled' }" /></td>
-        <td class="channels" data-bind="text: numberOfChannels"></td>
-    </tr>            
-</script>
-
-<table>
-    <tr>
-        <td class="label" data-lang="UseReverseOrderForLiveTv"></td>
-        <td class="value">
-            @Html.EditorFor(m => modelDevices.UseReverseOrderForLiveTv)
-            <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label"></td>
-        <td class="value">
+        <tr>
+            <td></td>
+            <td class="value">
         
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"" data-bind="click: $root.updateEpg">
-                <span class="icon-refresh icon-large" data-lang="Update EPG"></span>
-            </button>
+                <button ng-click="updateEpg()" class="btn">
+                    <i class="icon-refresh icon-large"></i><span data-lang="Update EPG"></span>
+                </button>
 
-            <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.emptyEpg">
-                <span class="icon-trash icon-large" data-lang="Empty EPG"></span>
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td class="label"></td>
-        <td class="value">
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
-                <span class="icon-save icon-large" data-lang="Save"></span>
-            </button>
-        </td>
-    </tr>
-</table>
+                <button ng-click="emptyEpg()" class="btn btn-danger">
+                    <i class="icon-trash icon-large icon-white"></i><span data-lang="Empty EPG"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value">
+                <button ng-click="save()" class="btn btn-large">
+                    <i class="icon-save icon-large"></i><span data-lang="Save"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

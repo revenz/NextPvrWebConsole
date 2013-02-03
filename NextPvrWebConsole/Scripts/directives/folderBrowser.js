@@ -6,7 +6,7 @@ npvrapp.directive('folderBrowser', function () {
             modelvalue: '=ngModel',
             ngDisabled: '=ngDisabled',
         },
-        template: '<div>' +
+        template: '<div class="folder-browser">' +
 	              '     <input type="text" readonly ng-model="modelvalue" ng-disabled="ngDisabled" />' +
 	              '     <button class="btn btn-small" ng-disabled="ngDisabled" ng-click="openBrowser()">...</button> ' +
 	              '     <div class="FolderBrowserWindow modal hide">' +

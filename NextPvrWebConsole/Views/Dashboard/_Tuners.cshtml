@@ -4,7 +4,6 @@
         <tbody ng-repeat="item in items | filter:item.Enabled" >
             <tr ng-data-oid="{{oid}}" class="device device{{$index}}">
                 <td class="identifier" colspan="8">
-                    <toggle-box ng-model="device.Enabled"></toggle-box>
                     {{item.Name}}                
                 </td>
             </tr>
@@ -18,8 +17,8 @@
                 <td class="subtitle">{{stream.Subtitle}}</td>
                 <td class="time"><span>{{stream.StartTime| date:'shortTime'}}</span> <span data-lang="TimeToSeperator"></span> <span>{{stream.EndTime | date:'shortTime'}}</span></td>
                 <td class="controls">
-                    <button ng-click="stop(stream)">
-                        <span class="icon-stop icon-large" data-lang="Stop"></span>
+                    <button ng-click="stop(stream)" class="btn btn-danger btn-small">
+                        <i class="icon-stop icon-white"></i> Stop
                     </button>
                 </td>
             </tr>

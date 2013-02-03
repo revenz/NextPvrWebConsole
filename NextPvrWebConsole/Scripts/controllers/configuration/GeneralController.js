@@ -4,7 +4,9 @@ ns.GeneralController = function ($scope, $http, $rootScope) {
     "use strict";
     var self = this;
 
-    var model = {};
+    $rootScope.getConfiguration(function (config) {
+        $scope.model = config;
+    });
 
 };
 ns.GeneralController.$inject = ['$scope', '$http', '$rootScope'];
