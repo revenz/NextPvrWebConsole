@@ -16,6 +16,11 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.Channel.LoadAll(this.GetUser().Oid, IncludeDisabled);
         }
 
+        public IEnumerable<Models.Channel> GetShared()
+        {
+            return Models.Channel.LoadAll(Globals.SHARED_USER_OID, true);
+        }
+
         public bool Update(Models.Channel[] Channels)
         {
             Models.Channel.Update(this.GetUser().Oid, Channels);

@@ -16,6 +16,12 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.RecordingDirectory.LoadForUser(this.GetUser().Oid, IncludeShared);
         }
 
+        // GET api/recordingdirectories
+        public IEnumerable<Models.RecordingDirectory> GetShared()
+        {
+            return Models.RecordingDirectory.LoadForUser(Globals.SHARED_USER_OID, false);
+        }
+
         // POST api/recordingdirectories/updatename
         [HttpPost]
         public Models.RecordingDirectory UpdateName([FromBody] string RecordingDirectoryName)

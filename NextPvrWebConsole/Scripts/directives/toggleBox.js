@@ -19,11 +19,9 @@ npvrapp.directive('toggleBox', function () {
         controller: function ($scope, $element) {
 
             $scope.$watch(function () { return $($element).children().length; }, function (newValue, oldValue) {
-                console.log($scope.ngDisabled);
                 if ($scope.ngDisabled) {
                     $($element).find('input').attr('disabled', 'disabled');
                 }
-                console.log('$scope.enabledText:' + $scope.enabledText);
                 $scope.toggleButton = $($element).toggleButtons({
                     width: $scope.width && $scope.width.length ? $scope.width : 100,
                     label: {

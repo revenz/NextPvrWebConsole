@@ -1,27 +1,30 @@
-﻿
-<table class="data-table" style="display:none">
-    <thead>
-        <td class="name" data-lang="Name"></td>
-        <td class="datemodified" data-lang="Date Modified"></td>
-        <td class="size" data-lang="Size"></td>
-    </thead>
-    <tbody data-bind="foreach: logs">
-        <tr data-bind="attr: { 'data-name': name, 'data-oid': oid }">
-            <td>
-                <a href="#" data-bind="text: name, click: $root.open"></a>
-            </td>
-            <td data-bind="text: dateModifiedString"></td>
-            <td data-bind="text: sizeString"></td>
-        </tr>
-    </tbody>    
-</table>
+﻿<div ng-controller="Controllers.System.LogController">
 
-<div id="logFileWindow" style="display:none">
-    <span class="name"></span>
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="btnLogClose">
-        <span class="icon-remove icon-large" data-lang="Close"></span>
-    </button>
-    <pre>
+    <table class="data-table">
+        <thead>
+            <td class="name" data-lang="Name"></td>
+            <td class="datemodified" data-lang="Date Modified"></td>
+            <td class="size" data-lang="Size"></td>
+        </thead>
+        <tbody >
+            <tr ng-repeat="item in model">
+                <td>
+                    <a href="">{{item.Name}}</a>
+                </td>
+                <td>{{ item.DateModified | date }}</td>
+                <td>{{ item.Size  }}</td>
+            </tr>
+        </tbody>    
+    </table>
 
-    </pre>
+    <div id="logFileWindow" style="display:none">
+        <span class="name"></span>
+        <button ng-click="close()" class="btn">
+            <i class="icon-remove icon-large" /> <span data-lang="Close"></span>
+        </button>
+
+        <pre>
+
+        </pre>
+    </div>
 </div>

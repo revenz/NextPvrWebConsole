@@ -1,70 +1,72 @@
 ﻿@{
     var modelRecording = (NextPvrWebConsole.Models.ConfigurationModels.RecordingConfiguration)ViewBag.RecordingModel;
 }
-<table>
-    <tr>
-        <td class="label" data-lang="Pre-Padding"></td>
-        <td class="value">
-            @Html.EditorFor(m => modelRecording.PrePadding)
-            <span class="description" data-lang="PrePadding-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="Post-Padding"></td>
-        <td class="value">
-            @Html.EditorFor(m => modelRecording.PostPadding)
-            <span class="description" data-lang="PostPadding-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="BlockShutdownWhileRecording"></td>
-        <td class="value">
-            @Html.EditorFor(m => modelRecording.BlockShutDownWhileRecording)
-            <span class="description" data-lang="BlockShutdownWhileRecording-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="RecurringMatch"></td>
-        <td class="value">
-            @Html.EditorFor(m => modelRecording.RecurringMatch, "Enum")
-            <span class="description" data-lang="RecurringMatch-Description" />
-        </td>
-    </tr>
-    <tr>
-        <td class="label" data-lang="AvoidDuplicateRecordings"></td>
-        <td class="value"> 
-            @Html.EditorFor(m => modelRecording.AvoidDuplicateRecordings)
-            <span class="description" data-lang="AvoidDuplicateRecordings-Description" />
-        </td>
-    </tr>
-    <tr class="recording-directories">
-        <td class="label" data-lang="Recording Directories"></td>
-        <td class="value">
-            <ul data-bind="foreach: recordingDirectories">
-                <li>
-                    <div class="controls">
-                        <button onclick="return false" class="ui-button-danger ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
-                            <span class="icon-remove icon-large" data-lang="Remove"></span>
-                        </button>
-                    </div>
-                    <input type="radio" name="recording-directory-default" data-bind="attr: { id : 'recording-directory-default-' + $index() }, value:$index, checked: $root.selectedDefault" />
-                    <label data-bind="attr: { for : 'recording-directory-default-' + $index() }">
-                        <span class="name" data-bind="text: name"></span>
-                        <span class="path" data-bind="text: path"></span>
-                    </label>
-                </li>
-            </ul>    
-            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: add">
-                <span class="icon-plus icon-large" data-lang="Add Recording Folder"></span>
-            </button>                
-        </td>
-    </tr>
-    <tr>
-        <td class="label"></td>
-        <td class="value">
-            <button id="btnRecordingsSave" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                <span class="icon-save icon-large" data-lang="Save"></span>
-            </button>
-        </td>
-    </tr>
-</table>
+<div ng-controller="Controllers.Configuration.RecordingController">
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => modelRecording.PrePadding, new { data_lang= "Pre-Padding"})</td>
+            <td class="value">
+                @Html.EditorFor(m => modelRecording.PrePadding, new { type = "number", ng_model = "model.PrePadding" })
+                <span class="description" data-lang="PrePadding-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => modelRecording.PostPadding, new { data_lang= "Pre-Padding"})</td>
+            <td class="value">
+                @Html.EditorFor(m => modelRecording.PostPadding, new { type = "number", ng_model = "model.PostPadding" })
+                <span class="description" data-lang="PostPadding-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => modelRecording.BlockShutDownWhileRecording, new { data_lang= "BlockShutdownWhileRecording"})</td>
+            <td class="value">
+                <toggle-box ng-model="model.BlockShutDownWhileRecording"></toggle-box>
+                <span class="description" data-lang="BlockShutdownWhileRecording-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => modelRecording.RecurringMatch, new { data_lang= "RecurringMatch"})</td>
+            <td class="value">
+                @Html.EditorFor(m => modelRecording.RecurringMatch, "Enum")
+                <span class="description" data-lang="RecurringMatch-Description" />
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => modelRecording.AvoidDuplicateRecordings, new { data_lang= "AvoidDuplicateRecordings"})</td>
+            <td class="value"> 
+                <toggle-box ng-model="model.AvoidDuplicateRecordings"></toggle-box>
+                <span class="description" data-lang="AvoidDuplicateRecordings-Description" />
+            </td>
+        </tr>
+        <tr class="recording-directories">
+            <td>@Html.LabelFor(m => modelRecording.RecordingDirectories, new { data_lang= "Recording Directories"})</td>
+            <td class="value">
+                <ul>
+                    <li ng-repeat="rd in model.RecordingDirectories">
+                        <div class="controls">
+                            <button ng-click="removeRecordingDirectory(rd)" class="btn btn-danger btn-small">
+                                <i class="icon-remove icon-large icon-white"></i> Remove
+                            </button>
+                        </div>
+                        <input type="radio" name="recording-directory-default" value="{{$index}}" id="recording-directory-{{$index}}" ng-model="model.defaultRecordingDirectoryIndex" />
+                        <label for="recording-directory-{{$index}}">
+                            <span class="name">{{rd.Name}}</span>
+                            <span class="path">{{rd.Path}}</span>
+                        </label>
+                    </li>
+                </ul>    
+                <button class="btn btn-small" ng-click="addRecordingDirectory()">
+                    <i class="icon-plus"></i> <span data-lang="Add Recording Folder"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value">
+                <button id="btnRecordingsSave" class="btn btn-primary" ng-click="save()">
+                    <i class="icon-ok-sign icon-white" /> <span data-lang="Save"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

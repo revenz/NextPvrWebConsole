@@ -1,36 +1,46 @@
-﻿<p data-lang="Configuration-Channels-Summary"></p>
+﻿<div ng-controller="Controllers.Configuration.ChannelController">
+    <p data-lang="Configuration-Channels-Summary"></p>
 
-<table id="channels-table" class="data-table">
-    <thead>
-        <tr>
-            <th class="name" data-lang="Channel Name"></th>
-            <th class="number" data-lang="Number"></th>
-            <th class="enabled" data-lang="Enabled"></th>
-            <th class="controls"></th>
-        </tr>
-    </thead>
-    <tbody data-bind="template: { name: 'channel-template', foreach: channels }">
-    </tbody>
-</table>
-<p class="buttons">
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.importMissing">
-        <span class="icon-signin icon-large" data-lang="Import Missing From NextPVR"></span>
-    </button>
+    <table id="channels-table" class="data-table">
+        <thead>
+            <tr>
+                <th class="name" data-lang="Channel Name"></th>
+                <th class="number" data-lang="Number"></th>
+                <th class="enabled" data-lang="Enabled"></th>
+                <th class="controls"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="channel in model">
+                <td class="name"><input type="text" ng-model="channel.Name" /></td>
+                <td class="number"><input type="number" ng-model="channel.Number" min="1" max="999" /></td>
+                <td class="enabled">
+                    <toggle-box ng-model="channel.Enabled"></toggle-box>
+                </td>
+                <td class="controls">
+                    <button btn="remove(channel)" class="btn btn-danger btn-small">
+                        <i class="icon-remove icon-white"></i> Remove
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="buttons">
+        
+        <button ng-click="updateEpg()" class="btn">
+            <i class="icon-refresh icon-large"></i><span data-lang="Update EPG"></span>
+        </button>
 
-    <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.save">
-        <span class="icon-save icon-large" data-lang="Save"></span>
-    </button>
-</p>
+        <button ng-click="emptyEpg()" class="btn btn-danger">
+            <i class="icon-trash icon-large icon-white"></i><span data-lang="Empty EPG"></span>
+        </button>
 
-<script type="text/html" id="channel-template">
-    <tr data-bind="attr: { id: 'channel-' + oid() }">
-        <td class="name"><input type="text" data-bind="value: name" /></td>
-        <td class="number"><input type="number" data-bind="value: number" min="1" max="999" /></td>
-        <td class="enabled"><input type="checkbox" data-bind="checked: enabled" /></td>
-        <td class="controls">
-            <button onclick="return false" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" data-bind="click: $root.remove">
-                <span class="icon-remove icon-large">Remove</span>
-            </button>
-        </td>
-    </tr>
-</script>
+        <button ng-click="importMissing()" class="btn">
+            <i class="icon-share"></i> <span data-lang="Import Missing From NextPVR"></span>
+        </button>
+
+        <button ng-click="save()" class="btn btn-primary">
+            <i class="icon-ok-sign icon-white" /> <span data-lang="Save"></span>
+        </button>
+    </p>
+</div>

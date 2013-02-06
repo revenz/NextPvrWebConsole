@@ -78,7 +78,7 @@ namespace NextPvrWebConsole.Models
         {
             var db = DbHelper.GetDatabase();
             var config = new Configuration();
-            if (config.EnableUserSupport && config.UserRecordingDirectoriesEnabled)
+            if (UserOid != Globals.SHARED_USER_OID && config.EnableUserSupport && config.UserRecordingDirectoriesEnabled)
             {
                 int userDefault = db.ExecuteScalar<int>("select defaultrecordingdirectoryoid from[user] where oid = @0", UserOid);
                 string select = "select rd.*, username from recordingdirectory rd inner join [user] u on rd.useroid = u.oid where useroid = {0} {1}".FormatStr(UserOid, IncludeShared ? " or useroid = {0}".FormatStr(Globals.SHARED_USER_OID) : "");

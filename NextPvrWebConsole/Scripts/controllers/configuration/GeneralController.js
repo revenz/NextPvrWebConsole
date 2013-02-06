@@ -8,5 +8,22 @@ ns.GeneralController = function ($scope, $http, $rootScope) {
         $scope.model = config;
     });
 
+    $scope.save = function () {
+        
+        if (!$('#frmConfigGeneral').valid())
+            return;
+
+        $http.post('/configuration/updategeneral',
+            {
+                LiveTvBufferDirectory: $scope.model.LiveTvBufferDirectory,
+                UpdateDvbEpgDuringLiveTv: $scope.model.UpdateDvbEpgDuringLiveTv,
+                EpgUpdateHour: $scope.model.EpgUpdateHour,
+                EnableUserSupport: $scope.model.EnableUserSupport,
+                UserBaseRecordingDirectory: $scope.model.UserBaseRecordingDirectory
+            }).success(function (data) {
+
+            });
+    };
+
 };
 ns.GeneralController.$inject = ['$scope', '$http', '$rootScope'];

@@ -2,13 +2,14 @@
     var generalModel = (NextPvrWebConsole.Models.ConfigurationModels.GeneralSystem)ViewBag.GeneralModel;
 }
 
-<p data-lang="System-General-Summary"></p>
+<form id="frmSystemGeneral" ng-controller="Controllers.System.GeneralController">
 
-@using (Ajax.BeginForm("UpdateGeneralSettings", "System", new AjaxOptions() { OnBegin = "ajax.onbegin", OnComplete = "ajax.oncomplete", OnFailure = "ajax.onfailure", OnSuccess = "ajax.onsuccess" }, new { id = "updateGeneralSettingsForm" }))
-{
+    
+    <p data-lang="System-General-Summary"></p>
+
     <table>
         <tr>
-            <td class="label" data-lang="Website Address"></td>
+            <td>@Html.LabelFor(m => generalModel.WebsiteAddress, new { data_lang="Website Address"})</</td>
             <td class="value">
                 @Html.EditorFor(m => generalModel.WebsiteAddress)
                 @Html.ValidationMessageFor(m => generalModel.WebsiteAddress)
@@ -18,11 +19,12 @@
         <tr>
             <td class="label"></td>
             <td class="value">
-                <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                    <span class="icon-save icon-large" data-lang="Save"></span>
+                <button ng-click="save()" class="btn btn-primary">
+                    <i class="icon-ok-sign icon-white"/> <span data-lang="Save"></span>
                 </button>
             </td>
 
         </tr>
     </table>
-}
+
+</form>

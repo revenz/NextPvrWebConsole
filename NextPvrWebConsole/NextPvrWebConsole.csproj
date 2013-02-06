@@ -340,8 +340,11 @@
     <Content Include="Scripts\addons\jquery.togglebuttons.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\controllers\configuration\ChannelController.js" />
+    <Content Include="Scripts\controllers\configuration\ChannelGroupController.js" />
     <Content Include="Scripts\controllers\configuration\DeviceController.js" />
     <Content Include="Scripts\controllers\configuration\GeneralController.js" />
+    <Content Include="Scripts\controllers\configuration\RecordingController.js" />
     <Content Include="Scripts\controllers\dashboard\UpcomingController.js" />
     <Content Include="Scripts\controllers\dashboard\DevicesController.js" />
     <Content Include="Scripts\controllers\general\TabController.js" />
@@ -349,6 +352,10 @@
     <Content Include="Scripts\controllers\recordings\AvailableController.js" />
     <Content Include="Scripts\controllers\recordings\PendingController.js" />
     <Content Include="Scripts\controllers\recordings\RecurringController.js" />
+    <Content Include="Scripts\controllers\system\GeneralController.js" />
+    <Content Include="Scripts\controllers\system\LogController.js" />
+    <Content Include="Scripts\controllers\system\SmtpController.js" />
+    <Content Include="Scripts\controllers\system\UserController.js" />
     <Content Include="Scripts\controllers\usersettings\ChannelGroupsController.js" />
     <Content Include="Scripts\controllers\usersettings\ChannelsController.js" />
     <Content Include="Scripts\controllers\usersettings\RecordingDirectoriesController.js" />

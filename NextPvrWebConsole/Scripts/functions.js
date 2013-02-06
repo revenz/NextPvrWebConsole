@@ -122,9 +122,10 @@ var gui = new function () {
     };
 
     this.promptMessage = function (settings) {
+
         settings = $.extend({
             title: $.i18n._('Input'),
-            message: $.i18n._('Please inut a value'),
+            message: $.i18n._('Please input a value.'),
             validationExpression: "(.*?)",
             validationMessage: $.i18n._('Input is required.'),
             initialValue: '',
@@ -132,15 +133,34 @@ var gui = new function () {
             maxLength: 100
         }, settings);
 
-        var div = $('<div><span class="message"></span><input type="text" style="width: 99%;padding: 0;margin: 15px 0 5px;" /><span class="field-validation-error errormessage" /> </div>');
-        div.appendTo('body')
+        var div = $('<div class="modal">' +
+                        '<div class="modal-header">' +
+                            '<button type="button" class="close" aria-hidden="true">&times;</button>' +
+                            '<h3></h3>' +
+                        '</div>' +
+                        '<div class="modal-body">' +
+                            '<span class="message"></span> ' +
+                            '<input type="text" style="width: 99%;padding: 0;margin: 15px 0 5px;" /> ' +
+                            '<span class="field-validation-error errormessage" /> ' +
+                        '</div>' +
+                        '<div class="modal-footer">' +
+                            '<button aria-hidden="true" class="btn btn-primary btn-ok"></button>' +
+                            '<button aria-hidden="true" class="btn btn-cancel"></button>' +
+                        '</div>' +
+                    '</div>');
+        div.find('h3').text(settings.title);
         div.find('.message').text(settings.message);
         div.find('.errormessage').text(settings.validationMessage).css('display', 'none');
-        var dialog_buttons = {};
+        var btnOk = div.find('.btn-ok');
+        btnOk.text($.i18n._("OK"));
+        var btnCancel = div.find('.btn-cancel');
+        btnCancel.text($.i18n._("Cancel"));
         var input = div.find('input');
+
         if (settings.maxLength > 0)
             input.attr('maxlength', settings.maxLength);
         input.val(settings.initialValue);
+
         var errorMessage = div.find('.errormessage');
         var rgxValidate = null;
         if (settings.validationExpression) {
@@ -150,7 +170,13 @@ var gui = new function () {
                 errorMessage.css('display', rgxValidate.test(value) ? 'none' : '');
             });
         }
-        dialog_buttons[$.i18n._('OK')] = function () {
+        input.keypress(function (e) {
+            if (e.which == 13)
+                div.closest('.ui-dialog').find('.ui-dialog-buttonset button:first').click();
+        });
+
+        btnOk.click(function ()
+        {
             var value = input.val();
             // validate
             if (rgxValidate && !rgxValidate.test(value))
@@ -158,21 +184,79 @@ var gui = new function () {
 
             if (settings.success) { settings.success(value); }
 
-            div.dialog('close');
-        };
-        dialog_buttons[$.i18n._('Cancel')] = function () { div.dialog('close'); }
-        input.keypress(function (e) {
-            if (e.which == 13)
-                div.closest('.ui-dialog').find('.ui-dialog-buttonset button:first').click();
+            div.modal('hide');
         });
-        div.dialog(
+        btnCancel.click(function () {
+            div.modal('hide');
+        });
+        div.appendTo('body');
+        div.modal({});
+
+        div.on('hidden', function () {
+            div.remove();
+        });
+    };
+
+
+    this.folderBrowser = function (settings) {
+
+        settings = $.extend({
+            title: $.i18n._('Folder Browser'),
+            message: $.i18n._('Please select a folder.'),
+            selected: null,
+        }, settings);
+
+        var div = $( '<div class="FolderBrowserWindow modal hide">' +
+		             '  <div class="modal-header"> ' +
+                  '         <button type="button" class="close" ng-click="close()" aria-hidden="true">&times;</button>' +
+			      '         <h3></h3>' +
+		          '     </div>' +
+		          '     <div class="modal-body">' +
+                  '         <span class="message"></span>' +
+                  '         <div class="FileTree">' +
+				  '             <div></div>' +
+			      '         </div>' +
+		          '     </div>' +
+		          '     <div class="modal-footer">' +
+			      '         <button class="btn btn-primary btn-ok">OK</button>' +
+			      '         <button class="btn btn-cancel">Cancel</button>' +
+		          '     </div>' + 
+	              '</div>');
+        div.find('h3').text(settings.title);
+        div.find('.message').text(settings.message);
+        var btnOk = div.find('.btn-ok');
+        btnOk.text($.i18n._("OK"));
+        var btnCancel = div.find('.btn-cancel');
+        btnCancel.text($.i18n._("Cancel"));
+        
+        btnOk.click(function () {
+            var selected = div.find('a.selected');
+            if (selected.length < 1)
+                return;
+
+            div.modal('hide');
+
+            if (settings.selected)
+                settings.selected(selected.attr('rel'));
+
+        });
+        btnCancel.click(function () {
+            div.modal('hide');
+        });
+        div.appendTo('body');
+        div.modal({});
+
+        var filetree = div.find('.FileTree div');
+        filetree.fileTree(
         {
-            resizable: false,
-            modal: true,
-            minWidth: settings.minWidth,
-            minHeight: settings.minHeight,
-            title: settings.title,
-            buttons: dialog_buttons
+            root: '%root%',
+            script: '/file/LoadDirectory',
+        }, function (file) {
+            alert(file);
+        });
+
+        div.on('hidden', function () {
+            div.remove();
         });
     };
 }

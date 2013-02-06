@@ -13,8 +13,8 @@
                 <th class="channels" data-lang="Channels"></th>
             </tr>
         </thead>
-        <tbody ng-sortable="model" data-handle=".handle" id="devices">
-            <tr ng-sortable-index="{{$index}}" ng-repeat="device in model">
+        <tbody ng-sortable="model.Devices" data-handle=".handle" id="devices">
+            <tr ng-sortable-index="{{$index}}" ng-repeat="device in model.Devices">
                 <td class="handle"><i class="icon-move"></i></td>
                 <td class="type">{{device.SourceType}}</td>
                 <td class="device">{{device.Name}}</td>
@@ -31,28 +31,15 @@
         <tr>
             <td><label data-lang="UseReverseOrderForLiveTv"></label></td>
             <td class="value">
-                <toggle-box ng-model="UseReverseOrderForLiveTv"></toggle-box>
+                <toggle-box ng-model="model.UseReverseOrderForLiveTv"></toggle-box>
                 <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
             </td>
         </tr>
         <tr>
             <td></td>
             <td class="value">
-        
-                <button ng-click="updateEpg()" class="btn">
-                    <i class="icon-refresh icon-large"></i><span data-lang="Update EPG"></span>
-                </button>
-
-                <button ng-click="emptyEpg()" class="btn btn-danger">
-                    <i class="icon-trash icon-large icon-white"></i><span data-lang="Empty EPG"></span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="value">
-                <button ng-click="save()" class="btn btn-large">
-                    <i class="icon-save icon-large"></i><span data-lang="Save"></span>
+                <button ng-click="save()" class="btn btn-primary">
+                    <i class="icon-ok-sign icon-white" /> <span data-lang="Save"></span>
                 </button>
             </td>
         </tr>

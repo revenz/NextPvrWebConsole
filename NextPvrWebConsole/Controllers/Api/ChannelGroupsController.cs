@@ -16,6 +16,11 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.ChannelGroup.LoadAll(this.GetUser().Oid, LoadChannelOids);
         }
 
+        public IEnumerable<Models.ChannelGroup> GetShared(bool LoadChannelOids = false)
+        {
+            return Models.ChannelGroup.LoadAll(Globals.SHARED_USER_OID, LoadChannelOids);
+        }
+
         // GET api/channelgroups/getchannels
         [ActionName("Channels")]
         public IEnumerable<dynamic> GetChannels(int Oid, [FromUri]bool OnlyEnabled)

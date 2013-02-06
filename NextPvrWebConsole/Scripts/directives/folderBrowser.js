@@ -54,9 +54,7 @@ npvrapp.directive('folderBrowser', function () {
             $scope.select = function () {
                 var selected = $($element).find('a.selected');
                 if (selected.length > 0) {
-                    //$scope.$apply(function () {
-                        $scope.modelvalue = selected.attr('rel');
-                    //});
+                    $scope.modelvalue = selected.attr('rel');
                 }
                 $scope.close();
             };
