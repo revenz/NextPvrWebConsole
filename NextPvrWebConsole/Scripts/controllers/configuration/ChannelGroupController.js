@@ -1,6 +1,6 @@
 ﻿var ns = namespace('Controllers.Configuration');
 
-ns.ChannelGroupController = function ($scope, $http, $rootScope) {
+ns.ChannelGroupController = function ($scope, $http, $rootScope, $compile) {
     "use strict";
     var self = this;
 
@@ -8,8 +8,6 @@ ns.ChannelGroupController = function ($scope, $http, $rootScope) {
 
     $http.get('/api/channelgroups/getshared?LoadChannelOids=true').success(function (data) {
         $scope.model.ChannelGroups = data;
-        console.log('channel groups');
-        console.log(data);
     });
 
     $scope.create = function () {
@@ -23,6 +21,17 @@ ns.ChannelGroupController = function ($scope, $http, $rootScope) {
                 }
                 $scope.$apply(function () {
                     $scope.model.ChannelGroups.push({ Oid: 0, Name: name, OrderOid: -1, ChannelOids: [] });
+                });
+            }
+        });
+    };
+
+    $scope.remove = function (item) {
+        gui.confirmMessage({
+            message: $.i18n._("Are you sure you want to remove the Channel Group '%s'?", [item.Name]),
+            yes: function () {
+                $scope.$apply(function () {
+                    $scope.model.ChannelGroups.remove(item);
                 });
             }
         });
@@ -53,5 +62,30 @@ ns.ChannelGroupController = function ($scope, $http, $rootScope) {
         $http.post('Configuration/UpdateChannelGroups', $scope.model).success(function () {
         });
     };
+
+    $scope.channels = null;
+
+    $scope.selectChannels = function (group) {
+
+        if (!$scope.channels) {
+            $http.get('/api/channels/getshared').success(function (data) {
+                $scope.channels = data;
+                $scope.selectChannels(group);
+            });
+        } else {
+            var channelData = [];
+            $.each($scope.channels, function (i, ele) {
+                channelData.push($.extend({ Active: $.inArray(ele.Oid, group.ChannelOids) >= 0 }, ele));
+            });
+            new ChannelSelector(channelData, $rootScope.$new(), $http, $compile).success(function (data) {
+                var channelOids = [];
+                $.each(data, function (i, ele) {
+                    if (ele.Active)
+                        channelOids.push(ele.Oid);
+                });
+                group.ChannelOids = channelOids;
+            });
+        }
+    };
 };
-ns.ChannelGroupController.$inject = ['$scope', '$http', '$rootScope'];
+ns.ChannelGroupController.$inject = ['$scope', '$http', '$rootScope', '$compile'];

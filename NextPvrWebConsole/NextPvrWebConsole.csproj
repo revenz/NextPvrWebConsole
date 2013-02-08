@@ -217,6 +217,7 @@
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\ChannelIconController.cs" />
+    <Compile Include="Controllers\ControlController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -342,6 +343,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\controllers\configuration\ChannelController.js" />
     <Content Include="Scripts\controllers\configuration\ChannelGroupController.js" />
+    <Content Include="Scripts\controllers\configuration\ChannelSelectorController.js" />
     <Content Include="Scripts\controllers\configuration\DeviceController.js" />
     <Content Include="Scripts\controllers\configuration\GeneralController.js" />
     <Content Include="Scripts\controllers\configuration\RecordingController.js" />
@@ -641,6 +643,7 @@
     <Content Include="Views\Configuration\index.mobile.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Guide\_EpgGridData.cshtml" />
+    <Content Include="Views\Control\ChannelSelector.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

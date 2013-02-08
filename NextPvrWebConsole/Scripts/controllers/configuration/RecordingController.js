@@ -28,8 +28,6 @@ ns.RecordingController = function ($scope, $http, $rootScope) {
             if (data[i].IsDefault)
                 $scope.model.defaultRecordingDirectoryIndex = i;
         }
-        console.log('recording directories');
-        console.log(data);
     });
 
     $scope.save = function () {
