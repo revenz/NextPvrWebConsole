@@ -644,6 +644,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Guide\_EpgGridData.cshtml" />
     <Content Include="Views\Control\ChannelSelector.cshtml" />
+    <Content Include="Views\System\Log.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

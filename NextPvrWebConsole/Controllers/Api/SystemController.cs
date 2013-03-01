@@ -53,6 +53,8 @@ namespace NextPvrWebConsole.Controllers.Api
 
         private long Size(System.IO.DirectoryInfo Dir)
         {
+            if (!Dir.Exists)
+                return 0;
             long size = 0;
             System.IO.FileSystemInfo[] filelist = Dir.GetFileSystemInfos();
             System.IO.FileInfo[] fileInfo;

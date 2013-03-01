@@ -9,7 +9,7 @@
         <tr>
             <td>@Html.LabelFor(m=>smtpModel.Server, new { data_lang="Server"})</td>
             <td class="value">
-                @Html.TextBoxFor(m => smtpModel.Server, new { ng_model = "model.Server" })
+                @Html.TextBoxFor(m => smtpModel.Server, new { ng_model = "model.SmtpServer" })
                 @Html.ValidationMessageFor(m => smtpModel.Server)
                 <span class="description" data-lang="Smtp-Server-Description" />
             </td>
@@ -17,7 +17,7 @@
         <tr>
             <td>@Html.LabelFor(m=>smtpModel.Port, new { data_lang="Port"})</td>
             <td class="value">
-                @Html.TextBoxFor(m => smtpModel.Port, new { type = "number", min="1", max="65535", ng_model = "model.Port" })
+                @Html.TextBoxFor(m => smtpModel.Port, new { type = "number", min="1", max="65535", ng_model = "model.SmtpPort" })
                 @Html.ValidationMessageFor(m => smtpModel.Port)
                 <span class="description" data-lang="Smtp-Port-Description" />
             </td>
@@ -25,7 +25,7 @@
         <tr>
             <td>@Html.LabelFor(m=>smtpModel.Sender, new { data_lang="Sender"})</td>
             <td class="value">
-                @Html.TextBoxFor(m => smtpModel.Sender, new { ng_model = "model.Sender" })
+                @Html.TextBoxFor(m => smtpModel.Sender, new { ng_model = "model.SmtpSender" })
                 @Html.ValidationMessageFor(m => smtpModel.Sender)
                 <span class="description" data-lang="Smtp-Sender-Description" />
             </td>
@@ -33,7 +33,7 @@
         <tr>
             <td>@Html.LabelFor(m=>smtpModel.Username, new { data_lang="Username"})</td>
             <td class="value">
-                @Html.TextBoxFor(m => smtpModel.Username, new { ng_model = "model.Username" })
+                @Html.TextBoxFor(m => smtpModel.Username, new { ng_model = "model.SmtpUsername" })
                 @Html.ValidationMessageFor(m => smtpModel.Username)
                 <span class="description" data-lang="Smtp-Username-Description" />
             </td>
@@ -41,7 +41,7 @@
         <tr>
             <td>@Html.LabelFor(m=>smtpModel.Password, new { data_lang="Password"})</td>
             <td class="value">
-                @Html.TextBoxFor(m => smtpModel.Password, new { type="password", ng_model = "model.Username" })
+                @Html.TextBoxFor(m => smtpModel.Password, new { type="password", ng_model = "model.SmtpPassword" })
                 @Html.ValidationMessageFor(m => smtpModel.Password)
                 <span class="description" data-lang="Smtp-Password-Description" />
             </td>
@@ -49,7 +49,7 @@
         <tr>
             <td><label for="model_UseSsl" data-lang="Use SSL"></label></td>
             <td class="value">
-                <toggle-box id="model_UseSsl" ng-model="model.UseSsl"></toggle-box>
+                <toggle-box id="model_UseSsl" ng-model="model.SmtpUseSsl"></toggle-box>
                 <span class="description" data-lang="Smtp-UseSsl-Description" />
             </td>
         </tr>

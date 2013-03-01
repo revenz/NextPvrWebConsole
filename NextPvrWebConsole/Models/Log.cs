@@ -22,6 +22,8 @@ namespace NextPvrWebConsole.Models
         public long Size { get; set; }
         [DataMember]
         public string Oid { get; set; }
+        [DataMember]
+        public string Content { get; set; }
 
         internal static List<Log> LoadAll()
         {

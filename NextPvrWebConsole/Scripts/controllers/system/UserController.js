@@ -4,8 +4,8 @@ ns.UserController = function ($scope, $http, $rootScope) {
     "use strict";
     var self = this;
 
-    $rootScope.getConfiguration(function (config) {
-        $scope.model = config;
+    $http.get('/api/users').success(function (data) {
+        $scope.model = data;
     });
 
 };

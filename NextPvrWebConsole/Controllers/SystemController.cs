@@ -68,6 +68,7 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult Log(string Oid, string Name)
         {
+            return View();
             // security, make sure the filename is in the list of log files
             var log = new Api.LogsController().Get().Where(x => x.Oid == Oid || (Oid == "" && x.Name == Name)).FirstOrDefault();
             if (log != null)

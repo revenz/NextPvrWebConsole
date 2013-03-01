@@ -5,7 +5,7 @@
 
     var addToAttribute = function (obj, array, value) {
         var i = 0
-      , length = array.length;
+          , length = array.length;
 
         for (; i < length; i++) {
             obj = obj[array[i]] = obj[array[i]] || i == (length - 1) ? value : {}
@@ -14,240 +14,240 @@
 
     $.fn.toggleButtons = function (method) {
         var $element
-      , $div
-      , $cb
-      , transitionSpeed = 0.05
-      , methods = {
-          init: function (opt) {
-              this.each(function () {
-                  var $spanLeft
-                , $spanRight
-                , options
-                , moving
-                , dataAttribute = {};
+          , $div
+          , $cb
+          , transitionSpeed = 0.05
+          , methods = {
+              init: function (opt) {
+                  this.each(function () {
+                      var $spanLeft
+                        , $spanRight
+                        , options
+                        , moving
+                        , dataAttribute = {};
 
-                  $element = $(this);
-                  $element.addClass('toggle-button');
+                      $element = $(this);
+                      $element.addClass('toggle-button');
 
-                  $.each($element.data(), function (i, el) {
-                      var key
-                  , tmp = {};
+                      $.each($element.data(), function (i, el) {
+                          var key
+                            , tmp = {};
 
-                      if (i.indexOf("togglebutton") === 0) {
-                          key = i.match(/[A-Z][a-z]+/g);
-                          key = $.map(key, function (n) {
-                              return (n.toLowerCase());
-                          });
+                          if (i.indexOf("togglebutton") === 0) {
+                              key = i.match(/[A-Z][a-z]+/g);
+                              key = $.map(key, function (n) {
+                                  return (n.toLowerCase());
+                              });
 
-                          addToAttribute(tmp, key, el);
-                          dataAttribute = $.extend(true, dataAttribute, tmp);
-                      }
-                  });
-
-                  options = $.extend(true, {}, $.fn.toggleButtons.defaults, opt, dataAttribute);
-
-                  $(this).data('options', options);
-
-                  $spanLeft = $('<span></span>').addClass("labelLeft").text(options.label.enabled === undefined ? "ON" : options.label.enabled);
-                  $spanRight = $('<span></span>').addClass("labelRight").text(options.label.disabled === undefined ? "OFF " : options.label.disabled);
-
-                  // html layout
-                  $cb = $element.find('input:checkbox')
-
-                  $div = $cb.wrap($('<div></div>')).parent();
-                  $div.append($spanLeft);
-                  $div.append($spanRight);
-                  $div.append($('<label></label>').attr('for', $cb.attr('id') || ''));
-
-                  options["width"] /= 2;
-                  if ($cb.is(':checked'))
-                      $element.find('>div').css('left', "0");
-                  else
-                      $element.find('>div').css({ left: -(options.width * 1.5)}).find('.labelLeft').css('visibility', 'hidden');
-
-                  if (options.animated) {
-                      if (options.transitionspeed !== undefined)
-                          if (/^(\d*%$)/.test(options.transitionspeed))  // is a percent value?
-                              transitionSpeed = 0.05 * parseInt(options.transitionspeed) / 100;
-                          else
-                              transitionSpeed = options.transitionspeed;
-                  }
-                  else transitionSpeed = 0;
-
-                  $(this).data('transitionSpeed', transitionSpeed * 1000);
-
-
-
-                  // width of the bootstrap-toggle-button
-                  var div = $element.css('width', options.width * 1.5)
-                                    .find('>div').css('width', options.width * 3);
-                                    //.find('>span').css('width', options.width);
-
-                  // height of the bootstrap-toggle-button
-                  $element.css('height', options.height)
-                          .find('span').css('height', options.height)
-                          .filter('span').css('line-height', options.height + "px");
-                  $element.find('label').css({ height: options.height - 4});//, position: 'absolute', left: options.width, width: options.width / 2 - 4 });
-
-                  if ($cb.is(':disabled'))
-                      $(this).addClass('deactivate');
-
-                  $element.find('span').css(options.font);
-
-
-                  // enabled custom color
-                  if (options.style.enabled === undefined) {
-                      if (options.style.custom !== undefined && options.style.custom.enabled !== undefined && options.style.custom.enabled.background !== undefined) {
-                          $spanLeft.css('color', options.style.custom.enabled.color);
-                          if (options.style.custom.enabled.gradient === undefined)
-                              $spanLeft.css('background', options.style.custom.enabled.background);
-                          else $.each(["-webkit-", "-moz-", "-o-", ""], function (i, el) {
-                              $spanLeft.css('background-color', options.style.custom.enabled.background);
-                              $spanLeft.css('background-image', el + 'linear-gradient(top, ' + options.style.custom.enabled.background + ',' + options.style.custom.enabled.gradient + ')');
-                          });
-                      }
-                  }
-                  else $spanLeft.addClass(options.style.enabled);
-
-                  // disabled custom color
-                  if (options.style.disabled === undefined) {
-                      if (options.style.custom !== undefined && options.style.custom.disabled !== undefined && options.style.custom.disabled.background !== undefined) {
-                          $spanRight.css('color', options.style.custom.disabled.color);
-                          if (options.style.custom.disabled.gradient === undefined)
-                              $spanRight.css('background', options.style.custom.disabled.background);
-                          else $.each(["-webkit-", "-moz-", "-o-", ""], function (i, el) {
-                              $spanRight.css('background-color', options.style.custom.disabled.background);
-                              $spanRight.css('background-image', el + 'linear-gradient(top, ' + options.style.custom.disabled.background + ',' + options.style.custom.disabled.gradient + ')');
-                          });
-                      }
-                  }
-                  else $spanRight.addClass(options.style.disabled);
-
-                  var changeStatus = function ($this) {
-                      $this.siblings('label')
-                  .trigger('mousedown')
-                  .trigger('mouseup')
-                  .trigger('click');
-                  };
-
-                  $spanLeft.on('click', function (e) {
-                      changeStatus($(this));
-                  });
-                  $spanRight.on('click', function (e) {
-                      changeStatus($(this));
-                  });
-
-                  $element.find('input:checkbox').on('change', function (e, skipOnChange) {
-                      var $element = $(this).parent()
-                  , active = $(this).is(':checked')
-                  , $toggleButton = $(this).closest('.toggle-button');
-
-                      $element.stop().animate({ 'left': active ? '0' : -(options.width * 1.5) +'px' }, $toggleButton.data('transitionSpeed'), null, function () {
-                          $element.find('.labelLeft').css('visibility', active ? 'visible' : 'hidden');
+                              addToAttribute(tmp, key, el);
+                              dataAttribute = $.extend(true, dataAttribute, tmp);
+                          }
                       });
 
-                      options = $toggleButton.data('options');
+                      options = $.extend(true, {}, $.fn.toggleButtons.defaults, opt, dataAttribute);
 
-                      if (!skipOnChange)
-                          options.onChange($element, active, e);
-                  });
+                      $(this).data('options', options);
 
-                  $element.find('label').on('mousedown touchstart', function (e) {
-                      moving = false;
-                      e.preventDefault();
-                      e.stopImmediatePropagation();
+                      $spanLeft = $('<span></span>').addClass("labelLeft").text(options.label.enabled === undefined ? "ON" : options.label.enabled);
+                      $spanRight = $('<span></span>').addClass("labelRight").text(options.label.disabled === undefined ? "OFF " : options.label.disabled);
 
-                      if ($(this).closest('.toggle-button').is('.deactivate'))
-                          $(this).off('click');
-                      else {
-                          $(this).on('mousemove touchmove', function (e) {
-                              var $element = $(this).closest('.toggle-button')
-                      , relativeX = (e.pageX || e.originalEvent.targetTouches[0].pageX) - $element.offset().left
-                      , percent = ((relativeX / (options.width * 2)) * 100);
-                              moving = true;
+                      // html layout
+                      $cb = $element.find('input:checkbox')
 
-                              e.stopImmediatePropagation();
-                              e.preventDefault();
+                      $div = $cb.wrap($('<div></div>')).parent();
+                      $div.append($spanLeft);
+                      $div.append($('<label></label>').attr('for', $cb.attr('id') || ''));
+                      $div.append($spanRight);
 
-                              if (percent < 25)
-                                  percent = 25;
-                              else if (percent > 75)
-                                  percent = 75;
+                      if ($cb.is(':checked'))
+                          $element.find('>div').css('left', "0");
+                      else $element.find('>div').css('left', "-50%");
 
-                              $element.find('>div').css('left', (percent - 75) + "%");
-                          });
+                      if (options.animated) {
+                          if (options.transitionspeed !== undefined)
+                              if (/^(\d*%$)/.test(options.transitionspeed))  // is a percent value?
+                                  transitionSpeed = 0.05 * parseInt(options.transitionspeed) / 100;
+                              else
+                                  transitionSpeed = options.transitionspeed;
+                      }
+                      else transitionSpeed = 0;
 
-                          $(this).on('click touchend', function (e) {
-                              var $target = $(e.target)
-                      , $myCheckBox = $target.siblings('input:checkbox');
+                      $(this).data('transitionSpeed', transitionSpeed * 1000);
 
-                              e.stopImmediatePropagation();
-                              e.preventDefault();
-                              $(this).off('mouseleave');
 
-                              if (moving)
+                      options["width"] /= 2;
+
+                      // width of the bootstrap-toggle-button
+                      $element
+                        .css('width', options.width * 2)
+                        .find('>div').css('width', options.width * 3)
+                        .find('>span, >label').css('width', options.width);
+
+                      // height of the bootstrap-toggle-button
+                      $element
+                        .css('height', options.height)
+                        .find('span, label')
+                        .css('height', options.height)
+                        .filter('span')
+                        .css('line-height', options.height + "px");
+
+                      if ($cb.is(':disabled'))
+                          $(this).addClass('deactivate');
+
+                      $element.find('span').css(options.font);
+
+
+                      // enabled custom color
+                      if (options.style.enabled === undefined) {
+                          if (options.style.custom !== undefined && options.style.custom.enabled !== undefined && options.style.custom.enabled.background !== undefined) {
+                              $spanLeft.css('color', options.style.custom.enabled.color);
+                              if (options.style.custom.enabled.gradient === undefined)
+                                  $spanLeft.css('background', options.style.custom.enabled.background);
+                              else $.each(["-webkit-", "-moz-", "-o-", ""], function (i, el) {
+                                  $spanLeft.css('background-color', options.style.custom.enabled.background);
+                                  $spanLeft.css('background-image', el + 'linear-gradient(top, ' + options.style.custom.enabled.background + ',' + options.style.custom.enabled.gradient + ')');
+                              });
+                          }
+                      }
+                      else $spanLeft.addClass(options.style.enabled);
+
+                      // disabled custom color
+                      if (options.style.disabled === undefined) {
+                          if (options.style.custom !== undefined && options.style.custom.disabled !== undefined && options.style.custom.disabled.background !== undefined) {
+                              $spanRight.css('color', options.style.custom.disabled.color);
+                              if (options.style.custom.disabled.gradient === undefined)
+                                  $spanRight.css('background', options.style.custom.disabled.background);
+                              else $.each(["-webkit-", "-moz-", "-o-", ""], function (i, el) {
+                                  $spanRight.css('background-color', options.style.custom.disabled.background);
+                                  $spanRight.css('background-image', el + 'linear-gradient(top, ' + options.style.custom.disabled.background + ',' + options.style.custom.disabled.gradient + ')');
+                              });
+                          }
+                      }
+                      else $spanRight.addClass(options.style.disabled);
+
+                      var changeStatus = function ($this) {
+                          $this.siblings('label')
+                            .trigger('mousedown')
+                            .trigger('mouseup')
+                            .trigger('click');
+                      };
+
+                      $spanLeft.on('click', function (e) {
+                          changeStatus($(this));
+                      });
+                      $spanRight.on('click', function (e) {
+                          changeStatus($(this));
+                      });
+
+                      $element.find('input:checkbox').on('change', function (e, skipOnChange) {
+                          var $element = $(this).parent()
+                            , active = $(this).is(':checked')
+                            , $toggleButton = $(this).closest('.toggle-button');
+
+                          $element.stop().animate({ 'left': active ? '0' : '-50%' }, $toggleButton.data('transitionSpeed'));
+
+                          options = $toggleButton.data('options');
+
+                          if (!skipOnChange)
+                              options.onChange($element, active, e);
+                      });
+
+                      $element.find('label').on('mousedown touchstart', function (e) {
+                          moving = false;
+                          e.preventDefault();
+                          e.stopImmediatePropagation();
+
+                          if ($(this).closest('.toggle-button').is('.deactivate'))
+                              $(this).off('click');
+                          else {
+                              $(this).on('mousemove touchmove', function (e) {
+                                  var $element = $(this).closest('.toggle-button')
+                                    , relativeX = (e.pageX || e.originalEvent.targetTouches[0].pageX) - $element.offset().left
+                                    , percent = ((relativeX / (options.width * 2)) * 100);
+                                  moving = true;
+
+                                  e.stopImmediatePropagation();
+                                  e.preventDefault();
+
+                                  if (percent < 25)
+                                      percent = 25;
+                                  else if (percent > 75)
+                                      percent = 75;
+
+                                  $element.find('>div').css('left', (percent - 75) + "%");
+                              });
+
+                              $(this).on('click touchend', function (e) {
+                                  var $target = $(e.target)
+                                    , $myCheckBox = $target.siblings('input:checkbox');
+
+                                  e.stopImmediatePropagation();
+                                  e.preventDefault();
+                                  $(this).off('mouseleave');
+
+                                  if (moving)
+                                      if (parseInt($(this).parent().css('left')) < -25)
+                                          $myCheckBox.attr('checked', false);
+                                      else $myCheckBox.attr('checked', true);
+                                  else $myCheckBox.attr("checked", !$myCheckBox.is(":checked"));
+
+                                  $myCheckBox.trigger('change');
+                              });
+
+                              $(this).on('mouseleave', function (e) {
+                                  var $myCheckBox = $(this).siblings('input:checkbox');
+
+                                  e.preventDefault();
+                                  e.stopImmediatePropagation();
+
+                                  $(this).off('mouseleave');
+                                  $(this).trigger('mouseup');
+
                                   if (parseInt($(this).parent().css('left')) < -25)
                                       $myCheckBox.attr('checked', false);
                                   else $myCheckBox.attr('checked', true);
-                              else $myCheckBox.attr("checked", !$myCheckBox.is(":checked"));
 
-                              $myCheckBox.trigger('change');
-                          });
+                                  $myCheckBox.trigger('change');
+                              });
 
-                          $(this).on('mouseleave', function (e) {
-                              var $myCheckBox = $(this).siblings('input:checkbox');
+                              $(this).on('mouseup', function (e) {
+                                  e.stopImmediatePropagation();
+                                  e.preventDefault();
+                                  $(this).off('mousemove');
+                              });
+                          }
+                      });
+                  }
+                  );
+                  return this;
+              },
+              toggleActivation: function () {
+                  $(this).toggleClass('deactivate');
+              },
+              toggleState: function (skipOnChange) {
+                  var $input = $(this).find('input:checkbox');
+                  $input.attr('checked', !$input.is(':checked')).trigger('change', skipOnChange);
+              },
+              setState: function (value, skipOnChange) {
+                  $(this).find('input:checkbox').attr('checked', value).trigger('change', skipOnChange);
+              },
+              status: function () {
+                  return $(this).find('input:checkbox').is(':checked');
+              },
+              destroy: function () {
+                  var $div = $(this).find('div')
+                    , $checkbox;
 
-                              e.preventDefault();
-                              e.stopImmediatePropagation();
+                  $div.find(':not(input:checkbox)').remove();
 
-                              $(this).off('mouseleave');
-                              $(this).trigger('mouseup');
+                  $checkbox = $div.children();
+                  $checkbox.unwrap().unwrap();
 
-                              if (parseInt($(this).parent().css('left')) < -25)
-                                  $myCheckBox.attr('checked', false);
-                              else $myCheckBox.attr('checked', true);
+                  $checkbox.unbind('change');
 
-                              $myCheckBox.trigger('change');
-                          });
-
-                          $(this).on('mouseup', function (e) {
-                              e.stopImmediatePropagation();
-                              e.preventDefault();
-                              $(this).off('mousemove');
-                          });
-                      }
-                  });
+                  return $checkbox;
               }
-          );
-              return this;
-          },
-          toggleActivation: function () {
-              $(this).toggleClass('deactivate');
-          },
-          toggleState: function (skipOnChange) {
-              var $input = $(this).find('input:checkbox');
-              $input.attr('checked', !$input.is(':checked')).trigger('change', skipOnChange);
-          },
-          setState: function (value, skipOnChange) {
-              $(this).find('input:checkbox').attr('checked', value).trigger('change', skipOnChange);
-          },
-          status: function () {
-              return $(this).find('input:checkbox').is(':checked');
-          },
-          destroy: function () {
-              var $div = $(this).find('div')
-            , $checkbox;
-
-              $div.find(':not(input:checkbox)').remove();
-
-              $checkbox = $div.children();
-              $checkbox.unwrap().unwrap();
-
-              $checkbox.unbind('change');
-
-              return $checkbox;
-          }
-      };
+          };
 
         if (methods[method])
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -286,4 +286,4 @@
             }
         }
     };
-} (jQuery);
+}(jQuery);

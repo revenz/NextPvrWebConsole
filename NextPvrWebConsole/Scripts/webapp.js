@@ -7,9 +7,8 @@ npvrapp.config(['$routeProvider', function ($routeProvider) {
                   .when('/usersettings', { templateUrl: 'usersettings', controller: 'Controllers.General.TabController' })
                   .when('/configuration', { templateUrl: 'configuration', controller: 'Controllers.General.TabController' })
                   .when('/system', { templateUrl: 'system', controller: 'Controllers.General.TabController' })
-                  //.when('/phones/:phoneId', { templateUrl: 'partials/phone-detail.html', controller: PhoneDetailCtrl })
+                  .when('/system/log/:oid/:name', { templateUrl: 'system/log', controller: 'Controllers.System.LogViewController' })
                   .otherwise({ redirectTo: '/dashboard' });
-
 } ]);
 
 npvrapp.run(function ($rootScope, $http, $location) {
@@ -52,11 +51,6 @@ npvrapp.run(function ($rootScope, $http, $location) {
         };
         if (!data.Type || data.Type < 1)
             data.Type = 1; // default of 'Record Once'
-        console.log('input');
-        console.log(input);
-        console.log('data');
-        console.log(data);
-
 
         self.scheduleEditorCallback = scheduleEditorCallback;
         var fun = function () {
@@ -93,7 +87,7 @@ npvrapp.run(function ($rootScope, $http, $location) {
                 callback($rootScope.configuration);
             });
         } else {
-            callback($root.configuration);
+            callback($rootScope.configuration);
         }
     };
 });

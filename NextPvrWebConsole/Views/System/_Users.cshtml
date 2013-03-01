@@ -16,8 +16,11 @@
             <tr ng-repeat="item in model">
                 <td class="username">{{item.Username}}</td>
                 <td class="email">{{item.EmailAddress}}</td>
-                <td class="lastloggedin">{{ item.LastLoggedIn | date }}</td>
-                <td class="administrator">{{ item.Administrator }}</td>
+                <td class="lastloggedin">{{ item.LastLoggedInUtc | date:'medium' }}</td>
+                <td class="administrator">
+                    <span ng-show="item.Administrator">Yes</span>
+                    <span ng-hide="item.Administrator">No</span>
+                </td>
                 <td class="controls">
                     <button class="btn btn-small" ng-click="edit(item)">
                         <i class="icon-edit" /> Edit

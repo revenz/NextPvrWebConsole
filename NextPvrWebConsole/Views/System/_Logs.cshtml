@@ -9,7 +9,7 @@
         <tbody >
             <tr ng-repeat="item in model">
                 <td>
-                    <a href="">{{item.Name}}</a>
+                    <a href="#/system/log/{{item.Oid}}/{{item.Name}}">{{item.Name}}</a>
                 </td>
                 <td>{{ item.DateModified | date }}</td>
                 <td>{{ item.Size  }}</td>

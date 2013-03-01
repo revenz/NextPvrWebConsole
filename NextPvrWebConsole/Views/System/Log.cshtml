@@ -1,0 +1,13 @@
+﻿@{
+    Layout = null;
+}
+<div ng-show="model && model.Content">
+<h1>{{model.Name}}</h1>
+<pre>
+{{model.Content}}
+</pre>
+</div>
+
+<div ng-hide="model && model.Content">
+    No log file found.
+</div>
