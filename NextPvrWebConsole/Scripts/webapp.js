@@ -2,6 +2,7 @@
 
 npvrapp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/dashboard', { templateUrl: 'dashboard' })
+                  .when('/search/:searchText', { templateUrl: 'guide/search', controller: 'Controllers.Search.IndexController'})
                   .when('/guide', { templateUrl: 'guide', controller: 'Controllers.GuideController' })
                   .when('/recordings', { templateUrl: 'recordings', controller: 'Controllers.General.TabController' })
                   .when('/usersettings', { templateUrl: 'usersettings', controller: 'Controllers.General.TabController' })
@@ -89,6 +90,10 @@ npvrapp.run(function ($rootScope, $http, $location) {
         } else {
             callback($rootScope.configuration);
         }
+    };
+
+    $rootScope.search = function () {
+        $location.path('/search/' + encodeURI($rootScope.SearchText));
     };
 });
 

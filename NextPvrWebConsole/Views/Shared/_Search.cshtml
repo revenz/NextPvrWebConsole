@@ -1,7 +1,6 @@
-﻿@using (Html.BeginForm("Index", "Search", FormMethod.Get, new { id = "formSearch" }))
-{
-<input id="searchText" name="searchText" type="text" placeholder="Search..." onblur="$('#search').removeClass('focus')" onfocus="$('#search').addClass('focus')" />
-<button type="submit">
-    <i class="icon-search"></i>
-</button>
-}
+﻿<div class="input-append">
+    <input type="text" class="span2" placeholder="Search..." ng-model="SearchText">
+    <button class="btn" ng-click="search()">
+        <i class="icon icon-search"></i>
+    </button>
+</div>

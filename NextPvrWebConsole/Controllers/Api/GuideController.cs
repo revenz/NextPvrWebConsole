@@ -32,12 +32,6 @@ namespace NextPvrWebConsole.Controllers.Api
             return RecordingSchedule.QuickRecord(this.GetUser().Oid, Oid);
         }
 
-        //[HttpPost]
-        //public NUtility.ScheduledRecording Record(RecordingSchedule RecordingSchedule)        
-        //{
-        //    return Models.Recording.Record(this.GetUser().Oid, RecordingSchedule);
-        //}
-
         [HttpGet]
         public Models.EpgListing EpgListing(int Oid)
         {
@@ -62,6 +56,12 @@ namespace NextPvrWebConsole.Controllers.Api
                 RecurrenceOid = eventEpgRecodingData != null ? eventEpgRecodingData.RecurrenceOid : 0,
                 RecordingType = eventEpgRecodingData != null ? eventEpgRecodingData.RecordingType : (RecordingType)0
             };
+        }
+
+        public IEnumerable<Models.SearchResult> Search(string SearchText)
+        {
+            var user = this.GetUser();
+            return Models.EpgListing.Search(user.Oid, SearchText);
         }
     }
 }

@@ -2,7 +2,7 @@
     var smtpModel = (NextPvrWebConsole.Models.ConfigurationModels.SmtpConfiguration)ViewBag.SmtpModel;
 }
 
-<form id="UpdateSmtpSettings"  ng-controller="Controllers.System.SmtpController">
+<form id="UpdateSmtpSettings" ng-controller="Controllers.System.SmtpController">
     <p data-lang="Smtp-Summary"></p>
     
     <table>
@@ -54,10 +54,10 @@
             </td>
         </tr>
         <tr>
-            <td class="label"></td>
+            <td></td>
             <td class="value">
                 <button ng-click="save()" class="btn btn-primary">
-                    <i class="icon-save icon-large" /> <span data-lang="Save"></span>
+                    <i class="icon-ok-sign icon-white" /> <span data-lang="Save"></span>
                 </button>
             </td>
 

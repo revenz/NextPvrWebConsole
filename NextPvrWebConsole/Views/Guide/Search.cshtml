@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "";
+}
+
+search results...
+
+<table id="search-results" class="data-table">
+    <thead>
+        <tr>
+            <th class="channel"></th>
+            <th class="title" data-lang="Title"></th>
+            <th class="time" data-lang="Time"></th>
+            <th class="controls"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in model">
+            <td class="channel">
+                <img ng-show="item.Channel.HasIcon" src="/channel/logo/{{item.ChannelOid}}" />
+                <span ng-hide="item.Channel.HasIcon">{{item.Channel.Name}}</span>
+            </td>
+            <td class="title">{{item.Listing.Title}}</td>
+            <td class="time">{{item.Listing.StartTime | date:'medium'}} to {{item.Listing.EndTime | date:'short'}}</td>
+            <td class="controls">
+                <button class="btn btn-small btn-danger" ng-show="item.Listing.IsRecording" ng-click="cancel(item)">
+                    <i class="icon-remove icon-white"/> Cancel Recording
+                </button>     
+                <button class="btn btn-small" ng-hide="item.Listing.IsRecording" ng-click="record(item)">
+                    <i class="icon-adjust" /> Record
+                </button>            
+            </td>
+        </tr>
+    </tbody>
+</table>

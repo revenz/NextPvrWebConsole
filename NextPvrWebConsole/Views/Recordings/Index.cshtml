@@ -6,13 +6,13 @@
 <div class="recordings vtab-container">
     <ul class="vtab-buttons">
         <li data-tab="available" ng-class="{ first: true, selected: selectedTabIndex == 0 }" ng-click="selectedTabIndex = 0">
-            <i class="icon icon-play"></i><span data-lang="Available" />
+            <i class="gi-play_button"></i><span data-lang="Available" />
         </li>
         <li data-tab="pending" ng-class="{ selected: selectedTabIndex == 1 }" ng-click="selectedTabIndex = 1">
-            <i class="icon icon-time"></i><span data-lang="Pending" />
+            <i class="gi-clock"></i><span data-lang="Pending" />
         </li>
         <li data-tab="recurring" ng-class="{ last: true, selected: selectedTabIndex == 2 }" ng-click="selectedTabIndex = 2">
-            <i class="icon icon-magic"></i><span data-lang="Recurring" />
+            <i class="gi-roundabout"></i><span data-lang="Recurring" />
         </li>
     </ul>
     <div class="vtab-content" id="recordings-tab-available" ng-show="selectedTabIndex == 0">

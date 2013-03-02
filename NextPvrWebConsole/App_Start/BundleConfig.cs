@@ -50,7 +50,6 @@ namespace NextPvrWebConsole
                         "~/Scripts/core/jquery.unobtrusive*",
                         "~/Scripts/core/jquery.validate.unobtrusive",
                         "~/Scripts/core/jquery.i18n.js",
-                        "~/Scripts/core/jquery.ibutton.js",
                         "~/Scripts/translator.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/global.js"));
@@ -76,7 +75,8 @@ namespace NextPvrWebConsole
                                                         "~/Content/site.less", 
                                                         "~/Content/custom.css",
                                                         "~/Content/buttons.css",
-                                                        "~/Content/jquery.ibutton.css")
+                                                        "~/Content/glyphicons.less"
+                                                        )
                                                         .IncludeDirectory("~/Content/addons", "*.less", true)
                                                         .IncludeDirectory("~/Content/addons", "*.css", true)
                                                         .IncludeDirectory("~/Content/pages", "*.less", true)

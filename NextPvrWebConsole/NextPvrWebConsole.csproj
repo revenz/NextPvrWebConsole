@@ -224,7 +224,6 @@
     <Compile Include="Controllers\Api\RecordingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RecordingsController.cs" />
-    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
     <Compile Include="Controllers\StreamController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
@@ -246,9 +245,10 @@
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\addons\folder-browser.less" />
     <None Include="Content\addons\spinner.less" />
+    <None Include="Content\glyphicons.less" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
-    <Content Include="Content\images\ibutton-slider-default.png" />
+    <Content Include="Content\images\glyphicons.png" />
     <Content Include="Content\mobile\core\guide.less" />
     <Content Include="Content\mobile\core\jquery.mobile.simpledialog.css" />
     <Content Include="Content\mobile\core\jquery.pullrefresh.css" />
@@ -294,7 +294,6 @@
     <Content Include="Content\addons\jquery.filelist.less" />
     <Content Include="Content\images\loading-large.gif" />
     <Content Include="Content\images\logo-dark.png" />
-    <Content Include="Content\jquery.ibutton.css" />
     <Content Include="Content\mobile\images\loading.gif" />
     <Content Include="Content\mobile\jquery.mobile-1.2.0.css" />
     <Content Include="Content\mobile\jquery.mobile-1.2.0.min.css" />
@@ -354,6 +353,7 @@
     <Content Include="Scripts\controllers\recordings\AvailableController.js" />
     <Content Include="Scripts\controllers\recordings\PendingController.js" />
     <Content Include="Scripts\controllers\recordings\RecurringController.js" />
+    <Content Include="Scripts\controllers\search\IndexController.js" />
     <Content Include="Scripts\controllers\system\GeneralController.js" />
     <Content Include="Scripts\controllers\system\LogController.js" />
     <Content Include="Scripts\controllers\system\SmtpController.js" />
@@ -390,7 +390,6 @@
     <Content Include="Content\account\index.less" />
     <Content Include="Content\pages\configuration\index.less" />
     <Content Include="Content\pages\dashboard\upcomingrecordings.less" />
-    <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\mobile\images\ajax-loader.gif" />
     <Content Include="Content\images\header.jpg" />
     <Content Include="Content\mobile\images\icons-18-black.png" />
@@ -452,11 +451,6 @@
     <Content Include="Scripts\vtabs.js" />
     <Content Include="Content\pages\dashboard\index.less" />
     <Content Include="Content\globals.less" />
-    <Content Include="Content\font\fontawesome-webfont.eot" />
-    <Content Include="Content\font\fontawesome-webfont.ttf" />
-    <Content Include="Content\font\fontawesome-webfont.woff" />
-    <Content Include="Content\font\font-awesome-ie7.less" />
-    <Content Include="Content\font\font-awesome.less" />
     <Content Include="Content\pages\guide\index.less" />
     <Content Include="Content\pages\guide\show-info-dialog.less" />
     <Content Include="Content\jqueryui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -593,7 +587,7 @@
     <Content Include="Views\System\_Logs.cshtml" />
     <Content Include="Views\System\_General.cshtml" />
     <Content Include="Views\Shared\_Search.cshtml" />
-    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Guide\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />

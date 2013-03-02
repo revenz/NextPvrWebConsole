@@ -33,6 +33,11 @@ namespace NextPvrWebConsole.Controllers
             return PartialView("_EpgGrid", data);
         }
 
+        public ActionResult Search()
+        {
+            return View("Search");
+        }
+
         //public ActionResult Record(RecordingSchedule Recording)
         //{
         //    NUtility.ScheduledRecording result = null;
