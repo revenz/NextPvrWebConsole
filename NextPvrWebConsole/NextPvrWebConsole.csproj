@@ -88,6 +88,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing">
       <Private>True</Private>
     </Reference>
@@ -239,8 +240,10 @@
     <Compile Include="Helpers\Cacher.cs" />
     <Compile Include="Helpers\Emailer.cs" />
     <Compile Include="Helpers\Encrypter.cs" />
+    <Compile Include="Helpers\NetworkBrowser.cs" />
     <Compile Include="Helpers\NpvrCoreHelper.cs" />
     <Compile Include="Helpers\ObjectCloner.cs" />
+    <Compile Include="Helpers\Shares.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\addons\folder-browser.less" />
@@ -249,6 +252,8 @@
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\glyphicons.png" />
+    <Content Include="Content\images\jquery.filetree\computer.png" />
+    <Content Include="Content\images\jquery.filetree\network.png" />
     <Content Include="Content\mobile\core\guide.less" />
     <Content Include="Content\mobile\core\jquery.mobile.simpledialog.css" />
     <Content Include="Content\mobile\core\jquery.pullrefresh.css" />
@@ -406,27 +411,12 @@
     <Content Include="Resources\Files\PasswordResetBody.txt" />
     <Content Include="Resources\Files\PasswordResetRequestBody.txt" />
     <Content Include="Scripts\account\index.js" />
-    <Content Include="Scripts\api-wrappers\channelgroup.js" />
-    <Content Include="Scripts\api-wrappers\device.js" />
-    <Content Include="Scripts\api-wrappers\listing.js" />
-    <Content Include="Scripts\api-wrappers\log.js" />
-    <Content Include="Scripts\api-wrappers\recordingdirectory.js" />
-    <Content Include="Scripts\api-wrappers\recordinggroup.js" />
-    <Content Include="Scripts\api-wrappers\recording.js" />
-    <Content Include="Scripts\api-wrappers\recurringrecording.js" />
-    <Content Include="Scripts\api-wrappers\user.js" />
     <Content Include="Scripts\charting\flotr2.min.js" />
-    <Content Include="Scripts\configuration\channelgroups.js" />
-    <Content Include="Scripts\configuration\channels.js" />
-    <Content Include="Scripts\configuration\devices.js" />
-    <Content Include="Scripts\configuration\index.js" />
     <Content Include="Scripts\mobile\core\main.js" />
     <Content Include="Scripts\mobile\core\touchscroll.js" />
     <Content Include="Scripts\mobile\core\webserviceinterface.js" />
     <Content Include="Scripts\core\jquery.address.js" />
     <Content Include="Scripts\guide\index.js" />
-    <Content Include="Scripts\search\index.js" />
-    <Content Include="Scripts\system\users.js" />
     <Content Include="Scripts\charting\flotr2.js" />
     <Content Include="Scripts\core\jquery.easing.1.3.js" />
     <Content Include="Scripts\core\jquery.i18n.js" />
@@ -436,18 +426,9 @@
     <Content Include="Scripts\core\knockout-sortable.js" />
     <Content Include="Scripts\dashboard\upcomingrecordings.js" />
     <Content Include="Scripts\addons\jquery.filetree.js" />
-    <Content Include="Scripts\recordings\available.js" />
-    <Content Include="Scripts\recordings\pending.js" />
-    <Content Include="Scripts\recordings\recurring.js" />
     <Content Include="Scripts\setup\index.js" />
     <Content Include="Scripts\global.js" />
-    <Content Include="Scripts\system\index.js" />
-    <Content Include="Scripts\system\logs.js" />
-    <Content Include="Scripts\system\smtpsettings.js" />
     <Content Include="Scripts\translator.js" />
-    <Content Include="Scripts\usersettings\channelgroups.js" />
-    <Content Include="Scripts\usersettings\channels.js" />
-    <Content Include="Scripts\usersettings\recordingdirectories.js" />
     <Content Include="Scripts\vtabs.js" />
     <Content Include="Content\pages\dashboard\index.less" />
     <Content Include="Content\globals.less" />
@@ -560,7 +541,6 @@
     <Content Include="Views\UserSettings\_Channels.cshtml" />
     <Content Include="Views\UserSettings\_ChannelGroups.cshtml" />
     <Content Include="Views\UserSettings\_RecordingDirectories.cshtml" />
-    <Content Include="Scripts\api-wrappers\channel.js" />
     <Content Include="Views\Account\_LoginLayout.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\HourPicker.cshtml" />
     <Content Include="Views\Shared\FileTree.cshtml" />

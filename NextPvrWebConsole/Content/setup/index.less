@@ -10,6 +10,7 @@ html {
 	
 	h1 {
 		margin:0;
+		font-size:2em;
 	}
 }
 .setup-page-wrapper {
@@ -18,7 +19,7 @@ html {
     right:0;
     top:0;
     bottom:0;
-    height:660px;
+    height:630px;
     width:640px;
     margin:auto;
 	background:transparent url('/Content/images/logo-dark.png') no-repeat 10px 0;
@@ -31,7 +32,7 @@ html {
 	top:90px;
 	.drop-shadow(0, 0, 40px, 0.7);
 	border:solid 1px #d3d3d3;
-	padding:30px;
+	padding:15px 30px 30px;
 }
 .setup-page-content-loading {
 	background:transparent url('/Content/images/loading-large.gif') no-repeat center center;
@@ -50,24 +51,37 @@ html {
 		display:block;
 	}
 	input[type=text],input[type=password] {
-		font-size:1.5em;
-		padding: 0 15px;
-		width:540px
+		font-size:1.1em;
+		padding: 3px 15px 0;
+		width:540px;
+		height:28px;
 	}
 	input[type=password] {
 		letter-spacing:10px;
 	}
 	button, input[type=submit]{
 		margin-top:20px;
-		font-size:1.1em;
+		font-size:1em;
 		position:absolute;
 		bottom:20px;
 		right:40px;
+		height:36px;
 	}
 	.field-validation-error, .field-validation-valid { 
 		color:red;
 		font-style:italic;
 		font-size:0.6em;
 		height:17px;
+		position:relative;
+		top:-10px;
+	}
+	ul {
+		margin-top:10px;
+	}
+	li {
+		height:80px;
+	}
+	li > span {
+		padding-bottom:3px;
 	}
 }

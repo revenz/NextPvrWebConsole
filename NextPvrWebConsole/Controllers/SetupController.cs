@@ -117,7 +117,7 @@ namespace NextPvrWebConsole.Controllers
             config.Save();
             db.CompleteTransaction();
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

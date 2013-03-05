@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -45,6 +48,26 @@ namespace NextPvrWebConsole.Controllers
                     builder.AppendLine(AddDirectory(drive.Name, drive.RootDirectory.FullName, first, "directory hdd"));
                     first = false;
                 }
+                builder.AppendLine(AddDirectory("Network", "%network%", first, "directory network"));
+            }
+            else if (dir == "%network%")
+            {
+                // list network
+                foreach (string computer in ListNetworkComputers())
+                {
+                    builder.AppendLine(AddDirectory(computer, @"\\{0}".FormatStr(computer), false, "directory computer"));
+                }
+            }
+            else if (Regex.IsMatch(dir, @"^\\\\[^\\]+$"))
+            {
+                try
+                {
+                    foreach (string di_child in GetSharesList(dir.Substring(2)))
+                    {
+                        builder.AppendLine(AddDirectory(di_child, Path.Combine(dir, di_child)));
+                    }
+                }
+                catch (Exception) { /* might not have access to that folder */ }
             }
             else
             {
@@ -66,6 +89,46 @@ namespace NextPvrWebConsole.Controllers
         private string AddDirectory(string Name, string Path, bool Selected = false, string _Class = "directory")
         {
             return "<li class=\"{3} collapsed{2}\"><a href=\"#\" rel=\"{0}\">{1}</a></li>\n".FormatStr(Path, Name, Selected ? " selected" : "", _Class);
+        }
+
+        private List<string> ListNetworkComputers()
+        {
+            //List<String> _ComputerNames = new List<String>();
+            //try
+            //{
+            //    String _ComputerSchema = "Computer";
+            //    System.DirectoryServices.DirectoryEntry _WinNTDirectoryEntries = new System.DirectoryServices.DirectoryEntry("WinNT:");
+            //    foreach (System.DirectoryServices.DirectoryEntry _AvailDomains in _WinNTDirectoryEntries.Children)
+            //    {
+            //        foreach (System.DirectoryServices.DirectoryEntry _PCNameEntry in _AvailDomains.Children)
+            //        {
+            //            if (_PCNameEntry.SchemaClassName.ToLower().Contains(_ComputerSchema.ToLower()))
+            //            {
+            //                _ComputerNames.Add(_PCNameEntry.Name);
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception) { }
+            //return _ComputerNames;
+
+            return Helpers.NetworkBrowser.getNetworkComputers();
+        }
+
+        /// <summary>
+        /// Get the list of the network shares of the specified computer
+        /// </summary>
+        /// <param name="machineName">Name of the machine to request</param>
+        /// <returns>Returns a list of the shares names</returns>
+        static List<string> GetSharesList(string machineName)
+        {
+            List<String> results = new List<String>();
+            foreach (Trinet.Networking.Share share in Trinet.Networking.ShareCollection.GetShares(machineName))
+            {
+                if(share.ShareType == Trinet.Networking.ShareType.Disk)
+                    results.Add(share.NetName);
+            }
+            return results.OrderBy(x => x).ToList();
         }
     }
 }

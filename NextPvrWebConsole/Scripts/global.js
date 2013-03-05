@@ -34,37 +34,37 @@ $(function () {
     if ($.browser.opera)
         $('html').addClass('opera');
 
-    //$(":checkbox:not(.noibutton)").iButton();
-
     var changePasswordDialog = $('#ChangePasswordContainer');
     $('#ChangePasswordContainer input').keypress(function (e) {
         if (e.which == 13) {
             $('#changePasswordForm').submit();
-            changePasswordDialog.dialog('close');
+            $('#modalChangePassword').modal('hide');
         }
     });
     $('#lnkChangePassword').click(function () {
         changePasswordDialog.find('input').val(''); // reset the inputs
         changePasswordDialog.find('input:eq(0)').focus();
-        var dialog_buttons = {};
-        dialog_buttons[$.i18n._("OK")] = function () {
-            if ($('#changePasswordForm').valid() == false)
-                return;
-            $('#changePasswordForm').submit();
-            changePasswordDialog.dialog('close');
-        };
-        dialog_buttons[$.i18n._("Cancel")] = function () {
-            changePasswordDialog.dialog('close');
-        };
-        changePasswordDialog.dialog({
-            modal: true,
-            minWidth: 550,
-            minHeight: 250,
-            maxWidth: 550,
-            maxHeight: 250,
-            title: $.i18n._("Change Password"),
-            buttons: dialog_buttons
-        });
+
+        $('#modalChangePassword').modal();
+        //var dialog_buttons = {};
+        //dialog_buttons[$.i18n._("OK")] = function () {
+        //    if ($('#changePasswordForm').valid() == false)
+        //        return;
+        //    $('#changePasswordForm').submit();
+        //    changePasswordDialog.dialog('close');
+        //};
+        //dialog_buttons[$.i18n._("Cancel")] = function () {
+        //    changePasswordDialog.dialog('close');
+        //};
+        //changePasswordDialog.dialog({
+        //    modal: true,
+        //    minWidth: 550,
+        //    minHeight: 250,
+        //    maxWidth: 550,
+        //    maxHeight: 250,
+        //    title: $.i18n._("Change Password"),
+        //    buttons: dialog_buttons
+        //});
     });
 });
 
@@ -77,7 +77,6 @@ function ChangePassword_OnComplete(obj) {
         gui.showError(msg);
     }
 }
-
 
 function namespace(namespaceString) {
     var parts = namespaceString.split('.'),

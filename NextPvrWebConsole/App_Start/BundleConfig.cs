@@ -66,8 +66,6 @@ namespace NextPvrWebConsole
                         "~/Scripts/setup/*.js"
                 ));
 
-            bundles.Add(new ScriptBundle("~/bundles/api.js").IncludeDirectory("~/Scripts/api-wrappers", "*.js"));
-
             bundles.Add(new ScriptBundle("~/bundles/charting").IncludeDirectory("~/Scripts/charting", "*.js"));
 
             var cssBundle = new Bundle("~/Content/css").Include(
@@ -113,7 +111,6 @@ namespace NextPvrWebConsole
                     "~/Scripts/core/jquery.dateFormat-1.0.js",
                     "~/Scripts/functions.js",
                     "~/Scripts/apihelper.js")
-                    .IncludeDirectory("~/Scripts/api-wrappers", "*.js")
                     .IncludeDirectory("~/Scripts/mobile/core", "*.js"));
 
             PageBundle(bundles, "Dashboard");
