@@ -5,51 +5,50 @@
     ViewBag.Title = "Log in";
 }
 
-
 <section id="loginForm">
-<div class="loginForm-container">
-    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
-        @Html.AntiForgeryToken()    
-        <ul>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-            <li class="rememberme">
-                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "noibutton" })
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
-        </ul>
+    <div class="loginForm-container">
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+            @Html.AntiForgeryToken()    
+            <ul>
+                <li>
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+                <li class="rememberme">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
+                </li>
+            </ul>
     
-        <a href="#" onclick="return false" id="lnkForgotPassword" data-lang="Forgot Password?"></a>
+            <a href="#" onclick="return false" id="lnkForgotPassword" data-lang="Forgot Password?"></a>
         
-        <button class="btn btn-large btn-primary" type="submit" data-lang="Login"></button>
-        @Html.ValidationSummary(true)
-    }
-</div>
-<div class="forgotpasswordForm-container" style="display:none">
-    @using (Ajax.BeginForm("ForgotPassword", "Account", new AjaxOptions { OnComplete = "ForgotPassword_Complete", OnBegin = "ForgotPassword_Begin" }, new { id = "formForgotPassword" }))
-    {
-        <h1 data-lang="Forgot Password"></h1>
-        <p data-lang="Please fill in your username or email address and a password reset request will be email to you."></p>
-        <ul>
-            <li>
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-        </ul>
+            <button class="btn btn-large btn-primary" type="submit" data-lang="Login"></button>
+            @Html.ValidationSummary(true)
+        }
+    </div>
+    <div class="forgotpasswordForm-container" style="display:none">
+        @using (Ajax.BeginForm("ForgotPassword", "Account", new AjaxOptions { OnComplete = "ForgotPassword_Complete", OnBegin = "ForgotPassword_Begin" }, new { id = "formForgotPassword" }))
+        {
+            <h1 data-lang="Forgot Password"></h1>
+            <p data-lang="Please fill in your username or email address and a password reset request will be email to you."></p>
+            <ul>
+                <li>
+                    @Html.TextBoxFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </li>
+            </ul>
         
-        <button class="btn btn-large btn-primary" type="submit" data-lang="Reset"></button>
-        <button class="btn btn-large" onclick="return false" id="btnForgotPasswordCancel" data-lang="Cancel"></button>
-        @Html.ValidationSummary(true)
-    }
-</div>
+            <button class="btn btn-large btn-primary" type="submit" data-lang="Reset"></button>
+            <button class="btn btn-large" onclick="return false" id="btnForgotPasswordCancel" data-lang="Cancel"></button>
+            @Html.ValidationSummary(true)
+        }
+    </div>
 
 @if (ViewBag.PasswordReset == true)
 {

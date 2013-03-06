@@ -1,12 +1,16 @@
 ﻿<div ng-controller="Controllers.Recordings.AvailableController">
-    <div class="recordings-available-group">
+    <div class="recordings-available-group" ng-show="recordingGroups.length > 0">
         <span data-lang="Recording Group:"></span>
         <select ng-model="selectedRecordingGroup" ng-options="rg.Name for rg in recordingGroups">
         </select>
         
-        <a href="#recording-group-mover" class="btn" role="button" data-toggle="modal">
+        <a href="#recording-group-mover" class="btn" role="button" data-toggle="modal" ng-hide="recordingGroups.length < 2">
             <i class="icon-share"></i><span data-lang="Move Recording Group"></span>
         </a>
+    </div>
+
+    <div ng-hide="recordingGroups.length > 0" class="alert alert-block">
+        No recordings available.
     </div>
     
     <div>

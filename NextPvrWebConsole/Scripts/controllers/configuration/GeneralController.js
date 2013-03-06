@@ -4,6 +4,10 @@ ns.GeneralController = function ($scope, $http, $rootScope) {
     "use strict";
     var self = this;
 
+    $scope.model = {
+        EpgUpdateHour: 0
+    };
+
     $rootScope.getConfiguration(function (config) {
         $scope.model = config;
     });

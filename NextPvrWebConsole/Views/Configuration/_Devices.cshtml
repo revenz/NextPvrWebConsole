@@ -2,46 +2,51 @@
     var modelDevices = (NextPvrWebConsole.Models.ConfigurationModels.DevicesConfiguration)ViewBag.DevicesModel;
 }
 <div ng-controller="Controllers.Configuration.DeviceController">
-    <table class="devices" id="device-table">
-        <thead>
-            <tr>
-                <th class="handle"></th>
-                <th class="type" data-lang="Type"></th>
-                <th class="device" data-lang="Device"></th>
-                <th class="present" data-lang="Present"></th>
-                <th class="enabled" data-lang="Enabled"></th>
-                <th class="channels" data-lang="Channels"></th>
-            </tr>
-        </thead>
-        <tbody ng-sortable="model.Devices" data-handle=".handle" id="devices">
-            <tr ng-sortable-index="{{$index}}" ng-repeat="device in model.Devices">
-                <td class="handle"><i class="icon-move"></i></td>
-                <td class="type">{{device.SourceType}}</td>
-                <td class="device">{{device.Name}}</td>
-                <td class="present"><span ng-show="device.Present">Yes</span><span ng-hide="device.Present">No</span></td>
-                <td class="enabled">
-                    <toggle-box ng-model="device.Enabled"></toggle-box>
-                </td>
-                <td class="channels">{{device.NumberOfChannels}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div ng-hide="model.Devices" class="alert alert-block">
+        No devices found.
+    </div>
+    <div ng-show="model.Devices">
+        <table class="devices" id="device-table">
+            <thead>
+                <tr>
+                    <th class="handle"></th>
+                    <th class="type" data-lang="Type"></th>
+                    <th class="device" data-lang="Device"></th>
+                    <th class="present" data-lang="Present"></th>
+                    <th class="enabled" data-lang="Enabled"></th>
+                    <th class="channels" data-lang="Channels"></th>
+                </tr>
+            </thead>
+            <tbody ng-sortable="model.Devices" data-handle=".handle" id="devices">
+                <tr ng-sortable-index="{{$index}}" ng-repeat="device in model.Devices">
+                    <td class="handle"><i class="icon-move"></i></td>
+                    <td class="type">{{device.SourceType}}</td>
+                    <td class="device">{{device.Name}}</td>
+                    <td class="present"><span ng-show="device.Present">Yes</span><span ng-hide="device.Present">No</span></td>
+                    <td class="enabled">
+                        <toggle-box ng-model="device.Enabled"></toggle-box>
+                    </td>
+                    <td class="channels">{{device.NumberOfChannels}}</td>
+                </tr>
+            </tbody>
+        </table>
     
-    <table>
-        <tr>
-            <td><label data-lang="UseReverseOrderForLiveTv"></label></td>
-            <td class="value">
-                <toggle-box ng-model="model.UseReverseOrderForLiveTv"></toggle-box>
-                <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="value">
-                <button ng-click="save()" class="btn btn-primary">
-                    <i class="icon-ok-sign icon-white" /> <span data-lang="Save"></span>
-                </button>
-            </td>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <td><label data-lang="UseReverseOrderForLiveTv"></label></td>
+                <td class="value">
+                    <toggle-box ng-model="model.UseReverseOrderForLiveTv"></toggle-box>
+                    <span class="description" data-lang="UseReverseOrderForLiveTv-Description" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="value">
+                    <button ng-click="save()" class="btn btn-primary">
+                        <i class="icon-ok-sign icon-white" /> <span data-lang="Save"></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>

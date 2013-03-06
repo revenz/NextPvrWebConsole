@@ -1,28 +1,36 @@
-﻿<p data-lang="UserSettings-Channels-Summary"></p>
+﻿<div ng-controller="Controllers.UserSettings.ChannelsController">
+    <div ng-hide="channels.length" class="alert alert-block">
+        <h4>No Channels Found</h4>
+        <p data-lang="Ensure you capture devices are correctly configured and scan for channels.">
+        </p>
+    </div>
 
-<div ng-controller="Controllers.UserSettings.ChannelsController">
-    <table id="usersettings-channels" class="data-table">
-        <thead>
-            <tr>
-                <th class="name" data-lang="Name"></th>
-                <th class="number" data-lang="Number"></th>
-                <th class="enabled" data-lang="Enabled"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="channel in channels">        
-                <td class="name">{{channel.Name}}</td>
-                <td class="number"><input type="number" ng-model="channel.Number" min="0" max="9999" /></td>
-                <td class="enabled">
-                    <toggle-box ng-model="channel.Enabled"></toggle-box>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div ng-show="channels.length">
+        <p data-lang="UserSettings-Channels-Summary"></p>
 
-    <p class="buttons">
-        <button class="btn btn-primary" ng-click="save()">
-            <i class="icon-ok-sign icon-white" /> Save
-        </button>
-    </p>
+        <table ng-show="channels.length" id="usersettings-channels" class="data-table">
+            <thead>
+                <tr>
+                    <th class="name" data-lang="Name"></th>
+                    <th class="number" data-lang="Number"></th>
+                    <th class="enabled" data-lang="Enabled"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="channel in channels">        
+                    <td class="name">{{channel.Name}}</td>
+                    <td class="number"><input type="number" ng-model="channel.Number" min="0" max="9999" /></td>
+                    <td class="enabled">
+                        <toggle-box ng-model="channel.Enabled"></toggle-box>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="buttons">
+            <button class="btn btn-primary" ng-click="save()">
+                <i class="icon-ok-sign icon-white" /> Save
+            </button>
+        </p>
+    </div>
 </div>

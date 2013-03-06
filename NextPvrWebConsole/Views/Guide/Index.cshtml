@@ -12,18 +12,25 @@
                 </li>
             </ul>
         </div>
-    
-        <div id="epg-groups" class="epg-groups" ng-show="channelGroups.length > 0">
-            <ul>
-                <li ng-repeat="group in channelGroups" ng-class="'group ' + isSelectedGroup($index)"><span>{{group.Name}}</span></li>
-            </ul>
-            <div class="epg-groups-button previous" ng-click="prevChannelGroup()"><span class="icon-caret-down"></span></div>
-            <div class="epg-groups-button next" ng-click="nextChannelGroup()"><span class="icon-caret-up"></span></div>
-        </div>
+        <div ng-show="channels && channels.length">
+            <div id="epg-groups" class="epg-groups" ng-show="channelGroups.length > 0">
+                <ul>
+                    <li ng-repeat="group in channelGroups" ng-class="'group ' + isSelectedGroup($index)"><span>{{group.Name}}</span></li>
+                </ul>
+                <div class="epg-groups-button previous" ng-click="prevChannelGroup()"><span class="icon-caret-down"></span></div>
+                <div class="epg-groups-button next" ng-click="nextChannelGroup()"><span class="icon-caret-up"></span></div>
+            </div>
 
-        <div class="epg-container">
-            <div class="epg" id="epg-load-target" ng-show="channels.length > 0">
-                @Html.Partial("_EpgGridData")
+            <div class="epg-container">
+                <div class="epg" id="epg-load-target" ng-show="channels.length > 0">
+                    @Html.Partial("_EpgGridData")
+                </div>
+            </div>
+        </div>
+        <div id="epg-viewmodel-container" ng-hide="channels && channels.length" class="no-epg-data alert">
+            <div class="alert">
+                <h4 data-lang="No Guide Data"></h4>
+                <p data-lang="Please check your EPG settings and update your guide data."></p>
             </div>
         </div>
     </div>

@@ -3,7 +3,6 @@
 /// <reference path="core/jquery.i18n.js" />
 /// <reference path="core/jquery-ui-1.9.0.js" />
 /// <reference path="core/jquery-1.8.2.js" />
-/// <reference path="core/knockout-2.2.0.js" />
 
 var DIRECTORY_REGULAR_EXPRSESION = '^([^"*/:?|<>\\\\.\\x00-\\x20]([^"*/:?|<>\\\\\\x00-\\x1F]*[^"*/:?|<>\\\\.\\x00-\\x20])?)$';
 var DIRECTORY_ERROR_MESSAGE = $.i18n._('Invalid folder name');
@@ -46,25 +45,6 @@ $(function () {
         changePasswordDialog.find('input:eq(0)').focus();
 
         $('#modalChangePassword').modal();
-        //var dialog_buttons = {};
-        //dialog_buttons[$.i18n._("OK")] = function () {
-        //    if ($('#changePasswordForm').valid() == false)
-        //        return;
-        //    $('#changePasswordForm').submit();
-        //    changePasswordDialog.dialog('close');
-        //};
-        //dialog_buttons[$.i18n._("Cancel")] = function () {
-        //    changePasswordDialog.dialog('close');
-        //};
-        //changePasswordDialog.dialog({
-        //    modal: true,
-        //    minWidth: 550,
-        //    minHeight: 250,
-        //    maxWidth: 550,
-        //    maxHeight: 250,
-        //    title: $.i18n._("Change Password"),
-        //    buttons: dialog_buttons
-        //});
     });
 });
 

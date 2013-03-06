@@ -59,7 +59,7 @@ namespace NextPvrWebConsole.Models
     public class LoginModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         [Required]
@@ -67,7 +67,7 @@ namespace NextPvrWebConsole.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Remember Me?")]
         public bool RememberMe { get; set; }
     }
 

@@ -23,8 +23,6 @@ namespace NextPvrWebConsole
                         "~/Scripts/core/jquery.i18n.js",
                         "~/Scripts/translator.js",
                         "~/Scripts/core/jquery.signalR-{version}.js",
-                        //"~/Scripts/core/linq.js",
-                        //"~/Scripts/core/jquery.linq.js*",
                         "~/Scripts/core/jquery.dateFormat-1.0.js",
                         "~/Scripts/core/angular.js",
                         "~/Scripts/bootstrap.js",
@@ -66,8 +64,6 @@ namespace NextPvrWebConsole
                         "~/Scripts/setup/*.js"
                 ));
 
-            bundles.Add(new ScriptBundle("~/bundles/charting").IncludeDirectory("~/Scripts/charting", "*.js"));
-
             var cssBundle = new Bundle("~/Content/css").Include(
                                                         "~/Content/bootstrap/bootstrap.less",
                                                         "~/Content/site.less", 
@@ -79,7 +75,6 @@ namespace NextPvrWebConsole
                                                         .IncludeDirectory("~/Content/addons", "*.css", true)
                                                         .IncludeDirectory("~/Content/pages", "*.less", true)
                                                         .IncludeDirectory("~/Content/pages", "*.css", true)
-                                                        //.Include("~/Content/jqueryui/theme.less")
                                                         ;
             cssBundle.Transforms.Add(new LessTransform());
             cssBundle.Transforms.Add(new CssMinify());
@@ -103,11 +98,8 @@ namespace NextPvrWebConsole
             bundles.Add(new ScriptBundle("~/bundles/mobile/js").Include(
                     "~/Scripts/core/jquery-{version}.js",
                     "~/Scripts/core/jquery.mobile-{version}.js",
-                    "~/Scripts/core/knockout-{version}.js",
                     "~/Scripts/core/angular.js",
                     "~/Scripts/core/jquery.i18n.js",
-                    "~/Scripts/core/linq.js",
-                    "~/Scripts/core/jquery.linq.js*",
                     "~/Scripts/core/jquery.dateFormat-1.0.js",
                     "~/Scripts/functions.js",
                     "~/Scripts/apihelper.js")

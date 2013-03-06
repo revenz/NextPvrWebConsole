@@ -411,20 +411,14 @@
     <Content Include="Resources\Files\PasswordResetBody.txt" />
     <Content Include="Resources\Files\PasswordResetRequestBody.txt" />
     <Content Include="Scripts\account\index.js" />
-    <Content Include="Scripts\charting\flotr2.min.js" />
     <Content Include="Scripts\mobile\core\main.js" />
     <Content Include="Scripts\mobile\core\touchscroll.js" />
     <Content Include="Scripts\mobile\core\webserviceinterface.js" />
     <Content Include="Scripts\core\jquery.address.js" />
-    <Content Include="Scripts\guide\index.js" />
-    <Content Include="Scripts\charting\flotr2.js" />
     <Content Include="Scripts\core\jquery.easing.1.3.js" />
     <Content Include="Scripts\core\jquery.i18n.js" />
     <Content Include="Scripts\core\jquery.i18n.min.js" />
-    <Content Include="Scripts\core\jquery.ibutton.js" />
     <Content Include="Scripts\core\jquery.metadata.js" />
-    <Content Include="Scripts\core\knockout-sortable.js" />
-    <Content Include="Scripts\dashboard\upcomingrecordings.js" />
     <Content Include="Scripts\addons\jquery.filetree.js" />
     <Content Include="Scripts\setup\index.js" />
     <Content Include="Scripts\global.js" />
@@ -434,58 +428,26 @@
     <Content Include="Content\globals.less" />
     <Content Include="Content\pages\guide\index.less" />
     <Content Include="Content\pages\guide\show-info-dialog.less" />
-    <Content Include="Content\jqueryui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_glass_75_ffffff_1x400.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\jqueryui\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\jqueryui\images\ui-icons_f6cf3b_256x240.png" />
     <Content Include="Content\setup\index.less" />
     <Content Include="Content\pages\recordings\available.less" />
     <Content Include="Content\scheduleeditor.less" />
     <Content Include="Content\pages\system\index.less" />
     <Content Include="Content\pages\system\users.less" />
     <Content Include="Content\table.less" />
-    <Content Include="Content\jqueryui\icons.less" />
-    <Content Include="Content\jqueryui\inputs.less" />
-    <Content Include="Content\jqueryui\jquery.accordion.less" />
-    <Content Include="Content\jqueryui\jquery.autocomplete.less" />
-    <Content Include="Content\jqueryui\jquery.datepicker.less" />
-    <Content Include="Content\jqueryui\jquery.dialog.less" />
-    <Content Include="Content\jqueryui\jquery.menu.less" />
-    <Content Include="Content\jqueryui\jquery.button.less" />
-    <Content Include="Content\jqueryui\jquery.progressbar.less" />
-    <Content Include="Content\jqueryui\jquery.resizable.less" />
-    <Content Include="Content\jqueryui\jquery.selectable.less" />
-    <Content Include="Content\jqueryui\jquery.slider.less" />
-    <Content Include="Content\jqueryui\jquery.spinner.less" />
-    <Content Include="Content\jqueryui\jquery.tabs.less" />
-    <Content Include="Content\jqueryui\jquery.toolbar.less" />
     <Content Include="Scripts\addons\toastr.js" />
     <Content Include="Scripts\apihelper.js" />
-    <Content Include="Scripts\dashboard\devices.js" />
     <Content Include="Scripts\core\jquery.mobile-1.2.0.js" />
     <Content Include="Scripts\core\jquery.mobile-1.2.0.min.js" />
     <Content Include="Scripts\core\jquery.nicescroll.js" />
     <Content Include="Scripts\webapp.js" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Dashboard\_Tuners.cshtml" />
-    <Content Include="Content\jqueryui\variables.less" />
     <Content Include="Content\pages\usersettings\index.less" />
     <Content Include="Content\pages\usersettings\channelgroups.less" />
     <Content Include="Content\pages\usersettings\channels.less" />
     <Content Include="Content\pages\usersettings\recordingdirectories.less" />
     <Content Include="Content\vtabs.less" />
     <Content Include="Content\pages\search\index.less" />
-    <Content Include="Content\progressbar.less" />
     <None Include="Content\addons\jquery.togglebuttons.less" />
     <Content Include="Content\bootstrap\wells.less" />
     <Content Include="Content\bootstrap\variables.less" />
@@ -528,7 +490,6 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\bootstrap\accordion.less" />
-    <Content Include="Content\jqueryui\theme.less" />
     <None Include="Models\Generated\Database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Database.cs</LastGenOutput>
@@ -570,7 +531,6 @@
     <Content Include="Views\Guide\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\custom.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Compile Include="Models\Channel.cs" />
@@ -581,9 +541,6 @@
     <Content Include="Scripts\core\jquery-ui-1.9.0.js" />
     <Content Include="Scripts\core\jquery-ui-1.9.0.min.js" />
     <Content Include="Scripts\core\jquery.dateFormat-1.0.js" />
-    <Content Include="Scripts\core\jquery.linq-vsdoc.js" />
-    <Content Include="Scripts\core\jquery.linq.js" />
-    <Content Include="Scripts\core\jquery.linq.min.js" />
     <Content Include="Scripts\core\jquery.signalR-0.5.3.js" />
     <Content Include="Scripts\core\jquery.signalR-0.5.3.min.js" />
     <Content Include="Scripts\core\jquery.unobtrusive-ajax.js" />
@@ -593,11 +550,6 @@
     <Content Include="Scripts\core\jquery.validate.min.js" />
     <Content Include="Scripts\core\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\core\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\core\knockout-2.2.0.debug.js" />
-    <Content Include="Scripts\core\knockout-2.2.0.js" />
-    <Content Include="Scripts\core\linq-vsdoc.js" />
-    <Content Include="Scripts\core\linq.js" />
-    <Content Include="Scripts\core\linq.min.js" />
     <Content Include="Scripts\core\modernizr-2.6.2.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -631,7 +583,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

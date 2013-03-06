@@ -1,5 +1,10 @@
 ﻿<div ng-controller="Controllers.Recordings.RecurringController">
-    <table class="data-table">
+
+    <div ng-hide="recordings.length" class="alert alert-block">
+        No recurring recordings.
+    </div>
+
+    <table ng-show="recordings.length" class="data-table">
         <thead>
             <tr>
                 <th class="channel"></th>

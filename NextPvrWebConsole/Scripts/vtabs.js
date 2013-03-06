@@ -9,7 +9,6 @@ $(function () {
     $('body').css('overflow-y', 'hidden');
 
     var resizeTabs = function () {
-        console.log('height: ' + ($(window).height() - 140));
         $('.vtab-container').css('height', $(window).height() - 140);
     };
 

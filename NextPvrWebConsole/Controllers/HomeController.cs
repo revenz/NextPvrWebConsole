@@ -14,6 +14,7 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.Title = "NextPVR Web Console";
             return View();
         }
 

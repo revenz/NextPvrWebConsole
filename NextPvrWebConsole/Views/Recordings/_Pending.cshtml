@@ -1,4 +1,9 @@
 ﻿<div ng-controller="Controllers.Recordings.PendingController">
+
+    <div ng-hide="recordings.length" class="alert alert-block">
+        No pending recordings.
+    </div>
+
     <table class="data-table" ng-show="recordings.length">
         <thead>
             <tr>

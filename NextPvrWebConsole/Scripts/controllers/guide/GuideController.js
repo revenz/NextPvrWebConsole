@@ -78,7 +78,7 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
             //var element = $compile(result)($scope);
             // set the guide html to the element so its shown on the page
             //$scope.guidehtml = element;
-
+           
             self.guideStart = $scope.days[$scope.selectedDateIndex];
 
             $scope.channels = result;
@@ -90,7 +90,6 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         });
     };
     $scope.openListing = function (listing) {
-        console.log('openning oid: ' + listing.Oid);
         $http.get('api/guide/epglisting/' + listing.Oid).success(function (data) {
             console.log(data);
             listing.ChannelNumber = data.ChannelNumber;

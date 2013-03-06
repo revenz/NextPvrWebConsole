@@ -164,6 +164,5 @@ $(function(){
     
     // Start the connection
     $.connection.hub.start({ transport: 'longPolling' }, function(){
-        console.log('connected.');
     });
 });
