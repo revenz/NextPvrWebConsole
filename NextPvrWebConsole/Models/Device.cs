@@ -36,7 +36,7 @@ namespace NextPvrWebConsole.Models
 
         public static List<Device> LoadAll()
         {
-            return Helpers.Cacher.RetrieveOrStore<List<Device>>("Devices", new TimeSpan(1, 0, 0), new Func<List<Device>>(delegate
+            return Helpers.Cacher.RetrieveOrStore<List<Device>>("Devices", new TimeSpan(0, 0, 30), new Func<List<Device>>(delegate
             {
                 List<Device> devices = new List<Device>();
 
@@ -56,7 +56,6 @@ namespace NextPvrWebConsole.Models
                 }
                 return devices;
             }));
-
         }
 
         public static List<Device> GetDevicesBasic()

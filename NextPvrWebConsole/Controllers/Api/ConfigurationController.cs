@@ -21,19 +21,5 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             return Models.Device.LoadAll();
         }
-
-        [HttpGet]
-        public bool EmptyEpg()
-        {
-            Helpers.NpvrCoreHelper.EmptyEpg();
-            return true;
-        }
-
-        [HttpGet]
-        public bool UpdateEpg()
-        {
-            Helpers.NpvrCoreHelper.UpdateEpg();
-            return true;
-        }
     }
 }

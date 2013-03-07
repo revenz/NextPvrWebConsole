@@ -44,7 +44,7 @@ ns.RecordingController = function ($scope, $http, $rootScope) {
     };
 
     $scope.removeRecordingDirectory = function (rd) {
-        gui.confirmMessage({
+        gui.confirm({
             message: $.i18n._("Are you sure you want to remove the '%s' recording directory?", [ rd.Name ]),
             yes: function () {
                 $scope.$apply(function () {

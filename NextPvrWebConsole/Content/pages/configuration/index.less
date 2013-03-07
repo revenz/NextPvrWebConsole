@@ -12,8 +12,14 @@
 			border-bottom:solid 1px #d3d3d3;
 			td, th { padding: 5px; }
 			th { border-bottom: solid 1px #d3d3d3;}
+			.enabled {
+				margin:0;
+				padding:3px 0 0;
+			}
 			.device {
 				text-align:left;
+				text-overflow:ellipsis;
+				white-space:nowrap;
 			}
 			.type { 
 				width:60px;
@@ -22,6 +28,10 @@
 			.present, .enabled, .channels {
 				width:100px;
 				text-align:center;
+			}
+			.handle i {
+				position:relative;
+				top:3px;
 			}
 		}
 	}	
@@ -149,8 +159,16 @@
 	}
 	.enabled {
 		width:90px;
+		> div {
+			position:relative;
+			top:4px;
+		}
 	}
 	.controls {
 		width:120px;
+		button {
+			position:relative;
+			top:-2px;
+		}
 	}
 }

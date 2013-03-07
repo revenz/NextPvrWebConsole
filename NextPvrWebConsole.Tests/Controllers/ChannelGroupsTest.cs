@@ -84,7 +84,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             {
                 string suffix = Helpers.WordGenerator.GetSequence(5, 12);
                 var controllerA = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(User);
-                var channelsController = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelsController>(User);
+                var channelsController = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelController>(User);
                 int[] channelOids = channelsController.Get().Take(5).Select(x => x.Oid).ToArray();
                 Assert.IsTrue(channelOids.Length > 0); // this must be true, otherwise the test wont work
                 

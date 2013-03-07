@@ -39,7 +39,7 @@ namespace NextPvrWebConsole.Controllers
                 }
             }
             catch (Exception) { }
-            throw new HttpException(404, "Channel Logo not found.");
+            return HttpNotFound("Channel Logo not found.");
         }
 
     }

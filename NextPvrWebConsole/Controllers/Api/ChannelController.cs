@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace NextPvrWebConsole.Controllers.Api
 {
     [Authorize(Roles="Guide")]
-    public class ChannelsController : NextPvrWebConsoleApiController
+    public class ChannelController : NextPvrWebConsoleApiController
     {
         // GET api/channels
         public IEnumerable<Models.Channel> Get(bool IncludeDisabled = false)
@@ -21,13 +21,29 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.Channel.LoadAll(Globals.SHARED_USER_OID, true);
         }
 
-        public bool Update(Models.Channel[] Channels)
+        [HttpPost]
+        public bool UpdateShared(Models.Channel[] Channels)
         {
-            Models.Channel.Update(this.GetUser().Oid, Channels);
+            Models.Channel.SaveForUser(Globals.SHARED_USER_OID, Channels.ToList());
             return true;
         }
 
-        public IEnumerable<Models.Channel> GetMissingChannels()
+        [HttpGet]
+        public bool EmptyEpg()
+        {
+            Helpers.NpvrCoreHelper.EmptyEpg();
+            return true;
+        }
+
+        [HttpGet]
+        public bool UpdateEpg()
+        {
+            Helpers.NpvrCoreHelper.UpdateEpg();
+            return true;
+        }
+
+        [HttpGet]
+        public IEnumerable<Models.Channel> ImportMissing()
         {
             int[] knownChannels = Models.Channel.LoadAll(Globals.SHARED_USER_OID, true).Select(x => x.Oid).OrderBy(x => x).ToArray();
             var npvrChannels = Helpers.Cacher.RetrieveOrStore<List<NUtility.Channel>>("NUtility.Channel.LoadAll", new TimeSpan(1, 0, 0), delegate { return NUtility.Channel.LoadAll(); });

@@ -26,7 +26,7 @@ ns.AvailableController = function ($scope, $http) {
 
     $scope.delete = function (recording) {
         console.log(recording);
-        gui.confirmMessage({
+        gui.confirm({
             message: $.i18n._("Are you sure you want to delete the recording '%s'?", [recording.Subtitle && recording.Subtitle.length ? recording.Subtitle : gui.formatDateShort(recording.StartTime)]),
             yes: function () {
                 $http.delete('/api/recordings/' + recording.OID).success(function (result) {

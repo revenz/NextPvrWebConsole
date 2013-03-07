@@ -18,7 +18,7 @@
                     <toggle-box ng-model="channel.Enabled"></toggle-box>
                 </td>
                 <td class="controls">
-                    <button btn="remove(channel)" class="btn btn-danger btn-small">
+                    <button ng-click="remove(channel)" class="btn btn-danger btn-small">
                         <i class="icon-remove icon-white"></i> Remove
                     </button>
                 </td>
@@ -35,7 +35,7 @@
             <i class="icon-trash icon-large"></i><span data-lang="Empty EPG"></span>
         </button>
 
-        <button ng-click="importMissing()" class="btn">
+        <button ng-click="import()" class="btn">
             <i class="icon-share"></i> <span data-lang="Import Missing From NextPVR"></span>
         </button>
     </p>

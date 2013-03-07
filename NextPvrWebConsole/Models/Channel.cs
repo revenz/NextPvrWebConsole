@@ -84,7 +84,7 @@ namespace NextPvrWebConsole.Models
             {
                 var db = DbHelper.GetDatabase();
                 List<Channel> results = null;
-                if (UserOid == Globals.SHARED_USER_OID)
+                if (UserOid == Globals.SHARED_USER_OID || !new Configuration().EnableUserSupport)
                 {
                     results = db.Fetch<Channel>(@"select * from channel order by number");
                 }
@@ -186,6 +186,7 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
                     throw new NotImplementedException();
                 }
                 db.CompleteTransaction();
+                Helpers.Cacher.FlushCache(new Regex(@"^Channel\."));
                 return true;
             }
             catch (Exception ex)

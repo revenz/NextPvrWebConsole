@@ -27,7 +27,7 @@ ns.ChannelGroupController = function ($scope, $http, $rootScope, $compile) {
     };
 
     $scope.remove = function (item) {
-        gui.confirmMessage({
+        gui.confirm({
             message: $.i18n._("Are you sure you want to remove the Channel Group '%s'?", [item.Name]),
             yes: function () {
                 $scope.$apply(function () {

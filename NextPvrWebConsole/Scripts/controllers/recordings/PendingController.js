@@ -14,7 +14,7 @@ ns.PendingController = function ($scope, $http) {
 
     $scope.cancel = function (recording) {
         console.log(recording);
-        gui.confirmMessage({
+        gui.confirm({
             message: $.i18n._("Are you sure you want to delete the pending recording '%s'?", [recording.Title]),
             yes: function () {
                 $http.delete('/api/recordings/' + recording.OID).success(function (result) {

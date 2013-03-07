@@ -23,7 +23,7 @@ namespace NextPvrWebConsole.Helpers
 
         public static Dictionary<NUtility.Channel, List<NUtility.EPGEvent>> GetListingsForTimePeriod(DateTime Start, DateTime End)
         {
-            return Cacher.RetrieveOrStore<Dictionary<NUtility.Channel, List<NUtility.EPGEvent>>>("GetListingsForTimePeriod(" + Start.ToString() + "," + End.ToString() + ")", new TimeSpan(1, 0, 0), delegate
+            return Cacher.RetrieveOrStore<Dictionary<NUtility.Channel, List<NUtility.EPGEvent>>>("GetListingsForTimePeriod(" + Start.ToString() + "," + End.ToString() + ")", new TimeSpan(0, 0, 30), delegate
             {
                 return NUtility.EPGEvent.GetListingsForTimePeriod(Start, End);
             });

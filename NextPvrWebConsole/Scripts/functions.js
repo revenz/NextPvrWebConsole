@@ -27,21 +27,6 @@ var gui = new function () {
         return $.format.date(date, 'h:mm a') + ' (' + $.format.date(date, 'd MMM') + ')';
     };
 
-    this.showMessageBox = function (message, title) {
-        var div = $('<div><span></span></div>');
-        div.find('span').text(message);
-        var dialog_buttons = {};
-        dialog_buttons[$.i18n._("OK")] = function () { div.dialog('close'); };
-        div.dialog(
-        {
-            modal: true,
-            title: title ? title : $.i18n._("Message"),
-            minWidth: 350,
-            minHeight: 200,
-            buttons: dialog_buttons
-        });
-    };
-
     this.showSuccess = function (message, title) {
         toastr.success(message, title ? title : $.i18n._("Success"));
     };
@@ -88,7 +73,28 @@ var gui = new function () {
     else if (window.attachEvent)
         window.attachEvent('unload', unloadFunction);
 
-    this.confirmMessage = function (settings) {
+    this.showMessageBox = function (message, title) {
+        var div = $('<div class="modal">' +
+                        '<div class="modal-header">' +
+                            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                            '<h3></h3>' +
+                        '</div>' +
+                        '<div class="modal-body"></div>' +
+                        '<div class="modal-footer">' +
+                            '<button data-dismiss="modal" aria-hidden="true" class="btn btn-primary"></button>' +
+                        '</div>' +
+                    '</div>');
+        div.find('h3').text(title ? title : $.i18n._("Message"));
+        div.find('.modal-body').text(message);
+        div.find('.btn').text($.i18n._('OK'));
+        div.appendTo('body')
+        div.modal({});
+        div.on('hidden', function () {
+            div.remove();
+        });
+    };
+
+    this.confirm = function (settings) {
         settings = $.extend({
             title: $.i18n._('Confirm'),
             message: $.i18n._('Are you sure?'),
@@ -274,6 +280,11 @@ if (typeof String.prototype.endsWith != 'function') {
 if (typeof Number.prototype.pad != 'function') {
     Number.prototype.pad = function (number) {
         return Array(number - String(this).length + 1).join('0') + this;
+    };
+}
+if (typeof String.isNullOrWhitespace != 'function') {
+    String.isNullOrWhitespace = function (text) {
+        return !/\S/.test(text);
     };
 }
 
