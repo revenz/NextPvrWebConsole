@@ -1,10 +1,10 @@
 ﻿<div class="epg-channels">
     <ul>
-        <li ng-repeat="channel in channels" ng-click="liveStream(channel.Oid)" class="epg-channel logo-available" title="Start Live TV">
-            <div class="logo">
-                <img class="logo" ng-src="/channelicon/{{channel.Oid}}" ng-show="channel.HasIcon" />
+        <li ng-repeat="channel in channels" ng-click="liveStream(channel.Oid)" class="epg-channel" title="Start Live TV">
+            <div class="logo" ng-show="channel.HasIcon">
+                <img class="logo" ng-src="/channelicon/{{channel.Oid}}" />
             </div>
-            <span class="name">{{channel.Name}}</span>
+            <span class="name" ng-hide="channel.HasIcon">{{channel.Name}}</span>
             <span class="number">{{channel.Number}}</span>      
         </li>
     </ul>

@@ -1,0 +1,49 @@
+﻿<div ng-controller="Controllers.Configuration.XmlTvController">
+    <p data-lang="Configuration-XmlTv-Summary"></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="shortname">Name</th>
+                <th class="filename">Filename</th>
+                <th class="lastscan">Last Scanned</th>
+                <th class="numberofchannels"># Channels</th>
+                <th class="actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in model">
+                <td class="shortname">{{item.ShortName}}</td>
+                <td class="filename">{{item.Filename}}</td>
+                <td class="lastscan">{{item.LastScanTime | date:'medium'}}</td>
+                <td class="numberofchannels">{{item.ChannelOids.length}}</td>
+                <td class="actions">
+                    <div class="btn-group">
+                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                            Action
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="" ng-click="remove(item)">Remove</a></li>
+                            <li><a href="" ng-click="scan(item)">Scan File</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="buttons">
+        <button ng-click="add()" class="btn">
+            <i class="icon-plus-sign" /> <span data-lang="Add Source"></span>
+        </button>
+
+        <button ng-click="import()" class="btn">
+            <i class="icon-share" /> <span data-lang="Import From NextPVR"></span>
+        </button>
+            
+        <button ng-click="save()" class="btn btn-primary">
+            <i class="icon-ok-sign icon-white" /> <span data-lang="Save"></span>
+        </button>
+    </p>
+</div>

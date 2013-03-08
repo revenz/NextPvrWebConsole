@@ -7,6 +7,8 @@
                 <th class="name" data-lang="Channel Name"></th>
                 <th class="number" data-lang="Number"></th>
                 <th class="enabled" data-lang="Enabled"></th>
+                <th class="epg-source" data-lang="EPG Source"></th>
+                <th class="xmltv-channel" data-lang="XMLTV Channel"></th>
                 <th class="controls"></th>
             </tr>
         </thead>
@@ -16,6 +18,25 @@
                 <td class="number"><input type="number" ng-model="channel.Number" min="1" max="999" /></td>
                 <td class="enabled">
                     <toggle-box ng-model="channel.Enabled"></toggle-box>
+                </td>
+                <td class="epg-source">
+                    <select ng-model="channel.EpgSource">
+                        <option>None</option>
+                        <optgroup label="XMLTV" ng-show="XmlTvSources.length">
+                            <option ng-repeat="xmltv in XmlTvSources" value="XMLTV-{{xmltv.ShortName}}">
+                                {{xmltv.ShortName}}
+                            </option>
+                        </optgroup>>
+                        <option>DVB/ATSC EPG</option>
+                        <option>Schedules Direct</option>
+                    </select>
+                </td>
+                <td class="xmltv-channel">
+                    <select ng-model="channel.XmlTvChannel" ng-disabled="!channel.EpgSource.startsWith('XMLTV')">
+                        <option ng-repeat="channel in getXmlTvSource(channel.EpgSource).ChannelOids">
+                            {{channel}}
+                        </option>
+                    </select>
                 </td>
                 <td class="controls">
                     <button ng-click="remove(channel)" class="btn btn-danger btn-small">

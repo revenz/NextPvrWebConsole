@@ -335,6 +335,7 @@
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\XmltvSource.cs" />
     <Compile Include="MyMembershipProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Files.Designer.cs">
@@ -351,6 +352,7 @@
     <Content Include="Scripts\controllers\configuration\DeviceController.js" />
     <Content Include="Scripts\controllers\configuration\GeneralController.js" />
     <Content Include="Scripts\controllers\configuration\RecordingController.js" />
+    <Content Include="Scripts\controllers\configuration\XmlTvController.js" />
     <Content Include="Scripts\controllers\dashboard\UpcomingController.js" />
     <Content Include="Scripts\controllers\dashboard\DevicesController.js" />
     <Content Include="Scripts\controllers\general\TabController.js" />
@@ -571,6 +573,7 @@
     <Content Include="Views\Guide\_EpgGridData.cshtml" />
     <Content Include="Views\Control\ChannelSelector.cshtml" />
     <Content Include="Views\System\Log.cshtml" />
+    <Content Include="Views\Configuration\_XmlTv.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

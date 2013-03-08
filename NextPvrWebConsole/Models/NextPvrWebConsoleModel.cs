@@ -7,6 +7,7 @@ namespace NextPvrWebConsole.Models
 {
     public class NextPvrWebConsoleModel
     {
+        [PetaPoco.Ignore]
         public string ObjectType
         {
             get

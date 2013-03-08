@@ -21,5 +21,23 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             return Models.Device.LoadAll();
         }
+
+        [HttpGet]
+        public IEnumerable<Models.XmltvSource> XmlTvSources()
+        {
+            return Models.XmltvSource.LoadAll();
+        }
+
+        [HttpPost]
+        public bool XmlTvSource(Models.XmltvSource[] Sources)
+        {
+            return false;
+        }
+
+        [HttpPost]
+        public IEnumerable<Models.XmltvSource> XmlTvSourceImport()
+        {
+            return Models.XmltvSource.ImportFromNextPvr();
+        }
     }
 }

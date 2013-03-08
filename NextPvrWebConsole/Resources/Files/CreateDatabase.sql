@@ -73,5 +73,13 @@ CREATE TABLE [channelgroupchannel]
 )
 GO
 
+CREATE TABLE [xmltvsource]
+(
+	[filename]				text				NOT NULL,
+	lastscantime			datetime			NOT NULL,
+	channeloids				text				NOT NULL
+)
+GO
+
 INSERT INTO [user](oid, username, emailaddress, passwordhash, userrole, datecreatedutc, lastloggedinutc, [readonly], administrator, defaultrecordingdirectoryoid) VALUES (1, 'Shared', '', '', 0, DATETIME('now'), '1970-01-01', 1, 0, 0)  /* special user */
 GO

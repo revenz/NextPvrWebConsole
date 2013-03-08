@@ -4,8 +4,20 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
     "use strict";
     var self = this;
 
-    $http.get('/api/channel/getshared').success(function (data) {
+    gui.doWork();
+    $http.get('/api/channel/getConfigurationChannels').success(function (data) {
+        gui.finishWork();
         $scope.model = data;
+    }).error(function () {
+        gui.finishWork();
+    });
+
+    gui.doWork();
+    $http.get('/api/configuration/xmltvsources').success(function (result) {
+        gui.finishWork();
+        $scope.XmlTvSources = result;
+    }).error(function () {
+        gui.finishWork();
     });
 
     $scope.emptyEpg = function () {
@@ -18,6 +30,15 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
         $http.get('/api/channel/updateEpg').success(function (result) {
             console.log('update epg result: ' + result);
         });
+    };
+
+    $scope.getXmlTvSource = function (epgSource) {
+        var name = epgSource.substr(6);
+        for (var i = 0; i < $scope.XmlTvSources.length; i++) {
+            if ($scope.XmlTvSources[i].ShortName == name)
+                return $scope.XmlTvSources[i];
+        }
+        return null;
     };
 
     $scope.import = function () {

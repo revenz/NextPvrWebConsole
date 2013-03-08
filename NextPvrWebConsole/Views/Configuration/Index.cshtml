@@ -23,9 +23,13 @@
             <i class="gi-tags"></i>
             <span data-lang="Channel Groups" />
         </li>
-        <li ng-class="{ last: true, selected: selectedTabIndex == 4 }" ng-click="selectedTabIndex = 4">
+        <li ng-class="{ selected: selectedTabIndex == 4 }" ng-click="selectedTabIndex = 4">
             <i class="gi-display"></i>
             <span data-lang="Channels" />
+        </li>
+        <li ng-class="{ last: true, selected: selectedTabIndex == 5 }" ng-click="selectedTabIndex = 5">
+            <i class="gi-embed_close"></i>
+            <span data-lang="XMLTV" />
         </li>
     </ul>
     
@@ -43,6 +47,9 @@
     </div>
     <div class="vtab-content" id="configuration-tab-channels" ng-show="selectedTabIndex == 4">
         @Html.Partial("_Channels")
+    </div>
+    <div class="vtab-content" id="configuration-tab-xmltv" ng-show="selectedTabIndex == 5">
+        @Html.Partial("_XmlTv")
     </div>
 </div>
 

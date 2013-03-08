@@ -30,6 +30,13 @@ namespace NextPvrWebConsole.Models
         [DataMember]
         public List<EpgListing> Listings { get; set; }
 
+        [DataMember]
+        [PetaPoco.Ignore]
+        public string EpgSource { get; set; }
+        [DataMember]
+        [PetaPoco.Ignore]
+        public string XmlTvChannel { get; set; }
+
         public Channel()
         {
         }
