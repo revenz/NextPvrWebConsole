@@ -34,6 +34,16 @@ namespace NextPvrWebConsole.Controllers
 
         public ActionResult LoadDirectory(string dir)
         {
+            return LoadDirectory(dir, null);
+        }
+
+        public ActionResult LoadDirectoryAndXml(string dir)
+        {
+            return LoadDirectory(dir, "xml");
+        }
+
+        public ActionResult LoadDirectory(string dir, params string[] AdditionalFiles)
+        {
             dir = HttpUtility.UrlDecode(dir);
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("<ul class=\"jqueryFileTree\" style=\"display: none;\">\n");
@@ -80,6 +90,16 @@ namespace NextPvrWebConsole.Controllers
                     }
                 }
                 catch (Exception) { /* might not have access to that folder */ }
+
+                if (AdditionalFiles != null && AdditionalFiles.Length > 0)
+                {
+                    try
+                    {
+                        foreach (var file in di.GetFiles().Where(x => x.Extension != null && AdditionalFiles.Contains((x.Extension.StartsWith(".") ? x.Extension.Substring(1) : x.Extension).ToLower())))
+                            builder.AppendLine(AddFile(file.Name, file.FullName));
+                    }
+                    catch (Exception) {/* might not have access to that folder */ }
+                }
             }
             builder.AppendLine("</ul>");
 
@@ -91,27 +111,13 @@ namespace NextPvrWebConsole.Controllers
             return "<li class=\"{3} collapsed{2}\"><a href=\"#\" rel=\"{0}\">{1}</a></li>\n".FormatStr(Path, Name, Selected ? " selected" : "", _Class);
         }
 
+        private string AddFile(string Name, string Path, bool Selected = false, string _Class = "file")
+        {
+            return "<li class=\"{3} collapsed{2}\"><a href=\"#\" rel=\"{0}\">{1}</a></li>\n".FormatStr(Path, Name, Selected ? " selected" : "", _Class);
+        }
+
         private List<string> ListNetworkComputers()
         {
-            //List<String> _ComputerNames = new List<String>();
-            //try
-            //{
-            //    String _ComputerSchema = "Computer";
-            //    System.DirectoryServices.DirectoryEntry _WinNTDirectoryEntries = new System.DirectoryServices.DirectoryEntry("WinNT:");
-            //    foreach (System.DirectoryServices.DirectoryEntry _AvailDomains in _WinNTDirectoryEntries.Children)
-            //    {
-            //        foreach (System.DirectoryServices.DirectoryEntry _PCNameEntry in _AvailDomains.Children)
-            //        {
-            //            if (_PCNameEntry.SchemaClassName.ToLower().Contains(_ComputerSchema.ToLower()))
-            //            {
-            //                _ComputerNames.Add(_PCNameEntry.Name);
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception) { }
-            //return _ComputerNames;
-
             return Helpers.NetworkBrowser.getNetworkComputers();
         }
 

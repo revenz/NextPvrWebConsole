@@ -29,9 +29,20 @@ namespace NextPvrWebConsole.Controllers.Api
         }
 
         [HttpPost]
-        public bool XmlTvSource(Models.XmltvSource[] Sources)
+        public IEnumerable<Models.XmltvSource> XmlTvSources(Models.XmltvSource[] Sources)
         {
-            return false;
+            if (!Models.XmltvSource.Save(Sources))
+                throw new Exception("Failed to save.");
+            return Sources;
+        }
+
+        public Models.XmltvSource XmlTvSourceScan(int Oid)
+        {
+            var xmltv = Models.XmltvSource.LoadByOid(Oid);
+            if (xmltv == null)
+                return null;
+            xmltv.Scan();
+            return xmltv;
         }
 
         [HttpPost]

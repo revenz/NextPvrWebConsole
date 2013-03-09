@@ -33,11 +33,9 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
     };
 
     $scope.getXmlTvSource = function (epgSource) {
-        var name = epgSource.substr(6);
-        for (var i = 0; i < $scope.XmlTvSources.length; i++) {
-            if ($scope.XmlTvSources[i].ShortName == name)
-                return $scope.XmlTvSources[i];
-        }
+        var index = parseInt(epgSource.substr(6), 10);
+        if (!isNaN(index) && $scope.XmlTvSources && $scope.XmlTvSources.length > index)
+            return $scope.XmlTvSources[index];
         return null;
     };
 
@@ -52,6 +50,23 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
                     $scope.model.push(ele);
             });
         });
+    };
+
+    $scope.epgSourceSelected = function (source) {
+        if (!source.EpgSource.startsWith('XMLTV'))
+            return;
+        var xmltv = $scope.getXmlTvSource(source.EpgSource);
+        if (xmltv == null)
+            return;
+        if (String.isNullOrWhitespace(source.XmlTvChannel)) {
+            // look for the source.
+            for (var i = 0; i < xmltv.ChannelOids.length; i++) {
+                if (xmltv.ChannelOids[i].toLowerCase().trim() == source.Name.toLowerCase().trim()) {
+                    source.XmlTvChannel = xmltv.ChannelOids[i];
+                    break;
+                }
+            }
+        }
     };
 
     $scope.remove = function (item) {

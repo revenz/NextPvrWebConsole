@@ -20,10 +20,10 @@
                     <toggle-box ng-model="channel.Enabled"></toggle-box>
                 </td>
                 <td class="epg-source">
-                    <select ng-model="channel.EpgSource">
+                    <select ng-model="channel.EpgSource" ng-change="epgSourceSelected(channel)">
                         <option>None</option>
                         <optgroup label="XMLTV" ng-show="XmlTvSources.length">
-                            <option ng-repeat="xmltv in XmlTvSources" value="XMLTV-{{xmltv.ShortName}}">
+                            <option ng-repeat="xmltv in XmlTvSources" value="XMLTV-{{$index}}">
                                 {{xmltv.ShortName}}
                             </option>
                         </optgroup>>
@@ -32,10 +32,9 @@
                     </select>
                 </td>
                 <td class="xmltv-channel">
-                    <select ng-model="channel.XmlTvChannel" ng-disabled="!channel.EpgSource.startsWith('XMLTV')">
-                        <option ng-repeat="channel in getXmlTvSource(channel.EpgSource).ChannelOids">
-                            {{channel}}
-                        </option>
+                    <select ng-model="channel.XmlTvChannel" ng-disabled="!channel.EpgSource.startsWith('XMLTV')"
+                         ng-options="channel for channel in getXmlTvSource(channel.EpgSource).ChannelOids" 
+                        >
                     </select>
                 </td>
                 <td class="controls">

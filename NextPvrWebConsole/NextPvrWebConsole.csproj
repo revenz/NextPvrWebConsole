@@ -369,6 +369,7 @@
     <Content Include="Scripts\controllers\usersettings\ChannelsController.js" />
     <Content Include="Scripts\controllers\usersettings\RecordingDirectoriesController.js" />
     <Content Include="Scripts\core\angular.js" />
+    <Content Include="Scripts\directives\fileBrowserButton.js" />
     <Content Include="Scripts\directives\folderBrowser.js" />
     <Content Include="Scripts\directives\ngSortable.js" />
     <Content Include="Scripts\directives\timeSpinner.js" />

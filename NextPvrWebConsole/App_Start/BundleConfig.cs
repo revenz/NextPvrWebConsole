@@ -105,15 +105,15 @@ namespace NextPvrWebConsole
                     "~/Scripts/apihelper.js")
                     .IncludeDirectory("~/Scripts/mobile/core", "*.js"));
 
-            PageBundle(bundles, "Dashboard");
-            PageBundle(bundles, "Guide");
-            PageBundle(bundles, "Recordings");
-            PageBundle(bundles, "UserSettings");
-            PageBundle(bundles, "Configuration");
-            PageBundle(bundles, "Account");
-            PageBundle(bundles, "Setup");
-            PageBundle(bundles, "System");
-            PageBundle(bundles, "Search");
+            //PageBundle(bundles, "Dashboard");
+            //PageBundle(bundles, "Guide");
+            //PageBundle(bundles, "Recordings");
+            //PageBundle(bundles, "UserSettings");
+            //PageBundle(bundles, "Configuration");
+            //PageBundle(bundles, "Account");
+            //PageBundle(bundles, "Setup");
+            //PageBundle(bundles, "System");
+            //PageBundle(bundles, "Search");
 
             // this allows bundling when in debug mode
 #if(!DEBUG)

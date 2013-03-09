@@ -1,7 +1,7 @@
 ﻿<div ng-controller="Controllers.Configuration.XmlTvController">
     <p data-lang="Configuration-XmlTv-Summary"></p>
 
-    <table>
+    <table ng-show="model.sources.length">
         <thead>
             <tr>
                 <th class="shortname">Name</th>
@@ -12,11 +12,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in model">
+            <tr ng-repeat="item in model.sources">
                 <td class="shortname">{{item.ShortName}}</td>
                 <td class="filename">{{item.Filename}}</td>
-                <td class="lastscan">{{item.LastScanTime | date:'medium'}}</td>
-                <td class="numberofchannels">{{item.ChannelOids.length}}</td>
+                <td class="lastscan">
+                    <span ng-show="item.Oid > 0 && item.LastScanTime.getFullYear() > 1971">{{item.LastScanTime | date:'medium'}}</span>
+                    <span ng-show="item.Oid > 0 && item.LastScanTime.getFullYear() < 1971">Not Scanned</span>
+                    <span ng-show="item.Oid < 1">Not Saved</span>
+                </td>
+                <td class="numberofchannels">
+                    <span ng-show="item.ChannelOids.length">{{item.ChannelOids.length}}</span>
+                    <span ng-hide="item.ChannelOids.length">None</span>
+                </td>
                 <td class="actions">
                     <div class="btn-group">
                         <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">

@@ -203,7 +203,6 @@ var gui = new function () {
         });
     };
 
-
     this.folderBrowser = function (settings) {
 
         settings = $.extend({
@@ -264,6 +263,82 @@ var gui = new function () {
         div.on('hidden', function () {
             div.remove();
         });
+    };
+
+    this.fileBrowser = function (settings) {
+        var self = this;
+        settings = $.extend({
+            title: $.i18n._('File Browser'),
+            message: $.i18n._('Please select a file.'),
+            xmlFiles: false
+        }, settings);
+
+        var div = $('<div class="FolderBrowserWindow modal hide">' +
+		             '  <div class="modal-header"> ' +
+                  '         <button type="button" class="close" ng-click="close()" aria-hidden="true">&times;</button>' +
+			      '         <h3></h3>' +
+		          '     </div>' +
+		          '     <div class="modal-body">' +
+                  '         <span class="message"></span>' +
+                  '         <div class="FileTree">' +
+				  '             <div></div>' +
+			      '         </div>' +
+		          '     </div>' +
+		          '     <div class="modal-footer">' +
+			      '         <button class="btn btn-primary btn-ok">OK</button>' +
+			      '         <button class="btn btn-cancel">Cancel</button>' +
+		          '     </div>' +
+	              '</div>');
+        div.find('h3').text(settings.title);
+        div.find('.message').text(settings.message);
+        var btnOk = div.find('.btn-ok');
+        btnOk.text($.i18n._("OK"));
+        var btnCancel = div.find('.btn-cancel');
+        btnCancel.text($.i18n._("Cancel"));
+
+        btnOk.click(function () {
+            var selected = div.find('.file a.selected');
+            if (selected.length < 1)
+                return;
+
+            div.modal('hide');
+            
+            var rel = selected.attr('rel');
+
+            if (self.successFun)
+                self.successFun({
+                    shortName: selected.text(),
+                    fullName: rel
+                    });
+
+        });
+        btnCancel.click(function () {
+            div.modal('hide');
+        });
+        div.appendTo('body');
+        div.modal({});
+
+        var script = '/file/LoadDirectory';
+        if (settings.xmlFiles)
+            script = '/file/LoadDirectoryAndXml';
+
+        var filetree = div.find('.FileTree div');
+        filetree.fileTree(
+        {
+            root: '%root%',
+            script: script,
+        }, function (file) {
+        });
+
+        div.on('hidden', function () {
+            div.remove();
+        });
+
+        self.success = function (successFun) {
+            self.successFun = successFun;
+        };
+
+        return self;
     };
 }
 
