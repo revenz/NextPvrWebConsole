@@ -4,18 +4,14 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
     "use strict";
     var self = this;
 
+    $scope.model = {
+        channels: []
+    };
+
     gui.doWork();
     $http.get('/api/channel/getConfigurationChannels').success(function (data) {
         gui.finishWork();
-        $scope.model = data;
-    }).error(function () {
-        gui.finishWork();
-    });
-
-    gui.doWork();
-    $http.get('/api/configuration/xmltvsources').success(function (result) {
-        gui.finishWork();
-        $scope.XmlTvSources = result;
+        $scope.model.channels = data;
     }).error(function () {
         gui.finishWork();
     });
@@ -34,20 +30,24 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
 
     $scope.getXmlTvSource = function (epgSource) {
         var index = parseInt(epgSource.substr(6), 10);
-        if (!isNaN(index) && $scope.XmlTvSources && $scope.XmlTvSources.length > index)
-            return $scope.XmlTvSources[index];
+        if (!isNaN(index) && $rootScope.root.xmltvSources) {
+            for (var i = 0; i < $rootScope.root.xmltvSources.length; i++) {
+                if ($rootScope.root.xmltvSources[i].Oid == index)
+                    return $rootScope.root.xmltvSources[i];
+            }
+        }
         return null;
     };
 
     $scope.import = function () {
         $http.get('/api/channel/importMissing').success(function (result) {
             var knownOids = [];
-            $.each($scope.model, function (i, ele) {
+            $.each($scope.model.channels, function (i, ele) {
                 knownOids.push(ele.Oid);
             });
             $.each(result, function (i, ele) {
                 if ($.inArray(ele.Oid, knownOids) < 0)
-                    $scope.model.push(ele);
+                    $scope.model.channels.push(ele);
             });
         });
     };
@@ -58,13 +58,15 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
         var xmltv = $scope.getXmlTvSource(source.EpgSource);
         if (xmltv == null)
             return;
-        if (String.isNullOrWhitespace(source.XmlTvChannel)) {
-            // look for the source.
-            for (var i = 0; i < xmltv.ChannelOids.length; i++) {
-                if (xmltv.ChannelOids[i].toLowerCase().trim() == source.Name.toLowerCase().trim()) {
-                    source.XmlTvChannel = xmltv.ChannelOids[i];
-                    break;
-                }
+
+        // look for the source.
+        for (var i = 0; i < xmltv.Channels.length; i++) {
+            if (xmltv.Channels[i].Name.toLowerCase().trim() == source.Name.toLowerCase().trim()
+                || 
+                xmltv.Channels[i].Oid.toLowerCase().trim() == source.Name.toLowerCase().trim()
+                ) {
+                source.XmlTvChannel = xmltv.Channels[i].Oid;
+                break;
             }
         }
     };
@@ -74,33 +76,37 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
             message: $.i18n._("Are you sure you want to remove the channel '%s'?", [item.Name]),
             yes: function () {
                 $scope.$apply(function () {
-                    $scope.model.remove(item);
+                    $scope.model.channels.remove(item);
                 });
             }
         });
     };
 
     $scope.save = function () {
-        if ($scope.model == null)
+        if ($scope.model.channels == null)
             return;
         
-        for (var i = 0; i < $scope.model.length; i++) {
-            if (String.isNullOrWhitespace($scope.model[i].Name)) {
-                gui.showMessageBox($.i18n._('Channel name missing'), $.i18n._('Error'));
+        for (var i = 0; i < $scope.model.channels.length; i++) {
+            if (String.isNullOrWhitespace($scope.model.channels[i].Name)) {
+                gui.alert($.i18n._('Channel name missing'), $.i18n._('Error'));
                 return;
             }
-            if (!$scope.model[i].Number || isNaN($scope.model[i].Number)) {
-                gui.showMessageBox($.i18n._('Channel number invalid'), $.i18n._('Error'));
+            if (!$scope.model.channels[i].Number || isNaN($scope.model.channels[i].Number)) {
+                gui.alert($.i18n._('Channel number invalid'), $.i18n._('Error'));
                 return;
             }
         }
 
         gui.doWork();
-        $http.post('/api/channel/updateShared', $scope.model).success(function (result) {
+        $http.post('/api/channel/updateShared', $scope.model.channels).success(function (result) {
             gui.finishWork();
         }).error(function () {
             gui.finishWork();
         });
+    };
+
+    $scope.isEpgSourceSelected = function (channel, sourceName) {
+        return channel.EpgSource == sourceName;
     };
 };
 ns.ChannelController.$inject = ['$scope', '$http', '$rootScope'];

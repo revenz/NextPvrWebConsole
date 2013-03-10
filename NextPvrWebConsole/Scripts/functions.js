@@ -73,7 +73,7 @@ var gui = new function () {
     else if (window.attachEvent)
         window.attachEvent('unload', unloadFunction);
 
-    this.showMessageBox = function (message, title) {
+    this.alert = function (message, title) {
         var div = $('<div class="modal">' +
                         '<div class="modal-header">' +
                             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +

@@ -10,8 +10,12 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
     };
 
     gui.doWork();
+
     $http.get('/api/configuration/xmltvsources').success(function (result) {
+        console.log('got xmltv source');
+        console.log(result.Channels);
         gui.finishWork();
+        console.log(result);
         $.each(result, function (i, ele) {
             if (ele.LastScanTime && !ele.LastScanTime.getFullYear)
                 ele.LastScanTime = new Date(ele.LastScanTime);
@@ -20,6 +24,7 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
     }).error(function () {
         gui.finishWork();
     });
+
     $scope.scan = function (item) {
         gui.doWork();
         $http.post('/api/configuration/XmlTvSourceScan/' + item.Oid).success(function (result) {
@@ -57,6 +62,7 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
                     ele.LastScanTime = new Date(ele.LastScanTime);
             });
             $scope.model.sources = result;
+            $rootScope.root.xmltvSources = result.slice();
         }).error(function () {
             gui.finishWork();
         });
@@ -67,11 +73,18 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
             xmlFiles: true
         }).success(function (result) {
 
-            // TODO: check if already in list.
+            if (!$scope.model.sources)
+                $scope.model.sources = [];
+
+            // check if already in list.
+            for (var i = 0; i < $scope.model.sources.length; i++) {
+                if (result.fullName.toLowerCase().trim() == $scope.model.sources[i].Filename.toLowerCase().trim()) {
+                    gui.alert($.i18n._("XMLTV file already in list."));
+                    return;
+                }
+            }
 
             $scope.$apply(function () {
-                if (!$scope.model.sources)
-                    $scope.model.sources = [];
                 $scope.model.sources.push({
                     Oid: 0,
                     ShortName: result.shortName,
@@ -82,8 +95,14 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
     };
 
     $scope.remove = function (item) {
-        // TODO: confirm removal
-        $scope.model.sources.remove(item);
+        gui.confirm({
+            message: $.i18n._("Are you sure you want to remove the XMLTV file '%s'?", [item.ShortName]),
+            yes: function () {
+                $scope.$apply(function () {
+                    $scope.model.sources.remove(item);
+                });
+            }
+        });
     };
 
 };

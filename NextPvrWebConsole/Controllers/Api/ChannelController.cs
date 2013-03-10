@@ -24,6 +24,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
         public IEnumerable<Models.Channel> GetConfigurationChannels()
         {
+            var xmlTvSources = Models.XmltvSource.LoadAll();
             var coreChannels = NUtility.Channel.LoadAll();
             return Models.Channel.LoadAll(Globals.SHARED_USER_OID, true).ForEach<Models.Channel>(x =>
             {
@@ -32,6 +33,18 @@ namespace NextPvrWebConsole.Controllers.Api
                 {
                     x.EpgSource = core.EPGSource;
                     x.XmlTvChannel = Regex.Match(core.EPGMapping, "(?<=(<mapping_name>))[^<]+").Value;
+                    string xmlFile = Regex.Match(core.EPGMapping, "(?<=(<file>))[^<]+").Value;
+                    if (!String.IsNullOrWhiteSpace(xmlFile))
+                    {
+                        var source = xmlTvSources.Where(y => y.Filename.ToLower().Trim() == xmlFile.ToLower().Trim())
+                                                             .FirstOrDefault();
+                        if (source != null)
+                        {
+                            x.EpgSource = "XMLTV-" + source.Oid;
+                            x.XmlTvChannel = source.Channels.Where(y => y.Name.ToLower() == x.XmlTvChannel.ToLower())
+                                                            .Select(y => y.Oid).FirstOrDefault() ?? x.XmlTvChannel;
+                        }
+                    }
                 }
             });
         }

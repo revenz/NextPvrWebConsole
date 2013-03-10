@@ -29,7 +29,7 @@
         </li>
         <li ng-class="{ last: true, selected: selectedTabIndex == 5 }" ng-click="selectedTabIndex = 5">
             <i class="gi-embed_close"></i>
-            <span data-lang="XMLTV" />
+            <span data-lang="EPG Sources" />
         </li>
     </ul>
     
@@ -48,8 +48,52 @@
     <div class="vtab-content" id="configuration-tab-channels" ng-show="selectedTabIndex == 4">
         @Html.Partial("_Channels")
     </div>
-    <div class="vtab-content" id="configuration-tab-xmltv" ng-show="selectedTabIndex == 5">
-        @Html.Partial("_XmlTv")
+    <div class="vtab-content" id="configuration-tab-epg" ng-show="selectedTabIndex == 5">
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#epg-xmltv" data-toggle="tab">XMLTV</a></li>
+            <li><a href="#epg-schedules-direct" data-toggle="tab">Schedules Direct</a></li>
+        </ul>
+ 
+        <div class="tab-content">
+            <div class="tab-pane active" id="epg-xmltv">
+                @Html.Partial("_XmlTv")
+            </div>
+            <div class="tab-pane" id="epg-schedules-direct">
+                <table>
+                    <tr>
+                        <td>Emabled</td>
+                        <td><toggle-box></toggle-box></td>
+                    </tr>
+                    <tr>
+                        <td>User Name</td>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="btn">Download</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Lineup</td>
+                        <td>
+                            <select></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mapping</td>
+                        <td>
+                            <select></select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -13,27 +13,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="channel in model">
+            <tr ng-repeat="channel in model.channels">
                 <td class="name"><input type="text" ng-model="channel.Name" /></td>
                 <td class="number"><input type="number" ng-model="channel.Number" min="1" max="999" /></td>
                 <td class="enabled">
                     <toggle-box ng-model="channel.Enabled"></toggle-box>
                 </td>
                 <td class="epg-source">
-                    <select ng-model="channel.EpgSource" ng-change="epgSourceSelected(channel)">
+                    <select ng-change="epgSourceSelected(channel)" ng-model="channel.EpgSource">
                         <option>None</option>
-                        <optgroup label="XMLTV" ng-show="XmlTvSources.length">
-                            <option ng-repeat="xmltv in XmlTvSources" value="XMLTV-{{$index}}">
-                                {{xmltv.ShortName}}
-                            </option>
-                        </optgroup>>
+                        <optgroup label="XMLTV" ng-show="root.xmltvSources.length">
+                            <option ng-selected="isEpgSourceSelected(channel, 'XMLTV-'+xmltv.Oid)" ng-repeat="xmltv in root.xmltvSources" value="XMLTV-{{xmltv.Oid}}">{{xmltv.ShortName}}</option>
+                        </optgroup>
                         <option>DVB/ATSC EPG</option>
                         <option>Schedules Direct</option>
                     </select>
                 </td>
                 <td class="xmltv-channel">
                     <select ng-model="channel.XmlTvChannel" ng-disabled="!channel.EpgSource.startsWith('XMLTV')"
-                         ng-options="channel for channel in getXmlTvSource(channel.EpgSource).ChannelOids" 
+                         ng-options="channel.Oid as channel.Name for channel in getXmlTvSource(channel.EpgSource).Channels" 
                         >
                     </select>
                 </td>

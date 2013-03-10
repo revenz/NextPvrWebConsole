@@ -22,10 +22,10 @@ function ForgotPassword_Complete(args) {
         var msg = $.i18n._('Failed to reset password.');
         if (data.message && data.message.length > 0)
             msg = data.message;
-        gui.showMessageBox(msg);
+        gui.alert(msg);
     }
     else {
-        gui.showMessageBox($.i18n._('A password reset request has been emailed to your account.'));
+        gui.alert($.i18n._('A password reset request has been emailed to your account.'));
         $('#btnForgotPasswordCancel').click();
     }
 }

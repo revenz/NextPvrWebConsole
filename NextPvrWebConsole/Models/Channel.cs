@@ -84,7 +84,6 @@ namespace NextPvrWebConsole.Models
             return results.OrderBy(x => x.Number).ToList();
         }
 
-
         public static Channel[] LoadAll(int UserOid, bool IncludeDisabled = false)
         {
             return Helpers.Cacher.RetrieveOrStore<Channel[]>("Channel.LoadAll(" + UserOid + "," + IncludeDisabled  +")", new TimeSpan(0, 1, 0), delegate
@@ -186,6 +185,65 @@ where c.enabled = 1 and uc.enabled = 1 and uc.useroid = @0 and cg.name = @1", Us
                             db.Update(channel);
                         else
                             db.Insert("channel", "oid", false, channel);
+
+                        // update epg source in NextPVR
+                        var nChannel = NUtility.Channel.LoadByOID(channel.Oid);
+                        if (channel.EpgSource.ToLower().StartsWith("xmltv-"))
+                        {
+                            int xmltvId = 0;
+                            if(int.TryParse(channel.EpgSource.Substring(6), out xmltvId)){
+                                var xmltvSource = Models.XmltvSource.LoadByOid(xmltvId);
+                                if (xmltvSource != null)
+                                {
+                                    var xmltvChannel = xmltvSource.Channels.Where(x => x.Oid == channel.XmlTvChannel).FirstOrDefault();
+                                    if (xmltvChannel != null)
+                                    {
+                                        nChannel.EPGMapping = @"<epg>
+  <source>XMLTV</source>
+  <file>{0}</file>
+  <mapping_id>{1}</mapping_id>
+  <mapping_name>{2}</mapping_name>
+</epg>".FormatStr(xmltvSource.Filename, xmltvChannel.Oid, xmltvChannel.Name);
+
+                                        nChannel.EPGSource = "XMLTV";
+                                        nChannel.Save();
+                                    }
+                                }
+                            }
+                        }
+                        else if (channel.EpgSource.ToUpper() == "DVB/ATSC EPG")
+                        {
+                            NUtility.ChannelMapping channelMapping = null;
+                            foreach(var device in Models.Device.LoadAll().Where(x => x.Enabled))
+                            {
+                                channelMapping = nChannel.GetChannelMapping(device.Oid);
+                                if(channelMapping != null)
+                                    break;
+                            }
+                            if (channelMapping != null)
+                            {
+                                nChannel.EPGMapping = @"<epg>
+  <source>DVB/ATSC EPG</source>
+  <capture_source>{0}</capture_source>
+  <readable_source>{1} {2}</readable_source>
+  <mapping>{1}</mapping>
+</epg>".FormatStr(channelMapping.captureSourceOID, "{0}:{1}:{2}".FormatStr(channelMapping.SID, channelMapping.TSID, channelMapping.ONID), nChannel.Name);
+                                nChannel.EPGSource = "DVB/ATSC EPG";
+                                nChannel.Save();
+                            }
+                        }
+                        else if (channel.EpgSource.ToUpper() == "NONE")
+                        {
+                            nChannel.EPGSource = "None";
+                            nChannel.EPGMapping = "";
+                            nChannel.Save();
+                        }
+                        else if (channel.EpgSource.ToUpper() == "SCHEDULES DIRECT")
+                        {
+                            nChannel.EPGSource = "Schedules Direct";
+                            nChannel.EPGMapping = "";
+                            nChannel.Save();
+                        }
                     }
                 }
                 else

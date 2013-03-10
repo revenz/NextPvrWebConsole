@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
 
 namespace NextPvrWebConsole.Models
 {
+    [DataContract]
     [PetaPoco.PrimaryKey("Oid")]
     public class XmltvSource : NextPvrWebConsoleModel
     {
+        [DataMember]
         [PetaPoco.Ignore]
         public string ShortName
         {
@@ -23,24 +26,40 @@ namespace NextPvrWebConsole.Models
                 catch (Exception) { return null; }
             }
         }
+        [DataMember]
         [PetaPoco.Column]
         public int Oid { get; set; }
+        [DataMember]
         [PetaPoco.Column]
         public string Filename { get; set; }
+        [DataMember]
         [PetaPoco.Column]
         public DateTime LastScanTime { get; set; }
-        [PetaPoco.Column("channeloids")]
-        public string _ChannelOids { get; set; }
+        [PetaPoco.Column("channels")]
+        public string _Channels { get; set; }
+        [DataMember]
         [PetaPoco.Ignore]
-        public string[] ChannelOids
+        public XmltvSourceChannel[] Channels
         {
             get
             {
-                return (_ChannelOids ?? "").Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                return (_Channels ?? "").Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries)
+                       .Select(x =>
+                       {
+                           string[] parts = x.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                           if (parts.Length != 2)
+                               return null;
+                           return new XmltvSourceChannel() { Oid = parts[0], Name = parts[1] };
+                       }).Where(x => x != null).ToArray(); 
             }
             set
             {
-                _ChannelOids = String.Join(";", value ?? new string[] { });
+                if (value == null)
+                    _Channels = "";
+                else
+                {
+                    _Channels = String.Join(";", value.Select(x => { return x.ToString(); }));
+                }
             }
         }
 
@@ -74,11 +93,11 @@ namespace NextPvrWebConsole.Models
             try
             {
                 XDocument doc = XDocument.Load(this.Filename);
-                this.ChannelOids = doc.Element("tv").Elements("channel")
+                this.Channels = doc.Element("tv").Elements("channel")
                                         .Where(x => x.Element("display-name") != null)
                                         .Select(x =>
                                         {
-                                            return x.Element("display-name").Value;
+                                            return new XmltvSourceChannel { Oid = x.Attribute("id").Value, Name = x.Element("display-name").Value };
                                         }).ToArray();
                 this.LastScanTime = DateTime.Now;
 
@@ -93,8 +112,8 @@ namespace NextPvrWebConsole.Models
         {
             if(db == null)
                 db = DbHelper.GetDatabase();
-            if (this._ChannelOids == null)
-                this._ChannelOids = "";
+            if (this._Channels == null)
+                this._Channels = "";
             if (this.LastScanTime < System.Data.SqlTypes.SqlDateTime.MinValue.Value)
                 this.LastScanTime = System.Data.SqlTypes.SqlDateTime.MinValue.Value;
             if (this.Oid < 1)
@@ -144,6 +163,17 @@ namespace NextPvrWebConsole.Models
                 db.AbortTransaction();
                 return false;
             }
+        }
+    }
+
+    public class XmltvSourceChannel
+    {
+        public string Oid { get; set; }
+        public string Name { get; set; }
+
+        public override string ToString()
+        {
+            return "{0}|{1}".FormatStr(this.Oid, this.Name);
         }
     }
 }

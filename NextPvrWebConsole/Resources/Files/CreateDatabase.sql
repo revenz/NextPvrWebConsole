@@ -78,7 +78,7 @@ CREATE TABLE [xmltvsource]
 	oid						integer				NOT NULL			PRIMARY KEY				AUTOINCREMENT,
 	[filename]				text				NOT NULL,
 	lastscantime			datetime			NOT NULL,
-	channeloids				text				NOT NULL
+	channels				text				NOT NULL
 )
 GO
 

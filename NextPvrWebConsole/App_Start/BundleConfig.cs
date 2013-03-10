@@ -110,8 +110,8 @@ namespace NextPvrWebConsole
             //PageBundle(bundles, "Recordings");
             //PageBundle(bundles, "UserSettings");
             //PageBundle(bundles, "Configuration");
-            //PageBundle(bundles, "Account");
-            //PageBundle(bundles, "Setup");
+            PageBundle(bundles, "Account");
+            PageBundle(bundles, "Setup");
             //PageBundle(bundles, "System");
             //PageBundle(bundles, "Search");
 

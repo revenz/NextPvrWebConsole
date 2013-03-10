@@ -95,6 +95,22 @@ npvrapp.run(function ($rootScope, $http, $location) {
     $rootScope.search = function () {
         $location.path('/search/' + encodeURI($rootScope.SearchText));
     };
+
+    $rootScope.root = {
+        xmltvSources: []
+    };
+
+    gui.doWork();
+    $http.get('/api/configuration/xmltvsources').success(function (result) {
+        gui.finishWork();
+        $.each(result, function (i, ele) {
+            if (ele.LastScanTime && !ele.LastScanTime.getFullYear)
+                ele.LastScanTime = new Date(ele.LastScanTime);
+        });
+        $rootScope.root.xmltvSources = result;
+    }).error(function () {
+        gui.finishWork();
+    });
 });
 
 
