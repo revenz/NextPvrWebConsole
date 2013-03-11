@@ -60,38 +60,7 @@
                 @Html.Partial("_XmlTv")
             </div>
             <div class="tab-pane" id="epg-schedules-direct">
-                <table>
-                    <tr>
-                        <td>Emabled</td>
-                        <td><toggle-box></toggle-box></td>
-                    </tr>
-                    <tr>
-                        <td>User Name</td>
-                        <td><input type="text" /></td>
-                    </tr>
-                    <tr>
-                        <td>Password</td>
-                        <td><input type="password" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <button type="btn">Download</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Lineup</td>
-                        <td>
-                            <select></select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mapping</td>
-                        <td>
-                            <select></select>
-                        </td>
-                    </tr>
-                </table>
+                @Html.Partial("_SchedulesDirect")
             </div>
         </div>
     </div>

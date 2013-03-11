@@ -28,13 +28,17 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
         });
     };
 
-    $scope.getXmlTvSource = function (epgSource) {
-        var index = parseInt(epgSource.substr(6), 10);
-        if (!isNaN(index) && $rootScope.root.xmltvSources) {
-            for (var i = 0; i < $rootScope.root.xmltvSources.length; i++) {
-                if ($rootScope.root.xmltvSources[i].Oid == index)
-                    return $rootScope.root.xmltvSources[i];
+    $scope.getTvSource = function (epgSource) {
+        if (epgSource.startsWith('XMLTV-')) {
+            var index = parseInt(epgSource.substr(6), 10);
+            if (!isNaN(index) && $rootScope.root.xmltvSources) {
+                for (var i = 0; i < $rootScope.root.xmltvSources.length; i++) {
+                    if ($rootScope.root.xmltvSources[i].Oid == index)
+                        return $rootScope.root.xmltvSources[i].Channels
+                }
             }
+        } else if (epgSource.startsWith('SD-')) {
+            // schedule direct
         }
         return null;
     };

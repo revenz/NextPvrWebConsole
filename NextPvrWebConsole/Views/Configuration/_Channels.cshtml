@@ -8,7 +8,7 @@
                 <th class="number" data-lang="Number"></th>
                 <th class="enabled" data-lang="Enabled"></th>
                 <th class="epg-source" data-lang="EPG Source"></th>
-                <th class="xmltv-channel" data-lang="XMLTV Channel"></th>
+                <th class="channel" data-lang="Channel"></th>
                 <th class="controls"></th>
             </tr>
         </thead>
@@ -26,12 +26,14 @@
                             <option ng-selected="isEpgSourceSelected(channel, 'XMLTV-'+xmltv.Oid)" ng-repeat="xmltv in root.xmltvSources" value="XMLTV-{{xmltv.Oid}}">{{xmltv.ShortName}}</option>
                         </optgroup>
                         <option>DVB/ATSC EPG</option>
-                        <option>Schedules Direct</option>
+                        <optgroup label="Schedules Direct" ng-show="root.SchedulesDirectLineups.length">
+                            <option ng-repeat="sd in root.SchedulesDirectLineups" value="SD-{{sd.Oid}}">{{sd.Name}}</option>
+                        </optgroup>
                     </select>
                 </td>
-                <td class="xmltv-channel">
+                <td class="channel">
                     <select ng-model="channel.XmlTvChannel" ng-disabled="!channel.EpgSource.startsWith('XMLTV')"
-                         ng-options="channel.Oid as channel.Name for channel in getXmlTvSource(channel.EpgSource).Channels" 
+                         ng-options="channel.Oid as channel.Name for channel in getTvSource(channel.EpgSource)" 
                         >
                     </select>
                 </td>

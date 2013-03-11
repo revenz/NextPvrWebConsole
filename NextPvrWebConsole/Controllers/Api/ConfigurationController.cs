@@ -22,6 +22,7 @@ namespace NextPvrWebConsole.Controllers.Api
             return Models.Device.LoadAll();
         }
 
+        #region xmltv
         [HttpGet]
         public IEnumerable<Models.XmltvSource> XmlTvSources()
         {
@@ -50,5 +51,29 @@ namespace NextPvrWebConsole.Controllers.Api
         {
             return Models.XmltvSource.ImportFromNextPvr();
         }
+        #endregion
+
+        #region schedules direct
+        [HttpGet]
+        public Models.SchedulesDirectModel SchedulesDirect()
+        {
+            var config = new Models.SchedulesDirectModel();
+            if (config.Enabled)
+                config.Password = "        ";
+            return config;
+        }
+
+        [HttpPost]
+        public bool SchedulesDirect(Models.SchedulesDirectModel Model)
+        {
+            return Model.Save();
+        }
+
+        [HttpPost]
+        public object SchedulesDirectScan(Models.SchedulesDirectModel Model)
+        {
+            return Model.Scan();
+        }
+        #endregion
     }
 }

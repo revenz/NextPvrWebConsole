@@ -1,0 +1,38 @@
+﻿@{
+    var Model = new NextPvrWebConsole.Models.SchedulesDirectModel()
+    {
+        Username = "",
+        Password = "",
+        Enabled = false
+    };
+}
+<div ng-controller="Controllers.Configuration.SchedulesDirectController">
+    <p data-lang="Configuration-SchedulesDirect-Summary"></p>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => Model.Enabled)</td>
+                <td><toggle-box ng-model="model.config.Enabled"></toggle-box></td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => Model.Username)</td>
+                <td>@Html.TextBoxFor(m => Model.Username, new { ng_disabled="!model.config.Enabled", ng_model="model.config.Username" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => Model.Password)</td>
+                <td>@Html.TextBoxFor(m => Model.Password, new { ng_disabled="!model.config.Enabled", ng_model="model.config.Password", type="password" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button class="btn btn-primary" ng-click="save()">
+                        <i class="icon-ok-sign icon-white" />
+                        Save
+                    </button>
+                    <button class="btn" ng-click="scan()">
+                        <i class="icon-download" />
+                        Scan
+                    </button>
+                </td>
+            </tr>
+        </table>
+</div>
