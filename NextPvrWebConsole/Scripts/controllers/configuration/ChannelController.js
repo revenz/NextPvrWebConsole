@@ -39,6 +39,13 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
             }
         } else if (epgSource.startsWith('SD-')) {
             // schedule direct
+            var oid = epgSource.substr(3);
+            for (var i = 0; i < $rootScope.root.SchedulesDirectLineups.length; i++) {
+                if ($rootScope.root.SchedulesDirectLineups[i].Oid == oid) {
+                    console.log($rootScope.root.SchedulesDirectLineups[i].Channels);
+                    return $rootScope.root.SchedulesDirectLineups[i].Channels;
+                }
+            }
         }
         return null;
     };
@@ -57,20 +64,21 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
     };
 
     $scope.epgSourceSelected = function (source) {
-        if (!source.EpgSource.startsWith('XMLTV'))
-            return;
-        var xmltv = $scope.getXmlTvSource(source.EpgSource);
-        if (xmltv == null)
-            return;
+        if (source.EpgSource.startsWith('XMLTV')) {
 
-        // look for the source.
-        for (var i = 0; i < xmltv.Channels.length; i++) {
-            if (xmltv.Channels[i].Name.toLowerCase().trim() == source.Name.toLowerCase().trim()
-                || 
-                xmltv.Channels[i].Oid.toLowerCase().trim() == source.Name.toLowerCase().trim()
-                ) {
-                source.XmlTvChannel = xmltv.Channels[i].Oid;
-                break;
+            var xmltv = $scope.getXmlTvSource(source.EpgSource);
+            if (xmltv == null)
+                return;
+
+            // look for the source.
+            for (var i = 0; i < xmltv.Channels.length; i++) {
+                if (xmltv.Channels[i].Name.toLowerCase().trim() == source.Name.toLowerCase().trim()
+                    ||
+                    xmltv.Channels[i].Oid.toLowerCase().trim() == source.Name.toLowerCase().trim()
+                    ) {
+                    source.XmlTvChannel = xmltv.Channels[i].Oid;
+                    break;
+                }
             }
         }
     };

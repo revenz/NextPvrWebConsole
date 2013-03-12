@@ -58,8 +58,6 @@ namespace NextPvrWebConsole.Controllers.Api
         public Models.SchedulesDirectModel SchedulesDirect()
         {
             var config = new Models.SchedulesDirectModel();
-            if (config.Enabled)
-                config.Password = "        ";
             return config;
         }
 

@@ -14,13 +14,17 @@ namespace NextPvrWebConsole.Models
         public SchedulesDirectModel()
         {
             this.Username = NShared.SchedulesDirectEPGSource.GetStoredUsername();
-            this.Password = NShared.SchedulesDirectEPGSource.GetStoredPassword();
             this.Enabled = !String.IsNullOrWhiteSpace(this.Username);
+            if(this.Enabled)
+                this.Password = "        ";
         }
 
         public bool Save()
         {
-            return false;
+            string username = this.Enabled ? this.Username : null;
+            string password = this.Enabled && this.Password != "        " ? this.Password : null; 
+            new NShared.SchedulesDirectEPGSource().UpdateCache(username, password);
+            return true;
         }
 
         public object Scan()
@@ -28,13 +32,16 @@ namespace NextPvrWebConsole.Models
             var source = new NShared.SchedulesDirectEPGSource();
             source.password = this.Password;
             source.username = this.Username;
+            if (String.IsNullOrWhiteSpace(source.username))
+                source.username = NShared.SchedulesDirectEPGSource.GetStoredPassword();
+
             var results = source.GetLineups().Select(x =>
             {
                 return new
                 {
-                    Name= x,
+                    Name = x,
                     Oid = x,
-                    Channels = source.GetChannelsForLineup(x).Select(y => y.mapping).ToArray()
+                    Channels = source.GetChannelsForLineup(x).Select(y => new { Oid = y.description, Name = y.description }).ToArray()
                 };
             });
             return results;

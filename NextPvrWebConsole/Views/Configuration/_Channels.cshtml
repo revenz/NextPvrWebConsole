@@ -32,7 +32,7 @@
                     </select>
                 </td>
                 <td class="channel">
-                    <select ng-model="channel.XmlTvChannel" ng-disabled="!channel.EpgSource.startsWith('XMLTV')"
+                    <select ng-model="channel.XmlTvChannel" ng-disabled="!channel.EpgSource.startsWith('XMLTV') && !channel.EpgSource.startsWith('SD-')"
                          ng-options="channel.Oid as channel.Name for channel in getTvSource(channel.EpgSource)" 
                         >
                     </select>
