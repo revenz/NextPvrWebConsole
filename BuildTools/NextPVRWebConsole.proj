@@ -2,10 +2,10 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="Build">
 
     <PropertyGroup>
-		<VisualStudio>$(MSBuildProgramFiles32)\Microsoft Visual Studio 11.0\</VisualStudio>
+		<VisualStudio>$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\</VisualStudio>
         <OutputDir>..\BuildOutput</OutputDir>
 		<Configuration>x86</Configuration>	
-		<ProductVersion>1.1.0</ProductVersion>
+		<ProductVersion>0.2.0</ProductVersion>
 		
 		<SrcPath>..\</SrcPath>
     </PropertyGroup>
