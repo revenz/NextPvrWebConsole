@@ -15,6 +15,7 @@
                     <th class="present" data-lang="Present"></th>
                     <th class="enabled" data-lang="Enabled"></th>
                     <th class="channels" data-lang="Channels"></th>
+                    <th class="actions"></th>
                 </tr>
             </thead>
             <tbody ng-sortable="model.Devices" data-handle=".handle" id="devices">
@@ -27,6 +28,9 @@
                         <toggle-box ng-model="device.Enabled"></toggle-box>
                     </td>
                     <td class="channels">{{device.NumberOfChannels}}</td>
+                    <td>
+                        <button class="btn" ng-click="scan(device.Oid)">Scan</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -48,5 +52,18 @@
                 </td>
             </tr>
         </table>
+    </div>
+
+    <div ng-show="model.IsScanning" class="modal">
+        <div class="modal-header">
+            <button type="button" class="close" aria-hidden="true">&times;</button>
+            <h3>Scanning for Channels</h3>
+        </div>
+        <div class="modal-body">
+            <span>{{model.ScanningStatus}}</span>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary">Cancel</button>
+        </div>
     </div>
 </div>

@@ -73,5 +73,6 @@ namespace NextPvrWebConsole.Controllers.Api
             return Model.Scan();
         }
         #endregion
+
     }
 }

@@ -126,6 +126,7 @@ namespace NextPvrWebConsole.Models
             cs.Save();
             return true;
         }
+
     }
 
     public class Stream

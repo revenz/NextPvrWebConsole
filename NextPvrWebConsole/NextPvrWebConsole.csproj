@@ -209,7 +209,7 @@
     <Compile Include="Controllers\Api\ChannelGroupsController.cs" />
     <Compile Include="Controllers\Api\ConfigurationController.cs" />
     <Compile Include="Controllers\Api\GuideController.cs" />
-    <Compile Include="Controllers\Api\DevicesController.cs" />
+    <Compile Include="Controllers\Api\DeviceController.cs" />
     <Compile Include="Controllers\Api\LogsController.cs" />
     <Compile Include="Controllers\Api\NextPvrWebConsoleApiController.cs" />
     <Compile Include="Controllers\Api\RecordingDirectoriesController.cs" />

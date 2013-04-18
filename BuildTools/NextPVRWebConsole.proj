@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="Build">
+
+    <PropertyGroup>
+		<VisualStudio>$(MSBuildProgramFiles32)\Microsoft Visual Studio 11.0\</VisualStudio>
+        <OutputDir>..\BuildOutput</OutputDir>
+		<Configuration>x86</Configuration>	
+		<ProductVersion>1.1.0</ProductVersion>
+		
+		<SrcPath>..\</SrcPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectToBuild Include="..\NextPvrWebConsole.sln">
+            <!--<Properties>OutputPath=$(OutputDir);Configuration=SingleImage;Platform=Any CPU</Properties>-->
+			<Properties>Configuration=SingleImage;Platform=Any CPU</Properties>
+        </ProjectToBuild>
+    </ItemGroup>
+
+    <Target Name="Build">
+        <!--<MSBuild Projects="@(ProjectToBuild)"/>-->
+		<Exec Command='"$(VisualStudio)Common7\IDE\devenv.com" NextPvrWebConsole.sln /nologo /rebuild' />
+    </Target>
+
+</Project>

@@ -30,11 +30,10 @@ namespace NextPvrWebConsole.Models
         public object Scan()
         {
             var source = new NShared.SchedulesDirectEPGSource();
-            source.password = this.Password;
             source.username = this.Username;
-            if (String.IsNullOrWhiteSpace(source.username))
-                source.username = NShared.SchedulesDirectEPGSource.GetStoredPassword();
-
+            source.password = this.Password;
+            //if (String.IsNullOrWhiteSpace(source.username))
+            //    source.password = NShared.SchedulesDirectEPGSource.GetStoredPassword();
             var results = source.GetLineups().Select(x =>
             {
                 return new

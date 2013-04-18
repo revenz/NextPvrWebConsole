@@ -177,5 +177,34 @@ namespace NextPvrWebConsole.Controllers
             return Json(new { success = true });
         }
 
+        public ActionResult Scan(int Oid)
+        {
+            HttpContext.Response.Write("Scan..." + Environment.NewLine);
+            HttpContext.Response.Flush();
+            NShared.Visible.CaptureSource cs = Helpers.NpvrCoreHelper.CaptureSourceLoadAll().Where(x => x.OID == Oid).FirstOrDefault();
+            if (cs == null)
+                return null;
+
+            var paramters = cs.GetChannelScannerParameters().ToDictionary(x => x.Key, x => (object)x.Value);
+            foreach (var p in paramters)
+            {
+                List<object> o = cs.GetChannelScannerParameterOptions(p.Key);
+            }
+            string reason = null;
+            var scannner = cs.GetChannelScanner(paramters, out reason);
+            scannner.StartScan(out reason);
+            HttpContext.Response.Write("Starting scan..." + Environment.NewLine);
+            HttpContext.Response.Flush();
+
+            while (!scannner.IsScanComplete())
+            {
+                string status = scannner.GetStatusDescription();
+                HttpContext.Response.Write("    " + status + Environment.NewLine);
+                HttpContext.Response.Flush();
+                System.Threading.Thread.Sleep(1000);
+            }
+            HttpContext.Response.Write("Scan complete.");
+            return null;
+        }
     }
 }

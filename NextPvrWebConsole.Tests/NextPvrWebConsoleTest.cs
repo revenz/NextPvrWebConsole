@@ -16,19 +16,19 @@ namespace NextPvrWebConsole.Tests
 #if(!DEBUG)
             throw new Exception("Must be run in debug mode!");
 #endif
-            DbHelper.DbFile = System.IO.Path.GetTempFileName();
+            //DbHelper.DbFile = System.IO.Path.GetTempFileName();
 
-            new NextPvrWebConsole.Controllers.SetupController().Index(new SetupModel()
-            {
-                Username = "setupuser",
-                EmailAddress = "setup@user.test",
-                Password = "setupuser",
-                ConfirmPassword = "setupuser"
-            });
+            //new NextPvrWebConsole.Controllers.SetupController().Index(new SetupModel()
+            //{
+            //    Username = "setupuser",
+            //    EmailAddress = "setup@user.test",
+            //    Password = "setupuser",
+            //    ConfirmPassword = "setupuser"
+            //});
 
-            var config = new NextPvrWebConsole.Models.Configuration();
-            config.UserBaseRecordingDirectory = System.IO.Path.GetTempPath();
-            config.Save();
+            //var config = new NextPvrWebConsole.Models.Configuration();
+            //config.UserBaseRecordingDirectory = System.IO.Path.GetTempPath();
+            //config.Save();
         }
 
         protected Models.User User;
