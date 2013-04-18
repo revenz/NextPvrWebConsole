@@ -32,7 +32,7 @@
 			<Name>NextPvrWebConsole</Name>
 			<Project>{A9FAD5BD-6695-4566-943F-5BA317ED8D0B}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\NextPvrWebConsoleInsaller\NextPvrWebConsoleInstaller.csproj">
+		<ProjectReference Include="..\NextPvrWebConsoleInstaller\NextPvrWebConsoleInstaller.csproj">
 			<Name>NextPvrWebConsoleInstaller</Name>
 			<Project>{50042BC4-C5E9-4DEC-94DA-B83321B8C71A}</Project>
 		</ProjectReference>
