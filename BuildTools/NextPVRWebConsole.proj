@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <Target Name="Build">
-        <MSBuild Projects="@(ProjectToBuild)"/>-->
+        <MSBuild Projects="@(ProjectToBuild)"/>
 		<!--<Exec Command='"$(VisualStudio)Common7\IDE\devenv.com" ..\NextPvrWebConsole.sln /nologo /rebuild SingleImage' />-->
     </Target>
 
