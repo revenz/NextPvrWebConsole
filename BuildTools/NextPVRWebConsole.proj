@@ -9,6 +9,60 @@
 		
 		<SrcPath>..\</SrcPath>
     </PropertyGroup>
+	
+	<UsingTask TaskName="GitVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+		<ParameterGroup>
+		  <LocalPath ParameterType="System.String" />
+		  <Path ParameterType="System.String" />
+		  <CommitCount ParameterType="System.Int32" Output="true" />
+		</ParameterGroup>
+		<Task>
+		  <!--<Reference Include="" />-->
+		  <Using Namespace="System"/>
+		  <Using Namespace="System.Diagnostics"/>
+		  <Code Type="Fragment" Language="cs">
+			<![CDATA[
+			  LocalPath = LocalPath ?? ".";
+			  Path = Path ?? "master";
+			  
+			  Log.LogMessage(MessageImportance.Low, "LocalPath is {0}", LocalPath);
+			  Log.LogMessage(MessageImportance.Low, "Path is {0}", Path);
+			  
+			  var psi = new ProcessStartInfo("cmd", "/c git rev-list " + Path + " --count") {
+				  UseShellExecute = false, 
+				  ErrorDialog = false, 
+				  CreateNoWindow = false, 
+				  WorkingDirectory = LocalPath,
+				  RedirectStandardOutput = true,
+				  RedirectStandardError = true
+			  };
+	 
+			  string result;
+			  using (var p = Process.Start(psi)) {
+				p.WaitForExit();
+				if (p.ExitCode != 0) {
+				  using (var standardError = p.StandardError) {
+					Log.LogError(standardError.ReadToEnd());
+				  }
+				  return false;
+				}
+	 
+				using (var standardOutput = p.StandardOutput) {
+				  CommitCount = Int32.Parse(standardOutput.ReadToEnd());
+				}
+			  }
+			]]>
+		  </Code>
+		</Task>
+	</UsingTask>
+ 
+	<Target Name="demo">
+		<GitVersion Path="master">
+		  <Output PropertyName="GitCommitCount" TaskParameter="CommitCount" />
+		</GitVersion>
+
+		<Message Text="Commit count: $(GitCommitCount)"/>
+	</Target>
 
     <ItemGroup>
         <ProjectToBuild Include="..\NextPvrWebConsole.sln">
