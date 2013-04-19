@@ -28,6 +28,8 @@
 			  Log.LogMessage(MessageImportance.Low, "LocalPath is {0}", LocalPath);
 			  Log.LogMessage(MessageImportance.Low, "Path is {0}", Path);
 			  
+			  throw new Exception("Executing directory: " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+			  
 			  var psi = new ProcessStartInfo("cmd", "/c \"c:\\program files\\git\\bin\\git\" rev-list " + Path + " --count") {
 				  UseShellExecute = false, 
 				  ErrorDialog = false, 
