@@ -70,13 +70,21 @@
     </ItemGroup>
 
     <Target Name="Build" DependsOnTargets="demo">
-		<FileUpdate 
-		   Files="../NextPvrWebConsole.InstallSheildLE.Setup/NextPvrWebConsole.InstallSheildLE.Setup.isl" 
-		   Regex="ProductVersion&lt;/td&gt;&lt;td&gt;([\d]+\.)*[\d]&lt;/td&gt;" 
-		   ReplacementText="ProductVersion&lt;/td&gt;&lt;td&gt;$(ProductVersion).$(CommitCount)&lt;/td&gt;" />
+		<ItemGroup>
+		  <InstallFile Include="../NextPvrWebConsole.InstallSheildLE.Setup/NextPvrWebConsole.InstallSheildLE.Setup.isl" />
+		</ItemGroup>
+		<RegexReplace 
+		   Input="@(InstallFile)" 
+		   Expression="ProductVersion&lt;/td&gt;&lt;td&gt;([\d]+\.)*[\d]&lt;/td&gt;" 
+		   Replacement="ProductVersion&lt;/td&gt;&lt;td&gt;$(ProductVersion).$(CommitCount)&lt;/td&gt;">
+		    <Output ItemName="InstallFile" TaskParameter="Output" />
+		</RegexReplace>
 	
         <MSBuild Projects="@(ProjectToBuild)"/>
+		
+		<Move SourceFiles="..\NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup\Express\SingleImage\DiskImages\DISK1\setup.exe" 
+			  DestinationFiles="..\NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup\Express\SingleImage\DiskImages\DISK1\NextPVRWebConsole-$(ProductVersion).$(GitCommitCount).exe" />
 		<!--<Exec Command='"$(VisualStudio)Common7\IDE\devenv.com" ..\NextPvrWebConsole.sln /nologo /rebuild SingleImage' />-->
     </Target>
-
+	
 </Project>
