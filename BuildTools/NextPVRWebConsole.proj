@@ -25,11 +25,7 @@
 			  LocalPath = LocalPath ?? "..\\";
 			  Path = Path ?? "master";
 			  
-			  Log.LogMessage(MessageImportance.Low, "LocalPath is {0}", LocalPath);
-			  Log.LogMessage(MessageImportance.Low, "Path is {0}", Path);
-			  
 			  string workingDir = new System.IO.DirectoryInfo(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
-			  throw new Exception("dir: " + workingDir);
 			  var psi = new ProcessStartInfo("cmd", "/c \"c:\\program files\\git\\bin\\git\" rev-list " + Path + " --count") {
 				  UseShellExecute = false, 
 				  ErrorDialog = false, 
@@ -38,7 +34,7 @@
 				  RedirectStandardOutput = true,
 				  RedirectStandardError = true
 			  };
-	 
+			  
 			  string result;
 			  using (var p = Process.Start(psi)) {
 				p.WaitForExit();
