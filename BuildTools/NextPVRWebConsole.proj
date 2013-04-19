@@ -28,7 +28,7 @@
 			  Log.LogMessage(MessageImportance.Low, "LocalPath is {0}", LocalPath);
 			  Log.LogMessage(MessageImportance.Low, "Path is {0}", Path);
 			  
-			  var psi = new ProcessStartInfo("cmd", "/c git rev-list " + Path + " --count") {
+			  var psi = new ProcessStartInfo("cmd", "/c $(MSBuildProgramFiles32)\git\bin\git rev-list " + Path + " --count") {
 				  UseShellExecute = false, 
 				  ErrorDialog = false, 
 				  CreateNoWindow = false, 
