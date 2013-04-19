@@ -22,16 +22,11 @@
 		  <Using Namespace="System.Diagnostics"/>
 		  <Code Type="Fragment" Language="cs">
 			<![CDATA[
-			  LocalPath = LocalPath ?? ".";
+			  LocalPath = LocalPath ?? "..\\";
 			  Path = Path ?? "master";
 			  
 			  Log.LogMessage(MessageImportance.Low, "LocalPath is {0}", LocalPath);
 			  Log.LogMessage(MessageImportance.Low, "Path is {0}", Path);
-			  
-			  Console.WriteLine("LocalPath is: " + LocalPath);
-			  Console.WriteLine("Path is: " + Path);
-			  
-			  throw new Exception("LocalPath: " + LocalPath);
 			  
 			  var psi = new ProcessStartInfo("cmd", "/c \"c:\\program files\\git\\bin\\git\" rev-list " + Path + " --count") {
 				  UseShellExecute = false, 
