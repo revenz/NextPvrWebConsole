@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="demo;Build">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="Build">
 
     <PropertyGroup>
 		<VisualStudio>$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\</VisualStudio>
@@ -71,7 +71,7 @@
         </ProjectToBuild>
     </ItemGroup>
 
-    <Target Name="Build">
+    <Target Name="Build" DependsOnTargets="demo">
         <MSBuild Projects="@(ProjectToBuild)"/>
 		<!--<Exec Command='"$(VisualStudio)Common7\IDE\devenv.com" ..\NextPvrWebConsole.sln /nologo /rebuild SingleImage' />-->
     </Target>
