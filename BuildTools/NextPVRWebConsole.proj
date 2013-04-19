@@ -31,6 +31,8 @@
 			  Console.WriteLine("LocalPath is: " + LocalPath);
 			  Console.WriteLine("Path is: " + Path);
 			  
+			  throw new Exception("LocalPath: " + LocalPath);
+			  
 			  var psi = new ProcessStartInfo("cmd", "/c \"c:\\program files\\git\\bin\\git\" rev-list " + Path + " --count") {
 				  UseShellExecute = false, 
 				  ErrorDialog = false, 
