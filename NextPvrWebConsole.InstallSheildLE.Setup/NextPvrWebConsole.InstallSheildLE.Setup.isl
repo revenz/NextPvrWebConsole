@@ -1896,7 +1896,6 @@
 		<row><td>nextpvrwebconsole.content_fi</td><td>NextPvrWebConsole.Content_Files</td><td>NextPvrWebConsole.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsole&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>nextpvrwebconsole.primary_ou</td><td>NextPvrWebConsole.Primary_output</td><td>NextPvrWebConsole.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;NextPvrWebConsole&gt;|Built</td><td>3</td><td/></row>
 		<row><td>nextpvrwebconsoleinstaller.p2</td><td>NextPvrWebConsoleInstaller.Primary_output2</td><td>NextPvrWebConsoleInstaller.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsoleInstaller&gt;|Built</td><td>3</td><td/></row>
-		<row><td>system.net.http.dll</td><td>System.Net.Http.dll</td><td>SYSTEM~1.DLL|System.Net.Http.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Source\NextPvrWebConsole\NextPvrWebConsole\bin\System.Net.Http.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
