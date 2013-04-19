@@ -70,6 +70,11 @@
     </ItemGroup>
 
     <Target Name="Build" DependsOnTargets="demo">
+		<FileUpdate 
+		   Files="../NextPvrWebConsole.InstallSheildLE.Setup/NextPvrWebConsole.InstallSheildLE.Setup.isl" 
+		   Regex="ProductVersion</td><td>([\d]+\.)*[\d]</td>" 
+		   ReplacementText="ProductVersion</td><td>$(ProductVersion).$(CommitCount)</td>" />
+	
         <MSBuild Projects="@(ProjectToBuild)"/>
 		<!--<Exec Command='"$(VisualStudio)Common7\IDE\devenv.com" ..\NextPvrWebConsole.sln /nologo /rebuild SingleImage' />-->
     </Target>
