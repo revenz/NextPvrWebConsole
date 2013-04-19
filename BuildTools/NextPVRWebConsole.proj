@@ -10,7 +10,7 @@
 		<SrcPath>..\</SrcPath>
     </PropertyGroup>
 	
-	<UsingTask TaskName="GitVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+	<UsingTask TaskName="GitVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\..\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
 		<ParameterGroup>
 		  <LocalPath ParameterType="System.String" />
 		  <Path ParameterType="System.String" />
