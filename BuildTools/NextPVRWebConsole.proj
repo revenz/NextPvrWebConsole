@@ -28,13 +28,13 @@
 			  Log.LogMessage(MessageImportance.Low, "LocalPath is {0}", LocalPath);
 			  Log.LogMessage(MessageImportance.Low, "Path is {0}", Path);
 			  
-			  throw new Exception("Executing directory: " + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
-			  
+			  string workingDir = new System.IO.DirectoryInfo(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+			  throw new Exception("dir: " + workingDir);
 			  var psi = new ProcessStartInfo("cmd", "/c \"c:\\program files\\git\\bin\\git\" rev-list " + Path + " --count") {
 				  UseShellExecute = false, 
 				  ErrorDialog = false, 
 				  CreateNoWindow = false, 
-				  WorkingDirectory = LocalPath,
+				  WorkingDirectory = workingDir,
 				  RedirectStandardOutput = true,
 				  RedirectStandardError = true
 			  };
