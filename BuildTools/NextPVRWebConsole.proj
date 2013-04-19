@@ -9,6 +9,12 @@
 		
 		<SrcPath>..\</SrcPath>
     </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectToBuild Include="..\NextPvrWebConsole.sln">
+			<Properties>Configuration=SingleImage;Platform=Any CPU</Properties>
+        </ProjectToBuild>
+    </ItemGroup>
 	
 	<UsingTask TaskName="GitVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\..\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
 		<ParameterGroup>
@@ -54,37 +60,43 @@
 		</Task>
 	</UsingTask>
  
-	<Target Name="demo">
+	<Target Name="CommitCount">
 		<GitVersion Path="master">
 		  <Output PropertyName="GitCommitCount" TaskParameter="CommitCount" />
 		</GitVersion>
 
 		<Message Text="Commit count: $(GitCommitCount)"/>
 	</Target>
-
-    <ItemGroup>
-        <ProjectToBuild Include="..\NextPvrWebConsole.sln">
-            <!--<Properties>OutputPath=$(OutputDir);Configuration=SingleImage;Platform=Any CPU</Properties>-->
-			<Properties>Configuration=SingleImage;Platform=Any CPU</Properties>
-        </ProjectToBuild>
-    </ItemGroup>
-
-    <Target Name="Build" DependsOnTargets="demo">
-		<ItemGroup>
-		  <InstallFile Include="../NextPvrWebConsole.InstallSheildLE.Setup/NextPvrWebConsole.InstallSheildLE.Setup.isl" />
-		</ItemGroup>
-		<RegexReplace 
-		   Input="@(InstallFile)" 
-		   Expression="ProductVersion&lt;/td&gt;&lt;td&gt;([\d]+\.)*[\d]&lt;/td&gt;" 
-		   Replacement="ProductVersion&lt;/td&gt;&lt;td&gt;$(ProductVersion).$(CommitCount)&lt;/td&gt;">
-		    <Output ItemName="InstallFile" TaskParameter="Output" />
-		</RegexReplace>
 	
+	<Target Name="SetVersion">
+		<Message Text="Setting version..." />
+		 
+		<FileUpdate  
+		   Files="../NextPvrWebConsole.InstallSheildLE.Setup/NextPvrWebConsole.InstallSheildLE.Setup.isl" 
+		   Regex="ProductVersion&lt;/td&gt;&lt;td&gt;([\d]+\.)*[\d]*&lt;/td&gt;" 
+		   ReplacementText="ProductVersion&lt;/td&gt;&lt;td&gt;$(ProductVersion).$(GitCommitCount)&lt;/td&gt;">
+		</FileUpdate>
+		
+		<ItemGroup>
+			<AssemblyInfoFiles Include="..\**\AssemblyInfo.cs"/>
+		</ItemGroup>
+		
+        <Message Text="fullpath: @(AssemblyInfoFiles->'%(fullpath)')"/>
+		<FileUpdate  
+		   Files="../NextPvrWebConsole.InstallSheildLE.Setup/NextPvrWebConsole.InstallSheildLE.Setup.isl" 
+		   Regex="AssemblyVersion\(&quot;[^&quot;]*&quot;\)" 
+		   ReplacementText="AssemblyVersion(&quot;$(ProductVersion).$(GitCommitCount)&quot;)">
+		</FileUpdate>
+	</Target>
+
+    <Target Name="Build" DependsOnTargets="CommitCount;SetVersion">
+	
+		<Message Text="Building Solution..." />
         <MSBuild Projects="@(ProjectToBuild)"/>
 		
+		<Message Text="Renaming Setup.exe..." />
 		<Move SourceFiles="..\NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup\Express\SingleImage\DiskImages\DISK1\setup.exe" 
 			  DestinationFiles="..\NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup\Express\SingleImage\DiskImages\DISK1\NextPVRWebConsole-$(ProductVersion).$(GitCommitCount).exe" />
-		<!--<Exec Command='"$(VisualStudio)Common7\IDE\devenv.com" ..\NextPvrWebConsole.sln /nologo /rebuild SingleImage' />-->
-    </Target>
+   </Target>
 	
 </Project>
