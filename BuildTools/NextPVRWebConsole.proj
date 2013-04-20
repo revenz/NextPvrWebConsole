@@ -6,6 +6,9 @@
         <OutputDir>..\BuildOutput</OutputDir>
 		<Configuration>x86</Configuration>	
 		<ProductVersion>0.2.0</ProductVersion>
+		<CompanyName>Reven</CompanyName>
+		<ProductName>NextPVR Web Console</ProductName>
+		<Copyright>Copyright © Reven 2013</Copyright>
 		
 		<SrcPath>..\</SrcPath>
     </PropertyGroup>
@@ -83,9 +86,24 @@
 		
         <Message Text="fullpath: @(AssemblyInfoFiles->'%(fullpath)')"/>
 		<FileUpdate  
-		   Files="../NextPvrWebConsole.InstallSheildLE.Setup/NextPvrWebConsole.InstallSheildLE.Setup.isl" 
-		   Regex="AssemblyVersion\(&quot;[^&quot;]*&quot;\)" 
-		   ReplacementText="AssemblyVersion(&quot;$(ProductVersion).$(GitCommitCount)&quot;)">
+		   Files="@(AssemblyInfoFiles)" 
+		   Regex="Version\(&quot;[^&quot;]*&quot;\)" 
+		   ReplacementText="Version(&quot;$(ProductVersion).$(GitCommitCount)&quot;)">
+		</FileUpdate>
+		<FileUpdate  
+		   Files="@(AssemblyInfoFiles)" 
+		   Regex="AssemblyProduct\(&quot;[^&quot;]*&quot;\)" 
+		   ReplacementText="AssemblyProduct(&quot;$(ProductName)&quot;)">
+		</FileUpdate>
+		<FileUpdate  
+		   Files="@(AssemblyInfoFiles)" 
+		   Regex="AssemblyCompany\(&quot;[^&quot;]*&quot;\)" 
+		   ReplacementText="AssemblyCompany(&quot;$(CompanyName)&quot;)">
+		</FileUpdate>
+		<FileUpdate  
+		   Files="@(AssemblyInfoFiles)" 
+		   Regex="AssemblyCopyright\(&quot;[^&quot;]*&quot;\)" 
+		   ReplacementText="AssemblyCopyright(&quot;$(Copyright)&quot;)">
 		</FileUpdate>
 	</Target>
 
