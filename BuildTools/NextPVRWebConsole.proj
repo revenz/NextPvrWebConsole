@@ -110,7 +110,8 @@
     <Target Name="Build" DependsOnTargets="CommitCount;SetVersion">
 	
 		<Message Text="Building Solution..." />
-        <MSBuild Projects="@(ProjectToBuild)"/>
+		<Exec WorkingDirectory="$(SrcPath)" Command='"$(VisualStudio)Common7\IDE\devenv.com" NextPvrWebConsole.sln /nologo /rebuild SingleImage' />
+        <!--<MSBuild Projects="@(ProjectToBuild)"/>-->
 		
 		<Message Text="Renaming Setup.exe..." />
 		<Move SourceFiles="..\NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup\Express\SingleImage\DiskImages\DISK1\setup.exe" 
