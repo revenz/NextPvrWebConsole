@@ -347,7 +347,6 @@
 		<row><td>NextPvrWebConsole.Content_Files</td><td>{70C581EE-C9A6-4409-A4C0-EA503F01F241}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.content_fi</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NextPvrWebConsole.Primary_output</td><td>{F7F33869-E5F1-4759-9FEF-1AE46C53BCDB}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NextPvrWebConsoleInstaller.Primary_output2</td><td>{BED7EF64-5758-494C-9884-1AE8B07572CF}</td><td>BIN</td><td>2</td><td/><td>nextpvrwebconsoleinstaller.p2</td><td>81</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>System.Net.Http.dll</td><td>{7C64B3F5-B72E-474F-97C2-EEDFA6AB65E3}</td><td>BIN</td><td>2</td><td/><td>system.net.http.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1878,7 +1877,6 @@
 		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>NextPvrWebConsoleInstaller.Primary_output2</td></row>
-		<row><td>AlwaysInstall</td><td>System.Net.Http.dll</td></row>
 	</table>
 
 	<table name="File">
@@ -2156,7 +2154,6 @@
 		<row><td>NextPvrWebConsole.Content_Files</td><td/><td/><td>_8C9BC6A8_E545_4C2D_B9A7_B78677AF017F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NextPvrWebConsole.Primary_output</td><td/><td/><td>_8EFC2F00_6B56_405C_BABE_921801707521_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NextPvrWebConsoleInstaller.Primary_output2</td><td/><td/><td>_3F6C6E4B_472D_445C_9C1C_764358F5D60C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>System.Net.Http.dll</td><td/><td/><td>_AFCC97CE_A181_4190_8F62_D14D32616A05_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
