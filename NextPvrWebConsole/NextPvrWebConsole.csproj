@@ -249,8 +249,8 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Hubs\NextPvrEventHub.cs" />
     <Content Include="Content\addons\folder-browser.less" />
-    <None Include="Content\addons\spinner.less" />
-    <None Include="Content\glyphicons.less" />
+    <Content Include="Content\addons\spinner.less" />
+    <Content Include="Content\glyphicons.less" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\glyphicons.png" />
@@ -455,7 +455,7 @@
     <Content Include="Content\pages\usersettings\recordingdirectories.less" />
     <Content Include="Content\vtabs.less" />
     <Content Include="Content\pages\search\index.less" />
-    <None Include="Content\addons\jquery.togglebuttons.less" />
+    <Content Include="Content\addons\jquery.togglebuttons.less" />
     <Content Include="Content\bootstrap\wells.less" />
     <Content Include="Content\bootstrap\variables.less" />
     <Content Include="Content\bootstrap\utilities.less" />
