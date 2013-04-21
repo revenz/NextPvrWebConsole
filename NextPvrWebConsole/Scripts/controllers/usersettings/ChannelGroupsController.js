@@ -9,7 +9,6 @@ ns.ChannelGroupsController = function ($scope, $http, $rootScope) {
 
     $scope.refresh = function () {
         $http.get('/api/channelgroups').success(function (data) {
-            console.log(data);
             $scope.channelgroups = data;
         });
     };

@@ -12,10 +12,7 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
     gui.doWork();
 
     $http.get('/api/configuration/xmltvsources').success(function (result) {
-        console.log('got xmltv source');
-        console.log(result.Channels);
         gui.finishWork();
-        console.log(result);
         $.each(result, function (i, ele) {
             if (ele.LastScanTime && !ele.LastScanTime.getFullYear)
                 ele.LastScanTime = new Date(ele.LastScanTime);
@@ -41,12 +38,12 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
         gui.doWork();
         $http.post('/api/configuration/XmlTvSourceImport').success(function (result) {
             gui.finishWork();
-            if (!($scope.model || !Array.isArray($scope.model)))
-                $scope.model = [];
+            if (!($scope.model.sources || !Array.isArray($scope.model.sources)))
+                $scope.model.sources = [];
             $.each(result, function (i, ele) {
                 if (ele.LastScanTime && !ele.LastScanTime.getFullYear)
                     ele.LastScanTime = new Date(ele.LastScanTime);
-                $scope.model.push(ele);
+                $scope.model.sources.push(ele);
             });
         }).error(function () {
             gui.finishWork();
