@@ -66,7 +66,7 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
     $scope.epgSourceSelected = function (source) {
         if (source.EpgSource.startsWith('XMLTV')) {
 
-            var xmltv = $scope.getXmlTvSource(source.EpgSource);
+            var xmltv = $scope.getTvSource(source.EpgSource);
             if (xmltv == null)
                 return;
 
