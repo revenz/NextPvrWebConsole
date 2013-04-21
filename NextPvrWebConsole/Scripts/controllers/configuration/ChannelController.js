@@ -50,7 +50,7 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
         return null;
     };
 
-    $scope.import = function () {
+    $scope.importMissing = function () {
         $http.get('/api/channel/importMissing').success(function (result) {
             var knownOids = [];
             $.each($scope.model.channels, function (i, ele) {

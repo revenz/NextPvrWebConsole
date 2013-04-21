@@ -41,7 +41,7 @@
                     <td class="recording-directory">{{recording.RecordingDirectoryId}}</td>
                     <td class="recording-time">{{recording.StartTime | date}}</td>
                     <td class="recording-controls">
-                        <button onclick="return false" class="btn btn-danger" ng-click="delete(recording)">
+                        <button onclick="return false" class="btn btn-danger" ng-click="deleteRecording(recording)">
                             <i class="icon-trash icon-white" /> Delete
                         </button>
                     </td>

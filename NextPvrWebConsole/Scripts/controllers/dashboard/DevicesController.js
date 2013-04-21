@@ -13,7 +13,7 @@ ns.DevicesController = function($scope, $http) {
     $scope.refresh();
 
     $scope.stop = function (stream) {
-        $http.delete('api/device/deleteStream?handle=' + stream.Handle).success(function(result){
+        $http['delete']('api/device/deleteStream?handle=' + stream.Handle).success(function (result) {
             console.log('cancel result: ' + result);
             $scope.refresh();
         });

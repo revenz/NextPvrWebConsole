@@ -28,7 +28,8 @@ namespace NextPvrWebConsole
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/functions.js",
                         "~/Scripts/apihelper.js",
-                        "~/Scripts/global.js")
+                        "~/Scripts/global.js"
+                        )
                         .IncludeDirectory("~/Scripts/controllers", "*.js", true)
                         .IncludeDirectory("~/Scripts/addons", "*.js", true)
                         .Include("~/Scripts/jqueryui/core/jquery.ui.core.js")
@@ -36,9 +37,10 @@ namespace NextPvrWebConsole
                         .Include("~/Scripts/jqueryui/core/jquery.ui.position.js")
                         .Include("~/Scripts/jqueryui/core/jquery.ui.mouse.js")
                         .IncludeDirectory("~/Scripts/jqueryui/addons", "*.js", true)
-                        .Include("~/Scripts/webapp.js")
-                        .IncludeDirectory("~/Scripts/directives", "*.js", true)
                         );
+
+            var webAppBundle = new Bundle("~/bundles/webapp").Include("~/Scripts/webapp.js").IncludeDirectory("~/Scripts/directives", "*.js", true);
+            bundles.Add(webAppBundle);
 
             bundles.Add(new ScriptBundle("~/bundles/loginjs").Include(
                         "~/Scripts/core/jquery-{version}.js",
@@ -118,7 +120,7 @@ namespace NextPvrWebConsole
             // this allows bundling when in debug mode
 #if(!DEBUG)
             BundleTable.EnableOptimizations = true;   
-#endif
+#endif 
         }
 
         private static void PageBundle(BundleCollection bundles, string Name)

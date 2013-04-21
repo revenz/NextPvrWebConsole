@@ -132,7 +132,7 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         gui.confirm({            
             message: $.i18n._("Are you sure you want to cancel the series '%s'?", [$scope.selectedListing.Title]),
             yes: function () {
-                $http.delete('/api/recordings/deleterecurring/' + $scope.selectedListing.RecurrenceOid).success(function (data) {
+                $http['delete']('/api/recordings/deleterecurring/' + $scope.selectedListing.RecurrenceOid).success(function (data) {
                     if (data) {
                         $scope.selectedListing.RecurrenceOid = 0;
                         $scope.selectedListing.IsRecurring = true;
@@ -147,7 +147,7 @@ ns.GuideController = function ($scope, $http, $compile, $rootScope) {
         gui.confirm({            
             message: $.i18n._("Are you sure you want to cancel the recording '%s'?", [$scope.selectedListing.Title]),
             yes: function () {
-                $http.delete('/api/recordings/' + $scope.selectedListing.RecordingOid).success(function (data) {
+                $http['delete']('/api/recordings/' + $scope.selectedListing.RecordingOid).success(function (data) {
                     if (data) {
                         $scope.selectedListing.RecordingOid = 0;
                         $scope.selectedListing.IsRecording = false;

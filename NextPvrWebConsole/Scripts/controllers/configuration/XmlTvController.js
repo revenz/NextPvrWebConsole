@@ -37,7 +37,7 @@ ns.XmlTvController = function ($scope, $http, $rootScope) {
         });
     };
 
-    $scope.import = function () {
+    $scope.importFromNextPVR = function () {
         gui.doWork();
         $http.post('/api/configuration/XmlTvSourceImport').success(function (result) {
             gui.finishWork();
