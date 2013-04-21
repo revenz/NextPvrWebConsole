@@ -7,7 +7,7 @@ ns.ChannelsController = function ($scope, $http, $rootScope) {
     $scope.channels = [];
 
     $scope.refresh = function () {
-        $http.get('/api/channels').success(function (data) {
+        $http.get('/api/channel').success(function (data) {
             $scope.channels = data;
         });
     };

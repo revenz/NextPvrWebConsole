@@ -31,11 +31,6 @@ namespace NextPvrWebConsole.Controllers
             }
         }
 
-        public ActionResult LoadDirectory(string dir)
-        {
-            return LoadDirectory(dir, null);
-        }
-
         public ActionResult LoadDirectoryAndXml(string dir)
         {
             return LoadDirectory(dir, "xml");

@@ -68,7 +68,7 @@ ns.ChannelGroupController = function ($scope, $http, $rootScope, $compile) {
     $scope.selectChannels = function (group) {
 
         if (!$scope.channels) {
-            $http.get('/api/channels/getshared').success(function (data) {
+            $http.get('/api/channel/getshared').success(function (data) {
                 $scope.channels = data;
                 $scope.selectChannels(group);
             });
