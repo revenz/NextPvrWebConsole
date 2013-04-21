@@ -345,7 +345,7 @@
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{38212FC2-41CE-4E9B-87A8-CBB6E953AC27}</td><td>BIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NextPvrWebConsole.Content_Files</td><td>{70C581EE-C9A6-4409-A4C0-EA503F01F241}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.content_fi</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>NextPvrWebConsole.Primary_output</td><td>{F7F33869-E5F1-4759-9FEF-1AE46C53BCDB}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>NextPvrWebConsole.Primary_output2</td><td>{A69B1ACD-F88E-4769-A33E-34ACA35B869F}</td><td>BIN</td><td>2</td><td/><td>nextpvrwebconsole.primary_ou2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NextPvrWebConsoleInstaller.Primary_output2</td><td>{BED7EF64-5758-494C-9884-1AE8B07572CF}</td><td>BIN</td><td>2</td><td/><td>nextpvrwebconsoleinstaller.p2</td><td>81</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -1875,7 +1875,7 @@
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Content_Files</td></row>
-		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Primary_output2</td></row>
 		<row><td>AlwaysInstall</td><td>NextPvrWebConsoleInstaller.Primary_output2</td></row>
 	</table>
 
@@ -1892,7 +1892,7 @@
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>nextpvrwebconsole.content_fi</td><td>NextPvrWebConsole.Content_Files</td><td>NextPvrWebConsole.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsole&gt;|ContentFiles</td><td>3</td><td/></row>
-		<row><td>nextpvrwebconsole.primary_ou</td><td>NextPvrWebConsole.Primary_output</td><td>NextPvrWebConsole.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;NextPvrWebConsole&gt;|Built</td><td>3</td><td/></row>
+		<row><td>nextpvrwebconsole.primary_ou2</td><td>NextPvrWebConsole.Primary_output2</td><td>NextPvrWebConsole.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsole&gt;|Built</td><td>3</td><td/></row>
 		<row><td>nextpvrwebconsoleinstaller.p2</td><td>NextPvrWebConsoleInstaller.Primary_output2</td><td>NextPvrWebConsoleInstaller.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsoleInstaller&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
@@ -2152,7 +2152,7 @@
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_8988383C_A408_4FEB_91A4_AB1AAA09F91F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NextPvrWebConsole.Content_Files</td><td/><td/><td>_8C9BC6A8_E545_4C2D_B9A7_B78677AF017F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>NextPvrWebConsole.Primary_output</td><td/><td/><td>_8EFC2F00_6B56_405C_BABE_921801707521_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>NextPvrWebConsole.Primary_output2</td><td/><td/><td>_B3CF7EC5_E97C_47D2_976B_EE3CD50EFB6A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NextPvrWebConsoleInstaller.Primary_output2</td><td/><td/><td>_3F6C6E4B_472D_445C_9C1C_764358F5D60C_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
