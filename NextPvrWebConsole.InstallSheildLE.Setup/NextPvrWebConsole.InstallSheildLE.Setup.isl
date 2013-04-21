@@ -344,8 +344,8 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{38212FC2-41CE-4E9B-87A8-CBB6E953AC27}</td><td>BIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>NextPvrWebConsole.Content_Files</td><td>{81345844-5122-4A00-98F1-BDF288FA27A6}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.content_fi</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>NextPvrWebConsole.Primary_output2</td><td>{D5EA4D3A-D050-43FA-89D0-BFD355D2B651}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.primary_ou2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>NextPvrWebConsole.Content_Files</td><td>{13424036-1132-4A47-B59E-C07DF9153F39}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.content_fi</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>NextPvrWebConsole.Primary_output</td><td>{A9F2F3C7-3D4B-482C-BA0B-C1C95B91885B}</td><td>INSTALLDIR</td><td>2</td><td/><td>nextpvrwebconsole.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NextPvrWebConsoleInstaller.Primary_output2</td><td>{BED7EF64-5758-494C-9884-1AE8B07572CF}</td><td>BIN</td><td>2</td><td/><td>nextpvrwebconsoleinstaller.p2</td><td>81</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -1875,7 +1875,7 @@
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Content_Files</td></row>
-		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Primary_output2</td></row>
+		<row><td>AlwaysInstall</td><td>NextPvrWebConsole.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>NextPvrWebConsoleInstaller.Primary_output2</td></row>
 	</table>
 
@@ -1892,7 +1892,7 @@
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>nextpvrwebconsole.content_fi</td><td>NextPvrWebConsole.Content_Files</td><td>NextPvrWebConsole.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsole&gt;|ContentFiles</td><td>3</td><td/></row>
-		<row><td>nextpvrwebconsole.primary_ou2</td><td>NextPvrWebConsole.Primary_output2</td><td>NextPvrWebConsole.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsole&gt;|Built</td><td>3</td><td/></row>
+		<row><td>nextpvrwebconsole.primary_ou</td><td>NextPvrWebConsole.Primary_output</td><td>NextPvrWebConsole.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsole&gt;|Built</td><td>3</td><td/></row>
 		<row><td>nextpvrwebconsoleinstaller.p2</td><td>NextPvrWebConsoleInstaller.Primary_output2</td><td>NextPvrWebConsoleInstaller.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NextPvrWebConsoleInstaller&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
@@ -2151,8 +2151,8 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_8988383C_A408_4FEB_91A4_AB1AAA09F91F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>NextPvrWebConsole.Content_Files</td><td/><td/><td>_2C04B68B_CD83_453B_AD83_EE64368CE05F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>NextPvrWebConsole.Primary_output2</td><td/><td/><td>_48B54DF8_0979_496C_818E_3AEE053625C4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>NextPvrWebConsole.Content_Files</td><td/><td/><td>_214B1CBE_147D_4ED2_98CB_343BAF4ADE8C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>NextPvrWebConsole.Primary_output</td><td/><td/><td>_729891D1_A682_4EAE_842E_B8DA89834421_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NextPvrWebConsoleInstaller.Primary_output2</td><td/><td/><td>_3F6C6E4B_472D_445C_9C1C_764358F5D60C_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 

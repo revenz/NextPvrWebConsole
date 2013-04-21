@@ -6,6 +6,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextPvrWebConsole.Tests", "NextPvrWebConsole.Tests\NextPvrWebConsole.Tests.csproj", "{31D047C9-2FA6-4B16-B7AC-36D8ECD483EE}"
 EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "NextPvrWebConsole.InstallSheildLE.Setup", "NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup.isproj", "{026EBD28-FC49-46B0-B2C5-C775FE28B327}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A9FAD5BD-6695-4566-943F-5BA317ED8D0B} = {A9FAD5BD-6695-4566-943F-5BA317ED8D0B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextPvrWebConsoleInstaller", "NextPvrWebConsoleInstaller\NextPvrWebConsoleInstaller.csproj", "{50042BC4-C5E9-4DEC-94DA-B83321B8C71A}"
 EndProject
