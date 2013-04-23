@@ -69,14 +69,13 @@ ns.ChannelController = function ($scope, $http, $rootScope) {
             var xmltv = $scope.getTvSource(source.EpgSource);
             if (xmltv == null)
                 return;
-
             // look for the source.
-            for (var i = 0; i < xmltv.Channels.length; i++) {
-                if (xmltv.Channels[i].Name.toLowerCase().trim() == source.Name.toLowerCase().trim()
+            for (var i = 0; i < xmltv.length; i++) {
+                if (xmltv[i].Name.toLowerCase().trim() == source.Name.toLowerCase().trim()
                     ||
-                    xmltv.Channels[i].Oid.toLowerCase().trim() == source.Name.toLowerCase().trim()
+                    xmltv[i].Oid.toLowerCase().trim() == source.Name.toLowerCase().trim()
                     ) {
-                    source.XmlTvChannel = xmltv.Channels[i].Oid;
+                    source.XmlTvChannel = xmltv[i].Oid;
                     break;
                 }
             }
