@@ -70,16 +70,16 @@ namespace NextPvrWebConsole.Controllers
         {
             return View();
             // security, make sure the filename is in the list of log files
-            var log = new Api.LogsController().Get().Where(x => x.Oid == Oid || (Oid == "" && x.Name == Name)).FirstOrDefault();
-            if (log != null)
-            {
-                using (var stream = new System.IO.FileStream(log.FullName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
-                {
-                    using (System.IO.StreamReader reader = new System.IO.StreamReader(stream))
-                        return Content(reader.ReadToEnd());
-                }
-            }
-            return Content("Log file not found.");
+            //var log = new Api.LogsController().Get().Where(x => x.Oid == Oid || (Oid == "" && x.Name == Name)).FirstOrDefault();
+            //if (log != null)
+            //{
+            //    using (var stream = new System.IO.FileStream(log.FullName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
+            //    {
+            //        using (System.IO.StreamReader reader = new System.IO.StreamReader(stream))
+            //            return Content(reader.ReadToEnd());
+            //    }
+            //}
+            //return Content("Log file not found.");
         }
     }
 }

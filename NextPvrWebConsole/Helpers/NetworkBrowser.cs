@@ -198,7 +198,7 @@ namespace NextPvrWebConsole.Helpers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return networkComputers;
             }

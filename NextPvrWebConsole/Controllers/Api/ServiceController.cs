@@ -278,7 +278,7 @@ namespace NextPvrWebConsole.Controllers.Api
 
                 throw new NotImplementedException();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new InvalidSessionException();
             }

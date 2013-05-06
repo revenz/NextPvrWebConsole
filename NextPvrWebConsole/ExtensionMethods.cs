@@ -117,7 +117,7 @@ namespace NextPvrWebConsole
                     string base64String = Convert.ToBase64String(imageBytes);
                     return base64String;
                 }
-                catch (Exception ex) { 
+                catch (Exception) { 
                     return null; 
                 }
             }
@@ -205,7 +205,7 @@ namespace NextPvrWebConsole
                 }
                 return resize(image, targetWidth, targetHeight, xPos, yPos, w, h);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return image;
             }

@@ -212,7 +212,7 @@ order by orderoid
                 db.CompleteTransaction();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 db.AbortTransaction();
                 return false;

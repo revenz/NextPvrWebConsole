@@ -215,7 +215,7 @@ namespace NextPvrWebConsole.Models
                 Configuration.Write();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 db.AbortTransaction();
                 return false;

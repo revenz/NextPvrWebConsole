@@ -94,7 +94,7 @@ namespace NextPvrWebConsole.Models
 
                     results[sr.Name].Recordings.Add(new Recording(sr, UserOid) { RecordingDirectoryId = rd == null ? "" : rd.RecordingDirectoryId });
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     continue;
                 }
