@@ -13,11 +13,7 @@ namespace NextPvrWebConsole.Models
         private static Mutex dbMutex = new Mutex();
         
         static string _DbFile;
-#if(DEBUG)
-        public static string DbFile // need this public for unit testing
-#else
-        static string DbFile
-#endif
+        internal static string DbFile
         {
             get
             {
@@ -28,7 +24,7 @@ namespace NextPvrWebConsole.Models
             set { _DbFile = value; }
         }
 
-        static void CreateDatabase(string DbFile)
+        internal static void CreateDatabase(string DbFile)
         {
             string path = new System.IO.FileInfo(DbFile).DirectoryName;
             if (!System.IO.Directory.Exists(path))
@@ -56,6 +52,8 @@ namespace NextPvrWebConsole.Models
                 }
                 conn.Close();
             }
+
+            DbHelper.DbFile = DbFile;
         }
 
         public static PetaPoco.Database GetDatabase(bool ValidateDatabase = true)

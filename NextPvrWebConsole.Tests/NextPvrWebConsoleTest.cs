@@ -13,8 +13,6 @@ namespace NextPvrWebConsole.Tests
     {
         public NextPvrWebConsoleTest()
         {
-            //DbHelper.DbFile = System.IO.Path.GetTempFileName();
-
             //new NextPvrWebConsole.Controllers.SetupController().Index(new SetupModel()
             //{
             //    Username = "setupuser",
@@ -33,6 +31,8 @@ namespace NextPvrWebConsole.Tests
         [TestInitialize()]
         public void BaseStartup()
         {
+            DbHelper.CreateDatabase(System.IO.Path.GetTempFileName());
+
             // setup, delete all scheduled recordings, please backup your database before running unit tests!
             var settingsHelper = NUtility.SettingsHelper.GetInstance();
             string npvrDir = settingsHelper.GetDataDirectory();
@@ -47,7 +47,6 @@ namespace NextPvrWebConsole.Tests
             db.CreateCommand(conn, "DELETE FROM RECURRING_RECORDING").ExecuteNonQuery();
 
             db.FreeConnection(conn);
-
 
             User = Helpers.UserHelper.CreateTestUser();
 
