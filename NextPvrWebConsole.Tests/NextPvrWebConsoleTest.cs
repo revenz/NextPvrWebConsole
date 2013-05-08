@@ -13,9 +13,6 @@ namespace NextPvrWebConsole.Tests
     {
         public NextPvrWebConsoleTest()
         {
-#if(!DEBUG)
-            throw new Exception("Must be run in debug mode!");
-#endif
             //DbHelper.DbFile = System.IO.Path.GetTempFileName();
 
             //new NextPvrWebConsole.Controllers.SetupController().Index(new SetupModel()
