@@ -33,6 +33,8 @@ namespace NextPvrWebConsole.Tests
         {
             DbHelper.CreateDatabase(System.IO.Path.GetTempFileName());
 
+            SetupDummyDatabase();
+
             // setup, delete all scheduled recordings, please backup your database before running unit tests!
             var settingsHelper = NUtility.SettingsHelper.GetInstance();
             string npvrDir = settingsHelper.GetDataDirectory();
@@ -47,8 +49,6 @@ namespace NextPvrWebConsole.Tests
             db.CreateCommand(conn, "DELETE FROM RECURRING_RECORDING").ExecuteNonQuery();
 
             db.FreeConnection(conn);
-
-            User = Helpers.UserHelper.CreateTestUser();
 
             Startup();
         }
@@ -84,6 +84,67 @@ namespace NextPvrWebConsole.Tests
                 return User;
             });
             return (T)Convert.ChangeType(controller, typeof(T));
+        }
+
+
+        private void SetupDummyDatabase()
+        {
+            var npvrDb = NUtility.DatabaseHelper.GetInstance();
+            var conn = npvrDb.GetConnection();
+
+            long captureSourceOid = (long)npvrDb.CreateCommand(conn, "select oid from CAPTURE_SOURCE").ExecuteScalar();
+
+
+            User = Helpers.UserHelper.CreateTestUser();
+            var db = DbHelper.GetDatabase();
+
+            db.Execute("insert into recordingdirectory(useroid, name, path, isdefault) values (@0, 'Default', @1, 1)", Globals.SHARED_USER_OID, "");
+
+            for (int i = 0; i < 5; i++)
+            {
+                Channel c = new Channel();
+                c.Oid = i + 1;
+                c.Number = i + 1;
+                c.Name = "chan " + (i + 1);
+                c.Enabled = true;
+
+                db.Insert("channel", "oid", false, c);
+
+                try
+                {
+                    npvrDb.CreateCommand(conn, "insert into CHANNEL VALUES ({0}, '{1}', {2}, 'None', '')".FormatStr(c.Oid, c.Name, c.Number)).ExecuteNonQuery();
+                }
+                catch (Exception) { }
+                try
+                {
+                    npvrDb.CreateCommand(conn, "insert into CHANNEL_MAPPING VALUES ({0}, {1}, 0, '<tuning><type>DVB-T</type><locator><frequency>538000</frequency><bandwidth>8</bandwidth></locator><service_id>1201</service_id><tsid>25</tsid><onid>8746</onid><service_type>25</service_type></tuning>', 1, 25)".FormatStr(c.Oid, captureSourceOid)).ExecuteNonQuery();
+                }
+                catch (Exception) { }
+
+                db.Execute("insert into userchannel values (@0, @1, @2, @3)", User.Oid, c.Oid, c.Number, true);
+
+                DateTime date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 0, 0, 0).AddHours(-12);
+                while (date < DateTime.UtcNow.AddDays(2))
+                {
+                    npvrDb.CreateCommand(conn, "insert into EPG_EVENT(title, subtitle, description, start_time, end_time, channel_oid, unique_id, rating, season, episode) values ('{0}', '', '', '{1}', '{2}', {3}, '', 0, 0, 0)"
+                                        .FormatStr("show_" + date.ToString(), date.ToString("yyyy-MM-dd HH:mm:ss"), date.AddHours(3).ToString("yyyy-MM-dd HH:mm:ss"), c.Oid)).ExecuteNonQuery();
+                    date = date.AddHours(3);
+                }
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                ChannelGroup cg = new ChannelGroup();
+                cg.Name = "cg " + (i + 1);
+                cg.UserOid = Globals.SHARED_USER_OID;
+                cg.OrderOid = i + 1;
+                cg.Enabled = true;
+                cg.ChannelOids = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+                cg.Save(cg.ChannelOids);
+            }
+
+
+            npvrDb.FreeConnection(conn);
         }
     }
 }

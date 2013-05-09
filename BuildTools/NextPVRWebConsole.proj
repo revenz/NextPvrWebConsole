@@ -115,7 +115,11 @@
 		
 		<Message Text="Renaming Setup.exe..." />
 		<Move SourceFiles="..\NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup\Express\SingleImage\DiskImages\DISK1\setup.exe" 
-			  DestinationFiles="..\NextPvrWebConsole.InstallSheildLE.Setup\NextPvrWebConsole.InstallSheildLE.Setup\Express\SingleImage\DiskImages\DISK1\NextPVRWebConsole-$(ProductVersion).$(GitCommitCount).exe" />
+			  DestinationFiles="..\NextPVRWebConsole-$(ProductVersion).$(GitCommitCount).exe" />
+		
+		<!-- build debug for unit tests -->
+		<Exec WorkingDirectory="$(SrcPath)" Command='"$(VisualStudio)Common7\IDE\devenv.com" NextPvrWebConsole.sln /nologo /build Debug' />
+			  
    </Target>
 	
 </Project>
