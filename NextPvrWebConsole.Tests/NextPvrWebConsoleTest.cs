@@ -42,13 +42,13 @@ namespace NextPvrWebConsole.Tests
             // backup the db file
             System.IO.File.Copy(System.IO.Path.Combine(npvrDir, settingsHelper.GetDatabaseFilename()), backupDb, true);
 
-            var db = NUtility.DatabaseHelper.GetInstance();
-            var conn = db.GetConnection();
-            db.CreateCommand(conn, "DELETE FROM RECENTLY_DELETED").ExecuteNonQuery();
-            db.CreateCommand(conn, "DELETE FROM SCHEDULED_RECORDING").ExecuteNonQuery();
-            db.CreateCommand(conn, "DELETE FROM RECURRING_RECORDING").ExecuteNonQuery();
+            //var db = NUtility.DatabaseHelper.GetInstance();
+            //var conn = db.GetConnection();
+            //db.CreateCommand(conn, "DELETE FROM RECENTLY_DELETED").ExecuteNonQuery();
+            //db.CreateCommand(conn, "DELETE FROM SCHEDULED_RECORDING").ExecuteNonQuery();
+            //db.CreateCommand(conn, "DELETE FROM RECURRING_RECORDING").ExecuteNonQuery();
 
-            db.FreeConnection(conn);
+            //db.FreeConnection(conn);
 
             Startup();
         }
