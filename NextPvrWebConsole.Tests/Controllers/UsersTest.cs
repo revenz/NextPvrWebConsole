@@ -13,6 +13,8 @@ namespace NextPvrWebConsole.Tests.Controllers
         [TestMethod]
         public void UsersTest_CreateDuplicateUser()
         {
+            base.BaseStartup();
+
             var controller = new NextPvrWebConsole.Controllers.Api.UsersController();
             #region create first user
             Models.UserModel model = new Models.UserModel();
@@ -38,11 +40,15 @@ namespace NextPvrWebConsole.Tests.Controllers
                 Assert.IsTrue(ex.Message.Contains("already exists"));
             }
             Assert.IsTrue(failed);
+
+            base.BaseCleanup();
         }
 
         [TestMethod]
         public void UsersTest_CreateDuplicateSharedUser()
         {
+            base.BaseStartup();
+
             var controller = new NextPvrWebConsole.Controllers.Api.UsersController();
 
             Models.UserModel model = new Models.UserModel();
@@ -61,11 +67,15 @@ namespace NextPvrWebConsole.Tests.Controllers
                 Assert.IsTrue(ex.Message.Contains("already exists"));
             }
             Assert.IsTrue(failed);
+
+            base.BaseCleanup();
         }
 
         [TestMethod]
         public void UsersTest_CreateUserInvalidEmail()
         {
+            base.BaseStartup();
+
             var controller = new NextPvrWebConsole.Controllers.Api.UsersController();
 
             Models.UserModel model = new Models.UserModel();
@@ -84,6 +94,8 @@ namespace NextPvrWebConsole.Tests.Controllers
                 Assert.IsTrue(ex.Message == "Value does not fall within the expected range.");
             }
             Assert.IsTrue(failed);
+
+            base.BaseCleanup();
         }
 
         [TestMethod]

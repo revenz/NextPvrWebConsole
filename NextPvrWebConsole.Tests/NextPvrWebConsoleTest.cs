@@ -28,7 +28,7 @@ namespace NextPvrWebConsole.Tests
 
         protected Models.User User;
 
-        [TestInitialize()]
+        //[TestInitialize()]
         public void BaseStartup()
         {
             DbHelper.CreateDatabase(System.IO.Path.GetTempFileName());
@@ -52,7 +52,8 @@ namespace NextPvrWebConsole.Tests
 
             Startup();
         }
-        [TestCleanup()]
+
+        //[TestCleanup()]
         public void BaseCleanup()
         {
             return;
