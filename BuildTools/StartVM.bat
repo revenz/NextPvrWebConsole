@@ -9,7 +9,7 @@ set setupexe=%6
 set psexec=C:\utils\pstools\psexec.exe
 
 :start
-psexec \\%hypervhost% -u %username% -p %password% HyperVManager.exe -start -force -vm %vname% -snapshot %snapshot%
+"%psexec%" \\%hypervhost% -u %username% -p %password% HyperVManager.exe -start -force -vm %vname% -snapshot %snapshot%
 ping -n 10 127.0.0.1 >nul
 
 :install
