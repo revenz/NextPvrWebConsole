@@ -35,6 +35,7 @@ namespace NextPvrWebConsole.Tests
 
             SetupDummyDatabase();
 
+            return;
             // setup, delete all scheduled recordings, please backup your database before running unit tests!
             var settingsHelper = NUtility.SettingsHelper.GetInstance();
             string npvrDir = settingsHelper.GetDataDirectory();
