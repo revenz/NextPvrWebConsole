@@ -13,8 +13,6 @@ namespace NextPvrWebConsole.Tests.Controllers
         [TestMethod]
         public void UsersTest_CreateDuplicateUser()
         {
-            base.BaseStartup();
-
             var controller = new NextPvrWebConsole.Controllers.Api.UsersController();
             #region create first user
             Models.UserModel model = new Models.UserModel();
@@ -47,8 +45,6 @@ namespace NextPvrWebConsole.Tests.Controllers
         [TestMethod]
         public void UsersTest_CreateDuplicateSharedUser()
         {
-            base.BaseStartup();
-
             var controller = new NextPvrWebConsole.Controllers.Api.UsersController();
 
             Models.UserModel model = new Models.UserModel();
@@ -74,8 +70,6 @@ namespace NextPvrWebConsole.Tests.Controllers
         [TestMethod]
         public void UsersTest_CreateUserInvalidEmail()
         {
-            base.BaseStartup();
-
             var controller = new NextPvrWebConsole.Controllers.Api.UsersController();
 
             Models.UserModel model = new Models.UserModel();
