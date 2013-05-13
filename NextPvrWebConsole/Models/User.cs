@@ -192,6 +192,8 @@ namespace NextPvrWebConsole.Models
         public static User CreateUser(string Username, string EmailAddress, string Password, UserRole UserRole, bool Administrator = false, DateTime? LastLoggedInUtc = null)
         {
             var db = DbHelper.GetDatabase();
+            if (GetByUsername(Username) != null)
+                throw new Exception("User already exists.");
             db.BeginTransaction();
             try
             {
