@@ -5,6 +5,7 @@ using System.Text;
 using NextPvrWebConsole.Models;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Win32;
 
 namespace NextPvrWebConsole.Tests
 {
@@ -28,17 +29,26 @@ namespace NextPvrWebConsole.Tests
 
         protected Models.User User;
 
+        protected PetaPoco.Database NpvrDb
+        {
+            get;
+            set;
+        }
+
         [TestInitialize()]
         public void BaseStartup()
         {
-            DbHelper.CreateDatabase(System.IO.Path.GetTempFileName());
-
-            SetupDummyDatabase();
-
             // setup, delete all scheduled recordings, please backup your database before running unit tests!
             var settingsHelper = NUtility.SettingsHelper.GetInstance();
             string npvrDir = settingsHelper.GetDataDirectory();
             string backupDb = System.IO.Path.Combine(npvrDir, "npvr.unittest_backup.db3");
+
+            this.NpvrDb = new PetaPoco.Database(@"Data Source={0};Version=3;".FormatStr(System.IO.Path.Combine(npvrDir, "npvr.db3")), "System.Data.SQLite");
+
+            DbHelper.CreateDatabase(System.IO.Path.GetTempFileName());
+
+            SetupDummyDatabase();
+
             // backup the db file
             System.IO.File.Copy(System.IO.Path.Combine(npvrDir, settingsHelper.GetDatabaseFilename()), backupDb, true);
 
@@ -49,6 +59,7 @@ namespace NextPvrWebConsole.Tests
             db.CreateCommand(conn, "DELETE FROM RECURRING_RECORDING").ExecuteNonQuery();
 
             db.FreeConnection(conn);
+            
 
             Startup();
         }
@@ -89,10 +100,7 @@ namespace NextPvrWebConsole.Tests
 
         private void SetupDummyDatabase()
         {
-            var npvrDb = NUtility.DatabaseHelper.GetInstance();
-            var conn = npvrDb.GetConnection();
-
-            long captureSourceOid = (long)npvrDb.CreateCommand(conn, "select oid from CAPTURE_SOURCE").ExecuteScalar();
+            long captureSourceOid = (long)NpvrDb.FirstOrDefault<long>("select oid from CAPTURE_SOURCE");
 
 
             User = Helpers.UserHelper.CreateTestUser();
@@ -112,12 +120,12 @@ namespace NextPvrWebConsole.Tests
 
                 try
                 {
-                    npvrDb.CreateCommand(conn, "insert into CHANNEL VALUES ({0}, '{1}', {2}, 'None', '')".FormatStr(c.Oid, c.Name, c.Number)).ExecuteNonQuery();
+                    NpvrDb.Execute("insert into CHANNEL VALUES (@0, @1, @2, 'None', '')", c.Oid, c.Name, c.Number);
                 }
                 catch (Exception) { }
                 try
                 {
-                    npvrDb.CreateCommand(conn, "insert into CHANNEL_MAPPING VALUES ({0}, {1}, 0, '<tuning><type>DVB-T</type><locator><frequency>538000</frequency><bandwidth>8</bandwidth></locator><service_id>1201</service_id><tsid>25</tsid><onid>8746</onid><service_type>25</service_type></tuning>', 1, 25)".FormatStr(c.Oid, captureSourceOid)).ExecuteNonQuery();
+                    NpvrDb.Execute("insert into CHANNEL_MAPPING VALUES (@0, @1, 0, '<tuning><type>DVB-T</type><locator><frequency>538000</frequency><bandwidth>8</bandwidth></locator><service_id>1201</service_id><tsid>25</tsid><onid>8746</onid><service_type>25</service_type></tuning>', 1, 25)", c.Oid, captureSourceOid);
                 }
                 catch (Exception) { }
 
@@ -126,8 +134,8 @@ namespace NextPvrWebConsole.Tests
                 DateTime date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 0, 0, 0).AddHours(-12);
                 while (date < DateTime.UtcNow.AddDays(2))
                 {
-                    npvrDb.CreateCommand(conn, "insert into EPG_EVENT(title, subtitle, description, start_time, end_time, channel_oid, unique_id, rating, season, episode) values ('{0}', '', '', '{1}', '{2}', {3}, '', 0, 0, 0)"
-                                        .FormatStr("show_" + date.ToString(), date.ToString("yyyy-MM-dd HH:mm:ss"), date.AddHours(3).ToString("yyyy-MM-dd HH:mm:ss"), c.Oid)).ExecuteNonQuery();
+                    NpvrDb.Execute("insert into EPG_EVENT(title, subtitle, description, start_time, end_time, channel_oid, unique_id, rating, season, episode) values (@0, '', '', @1, @2, @3, '', 0, 0, 0)",
+                                   "show_" + date.ToString(), date, date.AddHours(3), c.Oid);
                     date = date.AddHours(3);
                 }
             }
@@ -142,9 +150,6 @@ namespace NextPvrWebConsole.Tests
                 cg.ChannelOids = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
                 cg.Save(cg.ChannelOids);
             }
-
-
-            npvrDb.FreeConnection(conn);
         }
     }
 }
