@@ -92,10 +92,9 @@ namespace NextPvrWebConsole.Tests.Controllers
                 {
                     new Models.ChannelGroup() {  Name = "usera_" +  suffix, ChannelOids = channelOids }
                 }.ToList());
-                var createdGroup = controllerA.Get().Last();
+                var createdGroup = controllerA.Get().Where(x => x.Name == "usera_" + suffix).FirstOrDefault();
+                Assert.IsNotNull(createdGroup);
                 Assert.IsTrue(controllerA.GetChannels(createdGroup.Oid, true).Count() == channelOids.Length);
-
-                Assert.IsTrue(createdGroup.Name == "usera_" + suffix);
 
                 var controllerB = base.LoadController<NextPvrWebConsole.Controllers.Api.ChannelGroupsController>(userB);
                 Assert.IsTrue(controllerB.Get().Where(x => x.Oid == createdGroup.Oid).Count() == 0);
