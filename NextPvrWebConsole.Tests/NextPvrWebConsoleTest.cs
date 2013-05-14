@@ -77,7 +77,7 @@ namespace NextPvrWebConsole.Tests
             string backupDb = System.IO.Path.Combine(npvrDir, "npvr.unittest_backup.db3");
             string nextPvrDbFile = System.IO.Path.Combine(npvrDir, settingsHelper.GetDatabaseFilename());
             // restore the db file
-            if (System.IO.File.Exists(nextPvrDbFile))
+            if (System.IO.File.Exists(backupDb) && System.IO.File.Exists(nextPvrDbFile))
             {
                 System.IO.File.Copy(backupDb, nextPvrDbFile, true);
                 System.IO.File.Delete(backupDb);
