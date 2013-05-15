@@ -49,7 +49,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             rds.Add(new Models.RecordingDirectory() { Name = name });
             controller.Post(rds);
             rds = controller.Get().ToList();
-            Assert.IsTrue(rds.Last().Name == name);
+            Assert.IsNotNull(rds.Where(x => x.Name == name).FirstOrDefault());
             rds.Add(new Models.RecordingDirectory() { Name = name });
             failed = false;
             try
@@ -65,13 +65,13 @@ namespace NextPvrWebConsole.Tests.Controllers
             rds.Add(new Models.RecordingDirectory() { Name = name });
             controller.Post(rds);
             rds = controller.Get().ToList();
-            Assert.IsTrue(rds.Last().Name == name);
+            Assert.IsNotNull(rds.Where(x => x.Name == name).FirstOrDefault());
             rds.Last().Name = "updated_" + name;
             rds.Add(new Models.RecordingDirectory() { Name = name });
             controller.Post(rds);
             rds = controller.Get().ToList();
-            Assert.IsTrue(rds.Last().Name == name);
-            Assert.IsTrue(rds[rds.Count - 2].Name == "updated_" + name);
+            Assert.IsNotNull(rds.Where(x => x.Name == name).FirstOrDefault());
+            Assert.IsNotNull(rds.Where(x => x.Name == "updated_" + name).FirstOrDefault());
         }
 
         [TestMethod]
