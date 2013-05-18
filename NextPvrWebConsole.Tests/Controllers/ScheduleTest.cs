@@ -9,7 +9,8 @@ namespace NextPvrWebConsole.Tests.Controllers
     [TestClass]
     public class ScheduleTest : NextPvrWebConsoleTest
     {
-        public ScheduleTest()
+        public ScheduleTest():base
+            (PopulateEpg:true)
         {
         }
 
@@ -138,7 +139,7 @@ namespace NextPvrWebConsole.Tests.Controllers
                 // load pending to ensure its due to record
                 var pending = recordingController.Pending().ToArray();
                 recording = pending.Where(x => x.Title == listing.Title || x.Name == listing.Title).FirstOrDefault();
-            } while (recording == null && count++ < 5);
+            } while (recording == null && count++ < 10);
             Assert.IsNotNull(recording);
 
             if (Type == Models.RecordingType.Record_Once)
