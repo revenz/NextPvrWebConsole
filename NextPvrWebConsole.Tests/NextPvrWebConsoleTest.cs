@@ -95,6 +95,13 @@ namespace NextPvrWebConsole.Tests
         private void SetupDummyDatabase()
         {
             long captureSourceOid = (long)NpvrDb.FirstOrDefault<long>("select oid from CAPTURE_SOURCE");
+            if (captureSourceOid < 1)
+            {
+                NpvrDb.Execute("insert into CAPTURE_SOURCE(name, recorder_plugin_class, present, enabled, priority) values ('dummy', 'NShared.DigitalRecorder', 1, 1, 1)");
+                captureSourceOid = (long)NpvrDb.FirstOrDefault<long>("select oid from CAPTURE_SOURCE");
+            }
+
+            Assert.IsTrue(captureSourceOid > 0, "Capture source found.");
 
 
             User = Helpers.UserHelper.CreateTestUser();
