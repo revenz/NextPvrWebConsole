@@ -111,7 +111,7 @@ namespace NextPvrWebConsole.Tests
 
             db.Execute("insert into recordingdirectory(useroid, name, path, isdefault) values (@0, 'Default', @1, 1)", Globals.SHARED_USER_OID, "");
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Channel c = new Channel();
                 c.Oid = i + 1;
@@ -135,11 +135,11 @@ namespace NextPvrWebConsole.Tests
                 db.Execute("insert into userchannel values (@0, @1, @2, @3)", User.Oid, c.Oid, c.Number, true);
 
                 DateTime date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 0, 0, 0).AddHours(-12);
-                while (date < DateTime.UtcNow.AddDays(2))
+                while (date < DateTime.UtcNow.AddDays(9))
                 {
                     NpvrDb.Execute("insert into EPG_EVENT(title, subtitle, description, start_time, end_time, channel_oid, unique_id, rating, season, episode) values (@0, '', '', @1, @2, @3, '', 0, 0, 0)",
-                                   "show_" + date.ToString(), date, date.AddHours(3), c.Oid);
-                    date = date.AddHours(3);
+                                   "show_" + date.ToString("HH_mm"), date, date.AddHours(3), c.Oid);
+                    date = date.AddHours(6);
                 }
             }
 
@@ -150,7 +150,7 @@ namespace NextPvrWebConsole.Tests
                 cg.UserOid = Globals.SHARED_USER_OID;
                 cg.OrderOid = i + 1;
                 cg.Enabled = true;
-                cg.ChannelOids = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+                cg.ChannelOids = new int[] { 1, 2 };
                 cg.Save(cg.ChannelOids);
             }
         }

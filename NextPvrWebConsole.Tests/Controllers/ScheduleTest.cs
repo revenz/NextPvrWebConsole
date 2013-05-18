@@ -51,12 +51,12 @@ namespace NextPvrWebConsole.Tests.Controllers
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
 
             Assert.IsNotNull(guide.QuickRecord(listing.Oid));
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(5000);
 
             // load pending to ensure its due to record
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
             var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
+            var recording = pending.Where(x => x.Title == listing.Title || x.Name == listing.Title).FirstOrDefault();
             Assert.IsNotNull(recording);
 
             // cancel the recording
@@ -66,153 +66,91 @@ namespace NextPvrWebConsole.Tests.Controllers
         [TestMethod]
         public void ScheduleTest_RecordOnce()
         {
-            var listing = GetListingToRecord();
-            var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
-            var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
-
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Once }));
-            System.Threading.Thread.Sleep(5000);
-
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
-            Assert.IsNotNull(recording);
-
-            // cancel the recording
-            Assert.IsTrue(recordingController.Delete(recording.OID));
+            TestRecordingSchedule(Models.RecordingType.Record_Once);
         }
 
         [TestMethod]
         public void ScheduleTest_RecordSeasonNewThisChannel()
         {
-            var listing = GetListingToRecord();
-            var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
-            var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
-
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_New_This_Channel }));
-            System.Threading.Thread.Sleep(5000);
-
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
-            Assert.IsNotNull(recording);
-
-            // cancel the recurring recording
-            Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            TestRecordingSchedule(Models.RecordingType.Record_Season_New_This_Channel);
         }
 
         [TestMethod]
         public void ScheduleTest_RecordSeasonAllThisChannel()
         {
-            var listing = GetListingToRecord();
-            var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
-            var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
-
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_All_This_Channel }));
-            System.Threading.Thread.Sleep(5000);
-
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
-            Assert.IsNotNull(recording);
-
-            // cancel the recurring recording
-            Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            TestRecordingSchedule(Models.RecordingType.Record_Season_All_This_Channel);
         }
 
         [TestMethod]
         public void ScheduleTest_RecordSeasonDailyThisTimeslot()
         {
-            var listing = GetListingToRecord();
-            var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
-            var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
-
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Daily_This_Timeslot }));
-            System.Threading.Thread.Sleep(5000);
-
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
-            Assert.IsNotNull(recording);
-
-            // cancel the recurring recording
-            Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            TestRecordingSchedule(Models.RecordingType.Record_Season_Daily_This_Timeslot);
         }
 
         [TestMethod]
         public void ScheduleTest_RecordSeasonWeekdaysThisTimeslot()
         {
-            var listing = GetListingToRecord(NUtility.DayMask.MONDAY | NUtility.DayMask.TUESDAY | NUtility.DayMask.WEDNESDAY | NUtility.DayMask.THURSDAY | NUtility.DayMask.FRIDAY);
-            var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
-            var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
-
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekdays_This_Timeslot }));
-            System.Threading.Thread.Sleep(5000);
-
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
-            Assert.IsNotNull(recording);
-
-            // cancel the recurring recording
-            Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            TestRecordingSchedule(Models.RecordingType.Record_Season_Weekdays_This_Timeslot);
         }
 
         [TestMethod]
         public void ScheduleTest_RecordSeasonWeekendsThisTimeslot()
         {
-            var listing = GetListingToRecord(NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY);
-            var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
-            var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
-
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekends_This_Timeslot }));
-            System.Threading.Thread.Sleep(5000);
-
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
-            Assert.IsNotNull(recording);
-
-            // cancel the recurring recording
-            Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            TestRecordingSchedule(Models.RecordingType.Record_Season_Weekends_This_Timeslot); 
         }
 
         [TestMethod]
         public void ScheduleTest_RecordSeasonWeeklyThisTimeslot()
         {
-            var listing = GetListingToRecord();
-            var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
-            var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
-
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_Weekly_This_Timeslot }));
-            System.Threading.Thread.Sleep(5000);
-
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
-            Assert.IsNotNull(recording);
-
-            // cancel the recurring recording
-            Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            TestRecordingSchedule(Models.RecordingType.Record_Season_Weekly_This_Timeslot); 
         }
 
         [TestMethod]
         public void ScheduleTest_RecordSeasonAllEpisodesAllChannels()
         {
-            var listing = GetListingToRecord();
+            TestRecordingSchedule(Models.RecordingType.Record_Season_All_Episodes_All_Channels);
+        }
+
+        private void TestRecordingSchedule( Models.RecordingType Type)
+        {
+            Models.EpgListing listing = null;
+            if(Type == Models.RecordingType.Record_Season_Weekends_This_Timeslot)
+                listing = GetListingToRecord(NUtility.DayMask.SATURDAY | NUtility.DayMask.SUNDAY);
+            else if(Type == Models.RecordingType.Record_Season_Weekdays_This_Timeslot)
+                listing = GetListingToRecord(NUtility.DayMask.MONDAY | NUtility.DayMask.TUESDAY | NUtility.DayMask.WEDNESDAY | NUtility.DayMask.THURSDAY | NUtility.DayMask.FRIDAY);
+            else
+                listing = GetListingToRecord();
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
 
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule() { EpgEventOid = listing.Oid, PrePadding = 2, PostPadding = 5, Type = Models.RecordingType.Record_Season_All_Episodes_All_Channels }));
-            System.Threading.Thread.Sleep(5000);
+            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule()
+                                                                        { EpgEventOid = listing.Oid, 
+                                                                          PrePadding = 2, 
+                                                                          PostPadding = 5, 
+                                                                          Type = Type
+                                                                        }));
 
-            // load pending to ensure its due to record
-            var pending = recordingController.Pending();
-            var recording = pending.Where(x => x.EventOid == listing.Oid).FirstOrDefault();
+            Models.Recording recording = null;
+            int count = 0;
+            do
+            {
+                System.Threading.Thread.Sleep(1000);
+                // load pending to ensure its due to record
+                var pending = recordingController.Pending().ToArray();
+                recording = pending.Where(x => x.Title == listing.Title || x.Name == listing.Title).FirstOrDefault();
+            } while (recording == null && count++ < 5);
             Assert.IsNotNull(recording);
 
-            // cancel the recurring recording
-            Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            if (Type == Models.RecordingType.Record_Once)
+            {
+                // cancel the recording
+                Assert.IsTrue(recordingController.Delete(recording.OID));
+            }
+            else
+            {
+                // cancel the recurring recording
+                Assert.IsTrue(recordingController.DeleteRecurring(recording.RecurrenceOid));
+            }
         }
     }
 }
