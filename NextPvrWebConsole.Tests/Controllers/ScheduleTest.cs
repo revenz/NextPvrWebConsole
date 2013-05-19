@@ -42,6 +42,7 @@ namespace NextPvrWebConsole.Tests.Controllers
             var listing = listings.Where(x => x.StartTime > DateTime.UtcNow.AddMinutes(15))
                                   .OrderBy(x => Guid.NewGuid()) // random order
                                   .FirstOrDefault();
+            
             return listing;
         }
 
@@ -121,10 +122,11 @@ namespace NextPvrWebConsole.Tests.Controllers
                 listing = GetListingToRecord(NUtility.DayMask.MONDAY | NUtility.DayMask.TUESDAY | NUtility.DayMask.WEDNESDAY | NUtility.DayMask.THURSDAY | NUtility.DayMask.FRIDAY);
             else
                 listing = GetListingToRecord();
+            Assert.IsNotNull(listing, "Found listing for recording.");
             var guide = base.LoadController<NextPvrWebConsole.Controllers.Api.GuideController>(User);
             var recordingController = base.LoadController<NextPvrWebConsole.Controllers.Api.RecordingsController>(User);
 
-            Assert.IsNotNull(recordingController.SaveRecording(new Models.RecordingSchedule()
+            Assert.IsTrue(recordingController.SaveRecording(new Models.RecordingSchedule()
                                                                         { EpgEventOid = listing.Oid, 
                                                                           PrePadding = 2, 
                                                                           PostPadding = 5, 

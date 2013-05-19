@@ -6,6 +6,7 @@ using NextPvrWebConsole.Models;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32;
+using System.ServiceProcess;
 
 namespace NextPvrWebConsole.Tests
 {
@@ -29,6 +30,7 @@ namespace NextPvrWebConsole.Tests
         [TestInitialize()]
         public void BaseStartup()
         {
+            StopService("NPVR Recording Service", 30);
             // setup, delete all scheduled recordings, please backup your database before running unit tests!
             var settingsHelper = NUtility.SettingsHelper.GetInstance();
             string npvrDir = settingsHelper.GetDataDirectory();
@@ -38,19 +40,13 @@ namespace NextPvrWebConsole.Tests
 
             DbHelper.CreateDatabase(System.IO.Path.GetTempFileName());
 
-            SetupDummyDatabase();
-
             // backup the db file
             System.IO.File.Copy(System.IO.Path.Combine(npvrDir, settingsHelper.GetDatabaseFilename()), backupDb, true);
+            System.IO.File.Copy(System.IO.Path.Combine(npvrDir, "empty.db3"), System.IO.Path.Combine(npvrDir, settingsHelper.GetDatabaseFilename()), true);
 
-            var db = NUtility.DatabaseHelper.GetInstance();
-            var conn = db.GetConnection();
-            db.CreateCommand(conn, "DELETE FROM RECENTLY_DELETED").ExecuteNonQuery();
-            db.CreateCommand(conn, "DELETE FROM SCHEDULED_RECORDING").ExecuteNonQuery();
-            db.CreateCommand(conn, "DELETE FROM RECURRING_RECORDING").ExecuteNonQuery();
+            SetupDummyDatabase();
 
-            db.FreeConnection(conn);
-            
+            StartService("NPVR Recording Service", 30);
 
             Startup();
         }
@@ -95,6 +91,7 @@ namespace NextPvrWebConsole.Tests
         private void SetupDummyDatabase()
         {
             long captureSourceOid = (long)NpvrDb.FirstOrDefault<long>("select oid from CAPTURE_SOURCE");
+            captureSourceOid = 0;
             if (captureSourceOid < 1)
             {
                 NpvrDb.Execute("insert into CAPTURE_SOURCE(name, recorder_plugin_class, present, enabled, priority) values ('dummy', 'NShared.DigitalRecorder', 1, 1, 1)");
@@ -108,6 +105,7 @@ namespace NextPvrWebConsole.Tests
 
             if (PopulateEpg)
             {
+                int showDurationHours = 6;
                 var db = DbHelper.GetDatabase();
 
                 db.Execute("insert into recordingdirectory(useroid, name, path, isdefault) values (@0, 'Default', @1, 1)", Globals.SHARED_USER_OID, "");
@@ -139,8 +137,8 @@ namespace NextPvrWebConsole.Tests
                     while (date < DateTime.UtcNow.AddDays(9))
                     {
                         NpvrDb.Execute("insert into EPG_EVENT(title, subtitle, description, start_time, end_time, channel_oid, unique_id, rating, season, episode) values (@0, '', '', @1, @2, @3, '', 0, 0, 0)",
-                                       "show_" + date.ToString("HH_mm"), date, date.AddHours(3), c.Oid);
-                        date = date.AddHours(6);
+                                       "show_" + date.ToString("HH_mm"), date, date.AddHours(showDurationHours), c.Oid);
+                        date = date.AddHours(showDurationHours);
                     }
                 }
 
@@ -155,6 +153,40 @@ namespace NextPvrWebConsole.Tests
                     cg.Save(cg.ChannelOids);
                 }
             }
+        }
+
+        public static bool StartService(string serviceName, int timeoutMilliseconds)
+        {
+            ServiceController service = new ServiceController(serviceName);
+            try
+            {
+                TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
+
+                service.Start();
+                service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+
+        public static bool StopService(string serviceName, int timeoutMilliseconds)
+        {
+            ServiceController service = new ServiceController(serviceName);
+            try
+            {
+                TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
+
+                service.Stop();
+                service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
         }
     }
 }
