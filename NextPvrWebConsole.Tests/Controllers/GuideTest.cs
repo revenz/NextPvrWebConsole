@@ -10,6 +10,11 @@ namespace NextPvrWebConsole.Tests.Controllers
     [TestClass]
     public class GuideTest : NextPvrWebConsoleTest
     {
+        public GuideTest()
+            : base(PopulateEpg: true)
+        {
+        }
+
         [TestMethod]
         public void GuideTest_SpeedTest()
         {

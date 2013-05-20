@@ -9,6 +9,14 @@ namespace NextPvrWebConsole.Tests.Controllers
     [TestClass]
     public class RecordingDirectoriesTest : NextPvrWebConsoleTest
     {
+        public override void Startup()
+        {
+            base.Startup();
+            NextPvrWebConsole.Models.Configuration config = new Models.Configuration();
+            config.UserBaseRecordingDirectory = @"C:\temp";
+            config.Save();
+        }
+
         [TestMethod]
         public void RecordingDirectoriesTest_CreateRecordingDirectory()
         {

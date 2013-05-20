@@ -9,6 +9,11 @@ namespace NextPvrWebConsole.Tests.Controllers
     [TestClass]
     public class ChannelGroupsTest : NextPvrWebConsoleTest
     {
+        public ChannelGroupsTest()
+            : base(PopulateEpg: true)
+        {
+        }
+
         [TestMethod]
         public void ChannelGroupsTest_CreateChannelGroup()
         {
