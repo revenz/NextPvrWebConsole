@@ -90,16 +90,19 @@ namespace NextPvrWebConsole.Tests
 
         private void SetupDummyDatabase()
         {
+            var settingsHelper = NUtility.SettingsHelper.GetInstance();
             long captureSourceOid = (long)NpvrDb.FirstOrDefault<long>("select oid from CAPTURE_SOURCE");
             captureSourceOid = 0;
             if (captureSourceOid < 1)
             {
-                NpvrDb.Execute("insert into CAPTURE_SOURCE(name, recorder_plugin_class, present, enabled, priority) values ('dummy', 'NShared.DigitalRecorder', 1, 1, 1)");
+                NpvrDb.Execute("insert into CAPTURE_SOURCE(name, recorder_plugin_class, present, enabled, priority) values ('dummy', 'NShared.DigitalRecorder', 'Y', 'Y', 1)");
                 captureSourceOid = (long)NpvrDb.FirstOrDefault<long>("select oid from CAPTURE_SOURCE");
+                Assert.IsTrue(captureSourceOid > 0, "Capture source found.");
+
+                NpvrDb.Execute("insert into DIGITAL_RECORDER(capture_source_oid, device_filter, device_instance, device_standard, ini_file, common_interface_method, common_interface_instances, lnb_low_osc, lnb_high_osc, lnb_switch, diseqc) values " +
+                                "(@0, 'dummy', 1, 'DVB-T', @1, 0, 0, 0,0,0,1)", captureSourceOid, System.IO.Path.Combine(settingsHelper.GetDataDirectory(), @"Tuning\DVB-T\New Zealand - Auckland (Waiatarua).ini"));
+                    
             }
-
-            Assert.IsTrue(captureSourceOid > 0, "Capture source found.");
-
 
             User = Helpers.UserHelper.CreateTestUser();
 
